@@ -22,6 +22,7 @@ These app implementations purposefully use a bare minimum set of dependencies to
 
 <!-- - [Server Go + HTMX](./apps/server-go-htmx) -->
 
+<!-- - [Fullstack Astro](./apps/fullstack-astro) -->
 <!-- - [Fullstack Next](./apps/fullstack-next) -->
 <!-- - [Fullstack Remix](./apps/fullstack-remix) -->
 <!-- - [Fullstack SolidStart](./apps/fullstack-solid) -->
@@ -29,4 +30,6 @@ These app implementations purposefully use a bare minimum set of dependencies to
 
 &nbsp;
 ## **Packages**
+<!-- - [Configs](./packages/configs) -->
+<!-- - [DB Schema](./packages/db-schema) -->
 <!-- - [TS Types](./packages/types) -->
