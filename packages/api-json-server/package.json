@@ -5,5 +5,10 @@
 	"keywords": [],
 	"author": "Sebastian",
 	"license": "MIT",
-	"scripts": {}
+	"scripts": {
+		"start": "json-server db.json --port 5001"
+	},
+	"dependencies": {
+		"json-server": "1.0.0-alpha.23"
+	}
 }
