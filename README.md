@@ -16,6 +16,7 @@ These app implementations purposefully use a bare minimum set of dependencies to
 <!-- - [Client React](./apps/client-react) -->
 <!-- - [Client Solid](./apps/client-solid) -->
 <!-- - [Client Svelte](./apps/client-svelte) -->
+<!-- - [Client Qwik](./apps/client-qwik) -->
 
 <!-- - [API Json Server](./apps/api-json-server) -->
 <!-- - [API Node + Fastify](./apps/api-node-fastify) -->
@@ -27,6 +28,7 @@ These app implementations purposefully use a bare minimum set of dependencies to
 <!-- - [Fullstack Remix](./apps/fullstack-remix) -->
 <!-- - [Fullstack SolidStart](./apps/fullstack-solid) -->
 <!-- - [Fullstack SvelteKit](./apps/fullstack-svelte) -->
+<!-- - [Fullstack Leptos](./apps/fullstack-leptos) -->
 
 &nbsp;
 ## **Packages**
