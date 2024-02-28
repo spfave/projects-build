@@ -1,0 +1,13 @@
+{
+	"projects": [
+		{
+			"id": 1,
+			"name": "Projects.build",
+			"link": "https://github.com/spfave/projects-build",
+			"description": "testing web dev frameworks and tools",
+			"status": "building",
+			"recommendBuild": true,
+			"difficultyRating": 3
+		}
+	]
+}
