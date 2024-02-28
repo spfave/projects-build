@@ -18,7 +18,6 @@ These app implementations purposefully use a bare minimum set of dependencies to
 <!-- - [Client Svelte](./apps/client-svelte) -->
 <!-- - [Client Qwik](./apps/client-qwik) -->
 
-<!-- - [API Json Server](./apps/api-json-server) -->
 <!-- - [API Node + Fastify](./apps/api-node-fastify) -->
 
 <!-- - [Server Go + HTMX](./apps/server-go-htmx) -->
@@ -32,6 +31,7 @@ These app implementations purposefully use a bare minimum set of dependencies to
 
 &nbsp;
 ## **Packages**
+- [API Json Server](./packages/api-json-server)
 <!-- - [Configs](./packages/configs) -->
 <!-- - [DB Schema](./packages/db-schema) -->
 <!-- - [TS Types](./packages/types) -->
