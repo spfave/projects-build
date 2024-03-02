@@ -1,0 +1,14 @@
+{
+	"name": "@sebpfdev/api-json-server",
+	"version": "0.0.0",
+	"description": "",
+	"keywords": [],
+	"author": "Sebastian",
+	"license": "MIT",
+	"scripts": {
+		"start": "json-server db.json --port 5001"
+	},
+	"dependencies": {
+		"json-server": "1.0.0-alpha.23"
+	}
+}
