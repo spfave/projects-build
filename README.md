@@ -25,13 +25,18 @@ These app implementations purposefully use a bare minimum set of dependencies to
 <!-- - [Fullstack Astro](./apps/fullstack-astro) -->
 <!-- - [Fullstack Next](./apps/fullstack-next) -->
 <!-- - [Fullstack Remix](./apps/fullstack-remix) -->
-<!-- - [Fullstack SolidStart](./apps/fullstack-solid) -->
-<!-- - [Fullstack SvelteKit](./apps/fullstack-svelte) -->
+<!-- - [Fullstack SolidStart](./apps/fullstack-solidstart) -->
+<!-- - [Fullstack SvelteKit](./apps/fullstack-sveltekit) -->
 <!-- - [Fullstack Leptos](./apps/fullstack-leptos) -->
 
 &nbsp;
 ## **Packages**
 - [API Json Server](./packages/api-json-server)
-<!-- - [Configs](./packages/configs) -->
 <!-- - [DB Schema](./packages/db-schema) -->
 <!-- - [TS Types](./packages/types) -->
+
+&nbsp;
+## **Configs**
+<!-- - [Biome](./configs/biome) -->
+<!-- - [ESlint](./configs/eslint) -->
+<!-- - [Typescript](./configs/typescript) -->
