@@ -1,5 +1,5 @@
 {
-	"extends": "@sebpfdev/config-typescript/client.json",
+	"extends": "@projectsbuild/config-typescript/client.json",
 	"compilerOptions": {
 		"jsx": "react-jsx"
 	},

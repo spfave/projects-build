@@ -1,5 +1,5 @@
 {
-	"name": "@sebpfdev/client-react",
+	"name": "@projectsbuild/client-react",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -15,7 +15,7 @@
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
-		"@sebpfdev/config-typescript": "workspace:*",
+		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/react": "^18.2.64",
 		"@types/react-dom": "^18.2.21",
 		"@vitejs/plugin-react": "^4.2.1",
