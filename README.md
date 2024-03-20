@@ -13,7 +13,7 @@ These app implementations purposefully use a bare minimum set of dependencies to
 
 &nbsp;
 ## **Apps**
-<!-- - [Client React](./apps/client-react) -->
+- [Client React](./apps/client-react)
 <!-- - [Client Solid](./apps/client-solid) -->
 <!-- - [Client Svelte](./apps/client-svelte) -->
 <!-- - [Client Qwik](./apps/client-qwik) -->
@@ -37,6 +37,6 @@ These app implementations purposefully use a bare minimum set of dependencies to
 
 &nbsp;
 ## **Configs**
-<!-- - [Biome](./configs/biome) -->
+<!-- - [Biome](./configs/biome) -->  <!-- biome.json must be in root folder, does not work as workspace config: https://github.com/biomejs/biome-vscode/issues/25 --> 
 <!-- - [ESlint](./configs/eslint) -->
-<!-- - [Typescript](./configs/typescript) -->
+- [Typescript](./configs/typescript)
