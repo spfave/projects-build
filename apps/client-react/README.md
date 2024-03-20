@@ -1,4 +1,7 @@
-# React + TypeScript + Vite
+# **Client-React**
+A client side React web application
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
