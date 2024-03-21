@@ -40,6 +40,8 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
 
+  configs/biome: {}
+
   configs/typescript: {}
 
   packages/api-json-server:
