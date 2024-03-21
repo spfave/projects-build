@@ -40,3 +40,7 @@ These app implementations purposefully use a bare minimum set of dependencies to
 <!-- - [Biome](./configs/biome) -->  <!-- biome.json must be in root folder, does not work as workspace config: https://github.com/biomejs/biome-vscode/issues/25 --> 
 <!-- - [ESlint](./configs/eslint) -->
 - [Typescript](./configs/typescript)
+
+&nbsp;
+## **Notes**
+- [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
