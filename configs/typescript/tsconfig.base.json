@@ -1,0 +1,20 @@
+// Notes
+// https://www.typescriptlang.org/tsconfig
+// https://www.totaltypescript.com/tsconfig-cheat-sheet
+
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Base",
+	"compilerOptions": {
+		// Base Options
+		"skipLibCheck": true,
+		"target": "ESNext",
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+
+		// Linting
+		"strict": true,
+		"noUncheckedIndexedAccess": true
+	},
+	"exclude": ["node_modules"]
+}
