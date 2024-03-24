@@ -41,6 +41,12 @@ These app implementations purposefully use a bare minimum set of dependencies to
 <!-- - [ESlint](./configs/eslint) -->
 - [Typescript](./configs/typescript)
 
+
+&nbsp;
+## **Resources**
+- [Heroicons](https://heroicons.com/)
+- [Reshot Free Icons & Illustrations](https://www.reshot.com/)
+
 &nbsp;
 ## **Notes**
 - [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
