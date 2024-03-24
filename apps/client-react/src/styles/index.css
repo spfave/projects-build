@@ -1,0 +1,25 @@
+/* Base Resets */
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0;
+}
+
+/* Variables */
+:root {
+	/* Sizes */
+	--min-width: 375px;
+}
+
+/* Root */
+#root {
+	min-height: 100dvh;
+	min-width: var(--min-width);
+	display: flex;
+	flex-direction: column;
+}
