@@ -32,7 +32,7 @@
 			"quoteStyle": "double",
 			"quoteProperties": "asNeeded",
 			"semicolons": "always",
-			"trailingComma": "all"
+			"trailingComma": "es5"
 		}
 	},
 	"json": {

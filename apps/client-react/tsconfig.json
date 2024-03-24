@@ -1,6 +1,10 @@
 {
 	"extends": "@projectsbuild/config-typescript/client.json",
 	"compilerOptions": {
+		"baseUrl": "./src",
+		"paths": {
+			"~/*": ["./*"]
+		},
 		"jsx": "react-jsx"
 	},
 	"include": ["src"],
