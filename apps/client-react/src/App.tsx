@@ -1,11 +1,14 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import PageProjects from "~/views/page-projects";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		errorElement: <div>Error</div>,
 		children: [
-			{ index: true, element: <div>RootIndex</div> },
+			{ index: true, element: <Navigate to="/projects" /> },
+			{ path: "/projects", element: <PageProjects /> },
 			{ path: "/projects/create", element: <div>Project create</div> },
 			{ path: "/projects/:id", element: <div>Project Id</div> },
 			{ path: "/about", element: <div>About</div> },
