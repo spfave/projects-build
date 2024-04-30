@@ -1,8 +1,23 @@
-/* Base Resets */
+/* Resets */
 *,
 *:before,
 *:after {
 	box-sizing: border-box;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Variables */
+:root {
+	/* Dimensions */
+	--min-width-page: 375px;
+
+	/* Colors */
+	--color-blue: hsl(203, 73%, 71%);
+	--color-yellow: hsl(49, 100%, 46%);
 }
 
 body {
@@ -11,16 +26,10 @@ body {
 	margin: 0;
 }
 
-/* Variables */
-:root {
-	/* Sizes */
-	--min-width: 375px;
-}
-
 /* Root */
 #root {
 	min-height: 100dvh;
-	min-width: var(--min-width);
+	min-width: var(--min-width-page);
 	display: flex;
 	flex-direction: column;
 }
