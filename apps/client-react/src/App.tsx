@@ -1,10 +1,11 @@
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import PageProjects from "~/views/page-projects";
+import Root from "~/views/root";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
+		element: <Root />,
 		errorElement: <div>Error</div>,
 		children: [
 			{ index: true, element: <Navigate to="/projects" /> },
