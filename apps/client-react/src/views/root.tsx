@@ -19,10 +19,14 @@ export default function Root() {
 					</Link>
 				</div>
 				<div>
-					<Link to="/about">
+					<Link to="/about" title="about">
 						<img height={24} color="red" src={infoIcon} alt="info icon" />
 					</Link>
-					<Link to="https://github.com/spfave/projects-build" target="_blank">
+					<Link
+						to="https://github.com/spfave/projects-build"
+						target="_blank"
+						title="source code"
+					>
 						<img height={24} src={githubIcon} alt="github icon" />
 					</Link>
 				</div>
