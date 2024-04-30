@@ -2,7 +2,7 @@ import React from "react";
 
 import type { Project } from "@projectsbuild/types";
 
-import styles from "./page-projects.module.css";
+import styles from "./projects-route.module.css";
 
 export default function ProjectsRoute() {
 	const [projects, setProjects] = React.useState<Project[]>();
@@ -15,7 +15,7 @@ export default function ProjectsRoute() {
 
 	return (
 		<div className={styles.projectsContent}>
-			<p>Projects Grid</p>
+			Projects Grid
 			{JSON.stringify(projects)}
 		</div>
 	);
