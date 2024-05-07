@@ -10,7 +10,7 @@ export default function Root() {
 		<>
 			<header className={styles.header}>
 				<div>
-					<img height={48} src={logoIcon} alt="Project.build logo icon" />
+					<img height={48} src={logoIcon} alt="Project.build logo" />
 					<Link to="/projects">
 						<h1>
 							<span>projects</span>
