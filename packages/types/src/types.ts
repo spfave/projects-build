@@ -4,7 +4,6 @@ type ProjectBase = {
 	link?: string;
 	description?: string;
 	notes?: string;
-	// dateCompleted: Date
 };
 
 type ProjectTypeBase =
