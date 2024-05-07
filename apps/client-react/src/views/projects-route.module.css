@@ -1,0 +1,18 @@
+.projects {
+	display: flex;
+	gap: 2rem;
+}
+
+.projectsSidebar {
+	min-width: 16rem;
+
+	nav {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+}
+
+.projectsOutlet {
+	flex-grow: 1;
+}
