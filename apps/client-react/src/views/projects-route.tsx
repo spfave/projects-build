@@ -6,7 +6,7 @@ import type { Project } from "@projectsbuild/types";
 import styles from "./projects-route.module.css";
 
 async function getProjects() {
-	const res = await fetch(`${import.meta.env.VITE_API_URL_JSON_SERVER}/projects`);
+	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`);
 
 	// if (!res.ok) throw new Error("Fetch to Get Projects failed");
 	// if (res.status)
