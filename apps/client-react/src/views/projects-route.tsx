@@ -15,11 +15,15 @@ async function getProjects() {
 }
 
 export default function ProjectsRoute() {
-	const [projects, setProjects] = React.useState<Project[]>();
+	const [projects, setProjects] = React.useState<Project[] | null>(null);
 
 	React.useEffect(() => {
 		getProjects().then((data) => setProjects(data));
 	}, []);
+
+	if (projects == null) return <div>Loading Projects...</div>;
+
+	if (projects.length === 0) return <div>Create a Project to get started</div>;
 
 	return (
 		<div className={styles.projects}>
