@@ -9,17 +9,17 @@ const router = createBrowserRouter([
 		element: <Root />,
 		errorElement: <div>Error</div>,
 		children: [
-			{ index: true, element: <Navigate to="/projects" /> },
+			{ index: true, element: <Navigate to="projects" /> },
 			{
-				path: "/projects",
+				path: "projects",
 				element: <ProjectsRoute />,
 				children: [
-					{ path: "create", element: <div>Project create</div> },
+					{ path: "create", element: <div>Project Create</div> },
 					{ path: ":id", element: <div>Project Id</div> },
 					{ path: ":id/edit", element: <div>Project Id Edit</div> },
 				],
 			},
-			{ path: "/about", element: <div>About</div> },
+			{ path: "about", element: <div>About</div> },
 		],
 	},
 ]);

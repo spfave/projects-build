@@ -11,7 +11,7 @@ export default function Root() {
 			<header className={styles.header}>
 				<div>
 					<img height={48} src={logoIcon} alt="Project.build logo" />
-					<Link to="/projects">
+					<Link to="projects">
 						<h1>
 							<span>projects</span>
 							<span>.build</span>
@@ -19,7 +19,7 @@ export default function Root() {
 					</Link>
 				</div>
 				<div>
-					<Link to="/about" title="about">
+					<Link to="about" title="about">
 						<img height={24} color="red" src={infoIcon} alt="info icon" />
 					</Link>
 					<Link
