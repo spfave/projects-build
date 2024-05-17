@@ -13,6 +13,5 @@ type ProjectTypeBase =
 	| { status: "building" }
 	| { status: "complete"; dateCompleted: DateString; rating: number; recommend: boolean };
 
+export type ProjectStatus = ProjectTypeBase["status"];
 export type Project = ProjectBase & ProjectTypeBase;
-
-export type ProjectStatus = Project["status"];

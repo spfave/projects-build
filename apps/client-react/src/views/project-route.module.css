@@ -1,0 +1,5 @@
+.project {
+	p:nth-child(even) {
+		margin-top: 1rem;
+	}
+}
