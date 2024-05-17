@@ -1,3 +1,5 @@
+import type { DateString } from "./util-types";
+
 type ProjectBase = {
 	id: number;
 	name: string;
@@ -9,7 +11,7 @@ type ProjectBase = {
 type ProjectTypeBase =
 	| { status: "planning" }
 	| { status: "building" }
-	| { status: "complete"; recommend: boolean; rating: number; dateCompleted: Date };
+	| { status: "complete"; dateCompleted: DateString; rating: number; recommend: boolean };
 
 export type Project = ProjectBase & ProjectTypeBase;
 
