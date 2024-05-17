@@ -33,12 +33,11 @@ textarea {
 	--color-yellow: hsl(49, 100%, 46%);
 }
 
+/* Styles */
 body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	margin: 0;
 }
 
-/* Root */
 #root {
 	min-height: 100dvh;
 	min-width: var(--min-width-page);
