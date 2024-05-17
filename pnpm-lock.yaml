@@ -56,8 +56,8 @@ importers:
   packages/api-json-server:
     dependencies:
       json-server:
-        specifier: 1.0.0-alpha.23
-        version: 1.0.0-alpha.23
+        specifier: 1.0.0-beta.0
+        version: 1.0.0-beta.0
 
   packages/types:
     devDependencies:
@@ -725,8 +725,8 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  json-server@1.0.0-alpha.23:
-    resolution: {integrity: sha512-FPL1veNELhkr3tttwbIutKPkc/AUfLWSmslTwLYYPzl9RbCJQrwSPJceYWg2LnK1cv20tcEMLI2Kxl1lHz155Q==}
+  json-server@1.0.0-beta.0:
+    resolution: {integrity: sha512-6LMP/lfigyAigG4NG8GM5Wf+OmCv/5RpyBJLOPEfODB1z+VeHNsnJQvkXz+E6w3j6cbYFo+uSwO2nXXXCqZubQ==}
     engines: {node: '>=18.3'}
     hasBin: true
 
@@ -1496,7 +1496,7 @@ snapshots:
 
   jsesc@2.5.2: {}
 
-  json-server@1.0.0-alpha.23:
+  json-server@1.0.0-beta.0:
     dependencies:
       '@tinyhttp/app': 2.2.3
       '@tinyhttp/cors': 2.0.0

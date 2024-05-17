@@ -8,6 +8,6 @@
 		"dev:local": "json-server db.json --port 5001"
 	},
 	"dependencies": {
-		"json-server": "1.0.0-alpha.23"
+		"json-server": "1.0.0-beta.0"
 	}
 }
