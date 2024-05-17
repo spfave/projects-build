@@ -1,5 +1,6 @@
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import ProjectCreateRoute from "~/views/project-create-route";
 import ProjectRoute from "~/views/project-route";
 import ProjectsRoute from "~/views/projects-route";
 import Root from "~/views/root";
@@ -16,7 +17,7 @@ const router = createBrowserRouter(
 					path: "projects",
 					element: <ProjectsRoute />,
 					children: [
-						{ path: "create", element: <div>Project Create</div> },
+						{ path: "create", element: <ProjectCreateRoute /> },
 						{ path: ":id", element: <ProjectRoute /> },
 						{ path: ":id/edit", element: <div>Project Id Edit</div> },
 					],
