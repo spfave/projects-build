@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/types";
 
+import plusIcon from "~/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
 
 async function getProjects() {
@@ -29,6 +30,13 @@ export default function ProjectsRoute() {
 	return (
 		<div className={styles.projects}>
 			<div className={styles.projectsSidebar}>
+				<div>
+					<p>Create Project</p>
+					<Link to="create" title="create project">
+						<img height={24} src={plusIcon} alt="" />
+					</Link>
+				</div>
+				<hr />
 				<nav>
 					{projects.map((project) => (
 						<Link key={project.id} to={project.id.toString()}>
