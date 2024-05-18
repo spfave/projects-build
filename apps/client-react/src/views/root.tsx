@@ -20,7 +20,7 @@ export default function Root() {
 				</div>
 				<div>
 					<Link to="about" title="about">
-						<img height={24} color="red" src={infoIcon} alt="info icon" />
+						<img height={24} src={infoIcon} alt="about icon" />
 					</Link>
 					<Link
 						to="https://github.com/spfave/projects-build"

@@ -10,13 +10,17 @@ const router = createBrowserRouter(
 		{
 			path: "/",
 			element: <Root />,
-			errorElement: <div>Error</div>,
+			errorElement: <div>An Error Occurred</div>,
 			children: [
 				{ index: true, element: <Navigate to="projects" /> },
 				{
 					path: "projects",
 					element: <ProjectsRoute />,
 					children: [
+						{
+							index: true,
+							element: <p>Select or Create a New Project to get started</p>,
+						},
 						{ path: "create", element: <ProjectCreateRoute /> },
 						{ path: ":id", element: <ProjectRoute /> },
 						{ path: ":id/edit", element: <div>Project Id Edit</div> },
