@@ -1,0 +1,32 @@
+.projectCreate {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		input[type='text'],
+		input[type='number'],
+		input[type='date'],
+		textarea,
+		select,
+		button[type='submit'] {
+			width: 100%;
+		}
+
+		fieldset {
+			div {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+
+				label {
+					padding-left: 0.25rem;
+				}
+			}
+		}
+	}
+}

@@ -11,16 +11,18 @@ a {
 	text-decoration: none;
 }
 
-input
-	:not([type='checkbox'])
-	:not([type='file'])
-	:not([type='image'])
-	:not([type='radio'])
-	:not([type='range']),
-textarea {
+input:not([type='checkbox']):not([type='file']):not([type='image']):not(
+		[type='radio']
+	):not([type='range']),
+textarea,
+select {
 	font: inherit;
 	letter-spacing: inherit;
 	word-spacing: inherit;
+}
+fieldset {
+	padding: 0;
+	border: none;
 }
 
 /* Variables */
@@ -43,4 +45,9 @@ body {
 	min-width: var(--min-width-page);
 	display: flex;
 	flex-direction: column;
+}
+
+/* Utility Classes */
+.block {
+	display: block;
 }
