@@ -20,6 +20,12 @@ select {
 	letter-spacing: inherit;
 	word-spacing: inherit;
 }
+
+textarea {
+	resize: vertical;
+	min-height: 1.75rem;
+}
+
 fieldset {
 	padding: 0;
 	border: none;

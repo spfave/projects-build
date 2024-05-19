@@ -17,16 +17,33 @@
 			width: 100%;
 		}
 
+		textarea {
+			min-height: 3.5rem;
+			max-height: 10.5rem;
+		}
+
 		fieldset {
 			div {
 				display: flex;
 				align-items: center;
-				gap: 1rem;
+				gap: 2rem;
 
 				label {
 					padding-left: 0.25rem;
 				}
 			}
 		}
+	}
+}
+
+.flexFormGroup {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+
+	> div {
+		min-width: 20ch;
+		flex: 1;
 	}
 }

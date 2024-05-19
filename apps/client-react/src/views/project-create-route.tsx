@@ -7,7 +7,7 @@ import styles from "./project-create-route.module.css";
 export default function ProjectCreateRoute() {
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 
-	function handleChangeStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
+	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
@@ -15,65 +15,71 @@ export default function ProjectCreateRoute() {
 		<div className={styles.projectCreate}>
 			<h2>Define New Project</h2>
 			<form>
-				<div className="form-field">
-					<label htmlFor="name" className="block">
-						Name
-					</label>
-					<input id="name" type="text" name="name" />
+				<div className={styles.flexFormGroup}>
+					<div>
+						<label htmlFor="name" className="block">
+							Name
+						</label>
+						<input id="name" type="text" name="name" />
+					</div>
+					<div>
+						<label htmlFor="link" className="block">
+							Link
+						</label>
+						<input id="link" type="text" name="link" />
+					</div>
 				</div>
-				<div className="form-field">
-					<label htmlFor="link" className="block">
-						Link
-					</label>
-					<input id="link" type="text" name="link" />
-				</div>
-				<div className="form-field">
+				<div>
 					<label htmlFor="description" className="block">
 						Description
 					</label>
 					<textarea id="description" name="description" />
 				</div>
-				<div className="form-field">
+				<div>
 					<label htmlFor="notes" className="block">
 						Notes
 					</label>
 					<textarea id="notes" name="notes" />
 				</div>
-				<div className="form-field">
-					<label htmlFor="status" className="block">
-						Status
-					</label>
-					<select
-						id="status"
-						name="status"
-						defaultValue="select"
-						value={projectStatus}
-						onChange={handleChangeStatus}
-					>
-						<option value="select" hidden>
-							Select a Status
-						</option>
-						<option value="planning">Planning</option>
-						<option value="building">Building</option>
-						<option value="complete">Complete</option>
-					</select>
-				</div>
-
-				{projectStatus === "complete" && (
-					<>
-						<div className="form-field">
+				<div className={styles.flexFormGroup}>
+					<div>
+						<label htmlFor="status" className="block">
+							Status
+						</label>
+						<select
+							id="status"
+							name="status"
+							defaultValue="select"
+							value={projectStatus}
+							onChange={handleSelectProjectStatus}
+						>
+							<option value="select" hidden>
+								Select a Status
+							</option>
+							<option value="planning">Planning</option>
+							<option value="building">Building</option>
+							<option value="complete">Complete</option>
+						</select>
+					</div>
+					{projectStatus === "complete" && (
+						<div>
 							<label htmlFor="dateCompleted" className="block">
 								Date completed
 							</label>
 							<input id="dateCompleted" type="date" name="dateCompleted" />
 						</div>
-						<div className="form-field">
+					)}
+				</div>
+
+				{projectStatus === "complete" && (
+					<div className={styles.flexFormGroup}>
+						<div>
 							<label htmlFor="rating" className="block">
 								Rating
 							</label>
 							<input id="rating" type="number" name="rating" min={1} max={5} />
 						</div>
-						<div className="form-field">
+						<div>
 							<fieldset>
 								<legend>Would you recommend</legend>
 								<div>
@@ -98,7 +104,7 @@ export default function ProjectCreateRoute() {
 								</div>
 							</fieldset>
 						</div>
-					</>
+					</div>
 				)}
 
 				<div>
