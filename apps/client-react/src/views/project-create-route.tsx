@@ -11,10 +11,18 @@ export default function ProjectCreateRoute() {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
+	function handelCreateProject(evt: React.FormEvent<HTMLFormElement>) {
+		evt.preventDefault();
+
+		const formData = new FormData(evt.currentTarget);
+		const formObj = Object.fromEntries(formData.entries());
+		console.info(`formObj: `, formObj); //LOG
+	}
+
 	return (
 		<div className={styles.projectCreate}>
 			<h2>Define New Project</h2>
-			<form>
+			<form onSubmit={handelCreateProject}>
 				<div className={styles.flexFormGroup}>
 					<div>
 						<label htmlFor="name" className="block">
