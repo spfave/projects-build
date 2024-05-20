@@ -15,3 +15,4 @@ type ProjectTypeBase =
 
 export type ProjectStatus = ProjectTypeBase["status"];
 export type Project = ProjectBase & ProjectTypeBase;
+export type ProjectInput = Omit<Project, "id">;
