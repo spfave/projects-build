@@ -5,7 +5,7 @@ import type { Project } from "@projectsbuild/types";
 
 import styles from "./project-route.module.css";
 
-async function getProjectById(id: number) {
+async function getProjectById(id: string) {
 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`);
 	const project = (await res.json()) as Promise<Project>;
 	return project;
@@ -17,7 +17,7 @@ export default function ProjectRoute() {
 
 	React.useEffect(() => {
 		setProject(null);
-		getProjectById(Number(params.id)).then(setProject);
+		if (params.id) getProjectById(params.id).then(setProject);
 	}, [params.id]);
 
 	if (project == null) return <div>Loading Project...</div>;

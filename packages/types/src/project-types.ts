@@ -1,7 +1,7 @@
 import type { DateString } from "./util-types";
 
 type ProjectBase = {
-	id: number;
+	id: string;
 	name: string;
 	link?: string;
 	description?: string;
