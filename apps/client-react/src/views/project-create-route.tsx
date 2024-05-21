@@ -1,6 +1,7 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
-import type { ProjectInput, ProjectStatus } from "@projectsbuild/types";
+import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/types";
 
 import styles from "./project-create-route.module.css";
 
@@ -9,25 +10,27 @@ async function createProject(project: ProjectInput) {
 		method: "POST",
 		body: JSON.stringify(project),
 	});
-	const data = await res.json();
+	const newProject = (await res.json()) as Project;
 
-	return;
+	return newProject;
 }
 
 export default function ProjectCreateRoute() {
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
+	const navigate = useNavigate();
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
-	function handelCreateProject(evt: React.FormEvent<HTMLFormElement>) {
+	async function handelCreateProject(evt: React.FormEvent<HTMLFormElement>) {
 		evt.preventDefault();
 
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries()) as ProjectInput;
 
-		createProject(formObj);
+		const project = await createProject(formObj);
+		navigate(`/projects/${project.id}`);
 	}
 
 	return (
