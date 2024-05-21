@@ -37,8 +37,13 @@ fieldset {
 	--min-width-page: 375px;
 
 	/* Colors */
-	--color-blue: hsl(203, 73%, 71%);
-	--color-yellow: hsl(49, 100%, 46%);
+	--brand-blue: 203, 73%, 71%;
+	--brand-yellow: 49, 100%, 46%;
+
+	--color-blue: hsl(var(--brand-blue));
+	--color-blue-light: hsla(var(--brand-blue), 0.3);
+	--color-yellow: hsl(var(--brand-yellow));
+	--color-yellow-light: hsla(var(--brand-yellow), 0.3);
 }
 
 /* Styles */
