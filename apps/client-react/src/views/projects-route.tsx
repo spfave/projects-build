@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/types";
 
@@ -23,10 +23,6 @@ export default function ProjectsRoute() {
 		getProjects().then(setProjects);
 	}, []);
 
-	if (projects == null) return <div>Loading Projects...</div>;
-
-	if (projects.length === 0) return <div>Create a Project to get started</div>;
-
 	return (
 		<div className={styles.projects}>
 			<div className={styles.projectsSidebar}>
@@ -37,17 +33,31 @@ export default function ProjectsRoute() {
 					</Link>
 				</div>
 				<hr />
-				<nav>
-					{projects.map((project) => (
-						<Link key={project.id} to={project.id.toString()}>
-							{project.name}
-						</Link>
-					))}
-				</nav>
+				{projects == null ? <div>loading...</div> : <ProjectsList projects={projects} />}
 			</div>
 			<div className={styles.projectsOutlet}>
 				<Outlet />
 			</div>
 		</div>
+	);
+}
+
+function ProjectsList(props: { projects: Project[] }) {
+	const { projects } = props;
+
+	if (projects.length === 0) return <div>No Projects Exist</div>;
+
+	return (
+		<nav>
+			{projects?.map((project) => (
+				<NavLink
+					className={({ isActive }) => (isActive ? styles.activeLink : "")}
+					key={project.id}
+					to={`/projects/${project.id}`}
+				>
+					{project.name}
+				</NavLink>
+			))}
+		</nav>
 	);
 }
