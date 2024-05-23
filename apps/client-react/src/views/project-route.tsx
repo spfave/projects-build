@@ -46,9 +46,9 @@ export default function ProjectRoute() {
 				<p>Status</p>
 				<p>{project.status}</p>
 				<p>Description</p>
-				<p>{project.description}</p>
+				<p>{project.description || "--"}</p>
 				<p>Notes</p>
-				<p>{project.notes}</p>
+				<p>{project.notes || "--"}</p>
 				{project.status === "complete" ? (
 					<>
 						<p>Date Completed</p>
