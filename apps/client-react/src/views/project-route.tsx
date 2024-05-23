@@ -5,13 +5,13 @@ import type { Project } from "@projectsbuild/types";
 
 import styles from "./project-route.module.css";
 
-async function getProjectById(id: string) {
+export async function getProjectById(id: string) {
 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`);
 	const project = (await res.json()) as Project;
 	return project;
 }
 
-async function deleteProjectById(id: string) {
+export async function deleteProjectById(id: string) {
 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`, {
 		method: "DELETE",
 	});

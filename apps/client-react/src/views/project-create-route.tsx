@@ -5,7 +5,7 @@ import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/types"
 
 import styles from "./project-create-route.module.css";
 
-async function createProject(project: ProjectInput) {
+export async function createProject(project: ProjectInput) {
 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`, {
 		method: "POST",
 		body: JSON.stringify(project),
