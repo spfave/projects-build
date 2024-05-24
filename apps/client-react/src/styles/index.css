@@ -42,8 +42,8 @@ fieldset {
 	--brand-warn: 49, 100%, 46%;
 	--brand-danger: 12, 88%, 58%
 
-	--color-blue: hsl(var(--brand-blue));
-	--color-blue-light: hsla(var(--brand-blue), 0.3);
+	--color-primary: hsl(var(--brand-blue));
+	--color-primary-light: hsla(var(--brand-blue), 0.3);
 	--color-success: hsl(var(var(--brand-success)))
 	--color-warn: hsl(var(--brand-warn));
 	--color-danger: hsl(var(var(--brand-danger)))
