@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/types";
 
@@ -17,13 +17,13 @@ export async function createProject(project: ProjectInput) {
 
 export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
-	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
+	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus | undefined>();
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
-	async function handelCreateProject(evt: React.FormEvent<HTMLFormElement>) {
+	async function handleCreateProject(evt: React.FormEvent<HTMLFormElement>) {
 		evt.preventDefault();
 
 		const formData = new FormData(evt.currentTarget);
@@ -33,10 +33,14 @@ export default function ProjectCreateRoute() {
 		navigate(`/projects/${project.id}`);
 	}
 
+	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		setProjectStatus(undefined);
+	}
+
 	return (
 		<div className={styles.projectCreate}>
 			<h2>Define New Project</h2>
-			<form method="POST" onSubmit={handelCreateProject}>
+			<form method="POST" onSubmit={handleCreateProject}>
 				<div className={styles.flexFormGroup}>
 					<div>
 						<label htmlFor="name" className="block">
@@ -129,7 +133,11 @@ export default function ProjectCreateRoute() {
 					</div>
 				)}
 
-				<div>
+				<div className={styles.formActions}>
+					<Link to="/projects">Cancel</Link>
+					<button type="reset" onClick={handleReset}>
+						Clear Form
+					</button>
 					<button type="submit">Create Project</button>
 				</div>
 			</form>

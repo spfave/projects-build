@@ -12,8 +12,7 @@
 		input[type='number'],
 		input[type='date'],
 		textarea,
-		select,
-		button[type='submit'] {
+		select {
 			width: 100%;
 		}
 
@@ -46,4 +45,10 @@
 		min-width: 20ch;
 		flex: 1;
 	}
+}
+
+.formActions {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
 }
