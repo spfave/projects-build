@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/types";
+import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
 
@@ -26,6 +27,7 @@ export function ymdToday() {
 export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
+	const { fetchProjects } = useProjectsContext();
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -38,6 +40,7 @@ export default function ProjectCreateRoute() {
 		const formObj = Object.fromEntries(formData.entries()) as ProjectInput;
 
 		const project = await createProject(formObj);
+		fetchProjects();
 		navigate(`/projects/${project.id}`);
 	}
 
@@ -49,9 +52,9 @@ export default function ProjectCreateRoute() {
 		<div className={styles.projectCreate}>
 			<h2>Define New Project</h2>
 			<form method="POST" onSubmit={handleCreateProject}>
-				<div>
+				{/* <div>
 					<input id="id" hidden type="text" name="id" />
-				</div>
+				</div> */}
 				<div className={styles.flexFormGroup}>
 					<div>
 						<label htmlFor="name">Name</label>

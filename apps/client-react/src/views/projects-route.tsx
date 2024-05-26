@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/types";
 
@@ -15,13 +15,23 @@ export async function getProjects() {
 	return projects;
 }
 
+type ProjectsContext = { fetchProjects: () => void };
+
+export function useProjectsContext() {
+	return useOutletContext<ProjectsContext>();
+}
+
 export default function ProjectsRoute() {
 	const [projects, setProjects] = React.useState<Project[] | null>(null);
 
-	React.useEffect(() => {
+	const fetchProjects = React.useCallback(() => {
 		setProjects(null);
 		getProjects().then(setProjects);
 	}, []);
+
+	React.useEffect(() => {
+		fetchProjects();
+	}, [fetchProjects]);
 
 	return (
 		<div className={styles.projects}>
@@ -36,7 +46,7 @@ export default function ProjectsRoute() {
 				{projects == null ? <div>loading...</div> : <ProjectsList projects={projects} />}
 			</div>
 			<div className={styles.projectsOutlet}>
-				<Outlet />
+				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
 			</div>
 		</div>
 	);

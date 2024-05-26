@@ -6,6 +6,7 @@ import { ymdToday } from "./project-create-route";
 import { getProjectById } from "./project-route";
 
 import styles from "./project-create-route.module.css";
+import { useProjectsContext } from "./projects-route";
 
 export async function updateProject(project: Project) {
 	const res = await fetch(
@@ -23,6 +24,7 @@ export async function updateProject(project: Project) {
 export default function ProjectEditRoute() {
 	const params = useParams();
 	const navigate = useNavigate();
+	const { fetchProjects } = useProjectsContext();
 
 	const [, rerender] = React.useState({});
 	const [project, setProject] = React.useState<Project | null>(null);
@@ -48,9 +50,9 @@ export default function ProjectEditRoute() {
 
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries()) as Project;
-		console.info(`formObj: `, formObj); //LOG
 
 		const project = await updateProject(formObj);
+		fetchProjects();
 		navigate(`/projects/${project.id}`);
 	}
 

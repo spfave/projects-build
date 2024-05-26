@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/types";
+import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-route.module.css";
 
@@ -34,6 +35,7 @@ export default function ProjectRoute() {
 	const params = useParams();
 	const navigate = useNavigate();
 	const [project, setProject] = React.useState<Project | null>(null);
+	const { fetchProjects } = useProjectsContext();
 
 	React.useEffect(() => {
 		if (!params.id) return;
@@ -47,6 +49,7 @@ export default function ProjectRoute() {
 		if (!params.id) return;
 
 		await deleteProjectById(params.id);
+		fetchProjects();
 		navigate("/projects");
 	}
 
