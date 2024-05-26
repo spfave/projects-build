@@ -7,7 +7,8 @@ import styles from "./projects-nav-list.module.css";
 export function ProjectsList(props: { projects: Project[] }) {
 	const { projects } = props;
 
-	if (projects.length === 0) return <div>No Projects Exist</div>;
+	if (projects.length === 0)
+		return <div className={styles.projectsNavListEmpty}>No Projects Exist</div>;
 
 	return (
 		<nav className={styles.projectsNavList}>

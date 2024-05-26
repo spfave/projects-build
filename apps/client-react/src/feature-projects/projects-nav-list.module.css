@@ -18,6 +18,10 @@
 	}
 }
 
+.projectsNavListEmpty {
+	padding: 0.5rem 1rem;
+}
+
 .activeLink {
 	background-color: var(--color-primary-light);
 }

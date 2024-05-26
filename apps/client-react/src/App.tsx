@@ -20,7 +20,7 @@ const router = createBrowserRouter(
 					children: [
 						{
 							index: true,
-							element: <p>Select or Create a New Project to get started</p>,
+							element: <p>Create or select a project to get started</p>,
 						},
 						{ path: "create", element: <ProjectCreateRoute /> },
 						{ path: ":id", element: <ProjectRoute /> },
