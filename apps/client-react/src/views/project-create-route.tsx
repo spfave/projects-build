@@ -105,7 +105,7 @@ export default function ProjectCreateRoute() {
 							</label>
 							<input id="rating" type="number" name="rating" min={1} max={5} />
 						</div>
-						<div>
+						<div className={styles.divFieldSet}>
 							<fieldset>
 								<legend>Would you recommend</legend>
 								<div>

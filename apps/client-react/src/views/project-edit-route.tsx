@@ -150,7 +150,7 @@ export default function ProjectEditRoute() {
 								defaultValue={project.rating}
 							/>
 						</div>
-						<div>
+						<div className={styles.divFieldSet}>
 							<fieldset>
 								<legend>Would you recommend</legend>
 								<div>

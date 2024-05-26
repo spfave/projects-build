@@ -47,6 +47,19 @@
 	}
 }
 
+.divFieldSet {
+	display: flex;
+
+	fieldset {
+		flex-grow: 1;
+		display: flex;
+
+		> * {
+			width: 100%;
+		}
+	}
+}
+
 .formActions {
 	display: flex;
 	align-items: center;
