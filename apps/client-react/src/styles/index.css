@@ -37,15 +37,15 @@ fieldset {
 
 	/* Colors */
 	--brand-blue: 203, 73%, 71%;
-	--brand-success: 140, 50%, 50%
+	--brand-success: 140, 50%, 50%;
 	--brand-warn: 49, 100%, 46%;
-	--brand-danger: 12, 88%, 58%
+	--brand-danger: 12, 88%, 58%;
 
-	--color-primary: hsl(var(--brand-blue));
-	--color-primary-light: hsla(var(--brand-blue), 0.3);
-	--color-success: hsl(var(var(--brand-success)))
-	--color-warn: hsl(var(--brand-warn));
-	--color-danger: hsl(var(var(--brand-danger)))
+	--color-primary: hsla(var(--brand-blue));
+	--color-primary-light: hsla(var(--brand-blue), 0.5);
+	--color-success: hsla(var(--brand-success), 0.6);
+	--color-warn: hsla(var(--brand-warn), 0.5);
+	--color-danger: hsla(var(--brand-danger), 0.7);
 }
 
 /* Styles */
