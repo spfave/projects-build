@@ -37,7 +37,7 @@ export default function ProjectsRoute() {
 		<div className={styles.projects}>
 			<div className={styles.projectsSidebar}>
 				<div>
-					<Link to="create" title="new project">
+					<Link className="action success" to="create" title="new project">
 						<p>New Project</p>
 						<img height={20} src={plusIcon} alt="" />
 					</Link>

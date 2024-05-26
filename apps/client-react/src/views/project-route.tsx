@@ -78,9 +78,11 @@ export default function ProjectRoute() {
 			</section>
 
 			<section className={styles.projectActions}>
-				<Link to="edit">Edit</Link>
+				<Link className="action primary" to="edit">
+					Edit
+				</Link>
 				<form method="POST" onSubmit={handleDeleteProject}>
-					<button type="submit" name="intent" value="delete">
+					<button className="action danger" type="submit" name="intent" value="delete">
 						Delete
 					</button>
 				</form>

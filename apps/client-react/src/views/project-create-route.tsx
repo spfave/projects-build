@@ -136,11 +136,15 @@ export default function ProjectCreateRoute() {
 				)}
 
 				<div className={styles.formActions}>
-					<Link to="/projects">Cancel</Link>
-					<button type="reset" onClick={handleReset}>
+					<button className="action primary" type="submit">
+						Create Project
+					</button>
+					<button className="action danger outline" type="reset" onClick={handleReset}>
 						Clear Form
 					</button>
-					<button type="submit">Create Project</button>
+					<Link className="action danger outline" to="/projects">
+						Cancel
+					</Link>
 				</div>
 			</form>
 		</div>

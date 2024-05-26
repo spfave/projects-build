@@ -18,8 +18,6 @@
 		a {
 			width: 100%;
 			padding: 0.5rem 1rem;
-			background-color: var(--color-success);
-			border-radius: 0.3rem;
 			display: flex;
 			justify-content: space-between;
 		}

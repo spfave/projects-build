@@ -34,6 +34,7 @@ fieldset {
 :root {
 	/* Dimensions */
 	--min-width-page: 375px;
+	--standard-radius: 0.3rem;
 
 	/* Colors */
 	--brand-blue: 203, 73%, 71%;
@@ -43,9 +44,11 @@ fieldset {
 
 	--color-primary: hsla(var(--brand-blue));
 	--color-primary-light: hsla(var(--brand-blue), 0.5);
-	--color-success: hsla(var(--brand-success), 0.6);
+	--color-success: hsla(var(--brand-success), 0.7);
+	--color-success-light: hsla(var(--brand-success), 0.4);
 	--color-warn: hsla(var(--brand-warn), 0.5);
 	--color-danger: hsla(var(--brand-danger), 0.7);
+	--color-danger-light: hsla(var(--brand-danger), 0.4);
 }
 
 /* Styles */
@@ -58,6 +61,42 @@ body {
 	min-width: var(--min-width-page);
 	display: flex;
 	flex-direction: column;
+}
+
+a.action,
+button.action {
+	padding: 0.25rem 0.5rem;
+	border-radius: var(--standard-radius);
+	cursor: pointer;
+
+	&.primary {
+		background-color: var(--color-primary);
+		border: 1px solid var(--color-primary);
+		&:hover {
+			background-color: var(--color-primary-light);
+		}
+	}
+
+	&.success {
+		background-color: var(--color-success);
+		border: 1px solid var(--color-success);
+		&:hover {
+			background-color: var(--color-success-light);
+		}
+	}
+
+	&.danger {
+		background-color: var(--color-danger);
+		background-color: i;
+		border: 1px solid var(--color-danger);
+		&:hover {
+			background-color: var(--color-danger-light);
+		}
+	}
+
+	&.outline {
+		background-color: white;
+	}
 }
 
 /* Utility Classes */

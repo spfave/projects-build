@@ -165,11 +165,15 @@ export default function ProjectEditRoute() {
 				)}
 
 				<div className={styles.formActions}>
-					<Link to={`/projects/${params.id}`}>Cancel</Link>
-					<button type="reset" onClick={handleReset}>
+					<button className="action primary" type="submit">
+						Update Project
+					</button>
+					<button className="action danger outline" type="reset" onClick={handleReset}>
 						Revert Changes
 					</button>
-					<button type="submit">Update Project</button>
+					<Link className="action danger outline" to={`/projects/${params.id}`}>
+						Cancel
+					</Link>
 				</div>
 			</form>
 		</div>
