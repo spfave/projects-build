@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
+import { Link, Outlet, useOutletContext } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/types";
+import { ProjectsList } from "~/feature-projects/projects-nav-list";
 
 import plusIcon from "~/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
@@ -49,25 +50,5 @@ export default function ProjectsRoute() {
 				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
 			</div>
 		</div>
-	);
-}
-
-function ProjectsList(props: { projects: Project[] }) {
-	const { projects } = props;
-
-	if (projects.length === 0) return <div>No Projects Exist</div>;
-
-	return (
-		<nav>
-			{projects?.map((project) => (
-				<NavLink
-					className={({ isActive }) => (isActive ? styles.activeLink : "")}
-					key={project.id}
-					to={`/projects/${project.id}`}
-				>
-					<span>{project.name}</span>
-				</NavLink>
-			))}
-		</nav>
 	);
 }
