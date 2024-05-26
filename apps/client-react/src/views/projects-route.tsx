@@ -37,9 +37,9 @@ export default function ProjectsRoute() {
 		<div className={styles.projects}>
 			<div className={styles.projectsSidebar}>
 				<div>
-					<p>Create Project</p>
-					<Link to="create" title="create project">
-						<img height={24} src={plusIcon} alt="" />
+					<Link to="create" title="new project">
+						<p>New Project</p>
+						<img height={20} src={plusIcon} alt="" />
 					</Link>
 				</div>
 				<hr />
@@ -65,7 +65,7 @@ function ProjectsList(props: { projects: Project[] }) {
 					key={project.id}
 					to={`/projects/${project.id}`}
 				>
-					{project.name}
+					<span>{project.name}</span>
 				</NavLink>
 			))}
 		</nav>

@@ -4,22 +4,24 @@
 }
 
 .projectsSidebar {
-	min-width: 16rem;
+	width: 18rem;
 	display: flex;
+	flex: 0 0 auto;
 	flex-direction: column;
 	gap: 1rem;
 
-	div:first-child {
+	> div:first-child {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 
-		p {
-			padding-left: 0.5rem;
-		}
-
 		a {
+			width: 100%;
+			padding: 0.5rem 1rem;
+			background-color: var(--color-success);
+			border-radius: 0.3rem;
 			display: flex;
+			justify-content: space-between;
 		}
 	}
 
@@ -29,8 +31,17 @@
 		gap: 0.5rem;
 
 		a {
-			padding: 0.5rem 0 0.5rem 0.5rem;
+			padding: 0.5rem 1rem;
 			border-radius: 0.3rem;
+
+			span {
+				--max-lines: 2;
+
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: var(--max-lines);
+				overflow: hidden;
+			}
 		}
 	}
 }
