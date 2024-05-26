@@ -17,7 +17,7 @@ export async function createProject(project: ProjectInput) {
 
 export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
-	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus | undefined>();
+	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -41,6 +41,9 @@ export default function ProjectCreateRoute() {
 		<div className={styles.projectCreate}>
 			<h2>Define New Project</h2>
 			<form method="POST" onSubmit={handleCreateProject}>
+				{/* <div>
+					<input hidden id="id" type="text" name="id" />
+				</div> */}
 				<div className={styles.flexFormGroup}>
 					<div>
 						<label htmlFor="name" className="block">
@@ -75,13 +78,10 @@ export default function ProjectCreateRoute() {
 						<select
 							id="status"
 							name="status"
-							defaultValue="select"
 							value={projectStatus}
 							onChange={handleSelectProjectStatus}
 						>
-							<option value="select" hidden>
-								Select a Status
-							</option>
+							<option hidden>Select Status</option>
 							<option value="planning">Planning</option>
 							<option value="building">Building</option>
 							<option value="complete">Complete</option>
