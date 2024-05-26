@@ -15,6 +15,14 @@ export async function createProject(project: ProjectInput) {
 	return newProject;
 }
 
+export function ymdToday() {
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	const dayDate = date.getDate().toString().padStart(2, "0");
+	return `${year}-${month}-${dayDate}`;
+}
+
 export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
@@ -41,40 +49,30 @@ export default function ProjectCreateRoute() {
 		<div className={styles.projectCreate}>
 			<h2>Define New Project</h2>
 			<form method="POST" onSubmit={handleCreateProject}>
-				{/* <div>
-					<input hidden id="id" type="text" name="id" />
-				</div> */}
+				<div>
+					<input id="id" hidden type="text" name="id" />
+				</div>
 				<div className={styles.flexFormGroup}>
 					<div>
-						<label htmlFor="name" className="block">
-							Name
-						</label>
+						<label htmlFor="name">Name</label>
 						<input id="name" type="text" name="name" />
 					</div>
 					<div>
-						<label htmlFor="link" className="block">
-							Link
-						</label>
+						<label htmlFor="link">Link</label>
 						<input id="link" type="text" name="link" />
 					</div>
 				</div>
 				<div>
-					<label htmlFor="description" className="block">
-						Description
-					</label>
+					<label htmlFor="description">Description</label>
 					<textarea id="description" name="description" />
 				</div>
 				<div>
-					<label htmlFor="notes" className="block">
-						Notes
-					</label>
+					<label htmlFor="notes">Notes</label>
 					<textarea id="notes" name="notes" />
 				</div>
 				<div className={styles.flexFormGroup}>
 					<div>
-						<label htmlFor="status" className="block">
-							Status
-						</label>
+						<label htmlFor="status">Status</label>
 						<select
 							id="status"
 							name="status"
@@ -89,10 +87,13 @@ export default function ProjectCreateRoute() {
 					</div>
 					{projectStatus === "complete" && (
 						<div>
-							<label htmlFor="dateCompleted" className="block">
-								Date completed
-							</label>
-							<input id="dateCompleted" type="date" name="dateCompleted" />
+							<label htmlFor="dateCompleted">Date completed</label>
+							<input
+								id="dateCompleted"
+								type="date"
+								name="dateCompleted"
+								max={ymdToday()}
+							/>
 						</div>
 					)}
 				</div>
@@ -100,9 +101,7 @@ export default function ProjectCreateRoute() {
 				{projectStatus === "complete" && (
 					<div className={styles.flexFormGroup}>
 						<div>
-							<label htmlFor="rating" className="block">
-								Rating
-							</label>
+							<label htmlFor="rating">Rating</label>
 							<input id="rating" type="number" name="rating" min={1} max={5} />
 						</div>
 						<div className={styles.divFieldSet}>
@@ -113,8 +112,8 @@ export default function ProjectCreateRoute() {
 										<input
 											id="recommend-yes"
 											type="radio"
-											value="true"
 											name="recommend"
+											value="true"
 										/>
 										<label htmlFor="recommend-yes">Yes</label>
 									</span>
@@ -122,8 +121,8 @@ export default function ProjectCreateRoute() {
 										<input
 											id="recommend-no"
 											type="radio"
-											value="false"
 											name="recommend"
+											value="false"
 										/>
 										<label htmlFor="recommend-no">No</label>
 									</span>

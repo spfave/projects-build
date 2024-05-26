@@ -19,6 +19,17 @@ export async function deleteProjectById(id: string) {
 	return deletedProject;
 }
 
+export function ymdPretty(ymd: string) {
+	const [year, month, day] = ymd.split("-").map(Number) as [number, number, number];
+	const date = new Date(year, month - 1, day);
+	return date.toLocaleDateString(undefined, {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+		weekday: "short",
+	});
+}
+
 export default function ProjectRoute() {
 	const params = useParams();
 	const navigate = useNavigate();
@@ -54,7 +65,7 @@ export default function ProjectRoute() {
 				{project.status === "complete" ? (
 					<>
 						<p>Date Completed</p>
-						<p>{new Date(project.dateCompleted).toDateString()}</p>
+						<p>{ymdPretty(project.dateCompleted)}</p>
 						<p>Build Rating</p>
 						<p>{project.rating}</p>
 						<p>Recommend Build</p>

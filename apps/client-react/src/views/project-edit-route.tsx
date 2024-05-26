@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import type { Project, ProjectStatus } from "@projectsbuild/types";
+import { ymdToday } from "./project-create-route";
 import { getProjectById } from "./project-route";
 
 import styles from "./project-create-route.module.css";
@@ -17,11 +18,6 @@ export async function updateProject(project: Project) {
 	const updatedProject = (await res.json()) as Project;
 
 	return updatedProject;
-}
-
-export function formatDateYMD(dateInput: string) {
-	const date = new Date(dateInput);
-	return date.toISOString().split("T")[0];
 }
 
 export default function ProjectEditRoute() {
@@ -70,26 +66,20 @@ export default function ProjectEditRoute() {
 			<h2>Edit Project</h2>
 			<form method="POST" onSubmit={handelUpdateProject} ref={refForm}>
 				<div>
-					<input hidden id="id" type="text" name="id" defaultValue={project?.id} />
+					<input id="id" hidden type="text" name="id" defaultValue={project?.id} />
 				</div>
 				<div className={styles.flexFormGroup}>
 					<div>
-						<label htmlFor="name" className="block">
-							Name
-						</label>
+						<label htmlFor="name">Name</label>
 						<input id="name" type="text" name="name" defaultValue={project?.name} />
 					</div>
 					<div>
-						<label htmlFor="link" className="block">
-							Link
-						</label>
+						<label htmlFor="link">Link</label>
 						<input id="link" type="text" name="link" defaultValue={project?.link} />
 					</div>
 				</div>
 				<div>
-					<label htmlFor="description" className="block">
-						Description
-					</label>
+					<label htmlFor="description">Description</label>
 					<textarea
 						id="description"
 						name="description"
@@ -97,20 +87,15 @@ export default function ProjectEditRoute() {
 					/>
 				</div>
 				<div>
-					<label htmlFor="notes" className="block">
-						Notes
-					</label>
+					<label htmlFor="notes">Notes</label>
 					<textarea id="notes" name="notes" defaultValue={project?.notes} />
 				</div>
 				<div className={styles.flexFormGroup}>
 					<div>
-						<label htmlFor="status" className="block">
-							Status
-						</label>
+						<label htmlFor="status">Status</label>
 						<select
 							id="status"
 							name="status"
-							// defaultValue={project?.status}
 							value={projectStatus}
 							onChange={handleSelectProjectStatus}
 						>
@@ -122,14 +107,13 @@ export default function ProjectEditRoute() {
 					</div>
 					{project?.status === "complete" && projectStatus === "complete" && (
 						<div>
-							<label htmlFor="dateCompleted" className="block">
-								Date completed
-							</label>
+							<label htmlFor="dateCompleted">Date completed</label>
 							<input
 								id="dateCompleted"
 								type="date"
 								name="dateCompleted"
-								defaultValue={formatDateYMD(project.dateCompleted)}
+								defaultValue={project.dateCompleted}
+								max={ymdToday()}
 							/>
 						</div>
 					)}
@@ -138,16 +122,14 @@ export default function ProjectEditRoute() {
 				{project?.status === "complete" && projectStatus === "complete" && (
 					<div className={styles.flexFormGroup}>
 						<div>
-							<label htmlFor="rating" className="block">
-								Rating
-							</label>
+							<label htmlFor="rating">Rating</label>
 							<input
 								id="rating"
 								type="number"
 								name="rating"
+								defaultValue={project.rating}
 								min={1}
 								max={5}
-								defaultValue={project.rating}
 							/>
 						</div>
 						<div className={styles.divFieldSet}>
@@ -158,8 +140,8 @@ export default function ProjectEditRoute() {
 										<input
 											id="recommend-yes"
 											type="radio"
-											value="true"
 											name="recommend"
+											value="true"
 											defaultChecked={project.recommend}
 										/>
 										<label htmlFor="recommend-yes">Yes</label>
@@ -168,8 +150,8 @@ export default function ProjectEditRoute() {
 										<input
 											id="recommend-no"
 											type="radio"
-											value="false"
 											name="recommend"
+											value="false"
 											defaultChecked={!project.recommend}
 										/>
 										<label htmlFor="recommend-no">No</label>
