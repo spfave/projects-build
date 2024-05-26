@@ -25,8 +25,10 @@ export default function ProjectRoute() {
 	const [project, setProject] = React.useState<Project | null>(null);
 
 	React.useEffect(() => {
+		if (!params.id) return;
+
 		setProject(null);
-		if (params.id) getProjectById(params.id).then(setProject);
+		getProjectById(params.id).then(setProject);
 	}, [params.id]);
 
 	async function handleDeleteProject(evt: React.FormEvent<HTMLFormElement>) {
