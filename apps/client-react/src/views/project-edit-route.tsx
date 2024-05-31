@@ -2,11 +2,11 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import type { Project, ProjectStatus } from "@projectsbuild/types";
-import { ymdToday } from "./project-create-route";
+import { ymdToday } from "~/utils/ymd-dates";
 import { getProjectById } from "./project-route";
+import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
-import { useProjectsContext } from "./projects-route";
 
 export async function updateProject(project: Project) {
 	const res = await fetch(

@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/types";
+import { ymdToday } from "~/utils/ymd-dates";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
@@ -14,14 +15,6 @@ export async function createProject(project: ProjectInput) {
 	const newProject = (await res.json()) as Project;
 
 	return newProject;
-}
-
-export function ymdToday() {
-	const date = new Date();
-	const year = date.getFullYear();
-	const month = (date.getMonth() + 1).toString().padStart(2, "0");
-	const dayDate = date.getDate().toString().padStart(2, "0");
-	return `${year}-${month}-${dayDate}`;
 }
 
 export default function ProjectCreateRoute() {

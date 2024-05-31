@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/types";
+import { ymdPretty } from "~/utils/ymd-dates";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-route.module.css";
@@ -18,17 +19,6 @@ export async function deleteProjectById(id: string) {
 	});
 	const deletedProject = (await res.json()) as Project;
 	return deletedProject;
-}
-
-export function ymdPretty(ymd: string) {
-	const [year, month, day] = ymd.split("-").map(Number) as [number, number, number];
-	const date = new Date(year, month - 1, day);
-	return date.toLocaleDateString(undefined, {
-		year: "numeric",
-		month: "short",
-		day: "numeric",
-		weekday: "short",
-	});
 }
 
 export default function ProjectRoute() {
