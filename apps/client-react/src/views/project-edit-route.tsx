@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import type { Project, ProjectStatus } from "@projectsbuild/types";
-import { useReRender } from "~/hooks/useReRender";
+import { useRerender } from "~/hooks/useRerender";
 import { ymdToday } from "~/utils/ymd-dates";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
@@ -25,7 +25,7 @@ export async function updateProject(project: Project) {
 export default function ProjectEditRoute() {
 	const params = useParams();
 	const navigate = useNavigate();
-	const reRender = useReRender();
+	const rerender = useRerender();
 	const { fetchProjects } = useProjectsContext();
 
 	const [project, setProject] = React.useState<Project | null>(null);
@@ -61,7 +61,7 @@ export default function ProjectEditRoute() {
 		_evt.preventDefault();
 		refForm.current?.reset();
 		setProjectStatus(project?.status);
-		reRender(); // to rerender in case where projectStatus hasn't changed
+		rerender(); // force rerender in case where projectStatus hasn't changed
 	}
 
 	return (
