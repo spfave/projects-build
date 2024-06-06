@@ -104,7 +104,7 @@ export default function ProjectCreateRoute() {
 							<label htmlFor="rating">Rating</label>
 							<input id="rating" type="number" name="rating" required min={1} max={5} />
 						</div>
-						<div className={styles.divFieldSet}>
+						<div>
 							<fieldset>
 								<legend>Would you recommend</legend>
 								<div>

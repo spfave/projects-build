@@ -12,9 +12,10 @@
 			display: block;
 		}
 
-		input[type='text'],
-		input[type='number'],
-		input[type='date'],
+		input[type="text"],
+		input[type="number"],
+		input[type="date"],
+		legend,
 		textarea,
 		select {
 			width: 100%;
@@ -26,13 +27,14 @@
 		}
 
 		fieldset {
-			div {
+			> div {
 				display: flex;
 				align-items: center;
 				gap: 2rem;
 
-				label {
-					padding-left: 0.25rem;
+				> span {
+					display: flex;
+					gap: 0.5rem;
 				}
 			}
 		}
@@ -40,27 +42,13 @@
 }
 
 .flexFormGroup {
-	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
 
 	> div {
-		min-width: 20ch;
+		min-width: 25ch;
 		flex: 1;
-	}
-}
-
-.divFieldSet {
-	display: flex;
-
-	fieldset {
-		flex-grow: 1;
-		display: flex;
-
-		> * {
-			width: 100%;
-		}
 	}
 }
 
