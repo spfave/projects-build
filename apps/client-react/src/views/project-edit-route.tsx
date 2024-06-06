@@ -74,7 +74,14 @@ export default function ProjectEditRoute() {
 				<div className={styles.flexFormGroup}>
 					<div>
 						<label htmlFor="name">Name</label>
-						<input id="name" type="text" name="name" defaultValue={project?.name} />
+						<input
+							id="name"
+							type="text"
+							name="name"
+							required
+							minLength={2}
+							defaultValue={project?.name}
+						/>
 					</div>
 					<div>
 						<label htmlFor="link">Link</label>
@@ -99,15 +106,19 @@ export default function ProjectEditRoute() {
 						<select
 							id="status"
 							name="status"
+							required
 							value={projectStatus}
 							onChange={handleSelectProjectStatus}
 						>
-							<option hidden>Select Status</option>
+							<option hidden value="">
+								Select Status
+							</option>
 							<option value="planning">Planning</option>
 							<option value="building">Building</option>
 							<option value="complete">Complete</option>
 						</select>
 					</div>
+					{/* {projectStatus === "complete" && ( */}
 					{project?.status === "complete" && projectStatus === "complete" && (
 						<div>
 							<label htmlFor="dateCompleted">Date completed</label>
@@ -115,8 +126,9 @@ export default function ProjectEditRoute() {
 								id="dateCompleted"
 								type="date"
 								name="dateCompleted"
-								defaultValue={project.dateCompleted}
+								required
 								max={ymdToday()}
+								defaultValue={project.dateCompleted}
 							/>
 						</div>
 					)}
@@ -130,9 +142,10 @@ export default function ProjectEditRoute() {
 								id="rating"
 								type="number"
 								name="rating"
-								defaultValue={project.rating}
+								required
 								min={1}
 								max={5}
+								defaultValue={project.rating}
 							/>
 						</div>
 						<div className={styles.divFieldSet}>
@@ -144,6 +157,7 @@ export default function ProjectEditRoute() {
 											id="recommend-yes"
 											type="radio"
 											name="recommend"
+											required
 											value="true"
 											defaultChecked={project.recommend}
 										/>
@@ -154,6 +168,7 @@ export default function ProjectEditRoute() {
 											id="recommend-no"
 											type="radio"
 											name="recommend"
+											required
 											value="false"
 											defaultChecked={!project.recommend}
 										/>

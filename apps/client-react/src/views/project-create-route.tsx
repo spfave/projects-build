@@ -43,7 +43,7 @@ export default function ProjectCreateRoute() {
 
 	return (
 		<div className={styles.projectCreate}>
-			<h2>Define New Project</h2>
+			<h2>New Project</h2>
 			<form method="POST" onSubmit={handleCreateProject}>
 				{/* <div>
 					<input id="id" hidden type="text" name="id" />
@@ -51,7 +51,7 @@ export default function ProjectCreateRoute() {
 				<div className={styles.flexFormGroup}>
 					<div>
 						<label htmlFor="name">Name</label>
-						<input id="name" type="text" name="name" />
+						<input id="name" type="text" name="name" required minLength={2} />
 					</div>
 					<div>
 						<label htmlFor="link">Link</label>
@@ -72,10 +72,13 @@ export default function ProjectCreateRoute() {
 						<select
 							id="status"
 							name="status"
+							required
 							value={projectStatus}
 							onChange={handleSelectProjectStatus}
 						>
-							<option hidden>Select Status</option>
+							<option hidden value="">
+								Select Status
+							</option>
 							<option value="planning">Planning</option>
 							<option value="building">Building</option>
 							<option value="complete">Complete</option>
@@ -88,6 +91,7 @@ export default function ProjectCreateRoute() {
 								id="dateCompleted"
 								type="date"
 								name="dateCompleted"
+								required
 								max={ymdToday()}
 							/>
 						</div>
@@ -98,7 +102,7 @@ export default function ProjectCreateRoute() {
 					<div className={styles.flexFormGroup}>
 						<div>
 							<label htmlFor="rating">Rating</label>
-							<input id="rating" type="number" name="rating" min={1} max={5} />
+							<input id="rating" type="number" name="rating" required min={1} max={5} />
 						</div>
 						<div className={styles.divFieldSet}>
 							<fieldset>
@@ -109,6 +113,7 @@ export default function ProjectCreateRoute() {
 											id="recommend-yes"
 											type="radio"
 											name="recommend"
+											required
 											value="true"
 										/>
 										<label htmlFor="recommend-yes">Yes</label>
@@ -118,6 +123,7 @@ export default function ProjectCreateRoute() {
 											id="recommend-no"
 											type="radio"
 											name="recommend"
+											required
 											value="false"
 										/>
 										<label htmlFor="recommend-no">No</label>
