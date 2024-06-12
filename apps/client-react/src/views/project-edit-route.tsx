@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import type { Project, ProjectStatus } from "@projectsbuild/types";
 import { useRerender } from "~/hooks/useRerender";
-import { ymdToday } from "~/utils/ymd-dates";
+import { ymdToday } from "~/utils/date-ymd";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
 

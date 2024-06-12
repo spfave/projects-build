@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/types";
-import { ymdToday } from "~/utils/ymd-dates";
+import { ymdToday } from "~/utils/date-ymd";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
