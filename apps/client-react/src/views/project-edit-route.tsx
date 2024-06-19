@@ -29,10 +29,10 @@ export default function ProjectEditRoute() {
 	const rerender = useRerender();
 	const { fetchProjects } = useProjectsContext();
 
+	const refForm = React.useRef<HTMLFormElement>(null);
 	const [project, setProject] = React.useState<Project | null>(null);
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus | undefined>();
 
-	const refForm = React.useRef<HTMLFormElement>(null);
 	React.useEffect(() => {
 		if (!params.id) return;
 

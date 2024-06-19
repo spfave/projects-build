@@ -34,10 +34,10 @@ export function transformProject(
 	const project = {} as Project;
 
 	if (action === "update") project.id = input.id;
-	project.name = input.name;
-	project.link = valueIfTruthy(input.link);
-	project.description = valueIfTruthy(input.description);
-	project.notes = valueIfTruthy(input.notes);
+	project.name = input.name.trim();
+	project.link = valueIfTruthy(input.link?.trim());
+	project.description = valueIfTruthy(input.description?.trim());
+	project.notes = valueIfTruthy(input.notes?.trim());
 	project.status = input.status;
 
 	if (input.status === "complete" && project.status === "complete") {
