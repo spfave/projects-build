@@ -17,6 +17,35 @@ export async function createProject(project: ProjectInput) {
 	return newProject;
 }
 
+// Create ProjectForm type representation of Project type: convert non-string fields to string
+// Ref: https://www.totaltypescript.com/concepts/mapped-type, https://www.totaltypescript.com/immediately-indexed-mapped-type
+export type ProjectForm = {
+	[P in Project as P["status"]]: {
+		[Key in keyof P]: P[Key] extends string ? P[Key] : string;
+	};
+}[ProjectStatus];
+export function valueIfTruthy<T>(input: T) {
+	return input ? input : undefined;
+}
+export function transformProject(input: ProjectForm) {
+	const project = {} as ProjectInput;
+
+	// action === "update" && project.id = input.id;
+	project.name = input.name;
+	project.link = valueIfTruthy(input.link);
+	project.description = valueIfTruthy(input.description);
+	project.notes = valueIfTruthy(input.notes);
+	project.status = input.status;
+
+	if (input.status === "complete" && project.status === "complete") {
+		project.dateCompleted = input.dateCompleted;
+		project.rating = Number(input.rating);
+		project.recommend = input.recommend === "true";
+	}
+
+	return project;
+}
+
 export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
@@ -30,9 +59,11 @@ export default function ProjectCreateRoute() {
 		evt.preventDefault();
 
 		const formData = new FormData(evt.currentTarget);
-		const formObj = Object.fromEntries(formData.entries()) as ProjectInput;
+		const formObj = Object.fromEntries(formData.entries());
 
-		const project = await createProject(formObj);
+		const projectInput = transformProject(formObj as ProjectForm);
+		const project = await createProject(projectInput);
+
 		fetchProjects();
 		navigate(`/projects/${project.id}`);
 	}
