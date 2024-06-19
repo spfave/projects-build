@@ -121,8 +121,7 @@ export default function ProjectEditRoute() {
 							<option value="complete">Complete</option>
 						</select>
 					</div>
-					{/* {projectStatus === "complete" && ( */}
-					{project?.status === "complete" && projectStatus === "complete" && (
+					{projectStatus === "complete" && (
 						<div>
 							<label htmlFor="dateCompleted">Date completed</label>
 							<input
@@ -131,13 +130,15 @@ export default function ProjectEditRoute() {
 								name="dateCompleted"
 								required
 								max={ymdToday()}
-								defaultValue={project.dateCompleted}
+								defaultValue={
+									project?.status === "complete" ? project.dateCompleted : undefined
+								}
 							/>
 						</div>
 					)}
 				</div>
 
-				{project?.status === "complete" && projectStatus === "complete" && (
+				{projectStatus === "complete" && (
 					<div className={styles.flexFormGroup}>
 						<div>
 							<label htmlFor="rating">Rating</label>
@@ -148,7 +149,7 @@ export default function ProjectEditRoute() {
 								required
 								min={1}
 								max={5}
-								defaultValue={project.rating}
+								defaultValue={project?.status === "complete" ? project.rating : undefined}
 							/>
 						</div>
 						<div>
@@ -162,7 +163,9 @@ export default function ProjectEditRoute() {
 											name="recommend"
 											required
 											value="true"
-											defaultChecked={project.recommend}
+											defaultChecked={
+												project?.status === "complete" ? project.recommend : undefined
+											}
 										/>
 										<label htmlFor="recommend-yes">Yes</label>
 									</span>
@@ -173,7 +176,9 @@ export default function ProjectEditRoute() {
 											name="recommend"
 											required
 											value="false"
-											defaultChecked={!project.recommend}
+											defaultChecked={
+												project?.status === "complete" ? !project.recommend : undefined
+											}
 										/>
 										<label htmlFor="recommend-no">No</label>
 									</span>
