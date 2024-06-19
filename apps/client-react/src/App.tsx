@@ -1,5 +1,6 @@
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import About from "~/views/about-route";
 import ProjectCreateRoute from "~/views/project-create-route";
 import ProjectEditRoute from "~/views/project-edit-route";
 import ProjectRoute from "~/views/project-route";
@@ -27,7 +28,7 @@ const router = createBrowserRouter(
 						{ path: ":id/edit", element: <ProjectEditRoute /> },
 					],
 				},
-				{ path: "about", element: <div>About</div> },
+				{ path: "about", element: <About /> },
 			],
 		},
 	],
