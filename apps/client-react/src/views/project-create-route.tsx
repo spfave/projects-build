@@ -27,10 +27,13 @@ export type ProjectForm = {
 export function valueIfTruthy<T>(input: T) {
 	return input ? input : undefined;
 }
-export function transformProject(input: ProjectForm) {
-	const project = {} as ProjectInput;
+export function transformProject(
+	input: ProjectForm,
+	action: "create" | "update" = "create"
+) {
+	const project = {} as Project;
 
-	// action === "update" && project.id = input.id;
+	if (action === "update") project.id = input.id;
 	project.name = input.name;
 	project.link = valueIfTruthy(input.link);
 	project.description = valueIfTruthy(input.description);
@@ -48,8 +51,9 @@ export function transformProject(input: ProjectForm) {
 
 export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
-	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 	const { fetchProjects } = useProjectsContext();
+
+	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -61,8 +65,8 @@ export default function ProjectCreateRoute() {
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries());
 
-		const projectInput = transformProject(formObj as ProjectForm);
-		const project = await createProject(projectInput);
+		const projectPayload = transformProject(formObj as ProjectForm);
+		const project = await createProject(projectPayload);
 
 		fetchProjects();
 		navigate(`/projects/${project.id}`);

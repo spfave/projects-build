@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import type { Project, ProjectStatus } from "@projectsbuild/types";
 import { useRerender } from "~/hooks/useRerender";
 import { ymdToday } from "~/utils/date-ymd";
+import { type ProjectForm, transformProject } from "./project-create-route";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
 
@@ -50,9 +51,11 @@ export default function ProjectEditRoute() {
 		evt.preventDefault();
 
 		const formData = new FormData(evt.currentTarget);
-		const formObj = Object.fromEntries(formData.entries()) as Project;
+		const formObj = Object.fromEntries(formData.entries());
 
-		const project = await updateProject(formObj);
+		const projectPayload = transformProject(formObj as ProjectForm, "update");
+		const project = await updateProject(projectPayload);
+
 		fetchProjects();
 		navigate(`/projects/${project.id}`);
 	}
