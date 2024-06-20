@@ -11,16 +11,16 @@
 	gap: 1rem;
 
 	> div:first-child {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-
 		a {
-			width: 100%;
 			padding: 0.5rem 1rem;
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
 		}
+	}
+
+	h2 {
+		padding: 0 1rem;
 	}
 }
 

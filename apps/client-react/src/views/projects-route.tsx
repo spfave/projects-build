@@ -44,6 +44,7 @@ export default function ProjectsRoute() {
 					</Link>
 				</div>
 				<hr />
+				<h2>Projects</h2>
 				{projects == null ? <div>loading...</div> : <ProjectsList projects={projects} />}
 			</div>
 			<div className={styles.projectsOutlet}>
