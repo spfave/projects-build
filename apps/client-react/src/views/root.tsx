@@ -5,6 +5,8 @@ import infoIcon from "~/assets/heroicons-information-circle.svg";
 import logoIcon from "~/assets/reshot-icon-planning.svg";
 import styles from "./root.module.css";
 
+export const repoUrl = "https://github.com/spfave/projects-build";
+
 export default function Root() {
 	return (
 		<>
@@ -22,11 +24,7 @@ export default function Root() {
 					<Link to="about" title="about">
 						<img height={24} src={infoIcon} alt="about icon" />
 					</Link>
-					<Link
-						to="https://github.com/spfave/projects-build"
-						target="_blank"
-						title="source code"
-					>
+					<Link to={repoUrl} target="_blank" title="source code">
 						<img height={24} src={githubIcon} alt="github icon" />
 					</Link>
 				</div>
