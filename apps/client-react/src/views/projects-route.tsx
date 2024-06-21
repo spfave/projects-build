@@ -44,7 +44,13 @@ export default function ProjectsRoute() {
 				</div>
 				<hr />
 				<h2>Projects</h2>
-				{projects == null ? <div>loading...</div> : <ProjectsList projects={projects} />}
+				{projects == null ? (
+					<div>
+						<span>loading...</span>
+					</div>
+				) : (
+					<ProjectsList projects={projects} />
+				)}
 			</div>
 			<div className={styles.projectsOutlet}>
 				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
