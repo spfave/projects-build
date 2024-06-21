@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/types";
+import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/shared/types";
 import { ymdToday } from "~/utils/date-ymd";
 import { useProjectsContext } from "./projects-route";
 

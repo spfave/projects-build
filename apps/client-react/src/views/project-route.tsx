@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import type { Project } from "@projectsbuild/types";
+import type { Project } from "@projectsbuild/shared/types";
 import { ymdPretty } from "~/utils/date-ymd";
 import { useProjectsContext } from "./projects-route";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import type { Project, ProjectStatus } from "@projectsbuild/types";
+import type { Project, ProjectStatus } from "@projectsbuild/shared/types";
 import { useRerender } from "~/hooks/useRerender";
 import { ymdToday } from "~/utils/date-ymd";
 import { type ProjectForm, transformProject } from "./project-create-route";

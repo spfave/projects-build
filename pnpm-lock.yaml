@@ -30,9 +30,6 @@ importers:
       '@projectsbuild/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      '@projectsbuild/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@types/node':
         specifier: ^20.12.12
         version: 20.12.12
@@ -62,10 +59,20 @@ importers:
         specifier: 1.0.0-beta.0
         version: 1.0.0-beta.0
 
-  packages/shared: {}
-
-  packages/types:
+  packages/library:
     devDependencies:
+      '@projectsbuild/config-typescript':
+        specifier: workspace:*
+        version: link:../../configs/typescript
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
+
+  packages/shared:
+    devDependencies:
+      '@projectsbuild/config-typescript':
+        specifier: workspace:*
+        version: link:../../configs/typescript
       typescript:
         specifier: ^5.4.5
         version: 5.4.5

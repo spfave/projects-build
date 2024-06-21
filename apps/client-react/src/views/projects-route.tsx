@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
-import type { Project } from "@projectsbuild/types";
+import type { Project } from "@projectsbuild/shared/types";
 import { ProjectsList } from "~/feature-projects/projects-nav-list";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
