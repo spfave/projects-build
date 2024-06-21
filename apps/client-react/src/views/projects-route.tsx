@@ -4,7 +4,7 @@ import { Link, Outlet, useOutletContext } from "react-router-dom";
 import type { Project } from "@projectsbuild/types";
 import { ProjectsList } from "~/feature-projects/projects-nav-list";
 
-import plusIcon from "~/assets/heroicons-plus.svg";
+import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
 
 export async function getProjects() {
@@ -17,7 +17,6 @@ export async function getProjects() {
 }
 
 type ProjectsContext = { fetchProjects: () => void };
-
 export function useProjectsContext() {
 	return useOutletContext<ProjectsContext>();
 }
