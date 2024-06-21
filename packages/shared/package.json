@@ -3,7 +3,16 @@
 	"version": "1.0.0",
 	"description": "",
 	"private": true,
+	"type": "module",
+	"exports": {
+		"./assets/*.svg": "./assets/*.svg",
+		"./types": "./src/types/index.js"
+	},
 	"scripts": {
 		"typecheck": "tsc"
+	},
+	"devDependencies": {
+		"@projectsbuild/config-typescript": "workspace:*",
+		"typescript": "^5.4.5"
 	}
 }
