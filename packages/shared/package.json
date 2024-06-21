@@ -1,0 +1,9 @@
+{
+	"name": "@projectsbuild/shared",
+	"version": "1.0.0",
+	"description": "",
+	"private": true,
+	"scripts": {
+		"typecheck": "tsc"
+	}
+}
