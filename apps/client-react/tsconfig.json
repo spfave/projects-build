@@ -1,0 +1,13 @@
+{
+	"extends": "@projectsbuild/config-typescript/client.json",
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"paths": {
+			"~/*": ["./*"]
+		},
+		"jsx": "react-jsx"
+	},
+	"include": ["src"],
+	"exclude": ["assets", "styles"],
+	"references": [{ "path": "./tsconfig.node.json" }]
+}

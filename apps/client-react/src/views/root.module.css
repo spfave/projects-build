@@ -1,0 +1,41 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 4rem;
+	padding: 0 1rem 0 1rem;
+
+	div:first-child {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+
+		h1 {
+			margin: 0;
+
+			span:first-child {
+				font-size: 2rem;
+				font-weight: 900;
+				text-transform: uppercase;
+			}
+			span:last-child {
+				font-size: 1.25rem;
+				font-weight: 700;
+			}
+		}
+	}
+
+	div:nth-child(2) {
+		display: flex;
+		gap: 1rem;
+
+		a {
+			display: flex;
+		}
+	}
+}
+
+.main {
+	flex-grow: 1;
+	padding: 1rem;
+}

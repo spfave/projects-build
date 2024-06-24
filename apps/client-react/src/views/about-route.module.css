@@ -1,0 +1,22 @@
+.about {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	max-width: 90ch;
+	margin: auto;
+
+	div {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+
+		p {
+			line-height: 1.6rem;
+		}
+
+		a {
+			font-style: italic;
+			color: hsl(214, 67%, 48%);
+		}
+	}
+}

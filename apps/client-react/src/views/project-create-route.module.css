@@ -1,0 +1,59 @@
+.projectCreate {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		label {
+			display: block;
+		}
+
+		input[type="text"],
+		input[type="number"],
+		input[type="date"],
+		legend,
+		textarea,
+		select {
+			width: 100%;
+		}
+
+		textarea {
+			min-height: 3.5rem;
+			max-height: 10.5rem;
+		}
+
+		fieldset {
+			> div {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+
+				> span {
+					display: flex;
+					gap: 0.5rem;
+				}
+			}
+		}
+	}
+}
+
+.flexFormGroup {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+
+	> div {
+		min-width: 25ch;
+		flex: 1;
+	}
+}
+
+.formActions {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+}

@@ -1,21 +1,27 @@
 {
-  "name": "@sebpfdev/root",
-  "version": "0.0.0",
-  "type": "module",
-  "description": "",
-  "keywords": [],
-  "author": "Sebastian",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/spfave/projects-build"
-  },
-  "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=8.15.2"
-  },
-  "scripts": {
-    "clean:deps": "find ./ -name node_modules -type d -exec rm -rf {} +",
-    "start": "pnpm -r run start"
-  }
+	"name": "@projectsbuild/root",
+	"version": "0.0.0",
+	"type": "module",
+	"description": "",
+	"keywords": [],
+	"author": "Sebastian",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/spfave/projects-build"
+	},
+	"engines": {
+		"node": ">=20.0.0",
+		"pnpm": ">=8.15.2"
+	},
+	"scripts": {
+		"start": "pnpm -r run start",
+		"format": "pnpm -r run format",
+		"lint": "pnpm -r run lint",
+		"typeCheck": "pnpm -r run typeCheck",
+		"clean:deps": "find ./ -name node_modules -type d -exec rm -rf {} +"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.7.1"
+	}
 }

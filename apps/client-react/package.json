@@ -1,0 +1,28 @@
+{
+	"name": "@projectsbuild/client-react",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "pnpm run dev:local",
+		"dev:local": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"typeCheck": "tsc"
+	},
+	"dependencies": {
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-router-dom": "^6.23.1"
+	},
+	"devDependencies": {
+		"@projectsbuild/config-typescript": "workspace:*",
+		"@projectsbuild/types": "workspace:*",
+		"@types/node": "^20.12.12",
+		"@types/react": "^18.3.2",
+		"@types/react-dom": "^18.3.0",
+		"@vitejs/plugin-react": "^4.2.1",
+		"typescript": "^5.4.5",
+		"vite": "^5.2.11"
+	}
+}

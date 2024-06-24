@@ -1,0 +1,37 @@
+import { Link, Outlet } from "react-router-dom";
+
+import githubIcon from "~/assets/github.svg";
+import infoIcon from "~/assets/heroicons-information-circle.svg";
+import logoIcon from "~/assets/reshot-icon-planning.svg";
+import styles from "./root.module.css";
+
+export const repoUrl = "https://github.com/spfave/projects-build";
+
+export default function Root() {
+	return (
+		<>
+			<header className={styles.header}>
+				<div>
+					<img height={48} src={logoIcon} alt="Project.build logo" />
+					<Link to="projects">
+						<h1>
+							<span>projects</span>
+							<span>.build</span>
+						</h1>
+					</Link>
+				</div>
+				<div>
+					<Link to="about" title="about">
+						<img height={24} src={infoIcon} alt="about icon" />
+					</Link>
+					<Link to={repoUrl} target="_blank" title="source code">
+						<img height={24} src={githubIcon} alt="github icon" />
+					</Link>
+				</div>
+			</header>
+			<main className={styles.main}>
+				<Outlet />
+			</main>
+		</>
+	);
+}

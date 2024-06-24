@@ -1,0 +1,17 @@
+.project {
+	display: flex;
+	flex-direction: column;
+	gap: 4rem;
+}
+
+.projectContent {
+	> p:nth-child(even) {
+		margin-top: 1rem;
+	}
+}
+
+.projectActions {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+}
