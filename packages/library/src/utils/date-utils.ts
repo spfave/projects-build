@@ -1,5 +1,3 @@
-export type DateFormat = keyof typeof dateFormatter;
-
 /**
  * Date formatting methods.
  *
@@ -31,6 +29,7 @@ export const dateFormatter = {
 		return `${dateYear}-${dateMonth}-${dateDate}`;
 	},
 } as const;
+export type DateFormat = keyof typeof dateFormatter;
 
 export function ymdParse(ymd: string) {
 	const [year, month, day] = ymd.split("-").map(Number) as [number, number, number];

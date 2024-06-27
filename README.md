@@ -18,7 +18,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 - The `apps` directory contains the client, api, server, and fullstack app implementations (e.g. React, Remix, etc.).
 
-- The `packages` directory mostly contains logic that is shared across apps. It is primarily split between the `library` and `library-projectsbuilds` packages. The `library` package contains general code that is not application specific, and the `libray-buildsproject` package contains shareable code that is application context specific. 
+- The `packages` directory mostly contains logic that is shared across apps. It is primarily split between the `library` and `shared` packages. The `library` package contains general code that is not application specific, and the `shared` package contains shareable code that is application context specific. 
 
 - The `configs` directory contains shared base configurations for tools or dependencies (e.g. eslint, typescript, etc).
 

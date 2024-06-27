@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
-import type { Project } from "@projectsbuild/types";
+import type { Project } from "@projectsbuild/shared/types";
 import { ProjectsList } from "~/feature-projects/projects-nav-list";
 
-import plusIcon from "~/assets/heroicons-plus.svg";
+import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
 
 export async function getProjects() {
@@ -17,7 +17,6 @@ export async function getProjects() {
 }
 
 type ProjectsContext = { fetchProjects: () => void };
-
 export function useProjectsContext() {
 	return useOutletContext<ProjectsContext>();
 }
@@ -45,7 +44,13 @@ export default function ProjectsRoute() {
 				</div>
 				<hr />
 				<h2>Projects</h2>
-				{projects == null ? <div>loading...</div> : <ProjectsList projects={projects} />}
+				{projects == null ? (
+					<div>
+						<span>loading...</span>
+					</div>
+				) : (
+					<ProjectsList projects={projects} />
+				)}
 			</div>
 			<div className={styles.projectsOutlet}>
 				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
