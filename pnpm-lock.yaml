@@ -27,6 +27,9 @@ importers:
       '@projectsbuild/config-typescript':
         specifier: workspace:*
         version: link:../../configs/typescript
+      '@projectsbuild/library':
+        specifier: workspace:*
+        version: link:../../packages/library
       '@projectsbuild/shared':
         specifier: workspace:*
         version: link:../../packages/shared
