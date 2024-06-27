@@ -3,7 +3,7 @@
 	"extends": "./tsconfig.base.json",
 	"display": "Shared",
 	"compilerOptions": {
-		"lib": ["ESNext"],
+		"lib": ["ESNext", "DOM"],
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"isolatedModules": true,
