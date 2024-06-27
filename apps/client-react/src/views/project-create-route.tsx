@@ -2,7 +2,12 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { ymdToday } from "@projectsbuild/library/utils";
-import type { Project, ProjectInput, ProjectStatus } from "@projectsbuild/shared/types";
+import type {
+	Project,
+	ProjectForm,
+	ProjectInput,
+	ProjectStatus,
+} from "@projectsbuild/shared/types";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
@@ -17,13 +22,6 @@ export async function createProject(project: ProjectInput) {
 	return newProject;
 }
 
-// Create ProjectForm type representation of Project type: convert non-string fields to string
-// Ref: https://www.totaltypescript.com/concepts/mapped-type, https://www.totaltypescript.com/immediately-indexed-mapped-type
-export type ProjectForm = {
-	[P in Project as P["status"]]: {
-		[Key in keyof P]: P[Key] extends string ? P[Key] : string;
-	};
-}[ProjectStatus];
 export function valueIfTruthy<T>(input: T) {
 	return input ? input : undefined;
 }

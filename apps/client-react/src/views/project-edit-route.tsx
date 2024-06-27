@@ -2,9 +2,9 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ymdToday } from "@projectsbuild/library/utils";
-import type { Project, ProjectStatus } from "@projectsbuild/shared/types";
+import type { Project, ProjectForm, ProjectStatus } from "@projectsbuild/shared/types";
 import { useRerender } from "~/hooks/useRerender";
-import { type ProjectForm, transformProject } from "./project-create-route";
+import { transformProject } from "./project-create-route";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
 
