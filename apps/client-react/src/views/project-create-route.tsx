@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ymdToday } from "@projectsbuild/library/utils";
+import { valueIfTruthy, ymdToday } from "@projectsbuild/library/utils";
 import type {
 	Project,
 	ProjectForm,
@@ -22,9 +22,6 @@ export async function createProject(project: ProjectInput) {
 	return newProject;
 }
 
-export function valueIfTruthy<T>(input: T) {
-	return input ? input : undefined;
-}
 export function transformProject(
 	input: ProjectForm,
 	action: "create" | "update" = "create"
