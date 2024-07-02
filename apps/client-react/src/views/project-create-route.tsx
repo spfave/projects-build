@@ -9,7 +9,7 @@ import type {
 	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/types";
-import { useIsHydrated } from "~/hooks/useIsHydrated";
+import { useIsHydrated } from "~/hooks/use-is-hydrated";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
