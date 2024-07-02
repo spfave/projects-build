@@ -9,6 +9,7 @@ import type {
 	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/types";
+import { useIsHydrated } from "~/hooks/useIsHydrated";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
@@ -88,7 +89,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		typeof status !== "string" ||
 		!["planning", "building", "complete"].includes(status)
 	) {
-		errors.fieldErrors.status.push("Invalid status");
+		errors.fieldErrors.status.push("Invalid status option");
 	}
 
 	if (status === "complete") {
@@ -157,6 +158,7 @@ export default function ProjectCreateRoute() {
 	const { fetchProjects } = useProjectsContext();
 
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
+	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -168,6 +170,8 @@ export default function ProjectCreateRoute() {
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries());
 		const validation = validateProject(formObj);
+		if (validation?.status === "error") return setProjectErrors(validation.errors);
+		if (projectErrors) setProjectErrors(null);
 
 		const projectPayload = transformProject(formObj as ProjectForm);
 		const project = await createProject(projectPayload);
@@ -176,6 +180,28 @@ export default function ProjectCreateRoute() {
 		navigate(`/projects/${project.id}`);
 	}
 
+	const isHydrated = useIsHydrated();
+	const formErrors = projectErrors?.formErrors;
+	const fieldErrors = projectErrors?.fieldErrors;
+	const formHasErrors = Boolean(formErrors?.length);
+	const formErrorId = formHasErrors ? "error-form" : undefined;
+	const nameHasErrors = Boolean(fieldErrors?.name.length);
+	const nameErrorId = nameHasErrors ? "error-name" : undefined;
+	const linkHasErrors = Boolean(fieldErrors?.link.length);
+	const linkErrorId = linkHasErrors ? "error-link" : undefined;
+	const descriptionHasErrors = Boolean(fieldErrors?.description.length);
+	const descriptionErrorId = descriptionHasErrors ? "error-description" : undefined;
+	const notesHasErrors = Boolean(fieldErrors?.notes.length);
+	const notesErrorId = notesHasErrors ? "error-notes" : undefined;
+	const statusHasErrors = Boolean(fieldErrors?.status.length);
+	const statusErrorId = statusHasErrors ? "error-status" : undefined;
+	const dateCompletedHasErrors = Boolean(fieldErrors?.dateCompleted.length);
+	const dateCompletedErrorId = dateCompletedHasErrors ? "error-dateCompleted" : undefined;
+	const ratingHasErrors = Boolean(fieldErrors?.rating.length);
+	const ratingErrorId = ratingHasErrors ? "error-rating" : undefined;
+	const recommendHasErrors = Boolean(fieldErrors?.recommend.length);
+	const recommendErrorId = recommendHasErrors ? "error-recommend" : undefined;
+
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		setProjectStatus(undefined);
 	}
@@ -183,14 +209,25 @@ export default function ProjectCreateRoute() {
 	return (
 		<div className={styles.projectCreate}>
 			<h2>New Project</h2>
-			<form method="POST" onSubmit={handleCreateProject}>
+			<form method="POST" onSubmit={handleCreateProject} noValidate={isHydrated}>
 				{/* <div>
 					<input id="id" hidden type="text" name="id" />
 				</div> */}
 				<div className={styles.flexFormGroup}>
 					<div>
 						<label htmlFor="name">Name</label>
-						<input id="name" type="text" name="name" required minLength={2} />
+						<input
+							id="name"
+							type="text"
+							name="name"
+							required
+							minLength={2}
+							aria-invalid={nameHasErrors || undefined}
+							aria-describedby={nameErrorId}
+						/>
+						<div>
+							<ErrorList id={nameErrorId} errors={fieldErrors?.name} />
+						</div>
 					</div>
 					<div>
 						<label htmlFor="link">Link</label>
@@ -214,6 +251,8 @@ export default function ProjectCreateRoute() {
 							required
 							value={projectStatus}
 							onChange={handleSelectProjectStatus}
+							aria-invalid={statusHasErrors || undefined}
+							aria-describedby={statusErrorId}
 						>
 							<option hidden value="">
 								Select Status
@@ -222,6 +261,9 @@ export default function ProjectCreateRoute() {
 							<option value="building">Building</option>
 							<option value="complete">Complete</option>
 						</select>
+						<div>
+							<ErrorList id={statusErrorId} errors={fieldErrors?.status} />
+						</div>
 					</div>
 					{projectStatus === "complete" && (
 						<div>
@@ -286,5 +328,17 @@ export default function ProjectCreateRoute() {
 				</div>
 			</form>
 		</div>
+	);
+}
+
+export function ErrorList(props: { id?: string; errors?: string[] | null }) {
+	if (!props.errors) return null;
+
+	return (
+		<ul id={props.id} className={styles.errorList}>
+			{props.errors.map((error) => (
+				<li key={error}>{error}</li>
+			))}
+		</ul>
 	);
 }
