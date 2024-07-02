@@ -1,3 +1,5 @@
+export type Maybe<T> = T | undefined | null;
+
 // biome-ignore lint/complexity/noBannedTypes: create non-nullish type alias
 export type NonNullish = {};
 
