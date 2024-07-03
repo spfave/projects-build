@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-import type { Project } from "@projectsbuild/types";
+import type { Project } from "@projectsbuild/shared/types";
 
 import styles from "./projects-nav-list.module.css";
 
