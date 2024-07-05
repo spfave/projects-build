@@ -69,6 +69,11 @@
 	gap: 2rem;
 }
 
+.containerErrorList {
+	padding: 0.25rem 0.25rem;
+	font-size: 0.9rem;
+}
+
 .errorList {
 	margin: 0;
 	padding: 0;

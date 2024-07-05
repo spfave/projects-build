@@ -9,6 +9,7 @@ import type {
 	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/types";
+import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useIsHydrated } from "~/hooks/use-is-hydrated";
 import { useProjectsContext } from "./projects-route";
 
@@ -157,6 +158,7 @@ export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
 	const { fetchProjects } = useProjectsContext();
 
+	const refForm = React.useRef<HTMLFormElement>(null);
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
 
@@ -180,6 +182,13 @@ export default function ProjectCreateRoute() {
 		navigate(`/projects/${project.id}`);
 	}
 
+	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		setProjectStatus(undefined);
+		setProjectErrors(null);
+	}
+
+	// ?? Needs additional condition on hasErrors
+	useFocusInvalid(refForm.current, Boolean(projectErrors));
 	const isHydrated = useIsHydrated();
 	const formErrors = projectErrors?.formErrors;
 	const fieldErrors = projectErrors?.fieldErrors;
@@ -202,14 +211,17 @@ export default function ProjectCreateRoute() {
 	const recommendHasErrors = Boolean(fieldErrors?.recommend.length);
 	const recommendErrorId = recommendHasErrors ? "error-recommend" : undefined;
 
-	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-		setProjectStatus(undefined);
-	}
-
 	return (
 		<div className={styles.projectCreate}>
 			<h2>New Project</h2>
-			<form method="POST" onSubmit={handleCreateProject} noValidate={isHydrated}>
+			<form
+				ref={refForm}
+				method="POST"
+				onSubmit={handleCreateProject}
+				noValidate={isHydrated}
+				aria-invalid={formHasErrors || undefined}
+				aria-describedby={formErrorId}
+			>
 				{/* <div>
 					<input id="id" hidden type="text" name="id" />
 				</div> */}
@@ -314,6 +326,9 @@ export default function ProjectCreateRoute() {
 						</div>
 					</div>
 				)}
+				<div className={styles.containerErrorList}>
+					<ErrorList id={formErrorId} errors={formErrors} />
+				</div>
 
 				<div className={styles.formActions}>
 					<button className="action primary" type="submit">
