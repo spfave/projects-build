@@ -221,6 +221,7 @@ export default function ProjectCreateRoute() {
 				noValidate={isHydrated}
 				aria-invalid={formHasErrors || undefined}
 				aria-describedby={formErrorId}
+				tabIndex={-1}
 			>
 				{/* <div>
 					<input id="id" hidden type="text" name="id" />
