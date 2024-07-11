@@ -109,7 +109,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		else if (
 			// biome-ignore format: maintain condition checks on single line
 			(typeof rating === "string" && (!isStringParsableInt(rating) || +rating < 1 || +rating > 5)) ||
-			(typeof rating === "number" && (!Number.isInteger(rating) || rating < 0 || rating > 5))
+			(typeof rating === "number" && (!Number.isInteger(rating) || rating < 1 || rating > 5))
 		) {
 			errors.fieldErrors.rating.push("Rating must be a whole number 1 through 5");
 		}
@@ -129,7 +129,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		Object.values(errors.fieldErrors).some((fieldErrors) => fieldErrors.length);
 
 	if (hasErrors) return { status: "error", errors } as const;
-	return undefined;
+	return { status: "valid" } as const;
 }
 
 export function transformProject(
@@ -172,7 +172,7 @@ export default function ProjectCreateRoute() {
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries());
 		const validation = validateProject(formObj);
-		if (validation?.status === "error") return setProjectErrors(validation.errors);
+		if (validation.status === "error") return setProjectErrors(validation.errors);
 		if (projectErrors) setProjectErrors(null);
 
 		const projectPayload = transformProject(formObj as ProjectForm);
