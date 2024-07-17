@@ -1,6 +1,5 @@
 .projectsNavList {
-	display: flex;
-	flex-direction: column;
+	display: grid;
 	gap: 0.5rem;
 
 	a {
@@ -8,11 +7,13 @@
 		border-radius: 0.3rem;
 
 		span {
+			padding: initial;
 			--max-lines: 2;
 
 			display: -webkit-box;
 			-webkit-box-orient: vertical;
 			-webkit-line-clamp: var(--max-lines);
+			line-clamp: var(--max-lines);
 			overflow: hidden;
 		}
 	}

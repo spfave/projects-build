@@ -1,11 +1,9 @@
 .projectCreate {
-	display: flex;
-	flex-direction: column;
+	display: grid;
 	gap: 1rem;
 
 	form {
-		display: flex;
-		flex-direction: column;
+		display: grid;
 		gap: 0.5rem;
 
 		label {
@@ -53,7 +51,7 @@
 	}
 }
 
-.flexFormGroup {
+/* .flexFormGroup {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem;
@@ -62,6 +60,27 @@
 		min-width: 25ch;
 		flex: 1;
 	}
+} */
+.flexFormGroup {
+	/* input: css auto-fill grid with max number of columns  */
+	/* Ref: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns */
+	--grid-col-max-num: 2;
+	--grid-col-gap: 1rem;
+	--grid-col-min-width: 25ch;
+
+	/* calc values */
+	--gap-count: calc(var(--grid-col-max-num) - 1);
+	--total-gap-width: calc(var(--gap-count) * var(--grid-col-gap));
+	--grid-item-max-width: calc((100% - var(--total-gap-width)) / var(--grid-col-max-num));
+
+	/* grid */
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fill,
+		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
+	);
+	column-gap: var(--grid-col-gap);
+	row-gap: 0.5rem;
 }
 
 .formActions {
