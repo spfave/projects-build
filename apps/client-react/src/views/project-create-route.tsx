@@ -5,6 +5,7 @@ import { isValidYMD, isYMD, valueIfTruthy, ymdToday } from "@projectsbuild/libra
 import { isStringParsableInt } from "@projectsbuild/library/validation";
 import type {
 	Project,
+	ProjectErrors,
 	ProjectFields,
 	ProjectInput,
 	ProjectStatus,
@@ -25,24 +26,10 @@ export async function createProject(project: ProjectInput) {
 	return newProject;
 }
 
-export type ProjectErrors = {
-	formErrors: string[];
-	fieldErrors: {
-		id: string[];
-		name: string[];
-		link: string[];
-		description: string[];
-		notes: string[];
-		status: string[];
-		dateCompleted: string[];
-		rating: string[];
-		recommend: string[];
-	};
-};
 export function validateProject(input: Record<string, FormDataEntryValue>) {
 	const errors: ProjectErrors = {
-		formErrors: [],
-		fieldErrors: {
+		form: [],
+		fields: {
 			id: [],
 			name: [],
 			link: [],
@@ -57,7 +44,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 
 	// validate input is an object
 	if (!input || Array.isArray(input) || typeof input !== "object") {
-		errors.formErrors.push("Invalid project input");
+		errors.form.push("Invalid project input");
 		return { status: "error", errors } as const;
 	}
 
@@ -66,67 +53,64 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 
 	// validate fields
 	// name
-	if (name == null) errors.fieldErrors.name.push("Name must be provided");
-	else if (typeof name !== "string")
-		errors.fieldErrors.name.push("Name must be a string");
+	if (name == null) errors.fields.name.push("Name must be provided");
+	else if (typeof name !== "string") errors.fields.name.push("Name must be a string");
 	else if (name.trim().length < 2)
-		errors.fieldErrors.name.push("Name must be at least 2 characters");
+		errors.fields.name.push("Name must be at least 2 characters");
 
 	// link
-	if (link && typeof link !== "string")
-		errors.fieldErrors.link.push("Link must be a string");
+	if (link && typeof link !== "string") errors.fields.link.push("Link must be a string");
 
 	// description
 	if (description && typeof description !== "string")
-		errors.fieldErrors.description.push("Description must be a string");
+		errors.fields.description.push("Description must be a string");
 
 	// notes
 	if (notes && typeof notes !== "string")
-		errors.fieldErrors.notes.push("Notes must be a string");
+		errors.fields.notes.push("Notes must be a string");
 
 	// status
-	if (status == null) errors.fieldErrors.status.push("Status must be provided");
+	if (status == null) errors.fields.status.push("Status must be provided");
 	else if (
 		typeof status !== "string" ||
 		!["planning", "building", "complete"].includes(status)
 	) {
-		errors.fieldErrors.status.push("Invalid status option");
+		errors.fields.status.push("Invalid status option");
 	}
 
 	if (status === "complete") {
 		// dateCompleted
 		if (dateCompleted == null)
-			errors.fieldErrors.dateCompleted.push("Completion date must be provided");
+			errors.fields.dateCompleted.push("Completion date must be provided");
 		else if (typeof dateCompleted !== "string")
-			errors.fieldErrors.dateCompleted.push("Invalid date type");
+			errors.fields.dateCompleted.push("Invalid date type");
 		else if (!isYMD(dateCompleted))
-			errors.fieldErrors.dateCompleted.push("Invalid format. Use YYYY-MM-DD");
+			errors.fields.dateCompleted.push("Invalid format. Use YYYY-MM-DD");
 		else if (!isValidYMD(dateCompleted) || dateCompleted > ymdToday())
-			errors.fieldErrors.dateCompleted.push("Invalid date");
+			errors.fields.dateCompleted.push("Invalid date");
 
 		// rating
-		if (rating == null) errors.fieldErrors.rating.push("Rating must be provided");
+		if (rating == null) errors.fields.rating.push("Rating must be provided");
 		else if (
 			// biome-ignore format: maintain condition checks on single line
 			(typeof rating === "string" && (!isStringParsableInt(rating) || +rating < 1 || +rating > 5)) ||
 			(typeof rating === "number" && (!Number.isInteger(rating) || rating < 1 || rating > 5))
 		) {
-			errors.fieldErrors.rating.push("Rating must be a whole number 1 through 5");
+			errors.fields.rating.push("Rating must be a whole number 1 through 5");
 		}
 
 		// recommend
 		if (recommend == null)
-			errors.fieldErrors.recommend.push("Recommendation must be provided");
+			errors.fields.recommend.push("Recommendation must be provided");
 		else if (
 			!["boolean", "string"].includes(typeof recommend) ||
 			(typeof recommend === "string" && !["true", "false"].includes(recommend))
 		)
-			errors.fieldErrors.recommend.push("Invalid recommendation");
+			errors.fields.recommend.push("Invalid recommendation");
 	}
 
 	const hasErrors =
-		errors.formErrors.length ||
-		Object.values(errors.fieldErrors).some((fieldErrors) => fieldErrors.length);
+		errors.form.length || Object.values(errors.fields).some((fields) => fields.length);
 
 	if (hasErrors) return { status: "error", errors } as const;
 	return { status: "valid" } as const;
@@ -190,8 +174,8 @@ export default function ProjectCreateRoute() {
 	// ?? Needs additional condition on hasErrors
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 	const isHydrated = useIsHydrated();
-	const formErrors = projectErrors?.formErrors;
-	const fieldErrors = projectErrors?.fieldErrors;
+	const formErrors = projectErrors?.form;
+	const fieldErrors = projectErrors?.fields;
 	const formHasErrors = Boolean(formErrors?.length);
 	const formErrorId = formHasErrors ? "error-form" : undefined;
 	const nameHasErrors = Boolean(fieldErrors?.name.length);
