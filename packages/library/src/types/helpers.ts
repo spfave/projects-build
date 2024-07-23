@@ -12,8 +12,14 @@ export type Brand<T, TBrand> = T & { [brand]: TBrand };
  * Construct a type with the properties of TObj, converting non-string property values
  * to string as provided by a HTML form field input types.
  */
-export type FormFields<TObj extends RecordStr> = {
-	[Key in keyof TObj]: TObj[Key] extends string ? TObj[Key] : string;
+export type FormFields<TForm extends RecordStr> = {
+	[Field in keyof TForm]: TForm[Field] extends string ? TForm[Field] : string;
+};
+
+/** Construct a type with form and form field error lists */
+export type FormErrors<TForm extends RecordStr> = {
+	form: string[];
+	fields: { [Field in keyof TForm]-?: string[] };
 };
 
 export type Maybe<T> = T | undefined | null;

@@ -1,4 +1,4 @@
-import type { FormFields } from "@projectsbuild/library/types";
+import type { FormErrors, FormFields } from "@projectsbuild/library/types";
 
 type ProjectBase = {
 	id: string;
@@ -20,3 +20,4 @@ export type ProjectStatus = ProjectTypeBase["status"];
 export type ProjectFields = {
 	[P in Project as P["status"]]: FormFields<P>;
 }[ProjectStatus];
+export type ProjectErrors = FormErrors<Extract<ProjectFields, { status: "complete" }>>;
