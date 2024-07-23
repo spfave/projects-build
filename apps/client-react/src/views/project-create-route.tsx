@@ -5,7 +5,7 @@ import { isValidYMD, isYMD, valueIfTruthy, ymdToday } from "@projectsbuild/libra
 import { isStringParsableInt } from "@projectsbuild/library/validation";
 import type {
 	Project,
-	ProjectForm,
+	ProjectFields,
 	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/types";
@@ -133,7 +133,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 }
 
 export function transformProject(
-	input: ProjectForm,
+	input: ProjectFields,
 	action: "create" | "update" = "create"
 ) {
 	const project = {} as Project;
@@ -175,7 +175,7 @@ export default function ProjectCreateRoute() {
 		if (validation.status === "error") return setProjectErrors(validation.errors);
 		if (projectErrors) setProjectErrors(null);
 
-		const projectPayload = transformProject(formObj as ProjectForm);
+		const projectPayload = transformProject(formObj as ProjectFields);
 		const project = await createProject(projectPayload);
 
 		fetchProjects();

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ymdToday } from "@projectsbuild/library/utils";
-import type { Project, ProjectForm, ProjectStatus } from "@projectsbuild/shared/types";
+import type { Project, ProjectFields, ProjectStatus } from "@projectsbuild/shared/types";
 import { useRerender } from "~/hooks/use-rerender";
 import { transformProject } from "./project-create-route";
 import { getProjectById } from "./project-route";
@@ -53,15 +53,15 @@ export default function ProjectEditRoute() {
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries());
 
-		const projectPayload = transformProject(formObj as ProjectForm, "update");
+		const projectPayload = transformProject(formObj as ProjectFields, "update");
 		const project = await updateProject(projectPayload);
 
 		fetchProjects();
 		navigate(`/projects/${project.id}`);
 	}
 
-	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-		_evt.preventDefault();
+	function handleReset(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		evt.preventDefault();
 		refForm.current?.reset();
 		setProjectStatus(project?.status);
 		rerender(); // force rerender in case where projectStatus hasn't changed
