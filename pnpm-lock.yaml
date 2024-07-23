@@ -76,6 +76,9 @@ importers:
       '@projectsbuild/config-typescript':
         specifier: workspace:*
         version: link:../../configs/typescript
+      '@projectsbuild/library':
+        specifier: workspace:*
+        version: link:../library
       typescript:
         specifier: ^5.4.5
         version: 5.4.5

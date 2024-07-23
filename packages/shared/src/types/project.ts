@@ -1,3 +1,5 @@
+import type { FormFields } from "@projectsbuild/library/types";
+
 type ProjectBase = {
 	id: string;
 	name: string;
@@ -11,14 +13,10 @@ type ProjectTypeBase =
 	| { status: "building" }
 	| { status: "complete"; dateCompleted: string; rating: number; recommend: boolean };
 
-export type ProjectStatus = ProjectTypeBase["status"];
 export type Project = ProjectBase & ProjectTypeBase;
 export type ProjectInput = Omit<ProjectBase, "id"> & ProjectTypeBase;
+export type ProjectStatus = ProjectTypeBase["status"];
 
-// Form type representation of Project type: convert non-string fields to string
-// Ref: https://www.totaltypescript.com/concepts/mapped-type, https://www.totaltypescript.com/immediately-indexed-mapped-type
-export type ProjectForm = {
-	[P in Project as P["status"]]: {
-		[Key in keyof P]: P[Key] extends string ? P[Key] : string;
-	};
+export type ProjectFields = {
+	[P in Project as P["status"]]: FormFields<P>;
 }[ProjectStatus];

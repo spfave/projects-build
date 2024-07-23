@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
+		"@projectsbuild/library": "workspace:*",
 		"typescript": "^5.4.5"
 	}
 }
