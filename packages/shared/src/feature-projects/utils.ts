@@ -1,6 +1,6 @@
 import { isValidYMD, isYMD, valueIfTruthy, ymdToday } from "@projectsbuild/library/utils";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
-import type { Project, ProjectErrors, ProjectFields } from "../types";
+import type { Project, ProjectErrors, ProjectFields } from "./types";
 
 export function validateProject(input: Record<string, FormDataEntryValue>) {
 	const errors: ProjectErrors = {

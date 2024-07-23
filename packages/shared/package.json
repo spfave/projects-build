@@ -6,8 +6,7 @@
 	"type": "module",
 	"exports": {
 		"./assets/*.svg": "./assets/*.svg",
-		"./projects": "./src/feature-projects/index.ts",
-		"./types": "./src/types/index.js"
+		"./projects": "./src/feature-projects/index.ts"
 	},
 	"scripts": {
 		"typecheck": "tsc"
