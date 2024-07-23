@@ -9,7 +9,7 @@ import type {
 	ProjectFields,
 	ProjectInput,
 	ProjectStatus,
-} from "@projectsbuild/shared/types";
+} from "@projectsbuild/shared/projects";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useIsHydrated } from "~/hooks/use-is-hydrated";
 import { useProjectsContext } from "./projects-route";
@@ -219,7 +219,8 @@ export default function ProjectCreateRoute() {
 	);
 }
 
-export function ErrorList(props: { id?: string; errors?: string[] | null }) {
+type ErrorListProps = { id?: string; errors?: string[] };
+export function ErrorList(props: ErrorListProps) {
 	if (!props.errors) return null;
 
 	return (
