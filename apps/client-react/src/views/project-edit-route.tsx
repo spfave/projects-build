@@ -2,9 +2,9 @@ import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ymdToday } from "@projectsbuild/library/utils";
+import { transformProject } from "@projectsbuild/shared/projects";
 import type { Project, ProjectFields, ProjectStatus } from "@projectsbuild/shared/types";
 import { useRerender } from "~/hooks/use-rerender";
-import { transformProject } from "./project-create-route";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
 
@@ -31,7 +31,7 @@ export default function ProjectEditRoute() {
 
 	const refForm = React.useRef<HTMLFormElement>(null);
 	const [project, setProject] = React.useState<Project | null>(null);
-	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus | undefined>();
+	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 
 	React.useEffect(() => {
 		if (!params.id) return;
