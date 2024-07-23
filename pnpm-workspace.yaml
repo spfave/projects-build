@@ -1,4 +1,9 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - 'configs/*'
+  - apps/*
+  - packages/*
+  - configs/*
+
+catalog:
+  "@types/node": ^20.14.12
+  typescript: ^5.5.4
+  vite: ^5.3.4
