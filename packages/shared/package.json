@@ -8,6 +8,7 @@
 		"./assets/*.svg": "./assets/*.svg",
 		"./projects": "./src/feature-projects/index.ts"
 	},
+	"imports": {},
 	"scripts": {
 		"typecheck": "tsc"
 	},
