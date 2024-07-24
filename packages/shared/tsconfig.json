@@ -1,6 +1,12 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "@projectsbuild/config-typescript/shared.json",
-	"compilerOptions": {},
-	"include": ["assets/**/*", "src/**/*"]
+	"compilerOptions": {
+		// "baseUrl": "./src",
+		// "paths": {
+		// 	"~shared/*": ["./*"],
+		// 	"~lib/*": ["../../library/src"]
+		// }
+	},
+	"include": ["assets", "src"]
 }

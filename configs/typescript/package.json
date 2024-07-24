@@ -1,6 +1,6 @@
 {
 	"name": "@projectsbuild/config-typescript",
 	"version": "0.0.0",
-	"description": "",
-	"private": true
+	"private": true,
+	"description": ""
 }
