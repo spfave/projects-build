@@ -18,7 +18,7 @@
 		"start": "pnpm -r run start",
 		"format": "pnpm -r run format",
 		"lint": "pnpm -r run lint",
-		"typeCheck": "pnpm -r run typeCheck",
+		"typecheck": "pnpm -r run typecheck",
 		"clean:deps": "find ./ -name node_modules -type d -exec rm -rf {} +"
 	},
 	"devDependencies": {
