@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
-import type { Project } from "@projectsbuild/shared/types";
+import type { Project } from "@projectsbuild/shared/projects";
 import { ProjectsList } from "~/feature-projects/projects-nav-list";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
@@ -37,7 +37,7 @@ export default function ProjectsRoute() {
 		<div className={styles.projects}>
 			<div className={styles.projectsSidebar}>
 				<div>
-					<Link className="action success" to="create" title="new project">
+					<Link className="action success" to="create">
 						<p>New Project</p>
 						<img height={20} src={plusIcon} alt="" />
 					</Link>
