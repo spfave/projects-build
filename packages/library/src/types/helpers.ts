@@ -16,6 +16,21 @@ export type FormFields<TForm extends RecordStr> = {
 	[Field in keyof TForm]: TForm[Field] extends string ? TForm[Field] : string;
 };
 
+type HTMLFormFieldElements = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+// Ref: https://www.epicreact.dev/how-to-type-a-react-form-on-submit-handler
+/**
+ * Construct a HTMLFormElement type with the properties of TForm matched to HTML form
+ * field elements.
+ */
+export type FormElement<
+	TForm extends RecordStr,
+	TFormElements extends Record<keyof TForm, HTMLFormFieldElements>,
+> = HTMLFormElement & {
+	readonly elements: HTMLFormControlsCollection & {
+		[Field in keyof TForm]-?: TFormElements[Field];
+	};
+};
+
 /** Construct a type for TForm with form and form field element error lists. */
 export type FormErrors<TForm extends RecordStr> = {
 	form: string[];
