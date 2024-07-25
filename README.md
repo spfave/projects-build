@@ -44,10 +44,9 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 &nbsp;
 ## **Packages**
 - [API Json Server](./packages/api-json-server)
-<!-- - [library](./packages/library) -->
-<!-- - [library-projectsbuild](./packages/library-projectsbuild) -->
+- [Library](./packages/library)
+- [Shared](./packages/shared)
 <!-- - [DB Schema](./packages/db-schema) -->
-<!-- - [TS Types](./packages/types) -->
 
 &nbsp;
 ## **Configs**
@@ -65,3 +64,4 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 &nbsp;
 ## **Notes**
 - [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
+- [TS Paths in a Monorepo](https://github.com/vercel/turbo/discussions/620)
