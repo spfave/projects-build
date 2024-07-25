@@ -1,4 +1,9 @@
-import type { FormErrors, FormFields } from "@projectsbuild/library/types";
+import type {
+	FormElement,
+	FormErrors,
+	FormErrorsAttributes,
+	FormFields,
+} from "@projectsbuild/library/types";
 
 type ProjectBase = {
 	id: string;
@@ -20,4 +25,21 @@ export type ProjectStatus = ProjectTypeBase["status"];
 export type ProjectFields = {
 	[P in Project as P["status"]]: FormFields<P>;
 }[ProjectStatus];
+export type ProjectFormElement = FormElement<
+	Extract<Project, { status: "complete" }>,
+	{
+		id: HTMLInputElement;
+		name: HTMLInputElement;
+		link: HTMLInputElement;
+		description: HTMLTextAreaElement;
+		notes: HTMLTextAreaElement;
+		status: HTMLSelectElement;
+		dateCompleted: HTMLInputElement;
+		rating: HTMLInputElement;
+		recommend: HTMLInputElement;
+	}
+>;
 export type ProjectErrors = FormErrors<Extract<ProjectFields, { status: "complete" }>>;
+export type ProjectErrorsAttrs = FormErrorsAttributes<
+	Extract<ProjectFields, { status: "complete" }>
+>;
