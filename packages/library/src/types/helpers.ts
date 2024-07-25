@@ -37,11 +37,11 @@ export type FormErrors<TForm extends RecordStr> = {
 	fields: { [Field in keyof TForm]-?: string[] };
 };
 
-type FormErrorAttrs = { id: string | undefined; hasErrors: true | undefined };
+type FormErrorAttributes = { id: string | undefined; hasErrors: true | undefined };
 /** Construct a type for TForm with form and form field element error list HTML attributes. */
 export type FormErrorsAttributes<TForm extends RecordStr> = {
-	form: FormErrorAttrs;
-	fields: { [Field in keyof TForm]-?: FormErrorAttrs };
+	form: FormErrorAttributes;
+	fields: { [Field in keyof TForm]-?: FormErrorAttributes };
 };
 
 export type Maybe<T> = T | null | undefined;
