@@ -51,7 +51,7 @@
 	}
 }
 
-/* .flexFormGroup {
+.formFlexGroup {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem;
@@ -60,8 +60,8 @@
 		min-width: 25ch;
 		flex: 1;
 	}
-} */
-.flexFormGroup {
+}
+.formColGroup {
 	/* input: css auto-fill grid with max number of columns  */
 	/* Ref: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns */
 	--grid-col-max-num: 2;

@@ -98,7 +98,7 @@ export default function ProjectCreateRoute() {
 				{/* <div>
 					<input id="id" hidden type="text" name="id" />
 				</div> */}
-				<div className={styles.flexFormGroup}>
+				<div className={styles.formFlexGroup}>
 					<div>
 						<label htmlFor="name">Name</label>
 						<input
@@ -127,7 +127,7 @@ export default function ProjectCreateRoute() {
 					<label htmlFor="notes">Notes</label>
 					<textarea id="notes" name="notes" />
 				</div>
-				<div className={styles.flexFormGroup}>
+				<div className={styles.formFlexGroup}>
 					<div>
 						<label htmlFor="status">Status</label>
 						<select
@@ -165,7 +165,7 @@ export default function ProjectCreateRoute() {
 				</div>
 
 				{projectStatus === "complete" && (
-					<div className={styles.flexFormGroup}>
+					<div className={styles.formFlexGroup}>
 						<div>
 							<label htmlFor="rating">Rating</label>
 							<input id="rating" type="number" name="rating" required min={1} max={5} />
