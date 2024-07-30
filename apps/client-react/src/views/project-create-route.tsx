@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ymdToday } from "@projectsbuild/library/utils";
+import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import type {
 	Project,
@@ -62,26 +62,9 @@ export default function ProjectCreateRoute() {
 	// ?? Needs additional condition on hasErrors
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 	const isHydrated = useIsHydrated();
-	const formErrors = projectErrors?.form;
-	const fieldErrors = projectErrors?.fields;
-	const formHasErrors = Boolean(formErrors?.length);
-	const formErrorId = formHasErrors ? "error-form" : undefined;
-	const nameHasErrors = Boolean(fieldErrors?.name.length);
-	const nameErrorId = nameHasErrors ? "error-name" : undefined;
-	const linkHasErrors = Boolean(fieldErrors?.link.length);
-	const linkErrorId = linkHasErrors ? "error-link" : undefined;
-	const descriptionHasErrors = Boolean(fieldErrors?.description.length);
-	const descriptionErrorId = descriptionHasErrors ? "error-description" : undefined;
-	const notesHasErrors = Boolean(fieldErrors?.notes.length);
-	const notesErrorId = notesHasErrors ? "error-notes" : undefined;
-	const statusHasErrors = Boolean(fieldErrors?.status.length);
-	const statusErrorId = statusHasErrors ? "error-status" : undefined;
-	const dateCompletedHasErrors = Boolean(fieldErrors?.dateCompleted.length);
-	const dateCompletedErrorId = dateCompletedHasErrors ? "error-dateCompleted" : undefined;
-	const ratingHasErrors = Boolean(fieldErrors?.rating.length);
-	const ratingErrorId = ratingHasErrors ? "error-rating" : undefined;
-	const recommendHasErrors = Boolean(fieldErrors?.recommend.length);
-	const recommendErrorId = recommendHasErrors ? "error-recommend" : undefined;
+	const { form: errAttrForm, fields: errAttrFields } =
+		formErrorsAttributes(projectErrors) || {};
+	const { form: errForm, fields: errFields } = projectErrors || {};
 
 	return (
 		<div className={styles.projectCreate}>
@@ -91,8 +74,8 @@ export default function ProjectCreateRoute() {
 				method="POST"
 				onSubmit={handleCreateProject}
 				noValidate={isHydrated}
-				aria-invalid={formHasErrors || undefined}
-				aria-describedby={formErrorId}
+				aria-invalid={errAttrForm?.hasErrors}
+				aria-describedby={errAttrForm?.id}
 				tabIndex={-1}
 			>
 				{/* <div>
@@ -107,11 +90,11 @@ export default function ProjectCreateRoute() {
 							name="name"
 							required
 							minLength={2}
-							aria-invalid={nameHasErrors || undefined}
-							aria-describedby={nameErrorId}
+							aria-invalid={errAttrFields?.name.hasErrors}
+							aria-describedby={errAttrFields?.name.id}
 						/>
 						<div>
-							<ErrorList id={nameErrorId} errors={fieldErrors?.name} />
+							<ErrorList id={errAttrFields?.name.id} errors={errFields?.name} />
 						</div>
 					</div>
 					<div>
@@ -136,8 +119,8 @@ export default function ProjectCreateRoute() {
 							required
 							value={projectStatus}
 							onChange={handleSelectProjectStatus}
-							aria-invalid={statusHasErrors || undefined}
-							aria-describedby={statusErrorId}
+							aria-invalid={errAttrFields?.status.hasErrors}
+							aria-describedby={errAttrFields?.status.id}
 						>
 							<option hidden value="">
 								Select Status
@@ -147,7 +130,7 @@ export default function ProjectCreateRoute() {
 							<option value="complete">Complete</option>
 						</select>
 						<div>
-							<ErrorList id={statusErrorId} errors={fieldErrors?.status} />
+							<ErrorList id={errAttrFields?.status.id} errors={errFields?.status} />
 						</div>
 					</div>
 					{projectStatus === "complete" && (
@@ -200,7 +183,7 @@ export default function ProjectCreateRoute() {
 					</div>
 				)}
 				<div className={styles.containerErrorList}>
-					<ErrorList id={formErrorId} errors={formErrors} />
+					<ErrorList id={errAttrFields?.recommend.id} errors={errFields?.recommend} />
 				</div>
 
 				<div className={styles.formActions}>
