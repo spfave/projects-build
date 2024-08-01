@@ -29,7 +29,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 
 	// validate fields
 	// name
-	if (name == null) errors.fields.name.push("Name must be provided");
+	if (!name) errors.fields.name.push("Name must be provided");
 	else if (typeof name !== "string") errors.fields.name.push("Name must be a string");
 	else if (name.trim().length < 2)
 		errors.fields.name.push("Name must be at least 2 characters");
@@ -46,7 +46,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		errors.fields.notes.push("Notes must be a string");
 
 	// status
-	if (status == null) errors.fields.status.push("Status must be provided");
+	if (!status) errors.fields.status.push("Status must be provided");
 	else if (
 		typeof status !== "string" ||
 		!["planning", "building", "complete"].includes(status)
@@ -56,7 +56,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 
 	if (status === "complete") {
 		// dateCompleted
-		if (dateCompleted == null)
+		if (!dateCompleted)
 			errors.fields.dateCompleted.push("Completion date must be provided");
 		else if (typeof dateCompleted !== "string")
 			errors.fields.dateCompleted.push("Invalid date type");
@@ -66,7 +66,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 			errors.fields.dateCompleted.push("Invalid date");
 
 		// rating
-		if (rating == null) errors.fields.rating.push("Rating must be provided");
+		if (!rating) errors.fields.rating.push("Rating must be provided");
 		else if (
 			// biome-ignore format: maintain condition checks on single line
 			(typeof rating === "string" && (!isStringParsableInt(rating) || +rating < 1 || +rating > 5)) ||
@@ -76,8 +76,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		}
 
 		// recommend
-		if (recommend == null)
-			errors.fields.recommend.push("Recommendation must be provided");
+		if (!recommend) errors.fields.recommend.push("Recommendation must be provided");
 		else if (
 			!["boolean", "string"].includes(typeof recommend) ||
 			(typeof recommend === "string" && !["true", "false"].includes(recommend))
