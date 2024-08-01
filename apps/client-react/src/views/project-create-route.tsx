@@ -10,6 +10,7 @@ import type {
 	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/projects";
+import { ErrorList } from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useIsHydrated } from "~/hooks/use-is-hydrated";
 import { useProjectsContext } from "./projects-route";
@@ -183,7 +184,7 @@ export default function ProjectCreateRoute() {
 					</div>
 				)}
 				<div className={styles.containerErrorList}>
-					<ErrorList id={errAttrFields?.recommend.id} errors={errFields?.recommend} />
+					<ErrorList id={errAttrForm?.id} errors={errForm} />
 				</div>
 
 				<div className={styles.formActions}>
@@ -199,18 +200,5 @@ export default function ProjectCreateRoute() {
 				</div>
 			</form>
 		</div>
-	);
-}
-
-type ErrorListProps = { id?: string; errors?: string[] };
-export function ErrorList(props: ErrorListProps) {
-	if (!props.errors) return null;
-
-	return (
-		<ul id={props.id} className={styles.errorList}>
-			{props.errors.map((error) => (
-				<li key={error}>{error}</li>
-			))}
-		</ul>
 	);
 }
