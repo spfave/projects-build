@@ -79,9 +79,6 @@ export default function ProjectCreateRoute() {
 				aria-describedby={errAttrForm?.id}
 				tabIndex={-1}
 			>
-				{/* <div>
-					<input id="id" hidden type="text" name="id" />
-				</div> */}
 				<div className={styles.formFlexGroup}>
 					<div>
 						<label htmlFor="name">Name</label>
@@ -100,16 +97,44 @@ export default function ProjectCreateRoute() {
 					</div>
 					<div>
 						<label htmlFor="link">Link</label>
-						<input id="link" type="text" name="link" />
+						<input
+							id="link"
+							type="text"
+							name="link"
+							aria-invalid={errAttrFields?.link.hasErrors}
+							aria-describedby={errAttrFields?.link.id}
+						/>
+						<div>
+							<ErrorList id={errAttrFields?.link.id} errors={errFields?.link} />
+						</div>
 					</div>
 				</div>
 				<div>
 					<label htmlFor="description">Description</label>
-					<textarea id="description" name="description" />
+					<textarea
+						id="description"
+						name="description"
+						aria-invalid={errAttrFields?.description.hasErrors}
+						aria-describedby={errAttrFields?.description.id}
+					/>
+					<div>
+						<ErrorList
+							id={errAttrFields?.description.id}
+							errors={errFields?.description}
+						/>
+					</div>
 				</div>
 				<div>
 					<label htmlFor="notes">Notes</label>
-					<textarea id="notes" name="notes" />
+					<textarea
+						id="notes"
+						name="notes"
+						aria-invalid={errAttrFields?.notes.hasErrors}
+						aria-describedby={errAttrFields?.notes.id}
+					/>
+					<div>
+						<ErrorList id={errAttrFields?.notes.id} errors={errFields?.notes} />
+					</div>
 				</div>
 				<div className={styles.formFlexGroup}>
 					<div>
@@ -143,7 +168,15 @@ export default function ProjectCreateRoute() {
 								name="dateCompleted"
 								required
 								max={ymdToday()}
+								aria-invalid={errAttrFields?.dateCompleted.hasErrors}
+								aria-describedby={errAttrFields?.dateCompleted.id}
 							/>
+							<div>
+								<ErrorList
+									id={errAttrFields?.dateCompleted.id}
+									errors={errFields?.dateCompleted}
+								/>
+							</div>
 						</div>
 					)}
 				</div>
@@ -152,10 +185,25 @@ export default function ProjectCreateRoute() {
 					<div className={styles.formFlexGroup}>
 						<div>
 							<label htmlFor="rating">Rating</label>
-							<input id="rating" type="number" name="rating" required min={1} max={5} />
+							<input
+								id="rating"
+								type="number"
+								name="rating"
+								required
+								min={1}
+								max={5}
+								aria-invalid={errAttrFields?.rating.hasErrors}
+								aria-describedby={errAttrFields?.rating.id}
+							/>
+							<div>
+								<ErrorList id={errAttrFields?.rating.id} errors={errFields?.rating} />
+							</div>
 						</div>
 						<div>
-							<fieldset>
+							<fieldset
+								aria-invalid={errAttrFields?.rating.hasErrors}
+								aria-describedby={errAttrFields?.rating.id}
+							>
 								<legend>Would you recommend</legend>
 								<div>
 									<span>
@@ -180,6 +228,12 @@ export default function ProjectCreateRoute() {
 									</span>
 								</div>
 							</fieldset>
+							<div>
+								<ErrorList
+									id={errAttrFields?.recommend.id}
+									errors={errFields?.recommend}
+								/>
+							</div>
 						</div>
 					</div>
 				)}
