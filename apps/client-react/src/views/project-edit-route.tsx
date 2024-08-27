@@ -82,9 +82,9 @@ export default function ProjectEditRoute() {
 
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 	const isHydrated = useIsHydrated();
+	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
-	const { form: errForm, fields: errFields } = projectErrors || {};
 
 	return (
 		<div className={styles.projectCreate}>
@@ -108,6 +108,7 @@ export default function ProjectEditRoute() {
 							id="name"
 							type="text"
 							name="name"
+							placeholder="project title"
 							required
 							minLength={2}
 							defaultValue={project?.name}
@@ -124,6 +125,7 @@ export default function ProjectEditRoute() {
 							id="link"
 							type="text"
 							name="link"
+							placeholder="image or site url"
 							defaultValue={project?.link}
 							aria-invalid={errAttrFields?.link.hasErrors}
 							aria-describedby={errAttrFields?.link.id}
@@ -138,6 +140,7 @@ export default function ProjectEditRoute() {
 					<textarea
 						id="description"
 						name="description"
+						placeholder="add description..."
 						defaultValue={project?.description}
 						aria-invalid={errAttrFields?.description.hasErrors}
 						aria-describedby={errAttrFields?.description.id}
@@ -154,6 +157,7 @@ export default function ProjectEditRoute() {
 					<textarea
 						id="notes"
 						name="notes"
+						placeholder="add notes..."
 						defaultValue={project?.notes}
 						aria-invalid={errAttrFields?.notes.hasErrors}
 						aria-describedby={errAttrFields?.notes.id}
@@ -218,6 +222,7 @@ export default function ProjectEditRoute() {
 								id="rating"
 								type="number"
 								name="rating"
+								placeholder="value 1 through 5"
 								required
 								min={1}
 								max={5}

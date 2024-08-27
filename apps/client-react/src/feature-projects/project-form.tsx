@@ -60,9 +60,9 @@ export default function ProjectForm(props: ProjectFormProps) {
 
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 	const isHydrated = useIsHydrated();
+	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
-	const { form: errForm, fields: errFields } = projectErrors || {};
 
 	return (
 		<form
@@ -88,6 +88,7 @@ export default function ProjectForm(props: ProjectFormProps) {
 						id="name"
 						type="text"
 						name="name"
+						placeholder="project title"
 						required
 						minLength={2}
 						defaultValue={mode === "edit" ? props.project.name : undefined}
@@ -104,6 +105,7 @@ export default function ProjectForm(props: ProjectFormProps) {
 						id="link"
 						type="text"
 						name="link"
+						placeholder="image or site url"
 						defaultValue={mode === "edit" ? props.project.link : undefined}
 						aria-invalid={errAttrFields?.link.hasErrors}
 						aria-describedby={errAttrFields?.link.id}
@@ -118,6 +120,7 @@ export default function ProjectForm(props: ProjectFormProps) {
 				<textarea
 					id="description"
 					name="description"
+					placeholder="add description..."
 					defaultValue={mode === "edit" ? props.project.description : undefined}
 					aria-invalid={errAttrFields?.description.hasErrors}
 					aria-describedby={errAttrFields?.description.id}
@@ -131,6 +134,7 @@ export default function ProjectForm(props: ProjectFormProps) {
 				<textarea
 					id="notes"
 					name="notes"
+					placeholder="add notes..."
 					defaultValue={mode === "edit" ? props.project.notes : undefined}
 					aria-invalid={errAttrFields?.notes.hasErrors}
 					aria-describedby={errAttrFields?.notes.id}
@@ -197,6 +201,7 @@ export default function ProjectForm(props: ProjectFormProps) {
 							id="rating"
 							type="number"
 							name="rating"
+							placeholder="value 1 through 5"
 							required
 							min={1}
 							max={5}

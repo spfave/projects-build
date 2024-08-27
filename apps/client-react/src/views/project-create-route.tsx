@@ -63,9 +63,9 @@ export default function ProjectCreateRoute() {
 	// ?? Needs additional condition on hasErrors
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 	const isHydrated = useIsHydrated();
+	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
-	const { form: errForm, fields: errFields } = projectErrors || {};
 
 	return (
 		<div className={styles.projectCreate}>
@@ -86,6 +86,7 @@ export default function ProjectCreateRoute() {
 							id="name"
 							type="text"
 							name="name"
+							placeholder="project title"
 							required
 							minLength={2}
 							aria-invalid={errAttrFields?.name.hasErrors}
@@ -101,6 +102,7 @@ export default function ProjectCreateRoute() {
 							id="link"
 							type="text"
 							name="link"
+							placeholder="image or site url"
 							aria-invalid={errAttrFields?.link.hasErrors}
 							aria-describedby={errAttrFields?.link.id}
 						/>
@@ -114,6 +116,7 @@ export default function ProjectCreateRoute() {
 					<textarea
 						id="description"
 						name="description"
+						placeholder="add description..."
 						aria-invalid={errAttrFields?.description.hasErrors}
 						aria-describedby={errAttrFields?.description.id}
 					/>
@@ -129,6 +132,7 @@ export default function ProjectCreateRoute() {
 					<textarea
 						id="notes"
 						name="notes"
+						placeholder="add notes..."
 						aria-invalid={errAttrFields?.notes.hasErrors}
 						aria-describedby={errAttrFields?.notes.id}
 					/>
@@ -189,6 +193,7 @@ export default function ProjectCreateRoute() {
 								id="rating"
 								type="number"
 								name="rating"
+								placeholder="value 1 through 5"
 								required
 								min={1}
 								max={5}
