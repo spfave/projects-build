@@ -6,17 +6,48 @@
 		display: grid;
 		gap: 0.5rem;
 
-		label {
+		label,
+		legend {
 			display: block;
+			margin-bottom: 0.25rem;
 		}
 
-		input[type="text"],
-		input[type="number"],
-		input[type="date"],
+		& input:not([type="radio"]),
 		legend,
 		textarea,
 		select {
 			width: 100%;
+		}
+
+		& input:not([type="radio"]),
+		select,
+		textarea {
+			padding: 0.25rem;
+			border-radius: 0.25rem;
+			border-width: 0px;
+			outline: 1px solid grey;
+
+			&:focus-visible {
+				outline-width: 2px;
+				outline-color: var(--color-primary);
+			}
+
+			&:not(:placeholder-shown):user-valid {
+				outline-width: 2px;
+				outline-color: var(--color-success);
+			}
+
+			&:not(:placeholder-shown):user-invalid {
+				outline-width: 2px;
+				outline-color: var(--color-danger);
+			}
+		}
+
+		input[type="radio"] {
+			&:focus-visible {
+				outline-width: 2px;
+				outline-color: var(--color-primary);
+			}
 		}
 
 		textarea {
@@ -26,14 +57,21 @@
 
 		fieldset {
 			> div {
-				height: 27px;
+				height: 29.6px;
 				display: flex;
 				align-items: center;
 				gap: 2rem;
 
 				> span {
 					display: flex;
+					align-items: center;
 					gap: 0.5rem;
+
+					/* > label {
+						margin: 0;
+						text-box-trim: both; // future css
+						text-box-edge: cap alphabetic;
+					} */
 				}
 			}
 		}
@@ -44,7 +82,7 @@
 		fieldset {
 			+ div {
 				min-height: 1.75rem;
-				padding: 0.25rem 0.25rem;
+				padding: 0.25rem;
 				font-size: 0.9rem;
 			}
 		}
@@ -67,6 +105,7 @@
 	--grid-col-max-num: 2;
 	--grid-col-gap: 1rem;
 	--grid-col-min-width: 25ch;
+	--grid-row-gap: 0.5rem;
 
 	/* calc values */
 	--gap-count: calc(var(--grid-col-max-num) - 1);
@@ -80,7 +119,7 @@
 		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
 	);
 	column-gap: var(--grid-col-gap);
-	row-gap: 0.5rem;
+	row-gap: var(--grid-row-gap);
 }
 
 .formActions {
@@ -95,6 +134,6 @@
 }
 
 .containerErrorList {
-	padding: 0.25rem 0.25rem;
+	padding: 0.25rem;
 	font-size: 0.9rem;
 }

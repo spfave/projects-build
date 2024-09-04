@@ -14,7 +14,7 @@
 			-webkit-box-orient: vertical;
 			-webkit-line-clamp: var(--max-lines);
 			line-clamp: var(--max-lines);
-			overflow: hidden;
+			overflow: clip;
 		}
 	}
 }
