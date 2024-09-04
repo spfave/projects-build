@@ -19,9 +19,24 @@
 		}
 	}
 
-	h2,
-	span {
-		padding: 0 1rem;
+	hr {
+		border: none;
+		border-bottom: 1px solid var(--color-gray);
+	}
+
+	section {
+		display: grid;
+		gap: 1rem;
+
+		h2 {
+			padding: 0 1rem;
+		}
+
+		div {
+			span {
+				padding: 0 1rem;
+			}
+		}
 	}
 }
 

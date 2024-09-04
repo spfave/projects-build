@@ -6,6 +6,10 @@
 		padding: 0.5rem 1rem;
 		border-radius: 0.3rem;
 
+		&:hover {
+			background-color: var(--color-primary-xlight);
+		}
+
 		span {
 			padding: initial;
 			--max-lines: 2;

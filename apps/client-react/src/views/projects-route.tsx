@@ -35,23 +35,25 @@ export default function ProjectsRoute() {
 
 	return (
 		<div className={styles.projects}>
-			<div className={styles.projectsSidebar}>
+			<aside className={styles.projectsSidebar}>
 				<div>
 					<Link className="action success" to="create">
-						<p>New Project</p>
+						<span>New Project</span>
 						<img height={20} src={plusIcon} alt="" />
 					</Link>
 				</div>
 				<hr />
-				<h2>Projects</h2>
-				{projects == null ? (
-					<div>
-						<span>loading...</span>
-					</div>
-				) : (
-					<ProjectsList projects={projects} />
-				)}
-			</div>
+				<section>
+					<h2>Projects</h2>
+					{projects == null ? (
+						<div>
+							<span>loading...</span>
+						</div>
+					) : (
+						<ProjectsList projects={projects} />
+					)}
+				</section>
+			</aside>
 			<div className={styles.projectsOutlet}>
 				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
 			</div>
