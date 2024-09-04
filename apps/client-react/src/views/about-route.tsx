@@ -4,7 +4,7 @@ import styles from "./about-route.module.css";
 
 export default function About() {
 	return (
-		<div className={styles.about}>
+		<section className={styles.about}>
 			<h2>About</h2>
 			<div>
 				<p>
@@ -28,7 +28,7 @@ export default function About() {
 					<ANewTab text="Github" href={repoUrl} />.
 				</p>
 			</div>
-		</div>
+		</section>
 	);
 }
 
