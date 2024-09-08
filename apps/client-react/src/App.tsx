@@ -1,11 +1,13 @@
+import * as React from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import About from "~/views/about-route";
 import ProjectCreateRoute from "~/views/project-create-route";
 import ProjectEditRoute from "~/views/project-edit-route";
 import ProjectRoute from "~/views/project-route";
 import ProjectsRoute from "~/views/projects-route";
 import Root from "~/views/root";
+
+const About = React.lazy(() => import("~/views/about-route"));
 
 const router = createBrowserRouter(
 	[
@@ -28,7 +30,14 @@ const router = createBrowserRouter(
 						{ path: ":id/edit", element: <ProjectEditRoute /> },
 					],
 				},
-				{ path: "about", element: <About /> },
+				{
+					path: "about",
+					element: (
+						<React.Suspense fallback={<p>Loading...</p>}>
+							<About />
+						</React.Suspense>
+					),
+				},
 			],
 		},
 	],
