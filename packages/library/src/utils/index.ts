@@ -1,3 +1,3 @@
-export * from "./date-utils";
-export * from "./form-utils";
-export * from "./misc-utils";
+export * from "./date";
+export * from "./form";
+export * from "./misc";
