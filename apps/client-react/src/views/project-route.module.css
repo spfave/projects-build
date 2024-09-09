@@ -1,12 +1,25 @@
 .project {
-	display: flex;
-	flex-direction: column;
-	gap: 4rem;
+	display: grid;
+	gap: 2rem;
 }
 
 .projectContent {
-	> p:nth-child(even) {
-		margin-top: 1rem;
+	display: grid;
+	gap: 1rem;
+
+	& div:first-of-type {
+		dd {
+			text-transform: capitalize;
+		}
+	}
+
+	dt {
+		font-style: italic;
+		font-weight: lighter;
+
+		&::after {
+			content: ":";
+		}
 	}
 }
 

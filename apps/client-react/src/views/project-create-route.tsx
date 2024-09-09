@@ -68,7 +68,7 @@ export default function ProjectCreateRoute() {
 		formErrorsAttributes(projectErrors) || {};
 
 	return (
-		<div className={styles.projectCreate}>
+		<section className={styles.projectCreate}>
 			<h2>New Project</h2>
 			<form
 				ref={refForm}
@@ -258,6 +258,6 @@ export default function ProjectCreateRoute() {
 					</Link>
 				</div>
 			</form>
-		</div>
+		</section>
 	);
 }

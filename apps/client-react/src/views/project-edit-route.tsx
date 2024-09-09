@@ -87,7 +87,7 @@ export default function ProjectEditRoute() {
 		formErrorsAttributes(projectErrors) || {};
 
 	return (
-		<div className={styles.projectCreate}>
+		<section className={styles.projectCreate}>
 			<h2>Edit Project</h2>
 			<form
 				ref={refForm}
@@ -294,6 +294,6 @@ export default function ProjectEditRoute() {
 					</Link>
 				</div>
 			</form>
-		</div>
+		</section>
 	);
 }

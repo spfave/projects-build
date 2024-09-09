@@ -46,28 +46,55 @@ export default function ProjectRoute() {
 	if (project == null) return <div>Loading Project...</div>;
 
 	return (
-		<div key={project.id} className={styles.project}>
-			<section className={styles.projectContent}>
-				<h2>{project.name}</h2>
-				<p>Status</p>
-				<p>{project.status}</p>
-				<p>Description</p>
-				<p>{project.description || "--"}</p>
-				<p>Notes</p>
-				<p>{project.notes || "--"}</p>
+		<section key={project.id} className={styles.project}>
+			<h2>{project.name}</h2>
+			<dl className={styles.projectContent}>
+				<div>
+					<dt>Status</dt>
+					<dd>{project.status}</dd>
+				</div>
+				<div>
+					<dt>Link</dt>
+					<dd>
+						{project.link ? (
+							<a href={project.link} target="_blank" rel="noreferrer">
+								{project.link}
+							</a>
+						) : (
+							"--"
+						)}
+					</dd>
+				</div>
+				<div>
+					<dt>Description</dt>
+					<dd>{project.description || "--"}</dd>
+				</div>
+				<div>
+					<dt>Notes</dt>
+					<dd>{project.notes || "--"}</dd>
+				</div>
 				{project.status === "complete" ? (
 					<>
-						<p>Date Completed</p>
-						<p>{ymdPretty(project.dateCompleted)}</p>
-						<p>Build Rating</p>
-						<p>{project.rating}</p>
-						<p>Recommend Build</p>
-						<p>{project.recommend ? "Yes" : "No"}</p>
+						<div>
+							<dt>Date Completed</dt>
+							<dd>
+								<time dateTime={project.dateCompleted}>
+									{ymdPretty(project.dateCompleted)}
+								</time>
+							</dd>
+						</div>
+						<div>
+							<dt>Build Rating</dt>
+							<dd>{project.rating}</dd>
+						</div>
+						<div>
+							<dt>Recommend Build</dt>
+							<dd>{project.recommend ? "Yes" : "No"}</dd>
+						</div>
 					</>
 				) : null}
-			</section>
-
-			<section className={styles.projectActions}>
+			</dl>
+			<div className={styles.projectActions}>
 				<Link className="action primary" to="edit">
 					Edit
 				</Link>
@@ -76,7 +103,7 @@ export default function ProjectRoute() {
 						Delete
 					</button>
 				</form>
-			</section>
-		</div>
+			</div>
+		</section>
 	);
 }
