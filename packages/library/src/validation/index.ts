@@ -1,2 +1,2 @@
-export * from "./parse-validators";
-export * from "./regex-validators";
+export * from "./parsing";
+export * from "./regex";
