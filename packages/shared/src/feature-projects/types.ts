@@ -3,6 +3,7 @@ import type {
 	FormErrors,
 	FormErrorsAttributes,
 	FormFields,
+	Pretty,
 } from "@projectsbuild/library/types";
 
 type ProjectBase = {
@@ -18,13 +19,10 @@ type ProjectTypeBase =
 	| { status: "building" }
 	| { status: "complete"; dateCompleted: string; rating: number; recommend: boolean };
 
-export type Project = ProjectBase & ProjectTypeBase;
+export type Project = Pretty<ProjectBase & ProjectTypeBase>;
 export type ProjectInput = Omit<ProjectBase, "id"> & ProjectTypeBase;
 export type ProjectStatus = ProjectTypeBase["status"];
 
-export type ProjectFields = {
-	[P in Project as P["status"]]: FormFields<P>;
-}[ProjectStatus];
 export type ProjectFormElement = FormElement<
 	Extract<Project, { status: "complete" }>,
 	{
@@ -39,6 +37,9 @@ export type ProjectFormElement = FormElement<
 		recommend: HTMLInputElement;
 	}
 >;
+export type ProjectFields = {
+	[P in Project as P["status"]]: FormFields<P>;
+}[ProjectStatus];
 export type ProjectErrors = FormErrors<Extract<ProjectFields, { status: "complete" }>>;
 export type ProjectErrorsAttrs = FormErrorsAttributes<
 	Extract<ProjectFields, { status: "complete" }>
