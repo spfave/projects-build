@@ -1,9 +1,8 @@
 import type { RecordStr } from "./aliases";
 
-/* Refs:
-- https://www.totaltypescript.com/concepts/mapped-type
-- https://www.totaltypescript.com/immediately-indexed-mapped-type
-*/
+// Refs:
+// https://www.totaltypescript.com/concepts/mapped-type
+// https://www.totaltypescript.com/immediately-indexed-mapped-type
 
 // ----------------------------------------------------------------------------------- //
 // #region - General Type Helpers
@@ -20,37 +19,40 @@ export type Pretty<T> = { [K in keyof T]: T[K] } & {};
 // ----------------------------------------------------------------------------------- //
 // #region - HTML Form Type Helpers
 
+type HTMLFormFieldElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 // Ref: https://www.epicreact.dev/how-to-type-a-react-form-on-submit-handler
-type HTMLFormFieldElements = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 /**
- * Construct a HTMLFormElement type with the properties of TForm matched to HTML form
- * field elements.
+ * Constructs a `HTMLFormElement` type with the property keys of `TForm` paired to a
+ * `HTMLFormFieldElement` type.
  */
 export type FormElement<
 	TForm extends RecordStr,
-	TFormElements extends Record<keyof TForm, HTMLFormFieldElements>,
+	TFormFields extends Record<keyof TForm, HTMLFormFieldElement>,
 > = HTMLFormElement & {
 	readonly elements: HTMLFormControlsCollection & {
-		[Field in keyof TForm]-?: TFormElements[Field];
+		[Field in keyof TForm]-?: TFormFields[Field];
 	};
 };
 
 /**
- * Construct a type with the properties of TForm, converts non-string property values
- * to string as provided by HTML form field elements.
+ * Constructs a type with the properties of `TForm` converting `non-string` type properties
+ * to type `string` as provided by `FormData` values.
  */
 export type FormFields<TForm extends RecordStr> = {
 	[Field in keyof TForm]: TForm[Field] extends string ? TForm[Field] : string;
 };
 
-/** Construct a type for TForm with form and form field element error lists. */
+/** Constructs a type for `TForm` with error message arrays for the form and form fields. */
 export type FormErrors<TForm extends RecordStr> = {
 	form: string[];
 	fields: { [Field in keyof TForm]-?: string[] };
 };
 
 type FormErrorAttributes = { id: string | undefined; hasErrors: true | undefined };
-/** Construct a type for TForm with form and form field element error list HTML attributes. */
+/**
+ * Constructs a type for `TForm` with 'id' and 'hasError' properties for the form and form fields.
+ * To be used for HTML aria 'describedby' and 'invalid' attributes
+ */
 export type FormErrorsAttributes<TForm extends RecordStr> = {
 	form: FormErrorAttributes;
 	fields: { [Field in keyof TForm]-?: FormErrorAttributes };

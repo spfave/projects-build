@@ -1,11 +1,25 @@
 // Use function overload to get inferred result type
 /**
- * Return input or specified output if input is "truthy" otherwise undefined.
- * @param input evaluate to truthy or falsely
- * @param [output] optional value to return
+ * Evaluates a value as truthy or falsely for determining the return value.
+ * @param input Value to evaluate as truthy/falsely
+ * @returns `input` if truthy otherwise `undefined`
+ *
+ * @example
+ * valueIfTruthy(0); // returns undefined
+ * valueIfTruthy(1); // returns 1
  */
 export function valueIfTruthy<TInput>(input: TInput): TInput | undefined;
-export function valueIfTruthy<TInput, TOutput>(
+/**
+ * Evaluates a value as truthy or falsely for determining the return value.
+ * @param input Value to evaluate as truthy/falsely
+ * @param output Value to return if `input` is truthy
+ * @returns `output` if `input` is truthy otherwise `undefined`
+ *
+ * @example
+ * valueIfTruthy(0, "0"); // returns undefined
+ * valueIfTruthy(1, "1"); // returns "1"
+ */
+export function valueIfTruthy<TInput, TOutput extends {}>(
 	input: TInput,
 	output: TOutput
 ): TOutput | undefined;
