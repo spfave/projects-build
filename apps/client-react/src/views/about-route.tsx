@@ -15,13 +15,21 @@ export default function About() {
 				<p>
 					This implementation is a client rendered{" "}
 					<ANewTab text="Vite" href="https://vitejs.dev/" /> &{" "}
-					<ANewTab text="React" href="https://react.dev/" /> app with a single dependency
-					on <ANewTab text="React Router" href="https://reactrouter.com/en/main" />. The
-					implementation purposefully use a bare minimum set of dependencies to focus
+					<ANewTab text="React" href="https://react.dev/" /> app with a sole additional
+					dependency on{" "}
+					<ANewTab text="React Router" href="https://reactrouter.com/en/main" />. The
+					implementation purposefully use a bare minimum set of dependencies to focus app
 					development on using the primitives supplied with React and limit external
 					dependency decision making. This is for the purpose of experimenting with the
 					primitives as building blocks and understanding where it would makes sense to
 					favor abstraction to an external dependency.
+				</p>
+				<p>
+					The app code base additionally over-engineers overall code organization,
+					function & type utilities, and code logic abstractions. This is for the purpose
+					of experimenting with development in a monorepo and logic co-location patterns,
+					advanced JavaScript/TypeScript capabilities and patterns, and code architecture
+					patterns.
 				</p>
 				<p>
 					Additional implementations of the app can be found on{" "}

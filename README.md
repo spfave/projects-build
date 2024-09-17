@@ -2,14 +2,17 @@
 
 ## **Goal**
 Primary: Build experience, methodologies and opinions around web application engineering.  
-Secondary: Experiment with different web technologies, web development frameworks, and languages. 
+Secondary: Experiment with different web technologies, web development frameworks, and languages.  
 
 
 &nbsp;
 ## **Approach**
-Develop a web application to manage and rate project builds with multiple web technologies. Through solving the same problem with different approaches discover where boundaries of application concerns exist for abstraction to shareable logic, preferred patterns for code organization around co-location, and management of a largely self dependent code base. 
+Develop a web application to manage and rate project builds with multiple web technologies. Through solving the same problem with different approaches discover where boundaries of application concerns exist for abstraction to shareable logic, preferred architecture patterns for code organization, and management of a largely self dependent code base. 
 
-Each app implementation purposefully use a bare minimum set of dependencies to focus the app engineering on using the primitives supplied with the libraries, frameworks, and languages and limit external dependency decision making. This is for the purpose of experimenting with these primitives as building blocks and understanding where it makes sense to favor abstraction to an external dependency. 
+Each app implementation purposefully use a bare minimum set of dependencies to focus the app engineering on using the primitives supplied with the libraries, frameworks, and languages plus limit external dependency decision making. This is for the purpose of experimenting with these primitives as building blocks and understanding where it makes sense to favor abstraction to an external dependency. 
+
+<!-- over-engineering -->
+This repo additionally over-engineers overall code organization, function & type utilities, and code logic abstractions. This is for the purpose of experimenting with development in a monorepo and logic co-location patterns, advanced JavaScript/TypeScript capabilities and patterns, and code architecture patterns. 
 
 
 &nbsp;
