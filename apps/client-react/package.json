@@ -8,19 +8,22 @@
 		"dev:local": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
+		"check": "biome check ./src",
+		"format": "biome format ./src",
+		"lint": "biome lint ./src",
 		"typecheck": "tsc"
 	},
 	"dependencies": {
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"react-router-dom": "^6.25.1"
+		"react-router-dom": "^6.26.2"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
 		"@projectsbuild/shared": "workspace:*",
 		"@types/node": "catalog:",
-		"@types/react": "^18.3.3",
+		"@types/react": "^18.3.6",
 		"@types/react-dom": "^18.3.0",
 		"@vitejs/plugin-react": "^4.3.1",
 		"typescript": "catalog:",
