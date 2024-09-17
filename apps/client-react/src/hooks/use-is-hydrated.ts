@@ -1,9 +1,16 @@
 import * as React from "react";
 
 /**
- * Hook to get hydration state
- * @returns boolean indicating if client is hydrated
+ * Hook provides hydration state.
+ * @returns Object containing client hydration state and client isHydrated boolean
  */
+export function useHydrated() {
+	const [state, setState] = React.useState<"not-hydrated" | "hydrated">("not-hydrated");
+	React.useEffect(() => setState("hydrated"), []);
+
+	return { state, isHydrated: state === "hydrated" } as const;
+}
+
 export function useIsHydrated() {
 	const [isHydrated, setIsHydrated] = React.useState(false);
 	React.useEffect(() => setIsHydrated(true), []);

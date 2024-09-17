@@ -1,8 +1,8 @@
 import * as React from "react";
 
 /**
- * Hook to rerender.
- * @returns function to force rerender
+ * Hook enables rerendering.
+ * @returns Function to force rerender
  */
 export function useRerender() {
 	const [, setState] = React.useState({});

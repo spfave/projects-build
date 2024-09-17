@@ -1,7 +1,9 @@
 import * as React from "react";
 
 /**
- * Hook that focuses invalid form or first invalid element in a form.
+ * Hook focuses invalid form or first invalid element in form.
+ * @param formEl `HTMLFormElement` to place focus when invalid
+ * @param hasErrors Boolean to evaluate against for early termination
  */
 export function useFocusInvalid(formEl: HTMLFormElement | null, hasErrors: boolean) {
 	React.useEffect(() => {
