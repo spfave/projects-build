@@ -10,9 +10,3 @@ export function useHydrated() {
 
 	return { state, isHydrated: state === "hydrated" } as const;
 }
-
-export function useIsHydrated() {
-	const [isHydrated, setIsHydrated] = React.useState(false);
-	React.useEffect(() => setIsHydrated(true), []);
-	return isHydrated;
-}

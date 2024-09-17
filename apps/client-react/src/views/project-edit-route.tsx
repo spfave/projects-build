@@ -11,7 +11,7 @@ import type {
 } from "@projectsbuild/shared/projects";
 import { ErrorList } from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
-import { useIsHydrated } from "~/hooks/use-is-hydrated";
+import { useHydrated } from "~/hooks/use-hydrated";
 import { useRerender } from "~/hooks/use-rerender";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
@@ -80,11 +80,11 @@ export default function ProjectEditRoute() {
 		rerender(); // force rerender in case where projectStatus hasn't changed
 	}
 
-	useFocusInvalid(refForm.current, Boolean(projectErrors));
-	const isHydrated = useIsHydrated();
+	const { isHydrated } = useHydrated();
 	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
+	useFocusInvalid(refForm.current, Boolean(projectErrors));
 
 	return (
 		<section className={styles.projectCreate}>
@@ -123,7 +123,7 @@ export default function ProjectEditRoute() {
 						<label htmlFor="link">Link</label>
 						<input
 							id="link"
-							type="text"
+							type="url"
 							name="link"
 							placeholder="image or site url"
 							defaultValue={project?.link}

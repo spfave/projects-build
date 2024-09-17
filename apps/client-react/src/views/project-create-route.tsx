@@ -12,7 +12,7 @@ import type {
 } from "@projectsbuild/shared/projects";
 import { ErrorList } from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
-import { useIsHydrated } from "~/hooks/use-is-hydrated";
+import { useHydrated } from "~/hooks/use-hydrated";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
@@ -60,12 +60,11 @@ export default function ProjectCreateRoute() {
 		setProjectErrors(null);
 	}
 
-	// ?? Needs additional condition on hasErrors
-	useFocusInvalid(refForm.current, Boolean(projectErrors));
-	const isHydrated = useIsHydrated();
+	const { isHydrated } = useHydrated();
 	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
+	useFocusInvalid(refForm.current, Boolean(projectErrors)); // ?? Needs additional condition on hasErrors
 
 	return (
 		<section className={styles.projectCreate}>
@@ -100,7 +99,7 @@ export default function ProjectCreateRoute() {
 						<label htmlFor="link">Link</label>
 						<input
 							id="link"
-							type="text"
+							type="url"
 							name="link"
 							placeholder="image or site url"
 							aria-invalid={errAttrFields?.link.hasErrors}

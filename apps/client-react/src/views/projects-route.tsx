@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/shared/projects";
-import { ProjectsList } from "~/feature-projects/projects-nav-list";
+import { ProjectList } from "~/feature-projects/projects-nav-list";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
@@ -50,7 +50,7 @@ export default function ProjectsRoute() {
 							<span>loading...</span>
 						</div>
 					) : (
-						<ProjectsList projects={projects} />
+						<ProjectList projects={projects} />
 					)}
 				</section>
 			</aside>
