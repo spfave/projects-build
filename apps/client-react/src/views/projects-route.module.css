@@ -10,7 +10,7 @@
 	flex-direction: column;
 	gap: 1rem;
 
-	> div:first-child {
+	> div:has(a) {
 		a {
 			padding: 0.5rem 1rem;
 			display: flex;

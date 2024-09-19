@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import ErrorBoundary from "~/components/error-boundary";
+import GeneralErrorFallback from "~/components/general-error-fallback";
 import ProjectCreateRoute from "~/views/project-create-route";
 import ProjectEditRoute from "~/views/project-edit-route";
 import ProjectRoute from "~/views/project-route";
@@ -14,12 +16,16 @@ const router = createBrowserRouter(
 		{
 			path: "/",
 			element: <Root />,
-			errorElement: <div>An Error Occurred</div>,
+			// errorElement: <div>An Error Occurred</div>,
 			children: [
 				{ index: true, element: <Navigate to="projects" /> },
 				{
 					path: "projects",
-					element: <ProjectsRoute />,
+					element: (
+						<ErrorBoundary FallbackComponent={GeneralErrorFallback}>
+							<ProjectsRoute />
+						</ErrorBoundary>
+					),
 					children: [
 						{
 							index: true,
@@ -38,6 +44,10 @@ const router = createBrowserRouter(
 						</React.Suspense>
 					),
 				},
+				{
+					path: "*",
+					element: <div>Page Not Found</div>,
+				},
 			],
 		},
 	],
@@ -45,8 +55,8 @@ const router = createBrowserRouter(
 		future: {
 			v7_fetcherPersist: true,
 			v7_normalizeFormMethod: true,
-			v7_relativeSplatPath: true,
 			v7_partialHydration: true,
+			v7_relativeSplatPath: true,
 		},
 	}
 );

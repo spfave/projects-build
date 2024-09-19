@@ -1,0 +1,11 @@
+.generalErrorFallback {
+	p:first-child {
+		font-weight: 600;
+	}
+
+	p:has(samp) {
+		color: var(--color-danger);
+		font-size: 16px;
+		font-style: italic;
+	}
+}
