@@ -5,8 +5,6 @@ import * as React from "react";
  * @returns Function to force rerender
  */
 export function useRerender() {
-	const [, setState] = React.useState({});
-	const rerender = React.useCallback(() => setState({}), []);
-
+	const [, rerender] = React.useReducer(() => ({}), {});
 	return rerender;
 }
