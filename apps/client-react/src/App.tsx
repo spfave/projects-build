@@ -22,7 +22,7 @@ const router = createBrowserRouter(
 				{
 					path: "projects",
 					element: (
-						<ErrorBoundary FallbackComponent={GeneralErrorFallback}>
+						<ErrorBoundary fallback={(error) => <GeneralErrorFallback error={error} />}>
 							<ProjectsRoute />
 						</ErrorBoundary>
 					),

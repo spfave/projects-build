@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { getErrorMessage } from "@projectsbuild/library/utils";
 
 import styles from "./general-error-fallback.module.css";

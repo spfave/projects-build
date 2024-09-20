@@ -6,10 +6,7 @@ type ErrorBoundaryBaseProps = React.PropsWithChildren<{
 	onError?: (error: unknown, info?: React.ErrorInfo) => void;
 }>;
 type ErrorBoundaryPropsWithFallback = ErrorBoundaryBaseProps & {
-	fallback: React.ReactElement<
-		unknown,
-		string | React.FunctionComponent | typeof React.Component
-	> | null;
+	fallback: React.ReactNode | ((error: unknown) => React.JSX.Element);
 	FallbackComponent?: never;
 };
 type ErrorBoundaryPropsWithComponent = ErrorBoundaryBaseProps & {
@@ -28,6 +25,25 @@ const errorBoundaryInitialState: ErrorBoundaryState = { didCatch: false, error: 
 // Ref:
 // https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 // https://github.com/bvaughn/react-error-boundary
+// https://docs.solidjs.com/reference/components/error-boundary
+/**
+ * Catches uncaught errors inside components and renders a fallback component in its place.
+ *
+ * Takes either a `fallback` or `FallbackComponent` prop and accepts an optional `onError`
+ * callback function.
+ *
+ * @example
+ * // With 'React.ReactNode' fallback prop
+ * <ErrorBoundary fallback={<div>Whoops Error</div>}>...</ErrorBoundary>
+ *
+ * // With callback function fallback prop that provides the error
+ * <ErrorBoundary fallback={(err) => <GeneralErrorFallback error={err} />}>
+ *   <Child />
+ * </ErrorBoundary>
+ *
+ * // With 'React.ComponentType' FallbackComponent prop
+ * <ErrorBoundary FallbackComponent={GeneralErrorFallback}>...</ErrorBoundary>
+ */
 export default class ErrorBoundary extends React.Component<
 	ErrorBoundaryProps,
 	ErrorBoundaryState
@@ -53,6 +69,9 @@ export default class ErrorBoundary extends React.Component<
 					error: this.state.error,
 				};
 				return React.createElement(this.props.FallbackComponent, fallbackProps);
+			}
+			if (typeof this.props.fallback === "function") {
+				return this.props.fallback(this.state.error);
 			}
 			if (this.props.fallback === null || React.isValidElement(this.props.fallback)) {
 				return this.props.fallback;
