@@ -1,7 +1,7 @@
 import styles from "./error-list.module.css";
 
 type ErrorListProps = { id?: string; errors?: string[] };
-export function ErrorList(props: ErrorListProps) {
+export default function ErrorList(props: ErrorListProps) {
 	if (!props.errors) return null;
 
 	return (

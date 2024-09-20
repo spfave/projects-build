@@ -5,7 +5,7 @@ import type { Project } from "@projectsbuild/shared/projects";
 import styles from "./projects-nav-list.module.css";
 
 type ProjectListProps = { projects: Project[] };
-export function ProjectList(props: ProjectListProps) {
+export default function ProjectList(props: ProjectListProps) {
 	if (props.projects.length === 0)
 		return <div className={styles.projectsNavListEmpty}>No Projects Exist</div>;
 

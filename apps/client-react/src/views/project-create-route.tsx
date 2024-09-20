@@ -10,7 +10,7 @@ import type {
 	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/projects";
-import { ErrorList } from "~/components/error-list";
+import ErrorList from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useProjectsContext } from "./projects-route";
