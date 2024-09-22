@@ -20,19 +20,19 @@ type ShowProps<T> = ShowPropsWithChildren<T> | ShowPropsWithDisplay<T>;
 // https://docs.solidjs.com/reference/components/show
 /**
  * Conditionally renders a component otherwise renders an optional fallback component.
- * @description Takes a `when` prop to evaluate the render path and either a `children`
- * or `display` prop to render in the 'truthy' case and a optional `fallback` prop in the
- * 'falsely' case. The `children` or `display` prop can be provided as a `ReactNode` or
- * callback function with access to the `when` prop.
+ * @description Takes as props a condition `when` to evaluate the render path, either
+ * `children` or `display` to render in the 'truthy' case, and optionally a `fallback`
+ * component to render in the 'falsely' case. The `children` or `display` prop can be
+ * provided as a `ReactNode` or render callback function with access to the `when` prop.
  *
  * @example
- * // With composition based 'React.ReactNode' children prop
- * <Show when={data} fallback={<p>Loading...</p>}>
- *   <Child />
+ * // With 'children' as a 'ReactNode'
+ * <Show when={note} fallback={<p>Loading...</p>}>
+ *   <Note data={note} />
  * </Show>
  *
- * // With input based callback function display prop that provides the 'when' value
- * <Show when={data} display={(data) => <DataList data={data} />} />
+ * // With 'display' as a render callback that provides the 'when' value
+ * <Show when={note} display={(note) => <Note data={note} />} />
  */
 export default function Show<T>(props: ShowProps<T>) {
 	const { when, children, display, fallback } = props;

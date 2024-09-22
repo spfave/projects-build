@@ -29,20 +29,24 @@ const errorBoundaryInitialState: ErrorBoundaryState = { didCatch: false, error: 
 /**
  * Catches uncaught errors inside components and renders a fallback component in its place.
  *
- * Takes either a `fallback` or `FallbackComponent` prop and accepts an optional `onError`
- * callback function.
+ * Takes as props either `fallback` or `FallbackComponent` and optionally an `onError`
+ * callback function. The `fallback` prop can be provided as either a `ReactNode` or render
+ * callback function. The`FallbackComponent` prop must be a `React.ComponentType`.
  *
  * @example
- * // With 'React.ReactNode' fallback prop
- * <ErrorBoundary fallback={<div>Whoops Error</div>}>...</ErrorBoundary>
+ * // With 'fallback' as a 'ReactNode'
+ * <ErrorBoundary
+ *   fallback={<div>Whoops Error</div>}
+ *   onError={(error, info) => console.log(error, info)}
+ * >...</ErrorBoundary>
  *
- * // With callback function fallback prop that provides the error
- * <ErrorBoundary fallback={(err) => <GeneralErrorFallback error={err} />}>
+ * // With 'fallback' as a render callback that provides the error
+ * <ErrorBoundary fallback={(err) => <ErrorFallback error={err} />}>
  *   <Child />
  * </ErrorBoundary>
  *
- * // With 'React.ComponentType' FallbackComponent prop
- * <ErrorBoundary FallbackComponent={GeneralErrorFallback}>...</ErrorBoundary>
+ * // With 'FallbackComponent'
+ * <ErrorBoundary FallbackComponent={ErrorFallback}>...</ErrorBoundary>
  */
 export default class ErrorBoundary extends React.Component<
 	ErrorBoundaryProps,
