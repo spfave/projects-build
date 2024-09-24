@@ -1,14 +1,16 @@
+import For from "./for";
+
 import styles from "./error-list.module.css";
 
 type ErrorListProps = { id?: string; errors?: string[] };
 export default function ErrorList(props: ErrorListProps) {
-	if (!props.errors) return null;
+	if (!props.errors || props.errors.length === 0) return null;
 
 	return (
 		<ul id={props.id} className={styles.errorList}>
-			{props.errors.map((error) => (
-				<li key={error}>{error}</li>
-			))}
+			<For array={props.errors} getKey={(error) => error}>
+				{(error) => <li>{error}</li>}
+			</For>
 		</ul>
 	);
 }

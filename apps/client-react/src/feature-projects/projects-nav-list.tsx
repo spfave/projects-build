@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/shared/projects";
+import For from "~/components/for";
 
 import styles from "./projects-nav-list.module.css";
 
@@ -11,15 +12,16 @@ export default function ProjectList(props: ProjectListProps) {
 
 	return (
 		<nav className={styles.projectsNavList}>
-			{props.projects?.map((project) => (
-				<NavLink
-					className={({ isActive }) => (isActive ? styles.activeLink : "")}
-					key={project.id}
-					to={`/projects/${project.id}`}
-				>
-					<span>{project.name}</span>
-				</NavLink>
-			))}
+			<For array={props.projects} getKey={(project) => project.id}>
+				{(project) => (
+					<NavLink
+						className={({ isActive }) => (isActive ? styles.activeLink : "")}
+						to={`/projects/${project.id}`}
+					>
+						<span>{project.name}</span>
+					</NavLink>
+				)}
+			</For>
 		</nav>
 	);
 }

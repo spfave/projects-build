@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ymdPretty } from "@projectsbuild/library/utils";
 import type { Project } from "@projectsbuild/shared/projects";
+import Show from "~/components/show";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-route.module.css";
@@ -56,13 +57,11 @@ export default function ProjectRoute() {
 				<div>
 					<dt>Link</dt>
 					<dd>
-						{project.link ? (
+						<Show when={project.link} fallback={"--"}>
 							<a href={project.link} target="_blank" rel="noreferrer">
 								{project.link}
 							</a>
-						) : (
-							"--"
-						)}
+						</Show>
 					</dd>
 				</div>
 				<div>
@@ -73,26 +72,28 @@ export default function ProjectRoute() {
 					<dt>Notes</dt>
 					<dd>{project.notes || "--"}</dd>
 				</div>
-				{project.status === "complete" ? (
-					<>
-						<div>
-							<dt>Date Completed</dt>
-							<dd>
-								<time dateTime={project.dateCompleted}>
-									{ymdPretty(project.dateCompleted)}
-								</time>
-							</dd>
-						</div>
-						<div>
-							<dt>Build Rating</dt>
-							<dd>{project.rating}</dd>
-						</div>
-						<div>
-							<dt>Recommend Build</dt>
-							<dd>{project.recommend ? "Yes" : "No"}</dd>
-						</div>
-					</>
-				) : null}
+				<Show when={project.status === "complete" ? project : false}>
+					{(project) => (
+						<>
+							<div>
+								<dt>Date Completed</dt>
+								<dd>
+									<time dateTime={project.dateCompleted}>
+										{ymdPretty(project.dateCompleted)}
+									</time>
+								</dd>
+							</div>
+							<div>
+								<dt>Build Rating</dt>
+								<dd>{project.rating}</dd>
+							</div>
+							<div>
+								<dt>Recommend Build</dt>
+								<dd>{project.recommend ? "Yes" : "No"}</dd>
+							</div>
+						</>
+					)}
+				</Show>
 			</dl>
 			<div className={styles.projectActions}>
 				<Link className="action primary" to="edit">
