@@ -6,9 +6,8 @@ type GeneralErrorFallbackProps = { error: unknown };
 export default function GeneralErrorFallback(props: GeneralErrorFallbackProps) {
 	const { error } = props;
 
-	let message: string;
-	if (error instanceof Error) message = `${error.name}: ${error.message}`;
-	else message = getErrorMessage(error);
+	const message =
+		error instanceof Error ? `${error.name}: ${error.message}` : getErrorMessage(error);
 
 	return (
 		<div className={styles.generalErrorFallback}>

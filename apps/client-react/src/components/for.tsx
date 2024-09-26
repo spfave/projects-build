@@ -41,15 +41,16 @@ type ForProps<TItem> = ForPropsWithChildren<TItem> | ForPropsWithDisplay<TItem>;
  * />
  */
 export default function For<TItem>(props: ForProps<TItem>) {
-	if (!props.array || props.array.length === 0) return props.fallback;
-	if (props.display) {
-		return props.array.map((item) => (
-			<React.Fragment key={props.getKey(item)}>{props.display(item)}</React.Fragment>
+	const { array, getKey, children, display, fallback } = props;
+
+	if (!array || array.length === 0) return fallback;
+	if (display) {
+		return array.map((item) => (
+			<React.Fragment key={getKey(item)}>{display(item)}</React.Fragment>
 		));
 	}
-
-	return props.array.map((item) => (
-		<React.Fragment key={props.getKey(item)}>{props.children(item)}</React.Fragment>
+	return array.map((item) => (
+		<React.Fragment key={getKey(item)}>{children(item)}</React.Fragment>
 	));
 }
 
