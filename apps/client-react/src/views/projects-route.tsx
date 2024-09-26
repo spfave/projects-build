@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/shared/projects";
-import ProjectList from "~/feature-projects/projects-nav-list";
+import ProjectNavList from "~/feature-projects/projects-nav-list";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
@@ -29,10 +29,6 @@ export default function ProjectsRoute() {
 		getProjects().then(setProjects);
 	}, []);
 
-	React.useEffect(() => {
-		fetchProjects();
-	}, [fetchProjects]);
-
 	return (
 		<div className={styles.projects}>
 			<aside className={styles.projectsSidebar}>
@@ -45,13 +41,7 @@ export default function ProjectsRoute() {
 				<hr />
 				<section>
 					<h2>Projects</h2>
-					{projects == null ? (
-						<div>
-							<span>loading...</span>
-						</div>
-					) : (
-						<ProjectList projects={projects} />
-					)}
+					<ProjectNavList projects={projects} fetchProjects={fetchProjects} />
 				</section>
 			</aside>
 			<div className={styles.projectsOutlet}>
