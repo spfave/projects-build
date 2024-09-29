@@ -5,7 +5,7 @@ import For from "~/components/for";
 
 import styles from "./projects-nav-list.module.css";
 
-type ProjectNavListProps = { projects?: Project[] };
+type ProjectNavListProps = { projects?: Project[] | null };
 export default function ProjectNavList(props: ProjectNavListProps) {
 	if (!props.projects || props.projects.length === 0)
 		return <div className={styles.projectsNavListEmpty}>No Projects Exist</div>;

@@ -36,21 +36,20 @@ export function useProjectsContext() {
 	return useOutletContext<ProjectsContext>();
 }
 
-type AsyncStatus = "PENDING" | "FULFILLED" | "ERROR";
 export default function ProjectsRoute() {
-	const [status, setStatus] = React.useState<AsyncStatus>("PENDING");
-	const [data, setData] = React.useState<Project[]>();
-	const [error, setError] = React.useState<unknown>(null);
+	const [state, dispatch] = React.useReducer(
+		asyncReducer<Project[]>,
+		asyncInitialState as AsyncState<Project[]>
+	);
 
 	const fetchProjects = React.useCallback(() => {
 		// throw new Error("throw fetch error"); // caught during render
-		setStatus("PENDING");
+		dispatch({ type: "PENDING" });
 		getProjects()
 			.then((data) => {
 				// console.warn(`THROW THEN`); //LOG
 				// throw new Error("throw fetch THEN"); // doesn't get caught since async
-				setData(data);
-				setStatus("FULFILLED");
+				dispatch({ type: "FULFILLED", data });
 			})
 			.catch((err) => {
 				console.warn(`COMPONENT ERROR CATCH`); //LOG
@@ -58,8 +57,7 @@ export default function ProjectsRoute() {
 				console.info(`err.name: `, err.name); //LOG
 				console.info(`err.msg: `, err.message); //LOG
 				// throw new Error("throw fetch rejection"); // doesn't get caught since async
-				setError(err);
-				setStatus("ERROR");
+				dispatch({ type: "ERROR", error: err });
 			});
 	}, []);
 
@@ -80,16 +78,16 @@ export default function ProjectsRoute() {
 				<hr />
 				<section>
 					<h2>Projects</h2>
-					{status === "PENDING" ? (
+					{state.status === "PENDING" ? (
 						<div>
 							<span>loading...</span>
 						</div>
-					) : status === "ERROR" ? (
+					) : state.status === "ERROR" ? (
 						<div style={{ padding: "1rem" }}>
-							<GeneralErrorFallback error={error} />
+							<GeneralErrorFallback error={state.error} />
 						</div>
 					) : (
-						<ProjectNavList projects={data} />
+						<ProjectNavList projects={state.data} />
 					)}
 				</section>
 			</aside>
@@ -98,4 +96,35 @@ export default function ProjectsRoute() {
 			</div>
 		</div>
 	);
+}
+
+// ----------------------------------------------------------------------------------- //
+export type AsyncState<TData = unknown> =
+	| { status: "PENDING"; data: null; error: null }
+	| { status: "FULFILLED"; data: TData; error: null }
+	| { status: "ERROR"; data: null; error: unknown };
+export type AsyncStatus = AsyncState["status"];
+export type AsyncAction<TData> =
+	| { type: "PENDING" }
+	| { type: "FULFILLED"; data: TData }
+	| { type: "ERROR"; error: unknown }
+	| { type: "RESET"; initialState?: AsyncState<TData> };
+const asyncInitialState: AsyncState = { status: "FULFILLED", data: null, error: null };
+
+export function asyncReducer<TData>(
+	state: AsyncState<TData>,
+	action: AsyncAction<TData>
+): AsyncState<TData> {
+	switch (action.type) {
+		case "PENDING":
+			return { status: "PENDING", data: null, error: null };
+		case "FULFILLED":
+			return { status: "FULFILLED", data: action.data, error: null };
+		case "ERROR":
+			return { status: "ERROR", data: null, error: action.error };
+		case "RESET":
+			return action?.initialState ?? (asyncInitialState as AsyncState<TData>);
+		default:
+			return state;
+	}
 }
