@@ -38,7 +38,6 @@ export function useProjectsContext() {
 
 type AsyncStatus = "PENDING" | "FULFILLED" | "ERROR";
 export default function ProjectsRoute() {
-	// const [projects, setProjects] = React.useState<Project[]>();
 	const [status, setStatus] = React.useState<AsyncStatus>("PENDING");
 	const [data, setData] = React.useState<Project[]>();
 	const [error, setError] = React.useState<unknown>(null);
@@ -50,7 +49,6 @@ export default function ProjectsRoute() {
 			.then((data) => {
 				// console.warn(`THROW THEN`); //LOG
 				// throw new Error("throw fetch THEN"); // doesn't get caught since async
-				// setProjects(data);
 				setData(data);
 				setStatus("FULFILLED");
 			})
@@ -82,7 +80,6 @@ export default function ProjectsRoute() {
 				<hr />
 				<section>
 					<h2>Projects</h2>
-					{/* <ProjectNavList projects={projects} fetchProjects={fetchProjects} /> */}
 					{status === "PENDING" ? (
 						<div>
 							<span>loading...</span>
