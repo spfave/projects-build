@@ -49,7 +49,6 @@ export async function safeAsync<TError = unknown, TPromise = unknown>(
 		onFinally();
 	}
 }
-fetch("input").then().catch().finally();
 
 /**
  * Safely awaits a promise to return result or error as value.
@@ -67,4 +66,3 @@ export async function safePromise<TError = unknown, TPromise = unknown>(
 }
 
 // #endregion
-new Promise((params) => {});
