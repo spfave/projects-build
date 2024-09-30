@@ -4,6 +4,7 @@ import { Link, Outlet, useOutletContext } from "react-router-dom";
 import type { Project } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/general-error-fallback";
 import ProjectNavList from "~/feature-projects/projects-nav-list";
+import { useAsync } from "~/hooks/use-async";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
@@ -12,14 +13,11 @@ export async function getProjects() {
 	// fetch can error: if no connection made
 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`).catch(
 		(err) => {
-			console.warn(`GET PROJECTS ERROR CATCH`); //LOG
-			console.info(`err: `, err); //LOG
 			throw Error("No connection", { cause: err });
 		}
 	);
-	console.info(`res: `, res); //LOG
 
-	// response 'status' or 'ok' property could indicate error
+	// response 'status' or 'ok' property can indicate an error
 	if (res.status >= 400) throw Error("HttpResponseError");
 	if (!res.ok) throw new Error("Get Projects fetch failed", { cause: res });
 
@@ -73,93 +71,5 @@ export default function ProjectsRoute() {
 				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
 			</div>
 		</div>
-	);
-}
-
-// ----------------------------------------------------------------------------------- //
-export type AsyncState<TData = unknown> =
-	| { status: "PENDING"; data: null; error: null }
-	| { status: "FULFILLED"; data: TData; error: null }
-	| { status: "ERROR"; data: null; error: unknown };
-export type AsyncStatus = AsyncState["status"];
-export type AsyncAction<TData> =
-	| { type: "PENDING" }
-	| { type: "FULFILLED"; data: TData }
-	| { type: "ERROR"; error: unknown }
-	| { type: "RESET"; initialState?: AsyncState<TData> };
-const asyncInitialState: AsyncState = { status: "FULFILLED", data: null, error: null };
-
-export function asyncReducer<TData>(
-	state: AsyncState<TData>,
-	action: AsyncAction<TData>
-): AsyncState<TData> {
-	switch (action.type) {
-		case "PENDING":
-			return { status: "PENDING", data: null, error: null };
-		case "FULFILLED":
-			return { status: "FULFILLED", data: action.data, error: null };
-		case "ERROR":
-			return { status: "ERROR", data: null, error: action.error };
-		case "RESET":
-			return action?.initialState ?? (asyncInitialState as AsyncState<TData>);
-		default:
-			return state;
-	}
-}
-
-export function useAsync<TData>(initialState?: AsyncState<TData>) {
-	const initialStateRef = React.useRef<AsyncState<TData>>({
-		...(asyncInitialState as AsyncState<TData>),
-		...initialState,
-	});
-
-	const [state, unsafeDispatch] = React.useReducer(
-		asyncReducer<TData>,
-		initialStateRef.current
-	);
-	const safeDispatch = useSafeDispatch(unsafeDispatch);
-
-	const run = React.useCallback(
-		async (promise: Promise<TData>) => {
-			if (!promise || !promise.then)
-				throw new Error("The argument passed to useAsync().run must be a promise.");
-
-			safeDispatch({ type: "PENDING" });
-			try {
-				const data = await promise;
-				safeDispatch({ type: "FULFILLED", data });
-				return data;
-			} catch (error) {
-				safeDispatch({ type: "ERROR", error });
-				return await Promise.reject(error);
-			}
-		},
-		[safeDispatch]
-	);
-
-	return {
-		status: state.status,
-		data: state.data,
-		error: state.error,
-		run,
-		isPending: state.status === "PENDING",
-		isFulfilled: state.status === "FULFILLED",
-		isError: state.status === "ERROR",
-	};
-}
-
-export function useSafeDispatch<TAction>(dispatch: React.Dispatch<TAction>) {
-	const mountedRef = React.useRef(false);
-
-	React.useLayoutEffect(() => {
-		mountedRef.current = true;
-		return () => {
-			mountedRef.current = false;
-		};
-	}, []);
-
-	return React.useCallback(
-		(action: TAction) => (mountedRef.current ? dispatch(action) : void 0),
-		[dispatch]
 	);
 }
