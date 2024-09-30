@@ -1,4 +1,4 @@
-import For from "./for";
+import For from "./ui/for";
 
 import styles from "./error-list.module.css";
 

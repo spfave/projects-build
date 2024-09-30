@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/shared/projects";
-import For from "~/components/for";
+import For from "~/components/ui/for";
 
 import styles from "./projects-nav-list.module.css";
 

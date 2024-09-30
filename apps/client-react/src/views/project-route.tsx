@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ymdPretty } from "@projectsbuild/library/utils";
 import type { Project } from "@projectsbuild/shared/projects";
-import Show from "~/components/show";
+import Show from "~/components/ui/show";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-route.module.css";
