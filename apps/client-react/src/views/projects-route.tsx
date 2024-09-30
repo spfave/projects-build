@@ -9,9 +9,6 @@ import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
 
 export async function getProjects() {
-	// console.warn(`GET PROJECTS`); //LOG
-	// throw new Error("THROW get projects"); // doesn't get caught since async
-
 	// fetch can error: if no connection made
 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`).catch(
 		(err) => {
@@ -37,35 +34,16 @@ export function useProjectsContext() {
 }
 
 export default function ProjectsRoute() {
-	const [state, dispatch] = React.useReducer(
-		asyncReducer<Project[]>,
-		asyncInitialState as AsyncState<Project[]>
-	);
+	const projects = useAsync<Project[]>();
 
 	const fetchProjects = React.useCallback(() => {
-		// throw new Error("throw fetch error"); // caught during render
-		dispatch({ type: "PENDING" });
-		getProjects()
-			.then((data) => {
-				// console.warn(`THROW THEN`); //LOG
-				// throw new Error("throw fetch THEN"); // doesn't get caught since async
-				dispatch({ type: "FULFILLED", data });
-			})
-			.catch((err) => {
-				console.warn(`COMPONENT ERROR CATCH`); //LOG
-				console.info(`err: `, err); //LOG
-				console.info(`err.name: `, err.name); //LOG
-				console.info(`err.msg: `, err.message); //LOG
-				// throw new Error("throw fetch rejection"); // doesn't get caught since async
-				dispatch({ type: "ERROR", error: err });
-			});
-	}, []);
+		projects.run(getProjects());
+	}, [projects.run]);
 
 	React.useEffect(() => {
 		fetchProjects();
 	}, [fetchProjects]);
 
-	// throw new Error("throw render error"); // caught during render
 	return (
 		<div className={styles.projects}>
 			<aside className={styles.projectsSidebar}>
@@ -78,16 +56,16 @@ export default function ProjectsRoute() {
 				<hr />
 				<section>
 					<h2>Projects</h2>
-					{state.status === "PENDING" ? (
+					{projects.status === "PENDING" ? (
 						<div>
 							<span>loading...</span>
 						</div>
-					) : state.status === "ERROR" ? (
+					) : projects.status === "ERROR" ? (
 						<div style={{ padding: "1rem" }}>
-							<GeneralErrorFallback error={state.error} />
+							<GeneralErrorFallback error={projects.error} />
 						</div>
 					) : (
-						<ProjectNavList projects={state.data} />
+						<ProjectNavList projects={projects.data} />
 					)}
 				</section>
 			</aside>
@@ -127,4 +105,61 @@ export function asyncReducer<TData>(
 		default:
 			return state;
 	}
+}
+
+export function useAsync<TData>(initialState?: AsyncState<TData>) {
+	const initialStateRef = React.useRef<AsyncState<TData>>({
+		...(asyncInitialState as AsyncState<TData>),
+		...initialState,
+	});
+
+	const [state, unsafeDispatch] = React.useReducer(
+		asyncReducer<TData>,
+		initialStateRef.current
+	);
+	const safeDispatch = useSafeDispatch(unsafeDispatch);
+
+	const run = React.useCallback(
+		async (promise: Promise<TData>) => {
+			if (!promise || !promise.then)
+				throw new Error("The argument passed to useAsync().run must be a promise.");
+
+			safeDispatch({ type: "PENDING" });
+			try {
+				const data = await promise;
+				safeDispatch({ type: "FULFILLED", data });
+				return data;
+			} catch (error) {
+				safeDispatch({ type: "ERROR", error });
+				return await Promise.reject(error);
+			}
+		},
+		[safeDispatch]
+	);
+
+	return {
+		status: state.status,
+		data: state.data,
+		error: state.error,
+		run,
+		isPending: state.status === "PENDING",
+		isFulfilled: state.status === "FULFILLED",
+		isError: state.status === "ERROR",
+	};
+}
+
+export function useSafeDispatch<TAction>(dispatch: React.Dispatch<TAction>) {
+	const mountedRef = React.useRef(false);
+
+	React.useLayoutEffect(() => {
+		mountedRef.current = true;
+		return () => {
+			mountedRef.current = false;
+		};
+	}, []);
+
+	return React.useCallback(
+		(action: TAction) => (mountedRef.current ? dispatch(action) : void 0),
+		[dispatch]
+	);
 }
