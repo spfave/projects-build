@@ -108,3 +108,69 @@ export function useAsync<TData>(initialState?: AsyncState<TData>) {
 		isError: state.status === "ERROR",
 	};
 }
+
+export function useQuery<TData>(queryFunc: () => Promise<TData>) {
+	const query = useAsync<TData>();
+
+	const callbackQueryFunc = React.useCallback(queryFunc, []);
+
+	React.useEffect(() => {
+		query.run(callbackQueryFunc());
+	}, [query.run, callbackQueryFunc]);
+
+	return {
+		status: query.status,
+		data: query.data,
+		error: query.error,
+		isPending: query.status === "PENDING",
+		isFulfilled: query.status === "FULFILLED",
+		isError: query.status === "ERROR",
+	};
+}
+
+export function useFetch<TData = unknown>(
+	input: string | URL | globalThis.Request,
+	init?: RequestInit,
+	handleHttpErrors?: (status: number) => void
+) {
+	const [state, dispatch] = React.useReducer(
+		asyncReducer<TData>,
+		asyncInitialState as AsyncState<TData>
+	);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Challenging to "memoize" nested object dependencies (input, init)
+	React.useEffect(() => {
+		const controller = new AbortController();
+		const abortSignals = [controller.signal, ...(init?.signal ? [init.signal] : [])];
+
+		async function runFetch() {
+			const res = await fetch(input, {
+				...init,
+				signal: AbortSignal.any(abortSignals),
+			}).catch((err) => {
+				throw Error("No connection", { cause: err });
+			});
+
+			handleHttpErrors?.(res.status);
+			if (!res.ok) throw new Error("Fetch failed");
+
+			return res.json() as TData;
+		}
+
+		dispatch({ type: "PENDING" });
+		runFetch()
+			.then((data) => dispatch({ type: "FULFILLED", data }))
+			.catch((error) => dispatch({ type: "ERROR", error }));
+
+		return () => controller.abort("Cancel request");
+	}, []); // [input, init, handleHttpErrors]
+
+	return {
+		status: state.status,
+		data: state.data,
+		error: state.error,
+		isPending: state.status === "PENDING",
+		isFulfilled: state.status === "FULFILLED",
+		isError: state.status === "ERROR",
+	};
+}
