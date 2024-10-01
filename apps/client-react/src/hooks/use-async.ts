@@ -32,7 +32,7 @@ export type AsyncAction<TData> =
 	| { type: "FULFILLED"; data: TData }
 	| { type: "ERROR"; error: unknown }
 	| { type: "RESET"; initialState?: AsyncState<TData> };
-const asyncInitialState: AsyncState = { status: "FULFILLED", data: null, error: null };
+const asyncInitialState: AsyncState = { status: "PENDING", data: null, error: null };
 
 export function asyncReducer<TData>(
 	state: AsyncState<TData>,
