@@ -3,8 +3,9 @@ import { Link, Outlet, useOutletContext } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/general-error-fallback";
+import { SwitchAsync } from "~/components/ui/switch";
 import ProjectNavList from "~/feature-projects/projects-nav-list";
-import { useAsync } from "~/hooks/use-async";
+import { useQuery } from "~/hooks/use-async";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
@@ -26,21 +27,13 @@ export async function getProjects() {
 	return projects;
 }
 
-type ProjectsContext = { fetchProjects: () => void };
+type ProjectsContext = { fetchProjects: () => Promise<Project[]> };
 export function useProjectsContext() {
 	return useOutletContext<ProjectsContext>();
 }
 
 export default function ProjectsRoute() {
-	const projects = useAsync<Project[]>();
-
-	const fetchProjects = React.useCallback(() => {
-		projects.run(getProjects());
-	}, [projects.run]);
-
-	React.useEffect(() => {
-		fetchProjects();
-	}, [fetchProjects]);
+	const projects = useQuery(getProjects);
 
 	return (
 		<div className={styles.projects}>
@@ -54,21 +47,26 @@ export default function ProjectsRoute() {
 				<hr />
 				<section>
 					<h2>Projects</h2>
-					{projects.status === "PENDING" ? (
-						<div>
-							<span>loading...</span>
-						</div>
-					) : projects.status === "ERROR" ? (
-						<div style={{ padding: "1rem" }}>
-							<GeneralErrorFallback error={projects.error} />
-						</div>
-					) : (
-						<ProjectNavList projects={projects.data} />
-					)}
+					<SwitchAsync
+						state={projects.status}
+						display={{
+							FULFILLED: <ProjectNavList projects={projects.data} />,
+							PENDING: (
+								<div>
+									<span>loading...</span>
+								</div>
+							),
+							ERROR: (
+								<div style={{ padding: "1rem" }}>
+									<GeneralErrorFallback error={projects.error} />
+								</div>
+							),
+						}}
+					/>
 				</section>
 			</aside>
 			<div className={styles.projectsOutlet}>
-				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
+				<Outlet context={{ fetchProjects: projects.refetch } satisfies ProjectsContext} />
 			</div>
 		</div>
 	);
