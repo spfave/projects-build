@@ -27,18 +27,18 @@ export async function wait(duration: number): Promise<void> {
 /**
  * Safely executes an async function in `try`/`catch`/`finally` to return result or error
  * as value.
- * @param asyncFunc Async function to execute
+ * @param asyncFn Async function to execute
  * @param onCatch Function to execute on caught error/exception
  * @param onFinally Function to execute on completion
  * @returns `asyncFunc` result wrapped in a `Failure`/`Success` discriminator
  */
 export async function safeAsync<TError = unknown, TPromise = unknown>(
-	asyncFunc: () => Promise<TPromise>,
+	asyncFn: () => Promise<TPromise>,
 	onCatch = (err: unknown) => {},
 	onFinally = () => {}
 ) {
 	try {
-		const value = await asyncFunc().catch((err) => {
+		const value = await asyncFn().catch((err) => {
 			throw err;
 		});
 		return new Success(value);

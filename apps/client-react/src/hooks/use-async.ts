@@ -109,25 +109,28 @@ export function useAsync<TData>(initialState?: AsyncState<TData>) {
 	};
 }
 
-export function useQuery<TData>(queryFunc: () => Promise<TData>) {
+export function useQuery<TData>(queryFn: () => Promise<TData>) {
 	const query = useAsync<TData>();
 
-	const callbackQueryFunc = React.useCallback(queryFunc, []);
+	const cbQueryFn = React.useCallback(queryFn, []);
+	const refetch = React.useCallback(() => query.run(cbQueryFn()), [query.run, cbQueryFn]);
 
 	React.useEffect(() => {
-		query.run(callbackQueryFunc());
-	}, [query.run, callbackQueryFunc]);
+		refetch();
+	}, [refetch]);
 
 	return {
 		status: query.status,
 		data: query.data,
 		error: query.error,
+		refetch,
 		isPending: query.status === "PENDING",
 		isFulfilled: query.status === "FULFILLED",
 		isError: query.status === "ERROR",
 	};
 }
 
+// Note: created for demo, not recommended for use
 export function useFetch<TData = unknown>(
 	input: string | URL | globalThis.Request,
 	init?: RequestInit,
@@ -138,7 +141,7 @@ export function useFetch<TData = unknown>(
 		asyncInitialState as AsyncState<TData>
 	);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Challenging to "memoize" nested object dependencies (input, init)
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Challenging to properly "memoize" dependencies
 	React.useEffect(() => {
 		const controller = new AbortController();
 		const abortSignals = [controller.signal, ...(init?.signal ? [init.signal] : [])];
@@ -163,7 +166,7 @@ export function useFetch<TData = unknown>(
 			.catch((error) => dispatch({ type: "ERROR", error }));
 
 		return () => controller.abort("Cancel request");
-	}, []); // [input, init, handleHttpErrors]
+	}, []); // [input, init, handleHttpErrors] - ?? how to memo nested objects: input, init
 
 	return {
 		status: state.status,
