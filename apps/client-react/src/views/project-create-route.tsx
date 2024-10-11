@@ -71,7 +71,6 @@ export default function ProjectCreateRoute() {
 			<h2>New Project</h2>
 			<form
 				ref={refForm}
-				method="POST"
 				onSubmit={handleCreateProject}
 				noValidate={isHydrated}
 				aria-invalid={errAttrForm?.hasErrors}

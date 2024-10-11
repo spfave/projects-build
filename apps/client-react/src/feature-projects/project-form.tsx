@@ -68,7 +68,6 @@ export default function ProjectForm(props: ProjectFormProps) {
 		<form
 			className={styles.projectForm}
 			ref={refForm}
-			method="POST"
 			onSubmit={handleSubmit}
 			noValidate={isHydrated}
 			aria-invalid={errAttrForm?.hasErrors}

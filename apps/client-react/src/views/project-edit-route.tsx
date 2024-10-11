@@ -91,7 +91,6 @@ export default function ProjectEditRoute() {
 			<h2>Edit Project</h2>
 			<form
 				ref={refForm}
-				method="POST"
 				onSubmit={handelUpdateProject}
 				noValidate={isHydrated}
 				aria-invalid={errAttrForm?.hasErrors}

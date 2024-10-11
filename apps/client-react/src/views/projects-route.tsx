@@ -53,7 +53,7 @@ export default function ProjectsRoute() {
 							FULFILLED: <ProjectNavList projects={projects.data} />,
 							PENDING: (
 								<div>
-									<span>loading...</span>
+									<span>Loading Projects...</span>
 								</div>
 							),
 							ERROR: (
