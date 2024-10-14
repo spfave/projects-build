@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
 import type { Project } from "@projectsbuild/shared/projects";

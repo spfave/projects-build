@@ -6,6 +6,7 @@ import type { Project } from "@projectsbuild/shared/projects";
 import Show from "~/components/ui/show";
 import { useProjectsContext } from "./projects-route";
 
+import { useAsync } from "~/hooks/use-async";
 import styles from "./project-route.module.css";
 
 export async function getProjectById(id: string) {
@@ -25,15 +26,14 @@ export async function deleteProjectById(id: string) {
 export default function ProjectRoute() {
 	const params = useParams();
 	const navigate = useNavigate();
-	const [project, setProject] = React.useState<Project | null>(null);
 	const { fetchProjects } = useProjectsContext();
 
+	const projectQ = useAsync();
 	React.useEffect(() => {
-		if (!params.id) return;
+		if (!params.id) throw new Error("Parameter id must exist.");
 
-		setProject(null);
-		getProjectById(params.id).then(setProject);
-	}, [params.id]);
+		projectQ.run(getProjectById(params.id));
+	}, [projectQ.run, params.id]);
 
 	async function handleDeleteProject(evt: React.FormEvent<HTMLFormElement>) {
 		evt.preventDefault();
@@ -44,8 +44,10 @@ export default function ProjectRoute() {
 		navigate("/projects");
 	}
 
-	if (project == null) return <div>Loading Project...</div>;
+	if (projectQ.isPending) return <div>Loading Project...</div>;
+	if (projectQ.error) return <div>{`${projectQ.error}`}</div>;
 
+	const project = projectQ.data as Project;
 	return (
 		<section key={project.id} className={styles.project}>
 			<h2>{project.name}</h2>

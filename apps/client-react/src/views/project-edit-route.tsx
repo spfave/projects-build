@@ -16,6 +16,7 @@ import { useRerender } from "~/hooks/use-rerender";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
 
+import { useQuery } from "~/hooks/use-async";
 import styles from "./project-create-route.module.css";
 
 export async function updateProject(project: Project) {
@@ -38,19 +39,16 @@ export default function ProjectEditRoute() {
 	const { fetchProjects } = useProjectsContext();
 
 	const refForm = React.useRef<HTMLFormElement>(null);
-	const [project, setProject] = React.useState<Project | null>(null);
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
 
-	React.useEffect(() => {
-		if (!params.id) return;
+	const projectQ = useQuery(async () => {
+		if (!params.id) throw new Error("Parameter id must exist.");
 
-		setProject(null);
-		getProjectById(params.id).then((project) => {
-			setProject(project);
-			setProjectStatus(project.status);
-		});
-	}, [params.id]);
+		const project = await getProjectById(params.id);
+		setProjectStatus(project.status);
+		return project;
+	});
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -86,6 +84,9 @@ export default function ProjectEditRoute() {
 		formErrorsAttributes(projectErrors) || {};
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 
+	if (projectQ.error) return <div>{`${projectQ.error}`}</div>;
+
+	const project = projectQ.data;
 	return (
 		<section className={styles.projectCreate}>
 			<h2>Edit Project</h2>
