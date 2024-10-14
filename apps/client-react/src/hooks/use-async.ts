@@ -130,7 +130,9 @@ export function useQuery<TData>(queryFn: () => Promise<TData>) {
 	};
 }
 
-// Note: created for demo, not recommended for use
+/**
+ * @deprecated Created for illustration, not recommended for use
+ */
 export function useFetch<TData = unknown>(
 	input: string | URL | globalThis.Request,
 	init?: RequestInit,
@@ -166,7 +168,7 @@ export function useFetch<TData = unknown>(
 			.catch((error) => dispatch({ type: "ERROR", error }));
 
 		return () => controller.abort("Cancel request");
-	}, []); // [input, init, handleHttpErrors] - ?? how to memo nested objects: input, init
+	}, []); // [input, init, handleHttpErrors] - ?? how to memo complex objects/classes: input, init
 
 	return {
 		status: state.status,
