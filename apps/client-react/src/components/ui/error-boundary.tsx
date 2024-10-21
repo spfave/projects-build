@@ -1,5 +1,9 @@
 import * as React from "react";
 
+// Ref: Error Boundary Component
+// https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
+// https://github.com/bvaughn/react-error-boundary
+// https://docs.solidjs.com/reference/components/error-boundary
 type ErrorBoundaryFallbackComponentProps = { error: unknown };
 
 type ErrorBoundaryBaseProps = React.PropsWithChildren<{
@@ -22,10 +26,6 @@ type ErrorBoundaryState =
 	| { didCatch: false; error: null };
 const errorBoundaryInitialState: ErrorBoundaryState = { didCatch: false, error: null };
 
-// Ref:
-// https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
-// https://github.com/bvaughn/react-error-boundary
-// https://docs.solidjs.com/reference/components/error-boundary
 /**
  * Catches uncaught errors inside components and renders a fallback component in its place.
  *

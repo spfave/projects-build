@@ -1,5 +1,8 @@
 import * as React from "react";
 
+// Ref: For/List Component
+// https://docs.solidjs.com/reference/components/for
+// https://www.youtube.com/watch?v=5s6dIkrv6Y4&list=PLL7pT-2dDRHgjTlmQAdnLpx9LxqWTGeO5
 type ForBaseProps<TItem> = {
 	array: TItem[] | false | null | undefined;
 	getKey: (item: TItem) => React.Key;
@@ -15,9 +18,6 @@ type ForPropsWithDisplay<TItem> = ForBaseProps<TItem> & {
 };
 type ForProps<TItem> = ForPropsWithChildren<TItem> | ForPropsWithDisplay<TItem>;
 
-// Ref:
-// https://docs.solidjs.com/reference/components/for
-// https://www.youtube.com/watch?v=5s6dIkrv6Y4&list=PLL7pT-2dDRHgjTlmQAdnLpx9LxqWTGeO5
 /**
  * Renders a component for each item in an array. If the array is empty renders an optional
  * fallback.
