@@ -1,22 +1,22 @@
 import * as React from "react";
 
 export function useSafeDispatch<TAction>(dispatch: React.Dispatch<TAction>) {
-	const mountedRef = React.useRef(false);
+	const refMounted = React.useRef(false);
 
 	React.useLayoutEffect(() => {
-		mountedRef.current = true;
+		refMounted.current = true;
 		return () => {
-			mountedRef.current = false;
+			refMounted.current = false;
 		};
 	}, []);
 
 	return React.useCallback(
-		(action: TAction) => (mountedRef.current ? dispatch(action) : void 0),
+		(action: TAction) => (refMounted.current ? dispatch(action) : void 0),
 		[dispatch]
 	);
 }
 
-// Ref: useAsync
+// Ref: asyncReducer & useAsync
 // https://github.com/kentcdodds/bookshelf/blob/main/src/utils/hooks.js
 // https://github.com/kentcdodds/bookshelf/issues/127
 // https://kentcdodds.com/blog/how-to-use-react-context-effectively
@@ -89,7 +89,7 @@ export function useAsync<TData>(initialState?: AsyncState<TData>) {
 				return data;
 			} catch (error) {
 				setError(error);
-				return await Promise.reject(error);
+				return Promise.reject(error);
 			}
 		},
 		[safeDispatch, setData, setError]
@@ -130,50 +130,75 @@ export function useQuery<TData>(queryFn: () => Promise<TData>) {
 	};
 }
 
+// Ref: useFetch
+// https://github.com/w3cj/use-x
+type UseFetchOptions = { immediate: boolean };
+const defaultFetchOptions: UseFetchOptions = { immediate: true };
+
 /**
- * @deprecated Created for illustration, not recommended for use
+ * @deprecated Created as demo.
  */
 export function useFetch<TData = unknown>(
-	input: string | URL | globalThis.Request,
-	init?: RequestInit,
-	handleHttpErrors?: (status: number) => void
+	input: string | URL | globalThis.Request, // Parameters<typeof fetch>[0],
+	init?: RequestInit, // Parameters<typeof fetch>[1],
+	options?: UseFetchOptions
+	// handleHttpErrors?: (status: number) => void
 ) {
-	const [state, dispatch] = React.useReducer(
+	const refAbortController = React.useRef(new AbortController());
+	const [fetchInput, updateFetchInput] = React.useState(input);
+	const [fetchInit, updateFetchInit] = React.useState(init);
+	const [fetchOptions, updateFetchOptions] = React.useState(
+		options ?? defaultFetchOptions
+	);
+	const [state, unsafeDispatch] = React.useReducer(
 		asyncReducer<TData>,
 		asyncInitialState as AsyncState<TData>
 	);
+	const safeDispatch = useSafeDispatch(unsafeDispatch);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Challenging to properly "memoize" dependencies
-	React.useEffect(() => {
-		const controller = new AbortController();
-		const abortSignals = [controller.signal, ...(init?.signal ? [init.signal] : [])];
+	const runFetch = React.useCallback(async () => {
+		refAbortController.current.abort("AbortInFlight");
+		refAbortController.current = new AbortController();
 
-		async function runFetch() {
-			const res = await fetch(input, {
-				...init,
-				signal: AbortSignal.any(abortSignals),
-			}).catch((err) => {
-				throw Error("No connection", { cause: err });
+		safeDispatch({ type: "PENDING" });
+		try {
+			const res = await fetch(fetchInput, {
+				...fetchInit,
+				signal: AbortSignal.any([
+					refAbortController.current.signal,
+					...(fetchInit?.signal ? [fetchInit.signal] : []),
+				]),
 			});
 
-			handleHttpErrors?.(res.status);
-			if (!res.ok) throw new Error("Fetch failed");
+			// handleHttpErrors?.(res.status);
+			if (!res.ok) throw new Error("Fetch failed", { cause: res });
 
-			return res.json() as TData;
+			const data = (await res.json()) as TData;
+			safeDispatch({ type: "FULFILLED", data });
+			return data;
+		} catch (error) {
+			// To handle caught aborted signal error
+			if (!["AbortUnmount", "AbortInFlight"].includes(error as string)) {
+				safeDispatch({ type: "ERROR", error });
+			}
+			// safeDispatch({ type: "ERROR", error });
+			return Promise.reject(error);
 		}
+	}, [fetchInput, fetchInit, safeDispatch]);
 
-		dispatch({ type: "PENDING" });
-		runFetch()
-			.then((data) => dispatch({ type: "FULFILLED", data }))
-			.catch((error) => dispatch({ type: "ERROR", error }));
-
-		return () => controller.abort("Cancel request");
-	}, []); // [input, init, handleHttpErrors] - ?? how to memo complex objects/classes: input, init
+	React.useEffect(() => {
+		if (fetchOptions.immediate) runFetch();
+		return () => refAbortController.current.abort("AbortUnmount");
+	}, [runFetch, fetchOptions]);
 
 	return {
 		status: state.status,
 		data: state.data,
 		error: state.error,
+		runFetch,
+		updateFetchInput,
+		updateFetchInit,
+		updateFetchOptions,
 		isPending: state.status === "PENDING",
 		isFulfilled: state.status === "FULFILLED",
 		isError: state.status === "ERROR",
