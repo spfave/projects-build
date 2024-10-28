@@ -1,5 +1,10 @@
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
+import {
+	FetchError,
+	FetchResponseError,
+	HttpResponseError,
+} from "@projectsbuild/library/errors";
 import type { Project } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/general-error-fallback";
 import { SwitchAsync } from "~/components/ui/switch";
@@ -10,18 +15,20 @@ import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
 
 export async function getProjects() {
-	// fetch can error: if no connection made
+	// fetch can error: network connection failure
 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`).catch(
 		(err) => {
-			throw Error("No connection", { cause: err });
+			throw new FetchError("Fetch failed for getProjects", { cause: err });
 		}
 	);
 
 	// response 'status' or 'ok' property can indicate an error
-	if (res.status >= 400) throw Error("HttpResponseError");
-	if (!res.ok) throw new Error("Get Projects fetch failed", { cause: res });
+	if (res.status >= 400)
+		throw new HttpResponseError(res, "Http status error for getProjects");
+	if (!res.ok)
+		throw new FetchResponseError("Fetch response not ok for getProjects", { cause: res });
 
-	// json parsing can error: parse error
+	// json parsing can error: SyntaxError
 	const projects = (await res.json()) as Project[];
 	return projects;
 }

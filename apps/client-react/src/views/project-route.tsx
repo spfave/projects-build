@@ -1,16 +1,30 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import {
+	FetchError,
+	FetchResponseError,
+	HttpResponseError,
+} from "@projectsbuild/library/errors";
 import { ymdPretty } from "@projectsbuild/library/utils";
 import type { Project } from "@projectsbuild/shared/projects";
+import GeneralErrorFallback from "~/components/general-error-fallback";
 import Show from "~/components/ui/show";
+import { useAsync } from "~/hooks/use-async";
 import { useProjectsContext } from "./projects-route";
 
-import { useAsync } from "~/hooks/use-async";
 import styles from "./project-route.module.css";
 
 export async function getProjectById(id: string) {
-	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`);
+	const res = await fetch(
+		`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`
+	).catch((err) => {
+		throw new FetchError("Fetch failed for getProjectById", { cause: err });
+	});
+
+	if (res.status >= 400) throw new HttpResponseError(res);
+	if (!res.ok) throw new FetchResponseError("Fetch response not ok for getProjectById");
+
 	const project = (await res.json()) as Project;
 	return project;
 }
@@ -45,7 +59,7 @@ export default function ProjectRoute() {
 	}
 
 	if (projectQ.isPending) return <div>Loading Project...</div>;
-	if (projectQ.error) return <div>{`${projectQ.error}`}</div>;
+	if (projectQ.error) return <GeneralErrorFallback error={projectQ.error} />;
 
 	const project = projectQ.data as Project;
 	return (
