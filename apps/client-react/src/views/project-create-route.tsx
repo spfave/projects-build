@@ -22,8 +22,8 @@ export async function createProject(project: ProjectInput) {
 		method: "POST",
 		body: JSON.stringify(project),
 	});
-	const newProject = (await res.json()) as Project;
 
+	const newProject = (await res.json()) as Project;
 	return newProject;
 }
 

@@ -1,6 +1,11 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import {
+	FetchError,
+	FetchResponseError,
+	HttpResponseError,
+} from "@projectsbuild/library/errors";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import type {
@@ -9,14 +14,15 @@ import type {
 	ProjectFields,
 	ProjectStatus,
 } from "@projectsbuild/shared/projects";
+import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorList from "~/components/error-list";
+import { useQuery } from "~/hooks/use-async";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useRerender } from "~/hooks/use-rerender";
 import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
 
-import { useQuery } from "~/hooks/use-async";
 import styles from "./project-create-route.module.css";
 
 export async function updateProject(project: Project) {
@@ -26,9 +32,14 @@ export async function updateProject(project: Project) {
 			method: "PUT",
 			body: JSON.stringify(project),
 		}
-	);
-	const updatedProject = (await res.json()) as Project;
+	).catch((err) => {
+		throw new FetchError("Fetch failed for updateProject", { cause: err });
+	});
 
+	if (res.status >= 400) throw new HttpResponseError(res, "Failed to update project");
+	if (!res.ok) throw new FetchResponseError("Fetch response not ok for updateProject");
+
+	const updatedProject = (await res.json()) as Project;
 	return updatedProject;
 }
 
@@ -84,7 +95,7 @@ export default function ProjectEditRoute() {
 		formErrorsAttributes(projectErrors) || {};
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 
-	if (projectQ.error) return <div>{`${projectQ.error}`}</div>;
+	if (projectQ.error) return <GeneralErrorFallback error={projectQ.error} />;
 
 	const project = projectQ.data;
 	return (
