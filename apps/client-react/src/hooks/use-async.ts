@@ -23,11 +23,13 @@ export function useSafeDispatch<TAction>(dispatch: React.Dispatch<TAction>) {
 // https://headbutt.io/picking-apart-kents-useasync/
 // https://tanstack.com/query/latest
 export type AsyncState<TData = unknown> =
+	| { status: "IDLE"; data: null; error: null }
 	| { status: "PENDING"; data: null; error: null }
 	| { status: "FULFILLED"; data: TData; error: null }
 	| { status: "ERROR"; data: null; error: unknown };
 export type AsyncStatus = AsyncState["status"];
 export type AsyncAction<TData> =
+	| { type: "IDLE" }
 	| { type: "PENDING" }
 	| { type: "FULFILLED"; data: TData }
 	| { type: "ERROR"; error: unknown }
@@ -39,6 +41,8 @@ export function asyncReducer<TData>(
 	action: AsyncAction<TData>
 ): AsyncState<TData> {
 	switch (action.type) {
+		case "IDLE":
+			return { status: "IDLE", data: null, error: null };
 		case "PENDING":
 			return { status: "PENDING", data: null, error: null };
 		case "FULFILLED":
