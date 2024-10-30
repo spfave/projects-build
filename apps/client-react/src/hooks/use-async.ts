@@ -113,6 +113,7 @@ export function useAsync<TData>(initialState?: AsyncState<TData>) {
 	};
 }
 
+// Ref:https://tanstack.com/query/latest/docs/framework/react/guides/queries
 export function useQuery<TData>(queryFn: () => Promise<TData>) {
 	const query = useAsync<TData>();
 
@@ -131,6 +132,32 @@ export function useQuery<TData>(queryFn: () => Promise<TData>) {
 		isPending: query.status === "PENDING",
 		isFulfilled: query.status === "FULFILLED",
 		isError: query.status === "ERROR",
+	};
+}
+// Ref: https://tanstack.com/query/latest/docs/framework/react/guides/mutations
+// biome-ignore lint/suspicious/noExplicitAny: use 'any' over 'unknown' to allow TS inference without error
+export function useMutation<TMutation extends (...args: any[]) => Promise<any>>(
+	mutationFn: TMutation
+) {
+	const mutation = useAsync<ReturnType<TMutation>>({
+		status: "IDLE",
+		data: null,
+		error: null,
+	});
+
+	function mutate(...args: Parameters<TMutation>) {
+		return mutation.run(mutationFn(...args));
+	}
+
+	return {
+		status: mutation.status,
+		data: mutation.data,
+		error: mutation.error,
+		mutate,
+		isIdle: mutation.status === "IDLE",
+		isPending: mutation.status === "PENDING",
+		isFulfilled: mutation.status === "FULFILLED",
+		isError: mutation.status === "ERROR",
 	};
 }
 
