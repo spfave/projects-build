@@ -6,7 +6,7 @@ import {
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
 import type { Project } from "@projectsbuild/shared/projects";
-import GeneralErrorFallback from "~/components/general-error-fallback";
+import GeneralErrorFallback from "~/components/error-fallback";
 import { SwitchAsync } from "~/components/ui/switch";
 import ProjectNavList from "~/feature-projects/projects-nav-list";
 import { useQuery } from "~/hooks/use-async";

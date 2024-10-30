@@ -8,7 +8,7 @@ import {
 } from "@projectsbuild/library/errors";
 import { ymdPretty } from "@projectsbuild/library/utils";
 import type { Project } from "@projectsbuild/shared/projects";
-import GeneralErrorFallback from "~/components/general-error-fallback";
+import GeneralErrorFallback from "~/components/error-fallback";
 import Show from "~/components/ui/show";
 import { useAsync } from "~/hooks/use-async";
 import { useProjectsContext } from "./projects-route";

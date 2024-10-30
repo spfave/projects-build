@@ -1,4 +1,4 @@
-.generalErrorFallback {
+.errorFallback {
 	p:first-child {
 		font-weight: 600;
 	}

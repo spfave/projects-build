@@ -5,7 +5,7 @@ import { HttpResponseError } from "@projectsbuild/library/errors";
 import { getErrorMessage } from "@projectsbuild/library/utils";
 import Show from "./ui/show";
 
-import styles from "./general-error-fallback.module.css";
+import styles from "./error-fallback.module.css";
 
 type DefaultErrorFallbackProps = { error: unknown };
 export function DefaultErrorFallback(props: DefaultErrorFallbackProps) {
@@ -15,7 +15,7 @@ export function DefaultErrorFallback(props: DefaultErrorFallbackProps) {
 		error instanceof Error ? `${error.name}: ${error.message}` : getErrorMessage(error);
 
 	return (
-		<div className={styles.generalErrorFallback}>
+		<div className={styles.errorFallback}>
 			<p>An Error Occurred</p>
 			<p>
 				<samp>{message}</samp>
@@ -30,7 +30,7 @@ export function DefaultHttpResponseErrorFallback(
 ) {
 	const { error } = props;
 	return (
-		<div className={styles.generalErrorFallback}>
+		<div className={styles.errorFallback}>
 			<p>A HTTP Response Error Occurred</p>
 			<p>
 				<Show when={error.context.message}>
