@@ -15,10 +15,10 @@ export class FetchResponseError extends Error {
 }
 
 type HttpResponseErrorContext = {
+	message?: string;
 	status: number;
 	statusText: string;
 	url: string;
-	message?: string;
 };
 export class HttpResponseError extends Error {
 	override readonly name = HttpResponseError.name;
@@ -30,10 +30,10 @@ export class HttpResponseError extends Error {
 
 		super(errMsg, options);
 		this.context = {
+			message,
 			status: response.status,
 			statusText: response.statusText,
 			url: response.url,
-			message,
 		};
 	}
 }
