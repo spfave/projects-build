@@ -59,7 +59,7 @@ export default function ProjectRoute() {
 	}
 
 	if (projectQ.isPending) return <div>Loading Project...</div>;
-	if (projectQ.error) return <GeneralErrorFallback error={projectQ.error} />;
+	if (projectQ.error) return <ProjectErrorFallback error={projectQ.error} />;
 
 	const project = projectQ.data as Project;
 	return (
@@ -122,5 +122,32 @@ export default function ProjectRoute() {
 				</form>
 			</div>
 		</section>
+	);
+}
+
+type ProjectErrorFallbackProps = { error: unknown };
+function ProjectErrorFallback(props: ProjectErrorFallbackProps) {
+	return (
+		<GeneralErrorFallback
+			error={props.error}
+			httpResponseErrorHandlers={{
+				404: ({ params }) => (
+					<div
+						style={{
+							background: "var(--color-danger)",
+							color: "white",
+							fontWeight: "bold",
+							display: "flex",
+							justifyContent: "center",
+							padding: "1rem",
+						}}
+					>
+						<p>No project with id "{params.id}" could be found</p>
+					</div>
+				),
+			}}
+			defaultHttpResponseErrorHandler={() => <p>Project could not be found</p>}
+			unexpectedErrorHandler={<p>Oh-no an error occurred, sorry</p>}
+		/>
 	);
 }
