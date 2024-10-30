@@ -16,7 +16,7 @@ import type {
 } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorList from "~/components/error-list";
-import { useQuery } from "~/hooks/use-async";
+import { useAsync, useQuery } from "~/hooks/use-async";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useRerender } from "~/hooks/use-rerender";
@@ -60,6 +60,7 @@ export default function ProjectEditRoute() {
 		setProjectStatus(project.status);
 		return project;
 	});
+	const mutation = useAsync<Project>({ status: "IDLE", data: null, error: null });
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -75,7 +76,7 @@ export default function ProjectEditRoute() {
 		if (projectErrors) setProjectErrors(null);
 
 		const projectPayload = transformProject(formObj as ProjectFields, "update");
-		const project = await updateProject(projectPayload);
+		const project = await mutation.run(updateProject(projectPayload));
 
 		fetchProjects();
 		navigate(`/projects/${project.id}`);
@@ -96,6 +97,8 @@ export default function ProjectEditRoute() {
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 
 	if (projectQ.error) return <GeneralErrorFallback error={projectQ.error} />;
+	if (mutation.isPending) return <div>Updating project...</div>;
+	if (mutation.isError) return <GeneralErrorFallback error={mutation.error} />;
 
 	const project = projectQ.data;
 	return (
