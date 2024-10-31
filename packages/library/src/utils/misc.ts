@@ -25,7 +25,7 @@ export function valueIfTruthy<TInput, TOutput extends {}>(
 ): TOutput | undefined;
 export function valueIfTruthy<TInput, TOutput>(input: TInput, output?: TOutput) {
 	if (!input) return undefined;
-	return output != null ? output : input;
+	return output ?? input;
 }
 
 // /**
