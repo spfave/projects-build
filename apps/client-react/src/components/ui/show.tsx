@@ -1,5 +1,9 @@
 import type * as React from "react";
 
+// Ref: Show Component
+// https://react.dev/reference/react/cloneElement#passing-data-with-a-render-prop
+// https://github.com/romac/react-if/tree/master
+// https://docs.solidjs.com/reference/components/show
 type ShowBaseProps<T> = {
 	when: T | false | null | undefined;
 	fallback?: React.ReactNode;
@@ -14,10 +18,6 @@ type ShowPropsWithDisplay<T> = ShowBaseProps<T> & {
 };
 type ShowProps<T> = ShowPropsWithChildren<T> | ShowPropsWithDisplay<T>;
 
-// Ref:
-// https://react.dev/reference/react/cloneElement#passing-data-with-a-render-prop
-// https://github.com/romac/react-if/tree/master
-// https://docs.solidjs.com/reference/components/show
 /**
  * Conditionally renders a component otherwise renders an optional fallback component.
  * @description Takes as props a condition `when` to evaluate the render path, either

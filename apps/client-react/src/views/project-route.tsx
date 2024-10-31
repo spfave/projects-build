@@ -1,15 +1,30 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import {
+	FetchError,
+	FetchResponseError,
+	HttpResponseError,
+} from "@projectsbuild/library/errors";
 import { ymdPretty } from "@projectsbuild/library/utils";
 import type { Project } from "@projectsbuild/shared/projects";
-import Show from "~/components/show";
+import GeneralErrorFallback from "~/components/error-fallback";
+import Show from "~/components/ui/show";
+import { useAsync } from "~/hooks/use-async";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-route.module.css";
 
 export async function getProjectById(id: string) {
-	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`);
+	const res = await fetch(
+		`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`
+	).catch((err) => {
+		throw new FetchError("Fetch failed for getProjectById", { cause: err });
+	});
+
+	if (res.status >= 400) throw new HttpResponseError(res);
+	if (!res.ok) throw new FetchResponseError("Fetch response not ok for getProjectById");
+
 	const project = (await res.json()) as Project;
 	return project;
 }
@@ -25,15 +40,14 @@ export async function deleteProjectById(id: string) {
 export default function ProjectRoute() {
 	const params = useParams();
 	const navigate = useNavigate();
-	const [project, setProject] = React.useState<Project | null>(null);
 	const { fetchProjects } = useProjectsContext();
 
+	const projectQ = useAsync();
 	React.useEffect(() => {
-		if (!params.id) return;
+		if (!params.id) throw new Error("Parameter id must exist.");
 
-		setProject(null);
-		getProjectById(params.id).then(setProject);
-	}, [params.id]);
+		projectQ.run(getProjectById(params.id));
+	}, [projectQ.run, params.id]);
 
 	async function handleDeleteProject(evt: React.FormEvent<HTMLFormElement>) {
 		evt.preventDefault();
@@ -44,8 +58,10 @@ export default function ProjectRoute() {
 		navigate("/projects");
 	}
 
-	if (project == null) return <div>Loading Project...</div>;
+	if (projectQ.isPending) return <div>Loading Project...</div>;
+	if (projectQ.error) return <ProjectErrorFallback error={projectQ.error} />;
 
+	const project = projectQ.data as Project;
 	return (
 		<section key={project.id} className={styles.project}>
 			<h2>{project.name}</h2>
@@ -106,5 +122,32 @@ export default function ProjectRoute() {
 				</form>
 			</div>
 		</section>
+	);
+}
+
+type ProjectErrorFallbackProps = { error: unknown };
+function ProjectErrorFallback(props: ProjectErrorFallbackProps) {
+	return (
+		<GeneralErrorFallback
+			error={props.error}
+			httpResponseErrorHandlers={{
+				404: ({ params }) => (
+					<div
+						style={{
+							background: "var(--color-danger)",
+							color: "white",
+							fontWeight: "bold",
+							display: "flex",
+							justifyContent: "center",
+							padding: "1rem",
+						}}
+					>
+						<p>No project with id "{params.id}" could be found</p>
+					</div>
+				),
+			}}
+			defaultHttpResponseErrorHandler={() => <p>Project could not be found</p>}
+			unexpectedErrorHandler={<p>Oh-no an error occurred, sorry</p>}
+		/>
 	);
 }

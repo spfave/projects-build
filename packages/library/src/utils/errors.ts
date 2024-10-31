@@ -92,3 +92,5 @@ export function makeSafe<TArgs extends unknown[], TReturn>(
 		}
 	};
 }
+
+// #endregion

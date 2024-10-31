@@ -5,6 +5,7 @@
 	"private": true,
 	"type": "module",
 	"exports": {
+		"./errors": "./src/errors/index.ts",
 		"./types": "./src/types/index.ts",
 		"./utils": "./src/utils/index.ts",
 		"./validation": "./src/validation/index.ts"

@@ -22,8 +22,8 @@ export async function createProject(project: ProjectInput) {
 		method: "POST",
 		body: JSON.stringify(project),
 	});
-	const newProject = (await res.json()) as Project;
 
+	const newProject = (await res.json()) as Project;
 	return newProject;
 }
 
@@ -71,7 +71,6 @@ export default function ProjectCreateRoute() {
 			<h2>New Project</h2>
 			<form
 				ref={refForm}
-				method="POST"
 				onSubmit={handleCreateProject}
 				noValidate={isHydrated}
 				aria-invalid={errAttrForm?.hasErrors}

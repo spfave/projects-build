@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import ErrorBoundary from "~/components/error-boundary";
-import GeneralErrorFallback from "~/components/general-error-fallback";
+import GeneralErrorFallback from "~/components/error-fallback";
+import ErrorBoundary from "~/components/ui/error-boundary";
 import ProjectCreateRoute from "~/views/project-create-route";
 import ProjectEditRoute from "~/views/project-edit-route";
 import ProjectRoute from "~/views/project-route";
