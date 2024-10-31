@@ -37,18 +37,21 @@ fieldset {
 	--standard-radius: 0.3rem;
 
 	/* Colors */
-	--brand-blue: 203, 73%, 71%;
-	--brand-success: 140, 50%, 50%;
-	--brand-warn: 49, 100%, 46%;
-	--brand-danger: 12, 88%, 58%;
+	--brand-blue: hsl(203, 73%, 71%);
+	--brand-success: hsl(140 50% 50%);
+	--brand-warn: hsl(49 100% 46%);
+	--brand-danger: hsl(12 88% 58%);
 
-	--color-primary: hsla(var(--brand-blue));
-	--color-primary-light: hsla(var(--brand-blue), 0.5);
-	--color-success: hsla(var(--brand-success), 0.7);
-	--color-success-light: hsla(var(--brand-success), 0.4);
-	--color-warn: hsla(var(--brand-warn), 0.5);
-	--color-danger: hsla(var(--brand-danger), 0.7);
-	--color-danger-light: hsla(var(--brand-danger), 0.4);
+	--color-primary: hsl(from var(--brand-blue) h s l);
+	--color-primary-light: hsl(from var(--brand-blue) h s l / 0.7);
+	--color-primary-xlight: hsl(from var(--brand-blue) h s l / 0.3);
+	--color-success: hsl(from var(--brand-success) h s l / 0.7);
+	--color-success-light: hsl(from var(--brand-success) h s l / 0.4);
+	--color-warn: hsl(from var(--brand-warn) h s l / 0.5);
+	--color-danger: hsl(from var(--brand-danger) h s l);
+	--color-danger-light: hsl(from var(--brand-danger) h s l / 0.7);
+	--color-danger-xlight: hsl(from var(--brand-danger) h s l / 0.4);
+	--color-gray: hsl(0, 0%, 60%);
 }
 
 /* Styles */
@@ -70,10 +73,10 @@ button.action {
 	cursor: pointer;
 
 	&.primary {
-		background-color: var(--color-primary);
+		background-color: var(--color-primary-light);
 		border: 1px solid var(--color-primary);
 		&:hover {
-			background-color: var(--color-primary-light);
+			background-color: var(--color-primary-xlight);
 		}
 	}
 
@@ -86,11 +89,11 @@ button.action {
 	}
 
 	&.danger {
-		background-color: var(--color-danger);
+		background-color: var(--color-danger-light);
 		background-color: i;
-		border: 1px solid var(--color-danger);
+		border: 1px solid var(--color-danger-light);
 		&:hover {
-			background-color: var(--color-danger-light);
+			background-color: var(--color-danger-xlight);
 		}
 	}
 

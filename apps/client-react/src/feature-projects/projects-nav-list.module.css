@@ -1,19 +1,24 @@
 .projectsNavList {
-	display: flex;
-	flex-direction: column;
+	display: grid;
 	gap: 0.5rem;
 
 	a {
 		padding: 0.5rem 1rem;
 		border-radius: 0.3rem;
 
+		&:hover {
+			background-color: var(--color-primary-xlight);
+		}
+
 		span {
+			padding: initial;
 			--max-lines: 2;
 
 			display: -webkit-box;
 			-webkit-box-orient: vertical;
 			-webkit-line-clamp: var(--max-lines);
-			overflow: hidden;
+			line-clamp: var(--max-lines);
+			overflow: clip;
 		}
 	}
 }

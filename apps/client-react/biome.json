@@ -1,4 +1,5 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.6.1/schema.json",
-	"extends": ["../../biomejs.json"]
+	"extends": ["../../biome.json"],
+	"files": { "include": ["./src"] }
 }

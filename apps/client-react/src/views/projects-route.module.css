@@ -5,12 +5,12 @@
 
 .projectsSidebar {
 	width: 18rem;
-	display: flex;
 	flex: 0 0 auto;
+	display: flex;
 	flex-direction: column;
 	gap: 1rem;
 
-	> div:first-child {
+	> div:has(a) {
 		a {
 			padding: 0.5rem 1rem;
 			display: flex;
@@ -19,9 +19,24 @@
 		}
 	}
 
-	h2,
-	span {
-		padding: 0 1rem;
+	hr {
+		border: none;
+		border-bottom: 1px solid var(--color-gray);
+	}
+
+	section {
+		display: grid;
+		gap: 1rem;
+
+		h2 {
+			padding: 0 1rem;
+		}
+
+		div {
+			span {
+				padding: 0 1rem;
+			}
+		}
 	}
 }
 

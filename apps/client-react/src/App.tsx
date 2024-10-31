@@ -1,23 +1,31 @@
+import * as React from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import About from "~/views/about-route";
+import ErrorBoundary from "~/components/error-boundary";
+import GeneralErrorFallback from "~/components/general-error-fallback";
 import ProjectCreateRoute from "~/views/project-create-route";
 import ProjectEditRoute from "~/views/project-edit-route";
 import ProjectRoute from "~/views/project-route";
 import ProjectsRoute from "~/views/projects-route";
 import Root from "~/views/root";
 
+const About = React.lazy(() => import("~/views/about-route"));
+
 const router = createBrowserRouter(
 	[
 		{
 			path: "/",
 			element: <Root />,
-			errorElement: <div>An Error Occurred</div>,
+			// errorElement: <div>An Error Occurred</div>,
 			children: [
 				{ index: true, element: <Navigate to="projects" /> },
 				{
 					path: "projects",
-					element: <ProjectsRoute />,
+					element: (
+						<ErrorBoundary fallback={(error) => <GeneralErrorFallback error={error} />}>
+							<ProjectsRoute />
+						</ErrorBoundary>
+					),
 					children: [
 						{
 							index: true,
@@ -28,7 +36,18 @@ const router = createBrowserRouter(
 						{ path: ":id/edit", element: <ProjectEditRoute /> },
 					],
 				},
-				{ path: "about", element: <About /> },
+				{
+					path: "about",
+					element: (
+						<React.Suspense fallback={<p>Loading...</p>}>
+							<About />
+						</React.Suspense>
+					),
+				},
+				{
+					path: "*",
+					element: <div>Page Not Found</div>,
+				},
 			],
 		},
 	],
@@ -36,8 +55,8 @@ const router = createBrowserRouter(
 		future: {
 			v7_fetcherPersist: true,
 			v7_normalizeFormMethod: true,
-			v7_relativeSplatPath: true,
 			v7_partialHydration: true,
+			v7_relativeSplatPath: true,
 		},
 	}
 );

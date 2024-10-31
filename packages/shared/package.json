@@ -6,13 +6,15 @@
 	"type": "module",
 	"exports": {
 		"./assets/*.svg": "./assets/*.svg",
-		"./types": "./src/types/index.js"
+		"./projects": "./src/feature-projects/index.ts"
 	},
+	"imports": {},
 	"scripts": {
 		"typecheck": "tsc"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
-		"typescript": "^5.4.5"
+		"@projectsbuild/library": "workspace:*",
+		"typescript": "catalog:"
 	}
 }

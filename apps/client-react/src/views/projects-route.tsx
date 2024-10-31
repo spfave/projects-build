@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
-import type { Project } from "@projectsbuild/shared/types";
-import { ProjectsList } from "~/feature-projects/projects-nav-list";
+import type { Project } from "@projectsbuild/shared/projects";
+import ProjectNavList from "~/feature-projects/projects-nav-list";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
@@ -29,29 +29,21 @@ export default function ProjectsRoute() {
 		getProjects().then(setProjects);
 	}, []);
 
-	React.useEffect(() => {
-		fetchProjects();
-	}, [fetchProjects]);
-
 	return (
 		<div className={styles.projects}>
-			<div className={styles.projectsSidebar}>
+			<aside className={styles.projectsSidebar}>
 				<div>
-					<Link className="action success" to="create" title="new project">
-						<p>New Project</p>
+					<Link className="action success" to="create">
+						<span>New Project</span>
 						<img height={20} src={plusIcon} alt="" />
 					</Link>
 				</div>
 				<hr />
-				<h2>Projects</h2>
-				{projects == null ? (
-					<div>
-						<span>loading...</span>
-					</div>
-				) : (
-					<ProjectsList projects={projects} />
-				)}
-			</div>
+				<section>
+					<h2>Projects</h2>
+					<ProjectNavList projects={projects} fetchProjects={fetchProjects} />
+				</section>
+			</aside>
 			<div className={styles.projectsOutlet}>
 				<Outlet context={{ fetchProjects } satisfies ProjectsContext} />
 			</div>

@@ -1,4 +1,4 @@
-.projectCreate {
+.projectForm {
 	display: grid;
 	gap: 1rem;
 
@@ -6,48 +6,17 @@
 		display: grid;
 		gap: 0.5rem;
 
-		label,
-		legend {
+		label {
 			display: block;
-			margin-bottom: 0.25rem;
 		}
 
-		& input:not([type="radio"]),
+		input[type="text"],
+		input[type="number"],
+		input[type="date"],
 		legend,
 		textarea,
 		select {
 			width: 100%;
-		}
-
-		& input:not([type="radio"]),
-		select,
-		textarea {
-			padding: 0.25rem;
-			border-radius: 0.25rem;
-			border-width: 0px;
-			outline: 1px solid grey;
-
-			&:focus-visible {
-				outline-width: 2px;
-				outline-color: var(--color-primary);
-			}
-
-			&:not(:placeholder-shown):user-valid {
-				outline-width: 2px;
-				outline-color: var(--color-success);
-			}
-
-			&:not(:placeholder-shown):user-invalid {
-				outline-width: 2px;
-				outline-color: var(--color-danger);
-			}
-		}
-
-		input[type="radio"] {
-			&:focus-visible {
-				outline-width: 2px;
-				outline-color: var(--color-primary);
-			}
 		}
 
 		textarea {
@@ -57,21 +26,14 @@
 
 		fieldset {
 			> div {
-				height: 29.6px;
+				height: 27px;
 				display: flex;
-				align-items: center;
 				gap: 2rem;
 
 				> span {
 					display: flex;
-					align-items: center;
+					align-items: stretch;
 					gap: 0.5rem;
-
-					/* > label {
-						margin: 0;
-						text-box-trim: both; // future css
-						text-box-edge: cap alphabetic;
-					} */
 				}
 			}
 		}
@@ -82,7 +44,7 @@
 		fieldset {
 			+ div {
 				min-height: 1.75rem;
-				padding: 0.25rem;
+				padding: 0.25rem 0.25rem;
 				font-size: 0.9rem;
 			}
 		}
@@ -100,12 +62,11 @@
 	}
 }
 .formColGroup {
-	/* input: css auto-fill grid with max number of columns  */
+	/* Def: css auto-fill grid with max number of columns  */
 	/* Ref: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns */
 	--grid-col-max-num: 2;
 	--grid-col-gap: 1rem;
 	--grid-col-min-width: 25ch;
-	--grid-row-gap: 0.5rem;
 
 	/* calc values */
 	--gap-count: calc(var(--grid-col-max-num) - 1);
@@ -119,7 +80,7 @@
 		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
 	);
 	column-gap: var(--grid-col-gap);
-	row-gap: var(--grid-row-gap);
+	row-gap: 0.5rem;
 }
 
 .formActions {
@@ -134,6 +95,6 @@
 }
 
 .containerErrorList {
-	padding: 0.25rem;
+	padding: 0.25rem 0.25rem;
 	font-size: 0.9rem;
 }

@@ -10,9 +10,8 @@
 		"*.jsx": "${capture}.js, ${capture}.css, ${capture}.module.css",
 		"*.tsx": "${capture}.ts, ${capture}.css, ${capture}.module.css"
 	},
-	"cSpell.words": ["projectsbuild"],
 
-	// Workspace Language Settings
+	// Language Settings
 	"[javascript]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
@@ -30,5 +29,8 @@
 	},
 	"[typescriptreact]": {
 		"editor.defaultFormatter": "biomejs.biome"
-	}
+	},
+
+	// Extensions
+	"cSpell.words": ["projectsbuild"]
 }
