@@ -1,11 +1,10 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "./tsconfig.base.json",
-	"display": "Shared",
+	"display": "Server",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM"],
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
+		"lib": ["ESNext"],
+		"module": "Preserve",
 		"noEmit": true,
 		"allowImportingTsExtensions": true
 	}
