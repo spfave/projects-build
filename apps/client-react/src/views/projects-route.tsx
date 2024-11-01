@@ -57,6 +57,7 @@ export default function ProjectsRoute() {
 						state={projects.status}
 						display={{
 							FULFILLED: <ProjectNavList projects={projects.data} />,
+							IDLE: null,
 							PENDING: (
 								<div>
 									<span>Loading Projects...</span>
