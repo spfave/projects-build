@@ -5,12 +5,12 @@
       "name": "App Projects.build",
       "link": "https://github.com/spfave/projects-build",
       "description": "Testing web dev frameworks and tools",
+      "notes": "Doing a lot of learning!!!",
       "status": "building"
     },
     {
       "id": "hb05",
       "name": "Outer City Limit Puzzle",
-      "link": "",
       "description": "Jigsaw puzzle",
       "notes": "We puzzled it together",
       "status": "complete",
@@ -21,9 +21,6 @@
     {
       "id": "ec63",
       "name": "Project with a longer name compared to others",
-      "link": "",
-      "description": "",
-      "notes": "",
       "status": "building"
     },
     {
@@ -45,7 +42,7 @@
     {
       "id": "b928",
       "name": "test 2",
-      "link": "www.url.com",
+      "link": "https://www.url.com",
       "status": "planning"
     }
   ]
