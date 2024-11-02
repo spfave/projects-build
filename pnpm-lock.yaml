@@ -24,6 +24,25 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
 
+  apps/api-hono:
+    dependencies:
+      '@hono/node-server':
+        specifier: ^1.13.4
+        version: 1.13.4(hono@4.6.8)
+      hono:
+        specifier: ^4.6.8
+        version: 4.6.8
+    devDependencies:
+      '@projectsbuild/config-typescript':
+        specifier: workspace:*
+        version: link:../../configs/typescript
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.8.6
+      typescript:
+        specifier: 'catalog:'
+        version: 5.6.3
+
   apps/client-react:
     dependencies:
       react:
@@ -371,6 +390,12 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@hono/node-server@1.13.4':
+    resolution: {integrity: sha512-3tW9lC0+2mRmoGUEnq0d8Pi3SToWjg8flM9Z+h5Aamy23jjpiFr7n3/HLqXve6EudOsgN2tG2hZusqzNYVRmRw==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      hono: ^4
+
   '@jridgewell/gen-mapping@0.3.5':
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
     engines: {node: '>=6.0.0'}
@@ -672,6 +697,10 @@ packages:
   header-range-parser@1.1.3:
     resolution: {integrity: sha512-B9zCFt3jH8g09LR1vHL4pcAn8yMEtlSlOUdQemzHMRKMImNIhhszdeosYFfNW0WXKQtXIlWB+O4owHJKvEJYaA==}
     engines: {node: '>=12.22.0'}
+
+  hono@4.6.8:
+    resolution: {integrity: sha512-f+2Ec9JAzabT61pglDiLJcF/DjiSefZkjCn9bzm1cYLGkD5ExJ3Jnv93ax9h0bn7UPLHF81KktoyjdQfWI2n1Q==}
+    engines: {node: '>=16.9.0'}
 
   http-status-emojis@2.2.0:
     resolution: {integrity: sha512-ompKtgwpx8ff0hsbpIB7oE4ax1LXoHmftsHHStMELX56ivG3GhofTX8ZHWlUaFKfGjcGjw6G3rPk7dJRXMmbbg==}
@@ -1087,6 +1116,10 @@ snapshots:
   '@esbuild/win32-x64@0.21.5':
     optional: true
 
+  '@hono/node-server@1.13.4(hono@4.6.8)':
+    dependencies:
+      hono: 4.6.8
+
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
       '@jridgewell/set-array': 1.2.1
@@ -1364,6 +1397,8 @@ snapshots:
   globals@11.12.0: {}
 
   header-range-parser@1.1.3: {}
+
+  hono@4.6.8: {}
 
   http-status-emojis@2.2.0: {}
 

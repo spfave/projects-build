@@ -1,0 +1,15 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "@projectsbuild/config-typescript/server.json",
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"paths": {
+			"~/*": ["./*"]
+		},
+		"module": "NodeNext"
+		// "types": ["node"]
+		// "jsx": "react-jsx",
+		// "jsxImportSource": "hono/jsx"
+	},
+	"include": ["src"]
+}

@@ -1,0 +1,23 @@
+{
+	"name": "@projectsbuild/api-hono",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "pnpm run dev:local",
+		"dev:local": "node --watch  --experimental-strip-types src/index.ts",
+		"check": "biome check ./src",
+		"format": "biome format ./src",
+		"lint": "biome lint ./src",
+		"typecheck": "tsc"
+	},
+	"dependencies": {
+		"@hono/node-server": "^1.13.4",
+		"hono": "^4.6.8"
+	},
+	"devDependencies": {
+		"@projectsbuild/config-typescript": "workspace:*",
+		"@types/node": "catalog:",
+		"typescript": "catalog:"
+	}
+}
