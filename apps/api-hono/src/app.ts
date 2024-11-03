@@ -1,9 +1,25 @@
 import { Hono } from "hono";
 
-const app = new Hono();
+const app = new Hono({ strict: false });
 
-app.get("/", (ctx) => {
-	return ctx.json({ message: "Hello Hono!" });
+app.get("/projects", (ctx) => {
+	return ctx.json({ message: "all projects" });
+});
+
+app.get("/projects/:id", (ctx) => {
+	return ctx.json({ message: `get project with id: ${ctx.req.param("id")}` });
+});
+
+app.post("/projects", (ctx) => {
+	return ctx.json({ message: "create project" });
+});
+
+app.patch("/projects/:id", (ctx) => {
+	return ctx.json({ message: `update project with id: ${ctx.req.param("id")}` });
+});
+
+app.delete("/projects/:id", (ctx) => {
+	return ctx.json({ message: `delete project with id: ${ctx.req.param("id")}` });
 });
 
 app.notFound((ctx) => {
