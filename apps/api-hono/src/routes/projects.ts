@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-const api = new Hono().basePath("/projects");
+const api = new Hono().basePath("/v1/projects");
 
 api.get("/", (ctx) => {
 	return ctx.json({ message: "all projects" });

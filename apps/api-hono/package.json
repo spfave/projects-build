@@ -5,7 +5,7 @@
 	"type": "module",
 	"imports": {
 		"#routes/*": "./src/routes/*",
-		"#src/*": "./src/*"
+		"#utils/*": "./src/utils/*"
 	},
 	"scripts": {
 		"start": "pnpm run dev:local",
