@@ -3,6 +3,10 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
+	"imports": {
+		"#routes/*": "./src/routes/*",
+		"#src/*": "./src/*"
+	},
 	"scripts": {
 		"start": "pnpm run dev:local",
 		"dev:local": "node --watch  --experimental-strip-types src/index.ts",
