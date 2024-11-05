@@ -5,6 +5,7 @@ import { bearerAuth } from "hono/bearer-auth";
 import { HTTPException } from "hono/http-exception";
 import { ipRestriction } from "hono/ip-restriction";
 import { requestId } from "hono/request-id";
+import { timeout } from "hono/timeout";
 
 const api = new Hono().basePath("/demo");
 
@@ -66,8 +67,27 @@ api.use("/request-id", requestId()).get((ctx) => {
 	return ctx.json({ message: `Request id is ${ctx.get("requestId")}` }, 200);
 });
 
-// api.get("timeout", (ctx) => {});
+api.use(
+	"/timeout/*",
+	timeout(
+		1000 * 3,
+		(ctx) =>
+			new HTTPException(408, {
+				message: `Request timeout after waiting ${ctx.req.header("d")} seconds.`,
+			})
+	)
+);
+api.get("/timeout/:time?", async (ctx) => {
+	console.info(`params: `, ctx.req.param()); //LOG
+	console.info(`query param: `, ctx.req.query("time")); //LOG
 
-// api.get("rate-limiter", (ctx) => {});
+	const delay = Number(ctx.req.param("time") ?? ctx.req.query("time")) || 1000 * 5;
+	await new Promise((resolve, reject) => setTimeout(resolve, delay));
+	return ctx.json({ message: "Request completed in time allowed" });
+});
+
+// Ref: https://github.com/rhinobase/hono-rate-limiter
+// api.use("/rate-limit",)
+// api.get("/rate-limiter", (ctx) => {});
 
 export default api;
