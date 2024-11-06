@@ -12,8 +12,8 @@ const api = new Hono().basePath("/demo");
 api.use(
 	"/auth-basic",
 	basicAuth({
-		username: "demo-auth-usrn",
-		password: "demo-auth-pswd",
+		username: process.env.AUTH_USERNAME,
+		password: process.env.AUTH_PASSWORD,
 		invalidUserMessage: (ctx) => {
 			throw new HTTPException(401, {
 				message: "Not Authenticated - Invalid Credentials",
@@ -29,7 +29,7 @@ api.get("/auth-basic", (ctx) => {
 api.use(
 	"/auth-bearer",
 	bearerAuth({
-		token: "demo-auth-tkn",
+		token: process.env.AUTH_TOKEN,
 		invalidTokenMessage: (ctx) => {
 			throw new HTTPException(401, {
 				message: "Not Authenticated - Invalid Bearer Token",

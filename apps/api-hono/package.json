@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"start": "pnpm run dev:local",
-		"dev:local": "node --watch  --experimental-strip-types src/index.ts",
+		"dev:local": "node --watch --env-file=../../.env.development.local --experimental-strip-types src/index.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
