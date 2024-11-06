@@ -1,0 +1,22 @@
+{
+	"name": "@projectsbuild/db-drizzle",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {},
+	"imports": {},
+	"scripts": {
+		"check": "biome check ./src",
+		"format": "biome format ./src",
+		"lint": "biome lint ./src",
+		"typecheck": "tsc"
+	},
+	"dependencies": {
+		"@libsql/client": "^0.14.0",
+		"drizzle-orm": "^0.36.0"
+	},
+	"devDependencies": {
+		"drizzle-kit": "^0.27.1",
+		"typescript": "catalog:"
+	}
+}
