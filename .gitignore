@@ -6,6 +6,9 @@
 # Dependency Directories
 node_modules/
 
+# Databases
+*.db
+
 # Environment Variable Files
 .env
 .env*
