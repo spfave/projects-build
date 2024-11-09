@@ -3,7 +3,9 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
-	"exports": {},
+	"exports": {
+		"./db": "./src/db/db.ts"
+	},
 	"imports": {
 		"#db/*": "./src/db/*"
 	},
@@ -12,7 +14,7 @@
 		"db:migrate": "dotenvx run -f ../../.env.local -- drizzle-kit migrate",
 		"db:push": "dotenvx run -f ../../.env.local -- drizzle-kit push",
 		"db:studio": "dotenvx run -f ../../.env.local -- drizzle-kit studio --verbose",
-		"db:seed": "",
+		"db:seed": "DB_SEEDING=true node --env-file=../../.env.local --experimental-strip-types src/seed/seed.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
