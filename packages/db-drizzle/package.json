@@ -4,7 +4,9 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./db": "./src/db/db.ts"
+		"./client": "./src/client/index.ts",
+		"./db": "./src/db/db.ts",
+		"./schema": "./src/db/schema.ts"
 	},
 	"imports": {
 		"#db/*": "./src/db/*"

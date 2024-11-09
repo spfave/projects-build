@@ -30,7 +30,11 @@ export const projects = sqliteTable(
 );
 
 export type ProjectSelect = typeof projects.$inferSelect;
-export type ProjectInsert = typeof projects.$inferInsert;
+export type ProjectInsert = Omit<
+	typeof projects.$inferInsert,
+	"id" | "createdAt" | "updatedAt"
+>;
+export type ProjectUpdate = Partial<ProjectInsert>; //& { id: ProjectSelect["id"] };
 
 // Note: used for testing timestamp schema type helpers
 // export const timestamps = sqliteTable("timestamps", {
