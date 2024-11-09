@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./client": "./src/client/index.ts",
+		"./data-services": "./src/data-services/index.ts",
 		"./db": "./src/db/db.ts",
 		"./schema": "./src/db/schema.ts"
 	},
