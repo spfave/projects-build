@@ -8,11 +8,11 @@
 		"#db/*": "./src/db/*"
 	},
 	"scripts": {
-		"db:generate": "",
-		"db:migrate": "",
-		"db:seed": "",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "dotenvx run -f ../../.env.local -- drizzle-kit migrate",
 		"db:push": "dotenvx run -f ../../.env.local -- drizzle-kit push",
 		"db:studio": "dotenvx run -f ../../.env.local -- drizzle-kit studio --verbose",
+		"db:seed": "",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
