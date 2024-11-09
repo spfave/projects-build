@@ -12,7 +12,7 @@
 		"#db/*": "./src/db/*"
 	},
 	"scripts": {
-		"db:generate": "drizzle-kit generate",
+		"db:generate": "drizzle-kit generate --config=drizzle.config.ts",
 		"db:migrate": "dotenvx run -f ../../.env.local -- drizzle-kit migrate",
 		"db:push": "dotenvx run -f ../../.env.local -- drizzle-kit push",
 		"db:studio": "dotenvx run -f ../../.env.local -- drizzle-kit studio --verbose",

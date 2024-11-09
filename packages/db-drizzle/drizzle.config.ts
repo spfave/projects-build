@@ -6,6 +6,9 @@ export default defineConfig({
 	dbCredentials: {
 		url: process.env.DB_FILE_NAME,
 	},
+	migrations: {
+		prefix: "timestamp",
+	},
 	schema: "./src/db/schema.ts",
 	out: "./src/db/migrations",
 	casing: "snake_case",
