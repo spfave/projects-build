@@ -1,24 +1,14 @@
 import { sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-const timeStamp = () => integer({ mode: "timestamp" });
-const timeStamps = {
-	createdAt: timeStamp()
-		.notNull()
-		.$default(() => new Date()),
-	updatedAt: timeStamp()
-		.notNull()
-		.$default(() => new Date())
-		.$onUpdate(() => new Date()),
-};
+import { boolean, timestamps, uuidRandom } from "./schema-type-helpes.ts";
 
 // Ref: https://stackoverflow.com/questions/2615477/conditional-sqlite-check-constraint
 export const projects = sqliteTable(
 	"projects",
 	{
-		// id: integer({ mode: "number" }).primaryKey({ autoIncrement: true }),
-		id: text({ length: 8 }).primaryKey().$default(crypto.randomUUID),
-		name: text({}).notNull(),
+		id: uuidRandom(),
+		name: text().notNull(),
 		link: text(),
 		description: text(),
 		notes: text(),
@@ -27,8 +17,8 @@ export const projects = sqliteTable(
 			.default("planning"),
 		dateCompleted: text(),
 		rating: integer(),
-		recommend: integer({ mode: "boolean" }),
-		...timeStamps,
+		recommend: boolean(),
+		...timestamps,
 	}
 	// (table) => ({
 	// 	checkName: check("check_name", sql``),
@@ -38,3 +28,23 @@ export const projects = sqliteTable(
 	// 	),
 	// })
 );
+
+export type ProjectSelect = typeof projects.$inferSelect;
+export type ProjectInsert = typeof projects.$inferInsert;
+
+// Note: used for testing timestamp schema type helpers
+// export const timestamps = sqliteTable("timestamps", {
+// 	id: integer({ mode: "number" }).primaryKey({ autoIncrement: true }),
+// 	text: text(),
+// 	numCreatedAt: integer("num_created_at", { mode: "timestamp_ms" }).$default(
+// 		() => new Date()
+// 	),
+// 	numUpdatedAt: integer("num_updated_at", { mode: "timestamp_ms" })
+// 		.$default(() => new Date())
+// 		.$onUpdate(() => new Date()),
+// 	txtCreatedAt: text("txt_created_at").$default(() => new Date().toISOString()),
+// 	txtUpdatedAt: text("txt_updated_at")
+// 		.$default(() => new Date().toISOString())
+// 		.$onUpdateFn(() => new Date().toISOString()),
+// 	...timeStamps,
+// });
