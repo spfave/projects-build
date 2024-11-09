@@ -1,6 +1,7 @@
 import { type Table, getTableName, sql } from "drizzle-orm";
 
-import { type DB, db, schema } from "#db/db.ts";
+import { type DB, db } from "#db/db.ts";
+import * as schema from "#db/schema.ts";
 import projects from "./projects-data.json" with { type: "json" };
 
 if (process.env.DB_SEEDING !== "true")
