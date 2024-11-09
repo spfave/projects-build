@@ -83,7 +83,7 @@ api.get("/timeout/:time?", async (ctx) => {
 
 	const delay = Number(ctx.req.param("time") ?? ctx.req.query("time")) || 1000 * 5;
 	await new Promise((resolve, reject) => setTimeout(resolve, delay));
-	return ctx.json({ message: "Request completed in time allowed" });
+	return ctx.json({ message: "Request completed in time allowed" }, 200);
 });
 
 // Ref: https://github.com/rhinobase/hono-rate-limiter
