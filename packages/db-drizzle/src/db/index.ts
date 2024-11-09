@@ -8,6 +8,7 @@ export const db = drizzle({
 	schema,
 	logger: process.env.NODE_ENV === "development",
 });
+export type DB = typeof db;
 
 // ----------------------------------------------------------------------------------- //
 // Note: used for testing timestamp schema type helpers
