@@ -126,6 +126,9 @@ importers:
       '@projectsbuild/config-typescript':
         specifier: workspace:*
         version: link:../../configs/typescript
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.8.6
       typescript:
         specifier: 'catalog:'
         version: 5.6.3
@@ -1308,7 +1311,6 @@ packages:
 
   libsql@0.4.6:
     resolution: {integrity: sha512-F5M+ltteK6dCcpjMahrkgT96uFJvVI8aQ4r9f2AzHQjC7BkAYtvfMSTWGvRBezRgMUIU2h1Sy0pF9nOGOD5iyA==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   loose-envify@1.4.0:

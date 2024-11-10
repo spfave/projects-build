@@ -14,10 +14,12 @@
 		"#types": "./src/types/index.ts"
 	},
 	"scripts": {
+		"script:fetch-http": "node --experimental-strip-types ./scripts/fetch-http-statuses.ts",
 		"typecheck": "tsc"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
+		"@types/node": "catalog:",
 		"typescript": "catalog:"
 	}
 }
