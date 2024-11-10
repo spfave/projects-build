@@ -1,4 +1,4 @@
-import { Failure, Success } from "./errors";
+import { Failure, Success } from "./errors.ts";
 
 // ----------------------------------------------------------------------------------- //
 // #region - General Async Utilities

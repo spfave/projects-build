@@ -134,13 +134,14 @@ importers:
         version: 5.6.3
 
   packages/shared:
+    dependencies:
+      '@projectsbuild/library':
+        specifier: workspace:*
+        version: link:../library
     devDependencies:
       '@projectsbuild/config-typescript':
         specifier: workspace:*
         version: link:../../configs/typescript
-      '@projectsbuild/library':
-        specifier: workspace:*
-        version: link:../library
       typescript:
         specifier: 'catalog:'
         version: 5.6.3

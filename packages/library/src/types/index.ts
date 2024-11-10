@@ -1,2 +1,2 @@
-export * from "./aliases";
-export * from "./helpers";
+export * from "./aliases.ts";
+export * from "./helpers.ts";
