@@ -23,20 +23,21 @@ function log(string: string) {
 	// console.log("\x1b[34m%s\x1b[0m", "blue");
 }
 
-const filePath = "./src/constants/data/http-statuses.jsonc";
-const fileHeader = `// Generated file. Do not edit\n// Created on ${new Date().toDateString()}\n`;
 async function fetchHttpStatuses() {
-	log("Fetching HTTP status data");
+	const filePath = "./src/constants/data/http-statuses.json";
+
+	log("⬇️  Fetching HTTP status data");
 	// biome-ignore format:
 	const res = await fetch("https://raw.githubusercontent.com/prettymuchbryce/http-status-codes/refs/heads/master/codes.json");
 	if (!res.ok) throw new Error(`Error retrieving HTTP statuses: ${res.statusText}`);
 	const httpStatuses = (await res.json()) as HttpStatus[];
 	httpStatuses.sort((s1, s2) => s1.code - s2.code);
 
-	log("Writing HTTP status data to jsonc file");
+	log("📝 Writing HTTP status data to json file");
 	const httpStatusesJSON = JSON.stringify(httpStatuses, null, 2);
-	writeFileSync(filePath, fileHeader, { flag: "w" });
-	writeFileSync(filePath, httpStatusesJSON, { flag: "a" });
+	writeFileSync(filePath, httpStatusesJSON, { flag: "w" });
+
+	log(`✅ Successfully generated ${filePath}`);
 }
 
 fetchHttpStatuses();
