@@ -18,6 +18,7 @@
 	"dependencies": {
 		"@hono/node-server": "^1.13.4",
 		"@projectsbuild/db-drizzle": "workspace:*",
+		"@projectsbuild/library": "workspace:*",
 		"hono": "^4.6.8"
 	},
 	"devDependencies": {
