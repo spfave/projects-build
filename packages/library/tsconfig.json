@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@projectsbuild/config-typescript/shared.json",
+	"extends": "@projectsbuild/config-typescript/client.json",
 	"compilerOptions": {},
-	"include": ["src"]
+	"include": ["src", "scripts"]
 }

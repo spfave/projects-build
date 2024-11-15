@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1731177260342,
+      "tag": "20241109183420_striped_impossible_man",
+      "breakpoints": true
+    }
+  ]
+}

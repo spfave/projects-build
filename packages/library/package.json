@@ -5,19 +5,24 @@
 	"private": true,
 	"type": "module",
 	"exports": {
+		"./constants": "./src/constants/index.ts",
 		"./errors": "./src/errors/index.ts",
 		"./types": "./src/types/index.ts",
 		"./utils": "./src/utils/index.ts",
 		"./validation": "./src/validation/index.ts"
 	},
 	"imports": {
+		"#constants": "./src/constants/index.ts",
 		"#types": "./src/types/index.ts"
 	},
 	"scripts": {
+		"script:fetch-http": "node --experimental-strip-types ./scripts/fetch-http-statuses.ts",
+		"script:gen-http": "node --experimental-strip-types ./scripts/gen-http-statuses.ts",
 		"typecheck": "tsc"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
+		"@types/node": "catalog:",
 		"typescript": "catalog:"
 	}
 }

@@ -12,9 +12,11 @@
 	"scripts": {
 		"typecheck": "tsc"
 	},
+	"dependencies": {
+		"@projectsbuild/library": "workspace:*"
+	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
-		"@projectsbuild/library": "workspace:*",
 		"typescript": "catalog:"
 	}
 }
