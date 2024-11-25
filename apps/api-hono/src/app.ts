@@ -5,13 +5,23 @@ import demoApis from "#routes/demo.ts";
 import projectApis from "#routes/projects.ts";
 import { notFound, onError } from "#utils/route.utils.ts";
 
-const app = new Hono({ strict: false }).basePath("/api");
+export function createRouter() {
+	return new Hono({ strict: false });
+}
 
-app.use(logger());
+export function createApp() {
+	const app = createRouter().basePath("/api");
+	app.use(logger());
+
+	app.notFound(notFound);
+	app.onError(onError);
+
+	return app;
+}
+
+const app = createApp();
 
 app.route("/", demoApis);
 app.route("/", projectApis);
-app.notFound(notFound);
-app.onError(onError);
 
 export default app;

@@ -1,5 +1,3 @@
-import { Hono } from "hono";
-
 import {
 	deleteProject,
 	deleteProjectReturning,
@@ -12,8 +10,9 @@ import {
 } from "@projectsbuild/db-drizzle/data-services";
 import type { ProjectInsert, ProjectUpdate } from "@projectsbuild/db-drizzle/schema";
 import { HttpStatus } from "@projectsbuild/library/constants";
+import { createRouter } from "../app.ts";
 
-const api = new Hono().basePath("/v1/projects");
+const api = createRouter().basePath("/v1/projects");
 
 api.get("/", async (ctx) => {
 	const projects = await selectProjectsQuery();
