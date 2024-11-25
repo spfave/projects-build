@@ -24,6 +24,10 @@ api.get("/:id", async (ctx) => {
 	const { id } = ctx.req.param();
 	// const project = await selectProjectByIdQuery(id);
 	const [project] = await selectProjectByIdSelect(id);
+
+	if (!project)
+		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
+
 	return ctx.json(project, HttpStatus.OK.code);
 });
 
@@ -36,8 +40,12 @@ api.post("/", async (ctx) => {
 api.patch("/:id", async (ctx) => {
 	const { id } = ctx.req.param();
 	const payload = (await ctx.req.json()) as ProjectUpdate;
-	const [result] = await updateProject(id, payload);
-	return ctx.json(result, HttpStatus.OK.code);
+	const [project] = await updateProject(id, payload);
+
+	if (!project)
+		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
+
+	return ctx.json(project, HttpStatus.OK.code);
 });
 
 api.delete("/:id", async (ctx) => {
@@ -47,12 +55,19 @@ api.delete("/:id", async (ctx) => {
 	// 	? ctx.json({ rowsDeleted: result.rowsAffected }, HttpStatus.OK.code)
 	// 	: ctx.body(null, HttpStatus.NO_CONTENT.code);
 
-	const [result] = await deleteProjectReturning(id);
-	return result
-		? ctx.json(result, HttpStatus.OK.code)
-		: ctx.json(undefined, HttpStatus.NO_CONTENT.code);
+	// const [project] = await deleteProjectReturning(id);
+	// return project
+	// 	? ctx.json(project, HttpStatus.OK.code)
+	// 	: ctx.json(undefined, HttpStatus.NO_CONTENT.code);
 	// Note: If returning status 204 - "No Content" json content must be "undefined"
 	// returning ctx.json(val | obj | null, 204) errors
+
+	const [project] = await deleteProjectReturning(id);
+
+	if (!project)
+		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
+
+	return ctx.json(project, HttpStatus.OK.code);
 });
 
 export default api;
