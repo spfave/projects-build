@@ -57,3 +57,15 @@ Content-Type: application/x-www-form-urlencoded
 todo=test
 &content=test form validation endpoint
 &complete=false
+
+
+### --------------------------------------------------------------------------------- ###
+# Validate JSON Body
+POST {{route}}/validate-json
+Content-Type: {{contentType}}
+
+{
+	"todo": "test",
+	"content": "test form validation endpoint",
+	"complete": false
+}

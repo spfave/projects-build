@@ -178,4 +178,33 @@ api.post(
 	}
 );
 
+api.post(
+	"/validate-json",
+	validator("json", (json, ctx) => {
+		console.info("\nVALIDATOR JSON"); //LOG
+		console.info(`json: `, json); //LOG
+
+		const { todo, content, complete } = json;
+		if (!todo || typeof todo !== "string" || todo.length < 2)
+			return ctx.json({ msg: "Invalid todo" }, 422);
+		if (!content || typeof content !== "string" || content.length < 10)
+			return ctx.json({ msg: "Invalid content" }, 422);
+		if (typeof complete !== "boolean")
+			return ctx.json({ msg: "Invalid complete status" }, 422);
+
+		return { todo: todo.toUpperCase(), content, complete };
+	}),
+	async (ctx) => {
+		console.info("\nROUTE JSON BODY"); //LOG
+
+		const reqJson = await ctx.req.json();
+		console.info(`reqForm: `, reqJson); //LOG
+
+		const validJson = ctx.req.valid("json");
+		console.info(`validForm: `, validJson); //LOG
+
+		return ctx.json({ reqJson, validJson }, 200);
+	}
+);
+
 export default api;
