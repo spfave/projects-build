@@ -138,5 +138,44 @@ api.get(
 	}
 );
 
+api.post(
+	"/validate-form",
+	validator("form", (form, ctx) => {
+		console.info("\nVALIDATOR FORM"); //LOG
+		console.info(`form: `, form); //LOG
+
+		const { todo, content, complete } = form;
+		if (!todo || Array.isArray(todo) || typeof todo !== "string" || todo.length < 2)
+			return ctx.json({ msg: "Invalid todo" }, 422);
+		if (
+			!content ||
+			Array.isArray(content) ||
+			typeof content !== "string" ||
+			content.length < 10
+		)
+			return ctx.json({ msg: "Invalid content" }, 422);
+		if (
+			!complete ||
+			Array.isArray(complete) ||
+			typeof complete !== "string" ||
+			!["true", "false"].includes(complete)
+		)
+			return ctx.json({ msg: "Invalid complete status" }, 422);
+
+		return { todo, content, complete: complete === "true" };
+	}),
+	async (ctx) => {
+		console.info("\nROUTE FORM"); //LOG
+
+		// const reqForm = await ctx.req.formData();
+		const reqForm = Object.fromEntries((await ctx.req.formData()).entries());
+		console.info(`reqForm: `, reqForm); //LOG
+
+		const validForm = ctx.req.valid("form");
+		console.info(`validForm: `, validForm); //LOG
+
+		return ctx.json({ reqForm, validForm }, 200);
+	}
+);
 
 export default api;
