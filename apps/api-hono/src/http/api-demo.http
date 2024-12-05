@@ -1,0 +1,39 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+@route = http://localhost:5002/api/demo
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+# AUTH basic
+
+GET {{route}}/auth-basic
+Authorization: Basic username:password
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# AUTH bearer
+
+GET {{route}}/auth-bearer
+Authorization: Bearer token
+# Authorization: Bearer {{auth_token2}}
+# Authorization: Bearer {{$processEnv AUTH_TOKEN}}
+# Authorization: Bearer {{$dotenv AUTH_TOKEN}}
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Restrict IP
+
+GET {{route}}/restrict-ip
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Request ID
+
+GET {{route}}/request-id
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Timeout
+
+# GET {{route}}/timeout/500
+GET {{route}}/timeout?time=500
+Content-Type: {{contentType}}
