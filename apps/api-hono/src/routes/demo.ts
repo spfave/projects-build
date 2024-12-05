@@ -6,9 +6,11 @@ import { HTTPException } from "hono/http-exception";
 import { ipRestriction } from "hono/ip-restriction";
 import { requestId } from "hono/request-id";
 import { timeout } from "hono/timeout";
+import { validator } from "hono/validator";
 
 const api = new Hono().basePath("/demo");
 
+// Middleware demos
 api.use(
 	"/auth-basic",
 	basicAuth({
@@ -89,5 +91,52 @@ api.get("/timeout/:time?", async (ctx) => {
 // Ref: https://github.com/rhinobase/hono-rate-limiter
 // api.use("/rate-limit",)
 // api.get("/rate-limiter", (ctx) => {});
+
+// Validator demos
+function isStringParsableInt(value: string): boolean {
+	return Number(value) === Number.parseInt(value, 10);
+}
+
+api.get(
+	"/validate-path-query-params/prm1/:p1/prm2/:p2",
+	validator("param", (params, ctx) => {
+		console.info("\nVALIDATOR PARAMS"); //LOG
+		console.info(`params: `, params); //LOG
+
+		const { p1, p2 } = params;
+		const validP1 = p1 && isStringParsableInt(p1) ? Number(p1) : 0;
+		const validP2 = p2 && isStringParsableInt(p2) ? Number(p2) : 0;
+
+		return { p1: validP1, p2: validP2 };
+	}),
+	validator("query", (qParams, ctx) => {
+		console.info("\nVALIDATOR QUERY PARAMS"); //LOG
+		console.info(`qParams: `, qParams); //LOG
+
+		const { qp1, qp2, qp3, qpAry } = qParams;
+		const validQP1 =
+			qp1 && !Array.isArray(qp1) && isStringParsableInt(qp1) ? Number(qp1) : 0;
+
+		return { qp1: validQP1, qp2, qp3, qpAry };
+	}),
+	async (ctx) => {
+		console.info("\nROUTE PARAMS AND QUERIES"); //LOG
+
+		const reqParams = ctx.req.param();
+		const reqQuery = ctx.req.query();
+		const reqQueries = ctx.req.queries();
+		console.info(`reqParams: `, reqParams); //LOG
+		console.info(`reqQuery: `, reqQuery); //LOG
+		console.info(`reqQueries: `, reqQueries); //LOG
+
+		const validParams = ctx.req.valid("param");
+		const validQuery = ctx.req.valid("query");
+		console.info(`validParams: `, validParams); //LOG
+		console.info(`validQuery: `, validQuery); //LOG
+
+		return ctx.json({ reqParams, reqQuery, reqQueries, validParams, validQuery }, 200);
+	}
+);
+
 
 export default api;

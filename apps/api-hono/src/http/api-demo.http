@@ -37,3 +37,14 @@ Content-Type: {{contentType}}
 # GET {{route}}/timeout/500
 GET {{route}}/timeout?time=500
 Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# Validate Path Params and Query Params
+GET {{route}}/validate-path-query-params/prm1/1/prm2/3g
+?qp1=11
+&qp2=22	
+&qpAry=qpAry1
+&qpAry=qpAry2
+Content-Type: {{contentType}}
+
