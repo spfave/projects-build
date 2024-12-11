@@ -1,3 +1,5 @@
+import { validator } from "hono/validator";
+
 import {
 	deleteProject,
 	deleteProjectReturning,
@@ -20,16 +22,33 @@ api.get("/", async (ctx) => {
 	return ctx.json(projects, HttpStatus.OK.code);
 });
 
-api.get("/:id", async (ctx) => {
-	const { id } = ctx.req.param();
-	// const project = await selectProjectByIdQuery(id);
-	const [project] = await selectProjectByIdSelect(id);
+api.get(
+	"/:id",
+	validator("param", (params, ctx) => {
+		const { id } = params;
+		if (!id || id.length !== 8)
+			return ctx.json(
+				{ message: HttpStatus.UNPROCESSABLE_ENTITY.phrase },
+				HttpStatus.UNPROCESSABLE_ENTITY.code
+			);
 
-	if (!project)
-		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
+		return { id };
+	}),
+	async (ctx) => {
+		const { id } = ctx.req.valid("param");
 
-	return ctx.json(project, HttpStatus.OK.code);
-});
+		// const project = await selectProjectByIdQuery(id);
+		const [project] = await selectProjectByIdSelect(id);
+
+		if (!project)
+			return ctx.json(
+				{ message: HttpStatus.NOT_FOUND.phrase },
+				HttpStatus.NOT_FOUND.code
+			);
+
+		return ctx.json(project, HttpStatus.OK.code);
+	}
+);
 
 api.post("/", async (ctx) => {
 	const payload = (await ctx.req.json()) as ProjectInsert;
