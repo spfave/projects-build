@@ -1,0 +1,52 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+@route = http://localhost:5002/api/v1/projects
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+# GET all projects
+GET {{route}}
+Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# GET project by id
+@id = 52e1b54a
+
+GET {{route}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# CREATE project
+POST {{route}}
+Content-Type: {{contentType}}
+
+{
+	"name": "Sample Project",
+	"description": "Using .http",
+	"notes": null,
+	"status": "building"
+}
+
+
+### --------------------------------------------------------------------------------- ###
+# PATCH project by id
+PATCH  {{route}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+	"name": "New name",
+	"description": "some project description",
+	"notes": "some project notes",
+	"status": "complete",
+	"dateCompleted": "2024-12-11",
+	"rating": 4,
+	"recommend": true
+}
+
+
+### --------------------------------------------------------------------------------- ###
+# DELETE project by Id
+DELETE  {{route}}/{{id}}
+Content-Type: {{contentType}}
+
