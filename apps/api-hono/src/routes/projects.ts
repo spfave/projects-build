@@ -11,10 +11,25 @@ import {
 	updateProject,
 } from "@projectsbuild/db-drizzle/data-services";
 import type { ProjectInsert, ProjectUpdate } from "@projectsbuild/db-drizzle/schema";
+import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { createRouter } from "../app.ts";
 
 const api = createRouter().basePath("/v1/projects");
+
+const validateParamProjectId = validator("param", (params, ctx) => {
+	console.info(`params: `, params); //LOG
+	const { id } = params;
+	if (!id || typeof id !== "string" || id.length !== UUID_DEFAULT_LENGTH)
+		return ctx.json(
+			{ message: HttpStatus.UNPROCESSABLE_ENTITY.phrase },
+			HttpStatus.UNPROCESSABLE_ENTITY.code
+		);
+
+	return { id };
+});
+
+// const validateJsonProject = validator("json", (json, ctx) => {});
 
 api.get("/", async (ctx) => {
 	const projects = await selectProjectsQuery();
@@ -22,33 +37,17 @@ api.get("/", async (ctx) => {
 	return ctx.json(projects, HttpStatus.OK.code);
 });
 
-api.get(
-	"/:id",
-	validator("param", (params, ctx) => {
-		const { id } = params;
-		if (!id || id.length !== 8)
-			return ctx.json(
-				{ message: HttpStatus.UNPROCESSABLE_ENTITY.phrase },
-				HttpStatus.UNPROCESSABLE_ENTITY.code
-			);
+api.get("/:id", validateParamProjectId, async (ctx) => {
+	const { id } = ctx.req.valid("param");
 
-		return { id };
-	}),
-	async (ctx) => {
-		const { id } = ctx.req.valid("param");
+	// const project = await selectProjectByIdQuery(id);
+	const [project] = await selectProjectByIdSelect(id);
 
-		// const project = await selectProjectByIdQuery(id);
-		const [project] = await selectProjectByIdSelect(id);
+	if (!project)
+		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
 
-		if (!project)
-			return ctx.json(
-				{ message: HttpStatus.NOT_FOUND.phrase },
-				HttpStatus.NOT_FOUND.code
-			);
-
-		return ctx.json(project, HttpStatus.OK.code);
-	}
-);
+	return ctx.json(project, HttpStatus.OK.code);
+});
 
 api.post("/", async (ctx) => {
 	const payload = (await ctx.req.json()) as ProjectInsert;
@@ -56,7 +55,7 @@ api.post("/", async (ctx) => {
 	return ctx.json(result, HttpStatus.CREATED.code);
 });
 
-api.patch("/:id", async (ctx) => {
+api.patch("/:id", validateParamProjectId, async (ctx) => {
 	const { id } = ctx.req.param();
 	const payload = (await ctx.req.json()) as ProjectUpdate;
 	const [project] = await updateProject(id, payload);
@@ -67,7 +66,7 @@ api.patch("/:id", async (ctx) => {
 	return ctx.json(project, HttpStatus.OK.code);
 });
 
-api.delete("/:id", async (ctx) => {
+api.delete("/:id", validateParamProjectId, async (ctx) => {
 	const { id } = ctx.req.param();
 	// const result = await deleteProject(id);
 	// return result.rowsAffected > 0
