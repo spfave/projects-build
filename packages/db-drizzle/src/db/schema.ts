@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-import { boolean, timestamps, uuidRandom } from "./schema-type-helpes.ts";
+import { boolean, timestamps, uuidRandom } from "./schema-type-helpers.ts";
 
 // Ref: https://stackoverflow.com/questions/2615477/conditional-sqlite-check-constraint
 export const projects = sqliteTable(

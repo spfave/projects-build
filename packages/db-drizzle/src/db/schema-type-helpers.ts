@@ -8,7 +8,8 @@ export function idNumberAutoIncrement(name = "") {
 }
 
 type UUIDRandom = { name?: string; length?: number };
-const uuidRandomDefault: UUIDRandom = { name: "", length: 8 };
+export const UUID_DEFAULT_LENGTH = 8;
+const uuidRandomDefault: UUIDRandom = { name: "", length: UUID_DEFAULT_LENGTH };
 /**
  * Provides a random UUID schema data type.
  * @param length Optional uuid character length. Default is 8, Suggest 4 or more
