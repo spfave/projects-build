@@ -168,7 +168,7 @@ api.post(
 		console.info("\nROUTE FORM"); //LOG
 
 		// const reqForm = await ctx.req.formData();
-		const reqForm = Object.fromEntries((await ctx.req.formData()).entries());
+		const reqForm = Object.fromEntries(await ctx.req.formData());
 		console.info(`reqForm: `, reqForm); //LOG
 
 		const validForm = ctx.req.valid("form");

@@ -56,7 +56,7 @@ api.post("/", async (ctx) => {
 });
 
 api.patch("/:id", validateParamProjectId, async (ctx) => {
-	const { id } = ctx.req.param();
+	const { id } = ctx.req.valid("param");
 	const payload = (await ctx.req.json()) as ProjectUpdate;
 	const [project] = await updateProject(id, payload);
 
@@ -67,7 +67,7 @@ api.patch("/:id", validateParamProjectId, async (ctx) => {
 });
 
 api.delete("/:id", validateParamProjectId, async (ctx) => {
-	const { id } = ctx.req.param();
+	// const { id } = ctx.req.param();
 	// const result = await deleteProject(id);
 	// return result.rowsAffected > 0
 	// 	? ctx.json({ rowsDeleted: result.rowsAffected }, HttpStatus.OK.code)
@@ -80,6 +80,7 @@ api.delete("/:id", validateParamProjectId, async (ctx) => {
 	// Note: If returning status 204 - "No Content" json content must be "undefined"
 	// returning ctx.json(val | obj | null, 204) errors
 
+	const { id } = ctx.req.valid("param");
 	const [project] = await deleteProjectReturning(id);
 
 	if (!project)
