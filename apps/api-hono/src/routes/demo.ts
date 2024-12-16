@@ -10,6 +10,11 @@ import { validator } from "hono/validator";
 
 const api = new Hono().basePath("/demo");
 
+// Endpoint demos
+api.get("/error", (ctx) => {
+	throw new Error("Endpoint Error");
+});
+
 // Middleware demos
 api.use(
 	"/auth-basic",
