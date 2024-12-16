@@ -92,7 +92,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 }
 
 export function transformProject(
-	input: ProjectFields,
+	input: Project | ProjectFields,
 	action: "create" | "update" = "create"
 ) {
 	const project = {} as Project;
@@ -106,8 +106,10 @@ export function transformProject(
 
 	if (input.status === "complete" && project.status === "complete") {
 		project.dateCompleted = input.dateCompleted;
-		project.rating = Number(input.rating);
-		project.recommend = input.recommend === "true";
+		project.rating =
+			typeof input.rating === "number" ? input.rating : Number(input.rating);
+		project.recommend =
+			typeof input.recommend === "boolean" ? input.recommend : input.recommend === "true";
 	}
 
 	return project;

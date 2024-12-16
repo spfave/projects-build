@@ -13,12 +13,12 @@ import {
 import type { ProjectInsert, ProjectUpdate } from "@projectsbuild/db-drizzle/schema";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
+import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import { createRouter } from "../app.ts";
 
 const api = createRouter().basePath("/v1/projects");
 
 const validateParamProjectId = validator("param", (params, ctx) => {
-	console.info(`params: `, params); //LOG
 	const { id } = params;
 	if (!id || typeof id !== "string" || id.length !== UUID_DEFAULT_LENGTH)
 		return ctx.json(
@@ -29,7 +29,21 @@ const validateParamProjectId = validator("param", (params, ctx) => {
 	return { id };
 });
 
-// const validateJsonProject = validator("json", (json, ctx) => {});
+const validateJsonProject = validator("json", (json, ctx) => {
+	const validation = validateProject(json);
+	if (validation.status === "error")
+		return ctx.json(
+			{
+				success: false,
+				message: HttpStatus.UNPROCESSABLE_ENTITY.phrase,
+				errors: validation.errors,
+			},
+			HttpStatus.UNPROCESSABLE_ENTITY.code
+		);
+
+	const validProject = transformProject(json);
+	return validProject;
+});
 
 api.get("/", async (ctx) => {
 	const projects = await selectProjectsQuery();
@@ -49,15 +63,15 @@ api.get("/:id", validateParamProjectId, async (ctx) => {
 	return ctx.json(project, HttpStatus.OK.code);
 });
 
-api.post("/", async (ctx) => {
-	const payload = (await ctx.req.json()) as ProjectInsert;
+api.post("/", validateJsonProject, async (ctx) => {
+	const payload = ctx.req.valid("json");
 	const [result] = await insertProject(payload);
 	return ctx.json(result, HttpStatus.CREATED.code);
 });
 
-api.patch("/:id", validateParamProjectId, async (ctx) => {
+api.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 	const { id } = ctx.req.valid("param");
-	const payload = (await ctx.req.json()) as ProjectUpdate;
+	const payload = ctx.req.valid("json");
 	const [project] = await updateProject(id, payload);
 
 	if (!project)
