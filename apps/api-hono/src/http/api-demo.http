@@ -3,6 +3,17 @@
 @contentType = application/json
 
 ### --------------------------------------------------------------------------------- ###
+# Not Found
+GET {{route}}/notFound
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Thrown Error
+GET {{route}}/error
+Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
 # AUTH basic
 
 GET {{route}}/auth-basic
@@ -48,7 +59,6 @@ GET {{route}}/validate-path-query-params/prm1/1/prm2/3g
 &qpAry=qpAry2
 Content-Type: {{contentType}}
 
-
 ### --------------------------------------------------------------------------------- ###
 # Validate Form Data
 POST {{route}}/validate-form
@@ -57,7 +67,6 @@ Content-Type: application/x-www-form-urlencoded
 todo=test
 &content=test form validation endpoint
 &complete=false
-
 
 ### --------------------------------------------------------------------------------- ###
 # Validate JSON Body
