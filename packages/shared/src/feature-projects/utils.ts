@@ -1,5 +1,8 @@
+import "@total-typescript/ts-reset/array-includes";
+
 import { isValidYMD, isYMD, valueIfTruthy, ymdToday } from "@projectsbuild/library/utils";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
+import { PROJECT_STATUS, PROJECT_STATUSES } from "./constants";
 import type { Project, ProjectErrors, ProjectFields } from "./types";
 
 export function validateProject(input: Record<string, FormDataEntryValue>) {
@@ -51,15 +54,12 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 
 	// status
 	if (status == null) errors.fields.status.push("Status must be provided");
-	else if (
-		typeof status !== "string" ||
-		!["planning", "building", "complete"].includes(status)
-	) {
+	else if (typeof status !== "string" || !PROJECT_STATUSES.includes(status)) {
 		errors.fields.status.push("Invalid status option");
 	}
 
 	// status dependent
-	if (status === "complete") {
+	if (status === PROJECT_STATUS.complete) {
 		// dateCompleted
 		if (dateCompleted == null)
 			errors.fields.dateCompleted.push("Completion date must be provided");
