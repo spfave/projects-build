@@ -19,7 +19,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	};
 
 	// validate input is an object
-	if (!input || Array.isArray(input) || typeof input !== "object") {
+	if (input == null || Array.isArray(input) || typeof input !== "object") {
 		errors.form.push("Invalid project input");
 		return { status: "error", errors } as const;
 	}
@@ -29,10 +29,14 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 
 	// validate fields
 	// name
-	if (!name) errors.fields.name.push("Name must be provided");
+	if (name == null) errors.fields.name.push("Name must be provided");
 	else if (typeof name !== "string") errors.fields.name.push("Name must be a string");
-	else if (name.trim().length < 2)
-		errors.fields.name.push("Name must be at least 2 characters");
+	else {
+		if (name.trim().length < 2)
+			errors.fields.name.push("Name must be at least 2 characters");
+		if (name.trim().length > 100)
+			errors.fields.name.push("Name cannot be more than 100 characters");
+	}
 
 	// link
 	if (link && typeof link !== "string") errors.fields.link.push("Link must be a string");
@@ -46,7 +50,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		errors.fields.notes.push("Notes must be a string");
 
 	// status
-	if (!status) errors.fields.status.push("Status must be provided");
+	if (status == null) errors.fields.status.push("Status must be provided");
 	else if (
 		typeof status !== "string" ||
 		!["planning", "building", "complete"].includes(status)
@@ -54,9 +58,10 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		errors.fields.status.push("Invalid status option");
 	}
 
+	// status dependent
 	if (status === "complete") {
 		// dateCompleted
-		if (!dateCompleted)
+		if (dateCompleted == null)
 			errors.fields.dateCompleted.push("Completion date must be provided");
 		else if (typeof dateCompleted !== "string")
 			errors.fields.dateCompleted.push("Invalid date type");
@@ -66,7 +71,9 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 			errors.fields.dateCompleted.push("Invalid date");
 
 		// rating
-		if (!rating) errors.fields.rating.push("Rating must be provided");
+		if (rating == null) errors.fields.rating.push("Rating must be provided");
+		else if (!["string", "number"].includes(typeof rating))
+			errors.fields.rating.push("Invalid rating type");
 		else if (
 			// biome-ignore format: maintain condition checks on single line
 			(typeof rating === "string" && (!isStringParsableInt(rating) || +rating < 1 || +rating > 5)) ||
@@ -76,12 +83,19 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		}
 
 		// recommend
-		if (!recommend) errors.fields.recommend.push("Recommendation must be provided");
+		if (recommend == null)
+			errors.fields.recommend.push("Recommendation must be provided");
 		else if (
 			!["boolean", "string"].includes(typeof recommend) ||
 			(typeof recommend === "string" && !["true", "false"].includes(recommend))
 		)
 			errors.fields.recommend.push("Invalid recommendation");
+	} else {
+		if (dateCompleted != null)
+			errors.fields.dateCompleted.push("Completion date is not assignable");
+		if (rating != null) errors.fields.dateCompleted.push("Rating is not assignable");
+		if (recommend != null)
+			errors.fields.dateCompleted.push("Recommend is not assignable");
 	}
 
 	const hasErrors =
