@@ -1,5 +1,6 @@
 import { getConnInfo } from "@hono/node-server/conninfo";
 import { Hono } from "hono";
+import { rateLimiter } from "hono-rate-limiter";
 import { basicAuth } from "hono/basic-auth";
 import { bearerAuth } from "hono/bearer-auth";
 import { HTTPException } from "hono/http-exception";
@@ -57,12 +58,8 @@ api.use(
 			denyList: ["127.0.0.1"],
 			allowList: [],
 		},
-		(remote, ctx) => {
-			return ctx.json(
-				{ message: `Blocking access from ${remote.type} ${remote.addr}` },
-				403
-			);
-		}
+		(remote, ctx) =>
+			ctx.json({ message: `Blocking access from ${remote.type} ${remote.addr}` }, 403)
 	)
 );
 api.get("/restrict-ip", (ctx) => {
@@ -94,8 +91,20 @@ api.get("/timeout/:time?", async (ctx) => {
 });
 
 // Ref: https://github.com/rhinobase/hono-rate-limiter
-// api.use("/rate-limit",)
-// api.get("/rate-limiter", (ctx) => {});
+api.use(
+	"/rate-limit",
+	rateLimiter({
+		keyGenerator: (ctx) => ctx.req.header("x-forwarded-for") ?? "",
+		windowMs: 1000 * 60 * 3,
+		limit: 3,
+		handler: (ctx) =>
+			ctx.json({ message: "Now you've been rate limited. Please try again later" }, 429),
+	})
+);
+api.get("/rate-limit", (ctx) => {
+	console.info(`Not limited currently`); //LOG
+	return ctx.json({ message: "Not rate limited, for now..." }, 200);
+});
 
 // Validator demos
 function isStringParsableInt(value: string): boolean {
