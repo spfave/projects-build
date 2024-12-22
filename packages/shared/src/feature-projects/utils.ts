@@ -2,8 +2,8 @@ import "@total-typescript/ts-reset/array-includes";
 
 import { isValidYMD, isYMD, valueIfTruthy, ymdToday } from "@projectsbuild/library/utils";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
-import { PROJECT_STATUS, PROJECT_STATUSES } from "./constants";
-import type { Project, ProjectErrors, ProjectFields } from "./types";
+import { PROJECT_STATUS, PROJECT_STATUSES } from "./constants.ts";
+import type { Project, ProjectErrors, ProjectFields } from "./types.ts";
 
 export function validateProject(input: Record<string, FormDataEntryValue>) {
 	const errors: ProjectErrors = {
@@ -118,7 +118,10 @@ export function transformProject(
 	project.notes = valueIfTruthy(input.notes?.trim());
 	project.status = input.status;
 
-	if (input.status === "complete" && project.status === "complete") {
+	if (
+		input.status === PROJECT_STATUS.complete &&
+		project.status === PROJECT_STATUS.complete
+	) {
 		project.dateCompleted = input.dateCompleted;
 		project.rating =
 			typeof input.rating === "number" ? input.rating : Number(input.rating);

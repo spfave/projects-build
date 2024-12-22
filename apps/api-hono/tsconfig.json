@@ -1,11 +1,12 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@projectsbuild/config-typescript/server.json",
+	"extends": "@projectsbuild/config-typescript/nodejs.json",
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM", "DOM.Iterable"] // needed if running tsc check with a /library dependency using DOM/DOM.Iterable types
 		// "types": ["node"]
 		// "jsx": "react-jsx",
 		// "jsxImportSource": "hono/jsx"
 	},
-	"include": ["src", "../../env.d.ts"]
+	"files": ["../../env.d.ts"],
+	"include": ["src"]
 }

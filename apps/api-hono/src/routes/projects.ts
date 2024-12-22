@@ -10,7 +10,6 @@ import {
 	selectProjectsSelect,
 	updateProject,
 } from "@projectsbuild/db-drizzle/data-services";
-import type { ProjectInsert, ProjectUpdate } from "@projectsbuild/db-drizzle/schema";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";

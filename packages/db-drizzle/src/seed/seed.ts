@@ -1,4 +1,4 @@
-import { type Table, getTableName, sql } from "drizzle-orm";
+import { type Table, getTableName } from "drizzle-orm";
 
 import { type DB, db } from "#db/db.ts";
 import * as schema from "#db/schema.ts";

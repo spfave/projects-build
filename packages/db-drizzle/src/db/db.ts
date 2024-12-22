@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/libsql";
 
-import * as schema from "#db/schema.ts";
+import * as schema from "./schema.ts";
 
 export type DB = typeof db;
 export const db = drizzle({
