@@ -127,6 +127,15 @@ export function transformProject(
 			typeof input.rating === "number" ? input.rating : Number(input.rating);
 		project.recommend =
 			typeof input.recommend === "boolean" ? input.recommend : input.recommend === "true";
+	} else {
+		// Set "complete" status fields to null to overwrite existing data if updating from
+		// "complete" to "planning/building" status
+		// @ts-expect-error
+		project.dateCompleted = null;
+		// @ts-expect-error
+		project.rating = null;
+		// @ts-expect-error
+		project.recommend = null;
 	}
 
 	return project;

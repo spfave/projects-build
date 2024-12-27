@@ -37,6 +37,14 @@ export async function insertProject(project: ProjectInsert) {
 
 // export async function updateProject(project: ProjectUpdate) {}
 export async function updateProject(projectId: ProjectId, project: ProjectUpdate) {
+	// export async function updateProject(projectId: ProjectId, project: ProjectInsert) {
+	// if (project.status !== "complete") {
+	// 	// Set "complete" status fields to null to overwrite existing data if updating from
+	// 	// "complete" to "planning/building" status
+	// 	project.dateCompleted = null;
+	// 	project.rating = null;
+	// 	project.recommend = null;
+	// }
 	return await db
 		.update(projects)
 		.set(project)
