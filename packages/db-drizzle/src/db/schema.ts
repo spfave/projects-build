@@ -8,7 +8,9 @@ import { boolean, timestamps, uuidRandom } from "./schema-type-helpers.ts";
 export const projects = sqliteTable(
 	"projects",
 	{
-		id: uuidRandom(),
+		//https://www.restack.io/p/creating-sqlite-databases-from-excel-files-answer-guid-generation
+		// id: uuidRandom(),
+		id: integer().primaryKey(),
 		name: text().notNull(),
 		link: text(),
 		description: text(),
@@ -22,14 +24,20 @@ export const projects = sqliteTable(
 	(table) => [
 		check("chk_name", sql`length(${table.name}) > 1 AND length(${table.name}) <= 10`),
 		check("chk_status", sql`${table.status} IN ('planning', 'building', 'complete')`),
+		// Ref: https://stackoverflow.com/questions/2615477/conditional-sqlite-check-constraint
+		check(
+			"chk_dateCompleted",
+			sql`(${table.status} == 'complete' AND ${table.dateCompleted} IS NOT NULL) OR (${table.status} != 'complete' AND ${table.dateCompleted} IS NULL)`
+		),
+		check(
+			"chk_rating",
+			sql`(${table.status} == 'complete' AND ${table.rating} IS NOT NULL AND ${table.rating} >= 1 AND ${table.rating} <= 5) OR (${table.status} != 'complete' AND ${table.rating} IS NULL)`
+		),
+		check(
+			"chk_recommend",
+			sql`(${table.status} == 'complete' AND ${table.recommend} IS NOT NULL) OR (${table.status} != 'complete' AND ${table.recommend} IS NULL)`
+		),
 	]
-	// (table) => ({
-	// 	checkName: check("check_name", sql``),
-	// 	checkRating: check(
-	// 		"check_rating",
-	// 		sql`${table.rating} >= 1 AND ${table.rating} <= 5`
-	// 	),
-	// })
 );
 
 export type ProjectSelect = typeof projects.$inferSelect;

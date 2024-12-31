@@ -7,7 +7,13 @@ import * as ds from "./data-services/index.ts";
 // Projects
 const [p1] = await db
 	.insert(schema.projects)
-	.values({ name: "a2345678901" })
+	.values({
+		name: "a234567890",
+		status: "planning",
+		// dateCompleted: new Date().toISOString(),
+		// rating: 1,
+		// recommend: false,
+	})
 	.returning()
 	.catch((err) => {
 		console.info(`\n.catch ERROR`); //LOG
@@ -19,7 +25,13 @@ const [p1] = await db
 console.info(`p1: `, p1, `\n`); //LOG
 
 try {
-	const [p2] = await ds.insertProject({ name: "b2", status: "something" });
+	const [p2] = await ds.insertProject({
+		name: "b2",
+		status: "complete",
+		dateCompleted: new Date().toISOString(),
+		rating: 4,
+		recommend: true,
+	});
 	console.info(`p2: `, p2, `\n`); //LOG
 } catch (err) {
 	console.info(`\ntry-catch ERROR`); //LOG
