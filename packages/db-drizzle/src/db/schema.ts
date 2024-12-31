@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+import { PROJECT_STATUS, PROJECT_STATUSES } from "@projectsbuild/shared/projects";
 import { boolean, timestamps, uuidRandom } from "./schema-type-helpers.ts";
 
 // Ref: https://stackoverflow.com/questions/2615477/conditional-sqlite-check-constraint
@@ -12,9 +13,7 @@ export const projects = sqliteTable(
 		link: text(),
 		description: text(),
 		notes: text(),
-		status: text({ enum: ["planning", "building", "complete"] })
-			.notNull()
-			.default("planning"),
+		status: text({ enum: PROJECT_STATUSES }).notNull().default(PROJECT_STATUS.planning),
 		dateCompleted: text(),
 		rating: integer(),
 		recommend: boolean(),

@@ -110,6 +110,9 @@ importers:
       '@libsql/client':
         specifier: ^0.14.0
         version: 0.14.0
+      '@projectsbuild/shared':
+        specifier: workspace:*
+        version: link:../shared
       drizzle-orm:
         specifier: ^0.38.2
         version: 0.38.3(@libsql/client@0.14.0)(@types/react@18.3.12)(react@18.3.1)
