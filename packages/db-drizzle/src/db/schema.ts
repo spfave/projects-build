@@ -18,7 +18,11 @@ export const projects = sqliteTable(
 		rating: integer(),
 		recommend: boolean(),
 		...timestamps,
-	}
+	},
+	(table) => [
+		check("chk_name", sql`length(${table.name}) > 1 AND length(${table.name}) <= 10`),
+		check("chk_status", sql`${table.status} IN ('planning', 'building', 'complete')`),
+	]
 	// (table) => ({
 	// 	checkName: check("check_name", sql``),
 	// 	checkRating: check(
@@ -36,18 +40,18 @@ export type ProjectInsert = Omit<
 export type ProjectUpdate = Partial<ProjectInsert>; //& { id: ProjectSelect["id"] };
 
 // Note: used for testing timestamp schema type helpers
-// export const timestamps = sqliteTable("timestamps", {
-// 	id: integer({ mode: "number" }).primaryKey({ autoIncrement: true }),
-// 	text: text(),
-// 	numCreatedAt: integer("num_created_at", { mode: "timestamp_ms" }).$default(
-// 		() => new Date()
-// 	),
-// 	numUpdatedAt: integer("num_updated_at", { mode: "timestamp_ms" })
-// 		.$default(() => new Date())
-// 		.$onUpdate(() => new Date()),
-// 	txtCreatedAt: text("txt_created_at").$default(() => new Date().toISOString()),
-// 	txtUpdatedAt: text("txt_updated_at")
-// 		.$default(() => new Date().toISOString())
-// 		.$onUpdateFn(() => new Date().toISOString()),
-// 	...timeStamps,
-// });
+export const audit = sqliteTable("timestamps", {
+	id: integer({ mode: "number" }).primaryKey({ autoIncrement: true }),
+	text: text(),
+	numCreatedAt: integer("num_created_at", { mode: "timestamp_ms" }).$default(
+		() => new Date()
+	),
+	numUpdatedAt: integer("num_updated_at", { mode: "timestamp_ms" })
+		.$default(() => new Date())
+		.$onUpdate(() => new Date()),
+	txtCreatedAt: text("txt_created_at").$default(() => new Date().toISOString()),
+	txtUpdatedAt: text("txt_updated_at")
+		.$default(() => new Date().toISOString())
+		.$onUpdateFn(() => new Date().toISOString()),
+	...timestamps,
+});
