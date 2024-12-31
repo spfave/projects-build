@@ -62,6 +62,11 @@ api.get("/:id", validateParamProjectId, async (ctx) => {
 	return ctx.json(project, HttpStatus.OK.code);
 });
 
+// api.post("/", async (ctx) => {
+// 	const payload = await ctx.req.json();
+// 	const [result] = await insertProject(payload);
+// 	return ctx.json(result, HttpStatus.CREATED.code);
+// });
 api.post("/", validateJsonProject, async (ctx) => {
 	const payload = ctx.req.valid("json");
 	const [result] = await insertProject(payload);
