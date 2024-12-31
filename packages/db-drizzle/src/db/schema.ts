@@ -4,13 +4,10 @@ import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { PROJECT_STATUS, PROJECT_STATUSES } from "@projectsbuild/shared/projects";
 import { boolean, timestamps, uuidRandom } from "./schema-type-helpers.ts";
 
-// Ref: https://stackoverflow.com/questions/2615477/conditional-sqlite-check-constraint
 export const projects = sqliteTable(
 	"projects",
 	{
-		//https://www.restack.io/p/creating-sqlite-databases-from-excel-files-answer-guid-generation
-		// id: uuidRandom(),
-		id: integer().primaryKey(),
+		id: uuidRandom(),
 		name: text().notNull(),
 		link: text(),
 		description: text(),
@@ -21,10 +18,10 @@ export const projects = sqliteTable(
 		recommend: boolean(),
 		...timestamps,
 	},
+	// Ref: https://stackoverflow.com/questions/2615477/conditional-sqlite-check-constraint
 	(table) => [
-		check("chk_name", sql`length(${table.name}) > 1 AND length(${table.name}) <= 10`),
+		check("chk_name", sql`length(${table.name}) > 1 AND length(${table.name}) <= 125`),
 		check("chk_status", sql`${table.status} IN ('planning', 'building', 'complete')`),
-		// Ref: https://stackoverflow.com/questions/2615477/conditional-sqlite-check-constraint
 		check(
 			"chk_dateCompleted",
 			sql`(${table.status} == 'complete' AND ${table.dateCompleted} IS NOT NULL) OR (${table.status} != 'complete' AND ${table.dateCompleted} IS NULL)`

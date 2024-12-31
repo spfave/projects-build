@@ -1,6 +1,5 @@
 [
 	{
-		"id": "qkd4k901",
 		"name": "App Projects.build",
 		"link": "https://github.com/spfave/projects-build",
 		"description": "Testing web dev frameworks and tools",
@@ -8,7 +7,6 @@
 		"status": "building"
 	},
 	{
-		"id": "hb389mw05",
 		"name": "Outer City Limit Puzzle",
 		"description": "Jigsaw puzzle",
 		"notes": "We puzzled it together",
@@ -18,12 +16,10 @@
 		"recommend": true
 	},
 	{
-		"id": "ewc9m6e3",
 		"name": "Project with a longer name compared to others",
 		"status": "building"
 	},
 	{
-		"id": "0dfk44y4",
 		"name": "Project with an absurdly longer name compared to all others Why would someone even type this much in the name field",
 		"link": "",
 		"description": "",
@@ -31,7 +27,6 @@
 		"status": "planning"
 	},
 	{
-		"id": "cfs3d0q2",
 		"name": "Test 1",
 		"status": "complete",
 		"dateCompleted": "2024-06-18",
@@ -39,7 +34,6 @@
 		"recommend": false
 	},
 	{
-		"id": "b92jm3w8",
 		"name": "test 2",
 		"link": "https://www.url.com",
 		"status": "planning"

@@ -37,7 +37,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	else {
 		if (name.trim().length < 2)
 			errors.fields.name.push("Name must be at least 2 characters");
-		if (name.trim().length > 100)
+		if (name.trim().length > 125)
 			errors.fields.name.push("Name cannot be more than 100 characters");
 	}
 
