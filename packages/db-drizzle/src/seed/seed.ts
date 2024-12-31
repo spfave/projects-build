@@ -8,7 +8,7 @@ if (process.env.DB_SEEDING !== "true")
 	throw new Error(`DB_SEEDING must be set to "true" when running DB seed`);
 
 async function resetDBTables() {
-	for (const table of [schema.projects]) {
+	for (const table of [schema.projects, schema.audit]) {
 		await db.delete(table);
 		// await resetTable(db, table);
 	}
