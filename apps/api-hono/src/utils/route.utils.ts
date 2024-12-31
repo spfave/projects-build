@@ -14,7 +14,10 @@ export const onError: ErrorHandler = (error, ctx) => {
 	const env = process.env.NODE_ENV;
 
 	return ctx.json(
-		{ message: error.message, stack: env === "development" ? error.stack : undefined },
+		{
+			message: error.message || "An error occurred",
+			stack: env === "development" ? error.stack : undefined,
+		},
 		statusCode
 	);
 };
