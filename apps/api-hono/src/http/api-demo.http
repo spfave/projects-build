@@ -1,0 +1,86 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+@route = http://localhost:5002/api/demo
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+# Not Found
+GET {{route}}/notFound
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Thrown Error
+GET {{route}}/error
+Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# AUTH basic
+
+GET {{route}}/auth-basic
+Authorization: Basic username:password
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# AUTH bearer
+
+GET {{route}}/auth-bearer
+Authorization: Bearer token
+# Authorization: Bearer {{auth_token2}}
+# Authorization: Bearer {{$processEnv AUTH_TOKEN}}
+# Authorization: Bearer {{$dotenv AUTH_TOKEN}}
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Restrict IP
+
+GET {{route}}/restrict-ip
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Request ID
+
+GET {{route}}/request-id
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Timeout
+
+# GET {{route}}/timeout/500
+GET {{route}}/timeout?time=500
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Rate Limit
+
+GET {{route}}/rate-limit
+Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# Validate Path Params and Query Params
+GET {{route}}/validate-path-query-params/prm1/1/prm2/3g
+?qp1=11
+&qp2=22	
+&qpAry=qpAry1
+&qpAry=qpAry2
+Content-Type: {{contentType}}
+
+### --------------------------------------------------------------------------------- ###
+# Validate Form Data
+POST {{route}}/validate-form
+Content-Type: application/x-www-form-urlencoded
+
+todo=test
+&content=test form validation endpoint
+&complete=false
+
+### --------------------------------------------------------------------------------- ###
+# Validate JSON Body
+POST {{route}}/validate-json
+Content-Type: {{contentType}}
+
+{
+	"todo": "test",
+	"content": "test form validation endpoint",
+	"complete": false
+}

@@ -1,9 +1,9 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@projectsbuild/config-typescript/server.json",
+	"extends": "@projectsbuild/config-typescript/nodejs.json",
 	"compilerOptions": {
-		"module": "NodeNext",
-		"types": ["node"]
+		// "types": ["node"]
 	},
-	"include": ["src", "drizzle.config.ts", "../../env.d.ts"]
+	"files": ["../../env.d.ts", "drizzle.config.ts"],
+	"include": ["src"]
 }
