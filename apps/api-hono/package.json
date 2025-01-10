@@ -4,6 +4,7 @@
 	"private": true,
 	"type": "module",
 	"imports": {
+		"#lib/*": "./src/lib/*",
 		"#routes/*": "./src/routes/*",
 		"#utils/*": "./src/utils/*"
 	},

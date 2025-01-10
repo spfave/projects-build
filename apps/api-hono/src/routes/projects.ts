@@ -35,6 +35,7 @@ const validateJsonProject = validator("json", (json, ctx) => {
 	return validProject;
 });
 
+// Note: Types are not captured with individual route handlers for RPC client
 api.get("/", async (ctx) => {
 	const projects = await db.selectProjectsQuery();
 	// const projects = await db.selectProjectsSelect();
@@ -87,7 +88,7 @@ api.delete("/:id", validateParamProjectId, async (ctx) => {
 	// 	? ctx.json(project, HttpStatus.OK.code)
 	// 	: ctx.json(undefined, HttpStatus.NO_CONTENT.code);
 	// Note: If returning status 204 - "No Content" json content must be "undefined"
-	// returning ctx.json(val | obj | null, 204) errors
+	// returning 'ctx.json(val | obj | null, 204)' errors
 
 	const { id } = ctx.req.valid("param");
 	const [project] = await db.deleteProjectReturning(id);
