@@ -93,9 +93,8 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	} else {
 		if (dateCompleted != null)
 			errors.fields.dateCompleted.push("Completion date is not assignable");
-		if (rating != null) errors.fields.dateCompleted.push("Rating is not assignable");
-		if (recommend != null)
-			errors.fields.dateCompleted.push("Recommend is not assignable");
+		if (rating != null) errors.fields.rating.push("Rating is not assignable");
+		if (recommend != null) errors.fields.recommend.push("Recommend is not assignable");
 	}
 
 	const hasErrors =
