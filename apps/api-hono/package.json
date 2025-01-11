@@ -3,7 +3,13 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
+	"exports": {
+		"./app": "./src/app.ts",
+		"./client": "./src/client.ts",
+		"./routes/*": "./src/routes/*"
+	},
 	"imports": {
+		"#lib/*": "./src/lib/*",
 		"#routes/*": "./src/routes/*",
 		"#utils/*": "./src/utils/*"
 	},

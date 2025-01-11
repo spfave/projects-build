@@ -1,5 +1,4 @@
 import { getConnInfo } from "@hono/node-server/conninfo";
-import { Hono } from "hono";
 import { rateLimiter } from "hono-rate-limiter";
 import { basicAuth } from "hono/basic-auth";
 import { bearerAuth } from "hono/bearer-auth";
@@ -9,7 +8,10 @@ import { requestId } from "hono/request-id";
 import { timeout } from "hono/timeout";
 import { validator } from "hono/validator";
 
-const api = new Hono().basePath("/demo");
+import { isStringParsableInt } from "@projectsbuild/library/validation";
+import { defaultRouter } from "#lib/core-app.ts";
+
+const api = defaultRouter().basePath("/demos");
 
 // Endpoint demos
 api.get("/error", (ctx) => {
@@ -107,10 +109,6 @@ api.get("/rate-limit", (ctx) => {
 });
 
 // Validator demos
-function isStringParsableInt(value: string): boolean {
-	return Number(value) === Number.parseInt(value, 10);
-}
-
 api.get(
 	"/validate-path-query-params/prm1/:p1/prm2/:p2",
 	validator("param", (params, ctx) => {

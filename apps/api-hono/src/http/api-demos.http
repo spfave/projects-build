@@ -1,5 +1,5 @@
 # Ref: https://github.com/Huachao/vscode-restclient
-@route = http://localhost:5002/api/demo
+@route = http://localhost:5002/api/demos
 @contentType = application/json
 
 ### --------------------------------------------------------------------------------- ###

@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./data-services": "./src/data-services/index.ts",
+		"./data-services/*": "./src/data-services/*",
 		"./db": "./src/db/db.ts",
 		"./schema": "./src/db/schema.ts",
 		"./schema-type": "./src/db/schema-type-helpers.ts"

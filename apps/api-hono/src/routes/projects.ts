@@ -1,21 +1,12 @@
 import { validator } from "hono/validator";
 
-import {
-	deleteProject,
-	deleteProjectReturning,
-	insertProject,
-	selectProjectByIdQuery,
-	selectProjectByIdSelect,
-	selectProjectsQuery,
-	selectProjectsSelect,
-	updateProject,
-} from "@projectsbuild/db-drizzle/data-services";
+import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
-import { createRouter } from "../app.ts";
+import { defaultRouter } from "#lib/core-app.ts";
 
-const api = createRouter().basePath("/v1/projects");
+const api = defaultRouter().basePath("/v1/projects");
 
 const validateParamProjectId = validator("param", (params, ctx) => {
 	const { id } = params;
@@ -44,17 +35,18 @@ const validateJsonProject = validator("json", (json, ctx) => {
 	return validProject;
 });
 
+// Note: Types are not captured with individual route handlers for RPC client
 api.get("/", async (ctx) => {
-	const projects = await selectProjectsQuery();
-	// const projects = await selectProjectsSelect();
+	const projects = await db.selectProjectsQuery();
+	// const projects = await db.selectProjectsSelect();
 	return ctx.json(projects, HttpStatus.OK.code);
 });
 
 api.get("/:id", validateParamProjectId, async (ctx) => {
 	const { id } = ctx.req.valid("param");
 
-	// const project = await selectProjectByIdQuery(id);
-	const [project] = await selectProjectByIdSelect(id);
+	// const project = await db.selectProjectByIdQuery(id);
+	const project = await db.selectProjectByIdSelect(id);
 
 	if (!project)
 		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
@@ -64,19 +56,19 @@ api.get("/:id", validateParamProjectId, async (ctx) => {
 
 // api.post("/", async (ctx) => {
 // 	const payload = await ctx.req.json();
-// 	const [result] = await insertProject(payload);
+// 	const [result] = await db.insertProject(payload);
 // 	return ctx.json(result, HttpStatus.CREATED.code);
 // });
 api.post("/", validateJsonProject, async (ctx) => {
 	const payload = ctx.req.valid("json");
-	const [result] = await insertProject(payload);
+	const [result] = await db.insertProject(payload);
 	return ctx.json(result, HttpStatus.CREATED.code);
 });
 
 api.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 	const { id } = ctx.req.valid("param");
 	const payload = ctx.req.valid("json");
-	const [project] = await updateProject(id, payload);
+	const [project] = await db.updateProject(id, payload);
 
 	if (!project)
 		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
@@ -86,20 +78,20 @@ api.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 
 api.delete("/:id", validateParamProjectId, async (ctx) => {
 	// const { id } = ctx.req.param();
-	// const result = await deleteProject(id);
+	// const result = await db.deleteProject(id);
 	// return result.rowsAffected > 0
 	// 	? ctx.json({ rowsDeleted: result.rowsAffected }, HttpStatus.OK.code)
 	// 	: ctx.body(null, HttpStatus.NO_CONTENT.code);
 
-	// const [project] = await deleteProjectReturning(id);
+	// const [project] = await db.deleteProjectReturning(id);
 	// return project
 	// 	? ctx.json(project, HttpStatus.OK.code)
 	// 	: ctx.json(undefined, HttpStatus.NO_CONTENT.code);
 	// Note: If returning status 204 - "No Content" json content must be "undefined"
-	// returning ctx.json(val | obj | null, 204) errors
+	// returning 'ctx.json(val | obj | null, 204)' errors
 
 	const { id } = ctx.req.valid("param");
-	const [project] = await deleteProjectReturning(id);
+	const [project] = await db.deleteProjectReturning(id);
 
 	if (!project)
 		return ctx.json({ message: HttpStatus.NOT_FOUND.phrase }, HttpStatus.NOT_FOUND.code);
