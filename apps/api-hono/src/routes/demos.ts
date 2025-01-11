@@ -9,9 +9,9 @@ import { timeout } from "hono/timeout";
 import { validator } from "hono/validator";
 
 import { isStringParsableInt } from "@projectsbuild/library/validation";
-import { createRouter } from "../app.ts";
+import { defaultRouter } from "#lib/core-app.ts";
 
-const api = createRouter().basePath("/demo");
+const api = defaultRouter().basePath("/demos");
 
 // Endpoint demos
 api.get("/error", (ctx) => {

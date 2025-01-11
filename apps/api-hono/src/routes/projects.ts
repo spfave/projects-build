@@ -4,9 +4,9 @@ import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
-import { createRouter } from "../app.ts";
+import { defaultRouter } from "#lib/core-app.ts";
 
-const api = createRouter().basePath("/v1/projects");
+const api = defaultRouter().basePath("/v1/projects");
 
 const validateParamProjectId = validator("param", (params, ctx) => {
 	const { id } = params;
