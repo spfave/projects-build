@@ -1,27 +1,19 @@
-import { Hono } from "hono";
-import { logger } from "hono/logger";
-
-import demoApi from "#routes/demos.ts";
-import projectApi from "#routes/projects.ts";
-import { notFound, onError } from "#utils/route.utils.ts";
-
-export function createRouter() {
-	return new Hono({ strict: false });
-}
-
-export function createApp() {
-	const app = createRouter().basePath("/api");
-	app.use(logger());
-
-	app.notFound(notFound);
-	app.onError(onError);
-
-	return app;
-}
+import { createApp } from "#lib/core-app.ts";
+import apiDemos from "#routes/demos.ts";
+import { apiProjects } from "#routes/projects-rpc.ts";
 
 const app = createApp();
 
-app.route("/", demoApi);
-app.route("/", projectApi);
+// export type App = typeof appRoutes;
+// const appRoutes = app.route("/", apiDemos).route("/", apiProjects);
 
+const appRoutes = [apiDemos, apiProjects] as const;
+appRoutes.forEach((r, _) => app.route("/", r));
+
+export type AppRoutes = (typeof appRoutes)[number];
 export default app;
+
+// ----------------------------------------------------------------------------------- //
+// Alternate option: import app with routes previously added directly in routes/* definitions
+
+// import { app } from "./lib/core-app.ts";
