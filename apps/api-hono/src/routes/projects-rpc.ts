@@ -104,6 +104,6 @@ export const apiProjects = defaultRouter()
 
 // Compiled RPC client with types
 type ClientProjects = ReturnType<typeof hc<ApiProject>>;
-export function clientApiProjectsTyped(...args: Parameters<typeof hc>): ClientProjects {
+export function hcApiProjectsTyped(...args: Parameters<typeof hc>): ClientProjects {
 	return hc<ApiProject>(...args);
 }
