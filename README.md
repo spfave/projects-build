@@ -33,7 +33,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 <!-- - [Client Svelte](./apps/client-svelte) -->
 <!-- - [Client Qwik](./apps/client-qwik) -->
 
-<!-- - [API Node + Fastify](./apps/api-node-fastify) -->
+- [API Node + Hono](./apps/api-hono)
 
 <!-- - [Server Go + HTMX](./apps/server-go-htmx) -->
 
@@ -49,7 +49,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 - [API Json Server](./packages/api-json-server)
 - [Library](./packages/library)
 - [Shared](./packages/shared)
-<!-- - [DB Schema](./packages/db-schema) -->
+- [DB Schema Drizzle](./packages/db-drizzle)
 
 &nbsp;
 ## **Configs**
