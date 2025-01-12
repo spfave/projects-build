@@ -42,7 +42,7 @@ export default function ProjectRoute() {
 	const navigate = useNavigate();
 	const { fetchProjects } = useProjectsContext();
 
-	const projectQ = useAsync();
+	const projectQ = useAsync<Project>();
 	React.useEffect(() => {
 		if (!params.id) throw new Error("Parameter id must exist.");
 
