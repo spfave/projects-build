@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 
 import type { Project } from "@projectsbuild/shared/projects";
 import For from "~/components/ui/for";

@@ -1,4 +1,4 @@
-import { Link, Outlet, useOutletContext } from "react-router-dom";
+import { Link, Outlet, useOutletContext } from "react-router";
 
 import {
 	FetchError,

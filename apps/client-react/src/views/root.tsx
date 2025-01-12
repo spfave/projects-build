@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router";
 
 import githubIcon from "@projectsbuild/shared/assets/github.svg";
 import infoIcon from "@projectsbuild/shared/assets/heroicons-information-circle.svg";
