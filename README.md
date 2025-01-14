@@ -11,7 +11,6 @@ Develop a web application to manage and rate project builds with multiple web te
 
 Each app implementation purposefully use a bare minimum set of dependencies to focus the app engineering on using the primitives supplied with the libraries, frameworks, and languages plus limit external dependency decision making. This is for the purpose of experimenting with these primitives as building blocks and understanding where it makes sense to favor abstraction to an external dependency. 
 
-<!-- over-engineering -->
 This repo additionally over-engineers overall code organization, function & type utilities, and code logic abstractions. This is for the purpose of experimenting with development in a monorepo and logic co-location patterns, advanced JavaScript/TypeScript capabilities and patterns, and code architecture patterns. 
 
 
@@ -47,9 +46,9 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 &nbsp;
 ## **Packages**
 - [API Json Server](./packages/api-json-server)
+- [DB Schema Drizzle](./packages/db-drizzle)
 - [Library](./packages/library)
 - [Shared](./packages/shared)
-- [DB Schema Drizzle](./packages/db-drizzle)
 
 &nbsp;
 ## **Configs**
@@ -65,6 +64,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 - [Reshot Free Icons & Illustrations](https://www.reshot.com/)
 
 &nbsp;
-## **Notes**
+## **Notes/References**
 - [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
 - [TS Paths in a Monorepo](https://github.com/vercel/turbo/discussions/620)
+- [Data Handling](https://nextjs.org/blog/security-nextjs-server-components-actions)
