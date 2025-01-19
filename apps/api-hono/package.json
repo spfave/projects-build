@@ -19,7 +19,7 @@
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
-		"typecheck": "tsc"
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.7",

@@ -18,7 +18,7 @@
 	"scripts": {
 		"script:fetch-http": "node --experimental-strip-types ./scripts/fetch-http-statuses.ts",
 		"script:gen-http": "node --experimental-strip-types ./scripts/gen-http-statuses.ts",
-		"typecheck": "tsc"
+		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",

@@ -13,6 +13,7 @@
 		"#db/*": "./src/db/*"
 	},
 	"scripts": {
+		"start": "pnpm run db:studio",
 		"db:generate": "drizzle-kit generate --config=drizzle.config.ts",
 		"db:migrate": "dotenvx run -f ../../.env.local -- drizzle-kit migrate",
 		"db:push": "dotenvx run -f ../../.env.local -- drizzle-kit push",
@@ -22,7 +23,7 @@
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
-		"typecheck": "tsc"
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@libsql/client": "^0.14.0",

@@ -10,7 +10,7 @@
 	},
 	"imports": {},
 	"scripts": {
-		"typecheck": "tsc"
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@projectsbuild/library": "workspace:*"
