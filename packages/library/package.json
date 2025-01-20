@@ -18,6 +18,8 @@
 	"scripts": {
 		"script:fetch-http": "node --experimental-strip-types ./scripts/fetch-http-statuses.ts",
 		"script:gen-http": "node --experimental-strip-types ./scripts/gen-http-statuses.ts",
+		"format": "biome format ./src",
+		"lint": "biome lint ./src",
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {

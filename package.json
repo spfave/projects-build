@@ -15,10 +15,10 @@
 		"pnpm": ">=9.6.0"
 	},
 	"scripts": {
-		"start": "pnpm -r run start",
-		"format": "pnpm -r run format",
-		"lint": "pnpm -r run lint",
-		"typecheck": "pnpm -r run typecheck",
+		"start": "pnpm -r --stream --parallel run start",
+		"format": "pnpm -r --stream run format",
+		"lint": "pnpm -r --stream run lint",
+		"typecheck": "pnpm -r --stream run typecheck",
 		"clean:deps": "find ./ -name node_modules -type d -exec rm -rf {} +"
 	},
 	"devDependencies": {
