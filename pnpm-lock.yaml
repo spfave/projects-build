@@ -57,6 +57,9 @@ importers:
 
   apps/client-react:
     dependencies:
+      '@projectsbuild/api-hono':
+        specifier: workspace:*
+        version: link:../api-hono
       '@projectsbuild/library':
         specifier: workspace:*
         version: link:../../packages/library

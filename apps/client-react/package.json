@@ -14,6 +14,7 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@projectsbuild/api-hono": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
 		"@projectsbuild/shared": "workspace:*",
 		"react": "^18.3.1",
