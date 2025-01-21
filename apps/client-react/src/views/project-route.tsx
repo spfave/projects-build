@@ -1,41 +1,15 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router";
 
-import {
-	FetchError,
-	FetchResponseError,
-	HttpResponseError,
-} from "@projectsbuild/library/errors";
 import { ymdPretty } from "@projectsbuild/library/utils";
 import type { Project } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/error-fallback";
 import Show from "~/components/ui/show";
+import * as client from "~/feature-projects/client-api-fetch";
 import { useAsync } from "~/hooks/use-async";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-route.module.css";
-
-export async function getProjectById(id: string) {
-	const res = await fetch(
-		`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`
-	).catch((err) => {
-		throw new FetchError("Fetch failed for getProjectById", { cause: err });
-	});
-
-	if (res.status >= 400) throw new HttpResponseError(res);
-	if (!res.ok) throw new FetchResponseError("Fetch response not ok for getProjectById");
-
-	const project = (await res.json()) as Project;
-	return project;
-}
-
-export async function deleteProjectById(id: string) {
-	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${id}`, {
-		method: "DELETE",
-	});
-	const deletedProject = (await res.json()) as Project;
-	return deletedProject;
-}
 
 export default function ProjectRoute() {
 	const params = useParams();
@@ -46,14 +20,14 @@ export default function ProjectRoute() {
 	React.useEffect(() => {
 		if (!params.id) throw new Error("Parameter id must exist.");
 
-		projectQ.run(getProjectById(params.id));
+		projectQ.run(client.getProjectById(params.id));
 	}, [projectQ.run, params.id]);
 
 	async function handleDeleteProject(evt: React.FormEvent<HTMLFormElement>) {
 		evt.preventDefault();
 		if (!params.id) return;
 
-		await deleteProjectById(params.id);
+		await client.deleteProjectById(params.id);
 		fetchProjects();
 		navigate("/projects");
 	}

@@ -1,37 +1,14 @@
 import { Link, Outlet, useOutletContext } from "react-router";
 
-import {
-	FetchError,
-	FetchResponseError,
-	HttpResponseError,
-} from "@projectsbuild/library/errors";
 import type { Project } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/error-fallback";
 import { SwitchAsync } from "~/components/ui/switch";
+import * as client from "~/feature-projects/client-api-fetch";
 import ProjectNavList from "~/feature-projects/projects-nav-list";
 import { useQuery } from "~/hooks/use-async";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
-
-export async function getProjects() {
-	// fetch can error: network connection failure
-	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`).catch(
-		(err) => {
-			throw new FetchError("Fetch failed for getProjects", { cause: err });
-		}
-	);
-
-	// response 'status' or 'ok' property can indicate an error
-	if (res.status >= 400)
-		throw new HttpResponseError(res, "Http status error for getProjects");
-	if (!res.ok)
-		throw new FetchResponseError("Fetch response not ok for getProjects", { cause: res });
-
-	// json parsing can error: SyntaxError
-	const projects = (await res.json()) as Project[];
-	return projects;
-}
 
 type ProjectsContext = { fetchProjects: () => Promise<Project[]> };
 export function useProjectsContext() {
@@ -39,7 +16,7 @@ export function useProjectsContext() {
 }
 
 export default function ProjectsRoute() {
-	const projects = useQuery(getProjects);
+	const projects = useQuery(client.getProjects);
 
 	return (
 		<div className={styles.projects}>
@@ -47,7 +24,7 @@ export default function ProjectsRoute() {
 				<div>
 					<Link className="action success" to="create">
 						<span>New Project</span>
-						<img height={20} src={plusIcon} alt="" />
+						<img height={20} src={plusIcon} alt="plus icon" />
 					</Link>
 				</div>
 				<hr />

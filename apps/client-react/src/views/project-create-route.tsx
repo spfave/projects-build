@@ -4,28 +4,17 @@ import { Link, useNavigate } from "react-router";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import type {
-	Project,
 	ProjectErrors,
 	ProjectFields,
-	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/projects";
 import ErrorList from "~/components/error-list";
+import * as client from "~/feature-projects/client-api-fetch";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
-
-export async function createProject(project: ProjectInput) {
-	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`, {
-		method: "POST",
-		body: JSON.stringify(project),
-	});
-
-	const newProject = (await res.json()) as Project;
-	return newProject;
-}
 
 export default function ProjectCreateRoute() {
 	const navigate = useNavigate();
@@ -49,7 +38,7 @@ export default function ProjectCreateRoute() {
 		if (projectErrors) setProjectErrors(null);
 
 		const projectPayload = transformProject(formObj as ProjectFields);
-		const project = await createProject(projectPayload);
+		const project = await client.createProject(projectPayload);
 
 		fetchProjects();
 		navigate(`/projects/${project.id}`);
