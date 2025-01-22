@@ -1,49 +1,43 @@
 {
-  "projects": [
-    {
-      "id": "qk01",
-      "name": "App Projects.build",
-      "link": "https://github.com/spfave/projects-build",
-      "description": "Testing web dev frameworks and tools",
-      "notes": "Doing a lot of learning!!!",
-      "status": "building"
-    },
-    {
-      "id": "hb05",
-      "name": "Outer City Limit Puzzle",
-      "description": "Jigsaw puzzle",
-      "notes": "We puzzled it together",
-      "status": "complete",
-      "dateCompleted": "2024-05-04",
-      "rating": 2,
-      "recommend": true
-    },
-    {
-      "id": "ec63",
-      "name": "Project with a longer name compared to others",
-      "status": "building"
-    },
-    {
-      "id": "0444",
-      "name": "Project with an absurdly longer name compared to all others Why would someone even type this much in the name field",
-      "link": "",
-      "description": "",
-      "notes": "",
-      "status": "planning"
-    },
-    {
-      "id": "cd02",
-      "name": "Test 1",
-      "status": "complete",
-      "dateCompleted": "2024-06-18",
-      "rating": 4,
-      "recommend": false
-    },
-    {
-      "id": "b928",
-      "name": "test 2",
-      "link": "https://www.url.com",
-      "status": "planning"
-    }
-  ]
+	"projects": [
+		{
+			"id": "qk01",
+			"name": "App Projects.build",
+			"link": "https://github.com/spfave/projects-build",
+			"description": "Testing web dev frameworks and tools",
+			"notes": "Doing a lot of learning!!!",
+			"status": "building"
+		},
+		{
+			"id": "hb05",
+			"name": "Outer City Limit Puzzle",
+			"description": "Jigsaw puzzle",
+			"notes": "We puzzled it together",
+			"status": "complete",
+			"dateCompleted": "2024-05-04",
+			"rating": 2,
+			"recommend": true
+		},
+		{
+			"id": "ec63",
+			"name": "Project with a longer name compared to others",
+			"status": "building"
+		},
+		{
+			"id": "0444",
+			"name": "Project with an absurdly longer name compared to all others Why would someone even type this much in the name field?",
+			"link": "",
+			"description": "",
+			"notes": "",
+			"status": "planning"
+		},
+		{
+			"id": "cd02",
+			"name": "Test 1",
+			"status": "complete",
+			"dateCompleted": "2024-06-18",
+			"rating": 4,
+			"recommend": false
+		}
+	]
 }
