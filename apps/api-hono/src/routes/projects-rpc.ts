@@ -75,7 +75,7 @@ export const apiProjects = defaultRouter()
 		return ctx.json(result, HttpStatus.CREATED.code);
 	})
 
-	.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
+	.put("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 		const { id } = ctx.req.valid("param");
 		const payload = ctx.req.valid("json");
 		const [project] = await db.updateProject(id, payload);

@@ -30,8 +30,8 @@ Content-Type: {{contentType}}
 
 
 ### --------------------------------------------------------------------------------- ###
-# PATCH project by id
-PATCH  {{route}}/{{id}}
+# PUT project by id
+PUT  {{route}}/{{id}}
 Content-Type: {{contentType}}
 
 {
