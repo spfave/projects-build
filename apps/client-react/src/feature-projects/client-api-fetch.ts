@@ -6,8 +6,9 @@ import {
 import type { Project, ProjectInput } from "@projectsbuild/shared/projects";
 
 const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
+const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
 
-const urlApi = URL_API_JSON_SERVER;
+const urlApi = URL_API_HONO;
 
 export async function getProjects() {
 	// fetch can error: network connection failure

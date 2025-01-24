@@ -19,7 +19,8 @@ const validateParamProjectId = validator("param", (params, ctx) => {
 	return { id };
 });
 
-const validateJsonProject = validator("json", (json, ctx) => {
+const validateJsonProject = validator("json", async (_json, ctx) => {
+	const json = await ctx.req.json(); // _json function parameter value not coming through with fetch
 	const validation = validateProject(json);
 	if (validation.status === "error")
 		return ctx.json(
