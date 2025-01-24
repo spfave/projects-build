@@ -73,6 +73,14 @@ export const apiProjects = defaultRouter()
 	.post("/", validateJsonProject, async (ctx) => {
 		const payload = ctx.req.valid("json");
 		const [result] = await db.insertProject(payload);
+
+		// Note: Included for return type inference, validator should ensure this doesn't occur
+		if (!result)
+			return ctx.json(
+				{ message: HttpStatus.INTERNAL_SERVER_ERROR.phrase },
+				HttpStatus.INTERNAL_SERVER_ERROR.code
+			);
+
 		return ctx.json(result, HttpStatus.CREATED.code);
 	})
 
