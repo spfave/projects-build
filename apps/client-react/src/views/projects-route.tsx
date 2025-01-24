@@ -3,14 +3,16 @@ import { Link, Outlet, useOutletContext } from "react-router";
 import type { Project } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/error-fallback";
 import { SwitchAsync } from "~/components/ui/switch";
-import * as client from "~/feature-projects/client-api-fetch";
+import * as client from "~/feature-projects/client-api-rpc";
 import ProjectNavList from "~/feature-projects/projects-nav-list";
 import { useQuery } from "~/hooks/use-async";
 
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import styles from "./projects-route.module.css";
 
-type ProjectsContext = { fetchProjects: () => Promise<Project[]> };
+// Note: needed for type inferred rpc client response from get projects endpoint
+export type ProjectListItem = Pick<Project, "id" | "name">;
+type ProjectsContext = { fetchProjects: () => Promise<ProjectListItem[]> };
 export function useProjectsContext() {
 	return useOutletContext<ProjectsContext>();
 }
