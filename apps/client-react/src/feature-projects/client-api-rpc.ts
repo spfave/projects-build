@@ -35,8 +35,7 @@ export async function getProjectById(id: string) {
 	return project;
 }
 
-// export async function createProject(project: ProjectInput)
-export async function createProject(project: Project) {
+export async function createProject(project: ProjectInput) {
 	const res = await client.api.v1.projects.$post({ json: project });
 	const newProject = res.json();
 	return newProject;
