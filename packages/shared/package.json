@@ -10,7 +10,9 @@
 	},
 	"imports": {},
 	"scripts": {
-		"typecheck": "tsc"
+		"format": "biome format ./src",
+		"lint": "biome lint ./src",
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@projectsbuild/library": "workspace:*"

@@ -3,7 +3,7 @@ import "@total-typescript/ts-reset/array-includes";
 import { isValidYMD, isYMD, valueIfTruthy, ymdToday } from "@projectsbuild/library/utils";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
 import { PROJECT_STATUS, PROJECT_STATUSES } from "./constants.ts";
-import type { Project, ProjectErrors, ProjectFields } from "./types.ts";
+import type { Project, ProjectErrors, ProjectFields, ProjectInput } from "./types.ts";
 
 export function validateProject(input: Record<string, FormDataEntryValue>) {
 	const errors: ProjectErrors = {
@@ -104,6 +104,15 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	return { status: "valid" } as const;
 }
 
+// Define function overloads to specify return type ProjectInput/Project for "create"/"update" action
+export function transformProject(
+	input: Project | ProjectFields,
+	action?: "create"
+): ProjectInput;
+export function transformProject(
+	input: Project | ProjectFields,
+	action?: "update"
+): Project;
 export function transformProject(
 	input: Project | ProjectFields,
 	action: "create" | "update" = "create"

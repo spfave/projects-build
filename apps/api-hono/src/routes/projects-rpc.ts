@@ -19,7 +19,8 @@ const validateParamProjectId = validator("param", (params, ctx) => {
 	return { id };
 });
 
-const validateJsonProject = validator("json", (json, ctx) => {
+const validateJsonProject = validator("json", async (_json, ctx) => {
+	const json = await ctx.req.json(); // _json function parameter value not coming through with fetch
 	const validation = validateProject(json);
 	if (validation.status === "error")
 		return ctx.json(
@@ -72,10 +73,18 @@ export const apiProjects = defaultRouter()
 	.post("/", validateJsonProject, async (ctx) => {
 		const payload = ctx.req.valid("json");
 		const [result] = await db.insertProject(payload);
+
+		// Note: Included for return type inference, validator should ensure this doesn't occur
+		if (!result)
+			return ctx.json(
+				{ message: HttpStatus.INTERNAL_SERVER_ERROR.phrase },
+				HttpStatus.INTERNAL_SERVER_ERROR.code
+			);
+
 		return ctx.json(result, HttpStatus.CREATED.code);
 	})
 
-	.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
+	.put("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 		const { id } = ctx.req.valid("param");
 		const payload = ctx.req.valid("json");
 		const [project] = await db.updateProject(id, payload);

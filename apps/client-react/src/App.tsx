@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
 
 import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorBoundary from "~/components/ui/error-boundary";
@@ -52,15 +53,10 @@ const router = createBrowserRouter(
 		},
 	],
 	{
-		future: {
-			v7_fetcherPersist: true,
-			v7_normalizeFormMethod: true,
-			v7_partialHydration: true,
-			v7_relativeSplatPath: true,
-		},
+		future: {},
 	}
 );
 
 export default function App() {
-	return <RouterProvider router={router} future={{ v7_startTransition: true }} />;
+	return <RouterProvider router={router} />;
 }

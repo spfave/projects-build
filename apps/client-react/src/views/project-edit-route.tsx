@@ -1,11 +1,6 @@
 import * as React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router";
 
-import {
-	FetchError,
-	FetchResponseError,
-	HttpResponseError,
-} from "@projectsbuild/library/errors";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import type {
@@ -16,32 +11,14 @@ import type {
 } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorList from "~/components/error-list";
+import * as client from "~/feature-projects/client-api-fetch";
 import { useMutation, useQuery } from "~/hooks/use-async";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useRerender } from "~/hooks/use-rerender";
-import { getProjectById } from "./project-route";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
-
-export async function updateProject(project: Project) {
-	const res = await fetch(
-		`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects/${project.id}`,
-		{
-			method: "PUT",
-			body: JSON.stringify(project),
-		}
-	).catch((err) => {
-		throw new FetchError("Fetch failed for updateProject", { cause: err });
-	});
-
-	if (res.status >= 400) throw new HttpResponseError(res, "Failed to update project");
-	if (!res.ok) throw new FetchResponseError("Fetch response not ok for updateProject");
-
-	const updatedProject = (await res.json()) as Project;
-	return updatedProject;
-}
 
 export default function ProjectEditRoute() {
 	const params = useParams();
@@ -56,11 +33,11 @@ export default function ProjectEditRoute() {
 	const projectQ = useQuery(async () => {
 		if (!params.id) throw new Error("Parameter id must exist.");
 
-		const project = await getProjectById(params.id);
+		const project = await client.getProjectById(params.id);
 		setProjectStatus(project.status);
 		return project;
 	});
-	const mutation = useMutation((project: Project) => updateProject(project));
+	const mutation = useMutation((project: Project) => client.updateProject(project));
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -96,6 +73,7 @@ export default function ProjectEditRoute() {
 		formErrorsAttributes(projectErrors) || {};
 	useFocusInvalid(refForm.current, Boolean(projectErrors));
 
+	// if (projectQ.isPending) return <div>Loading project...</div>; // handled as blank/placeholder form
 	if (projectQ.error) return <GeneralErrorFallback error={projectQ.error} />;
 	if (mutation.isPending) return <div>Updating project...</div>;
 	if (mutation.isError) return <GeneralErrorFallback error={mutation.error} />;

@@ -4,6 +4,8 @@ namespace NodeJS {
 	interface ProcessEnv {
 		NODE_ENV: "development" | "production" | (string & {});
 
+		PORT: number;
+
 		VITE_URL_API_JSON_SERVER: string;
 
 		AUTH_USERNAME: string;

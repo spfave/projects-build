@@ -1,5 +1,5 @@
 import type React from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 import { HttpResponseError } from "@projectsbuild/library/errors";
 import { getErrorMessage } from "@projectsbuild/library/utils";

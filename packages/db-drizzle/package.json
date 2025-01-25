@@ -13,6 +13,7 @@
 		"#db/*": "./src/db/*"
 	},
 	"scripts": {
+		"start": "pnpm run db:studio",
 		"db:generate": "drizzle-kit generate --config=drizzle.config.ts",
 		"db:migrate": "dotenvx run -f ../../.env.local -- drizzle-kit migrate",
 		"db:push": "dotenvx run -f ../../.env.local -- drizzle-kit push",
@@ -22,15 +23,15 @@
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
-		"typecheck": "tsc"
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@libsql/client": "^0.14.0",
 		"@projectsbuild/shared": "workspace:*",
-		"drizzle-orm": "^0.38.2"
+		"drizzle-orm": "^0.38.3"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.31.3",
+		"@dotenvx/dotenvx": "^1.32.1",
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
 		"drizzle-kit": "^0.30.1",

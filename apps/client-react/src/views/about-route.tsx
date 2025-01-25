@@ -21,8 +21,8 @@ export default function About() {
 					implementation purposefully use a bare minimum set of dependencies to focus app
 					development on using the primitives supplied with React and limit external
 					dependency decision making. This is for the purpose of experimenting with the
-					primitives as building blocks and understanding where it would makes sense to
-					favor abstraction to an external dependency.
+					primitives as building blocks and understanding where it makes sense to favor
+					abstraction to an external dependency.
 				</p>
 				<p>
 					The app code base additionally over-engineers overall code organization,

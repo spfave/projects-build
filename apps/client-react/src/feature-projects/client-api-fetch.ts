@@ -1,0 +1,76 @@
+import {
+	FetchError,
+	FetchResponseError,
+	HttpResponseError,
+} from "@projectsbuild/library/errors";
+import type { Project, ProjectInput } from "@projectsbuild/shared/projects";
+
+const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
+const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
+
+const urlApi = URL_API_HONO;
+
+export async function getProjects() {
+	// fetch can error: network connection failure
+	const res = await fetch(`${urlApi}/projects`).catch((err) => {
+		throw new FetchError("Fetch failed for getProjects", { cause: err });
+	});
+
+	// response 'status' or 'ok' property can indicate an error
+	if (res.status >= 400)
+		// throw new HttpResponseError(res, "Http status error for getProjects");
+		throw new HttpResponseError(res, "Failed to get projects");
+	if (!res.ok)
+		throw new FetchResponseError("Fetch response not ok for getProjects", { cause: res });
+
+	// json parsing can error: SyntaxError
+	const projects = (await res.json()) as Project[];
+	return projects;
+}
+
+export async function getProjectById(id: string) {
+	const res = await fetch(`${urlApi}/projects/${id}`).catch((err) => {
+		throw new FetchError("Fetch failed for getProjectById", { cause: err });
+	});
+
+	if (res.status >= 400)
+		throw new HttpResponseError(res, `Failed to get project with id: ${id}`);
+	if (!res.ok) throw new FetchResponseError("Fetch response not ok for getProjectById");
+
+	const project = (await res.json()) as Project;
+	return project;
+}
+
+export async function createProject(project: ProjectInput) {
+	const res = await fetch(`${urlApi}/projects`, {
+		method: "POST",
+		body: JSON.stringify(project),
+	});
+
+	const newProject = (await res.json()) as Project;
+	return newProject;
+}
+
+export async function updateProject(project: Project) {
+	const res = await fetch(`${urlApi}/projects/${project.id}`, {
+		method: "PUT",
+		body: JSON.stringify(project),
+	}).catch((err) => {
+		throw new FetchError("Fetch failed for updateProject", { cause: err });
+	});
+
+	if (res.status >= 400) throw new HttpResponseError(res, "Failed to update project");
+	if (!res.ok) throw new FetchResponseError("Fetch response not ok for updateProject");
+
+	const updatedProject = (await res.json()) as Project;
+	return updatedProject;
+}
+
+export async function deleteProjectById(id: string) {
+	const res = await fetch(`${urlApi}/projects/${id}`, {
+		method: "DELETE",
+	});
+
+	const deletedProject = (await res.json()) as Project;
+	return deletedProject;
+}
