@@ -38,7 +38,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 <!-- - [Fullstack Astro](./apps/fullstack-astro) -->
 <!-- - [Fullstack Next](./apps/fullstack-next) -->
-<!-- - [Fullstack Remix](./apps/fullstack-remix) -->
+- [Fullstack React Router/Remix](./apps/fullstack-react-router)
 <!-- - [Fullstack SolidStart](./apps/fullstack-solidstart) -->
 <!-- - [Fullstack SvelteKit](./apps/fullstack-sveltekit) -->
 <!-- - [Fullstack Leptos](./apps/fullstack-leptos) -->
