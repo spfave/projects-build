@@ -1,7 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "@projectsbuild/config-typescript/client.json",
-	"include": ["**/*", "**/.server/**/*", "**/.client/**/*", ".react-router/types/**/*"],
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
@@ -13,5 +12,6 @@
 		// "moduleResolution": "bundler",
 		"rootDirs": [".", "./.react-router/types"],
 		"types": ["node", "vite/client"]
-	}
+	},
+	"include": ["**/*", "**/.server/**/*", "**/.client/**/*", ".react-router/types/**/*"]
 }
