@@ -3,7 +3,7 @@
 	"explorer.fileNesting.expand": false,
 	"explorer.fileNesting.patterns": {
 		"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, pnpm-workspace.yaml",
-		".config*": "biome.json, drizzle.config.*, tsconfig.*, vite.*",
+		".config*": "biome.json, drizzle.config.*, react-router.config.*, tsconfig.*, vite.*",
 		".env*": "*.env, .env.*, .envrc, env.d.ts",
 		".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
 		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
