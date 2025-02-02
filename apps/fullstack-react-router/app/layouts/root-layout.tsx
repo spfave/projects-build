@@ -3,8 +3,14 @@ import { Link, Outlet } from "react-router";
 import githubIcon from "@projectsbuild/shared/assets/github.svg";
 import infoIcon from "@projectsbuild/shared/assets/heroicons-information-circle.svg";
 import logoIcon from "@projectsbuild/shared/assets/reshot-icon-planning.svg";
+import type { Route } from "./+types/root-layout";
 
 export const repoUrl = "https://github.com/spfave/projects-build";
+
+export const meta: Route.MetaFunction = (args) => [
+	{ title: "Projects.build | Fullstack React Router" },
+	{ name: "description", content: "Welcome to Projects.build" },
+];
 
 export default function RootLayout() {
 	return (
