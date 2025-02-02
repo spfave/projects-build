@@ -1,4 +1,8 @@
 {
+	"editor.codeActionsOnSave": {
+		"source.organizeImports.biome": "always",
+		"source.fixAll.biome": "always"
+	},
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.expand": false,
 	"explorer.fileNesting.patterns": {
