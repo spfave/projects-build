@@ -2,5 +2,7 @@
 
 html,
 body {
-	@apply bg-white dark:bg-gray-950;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	min-height: 100dvh;
+	/* @apply bg-white dark:bg-gray-950; */
 }
