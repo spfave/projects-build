@@ -14,5 +14,7 @@ export default [
 		]),
 
 		route("about", "routes/about.tsx"),
+
+		route("*", "routes/not-found.tsx"),
 	]),
 ] satisfies RouteConfig;
