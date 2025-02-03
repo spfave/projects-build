@@ -10,7 +10,19 @@ import {
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 
-export const links: Route.LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
+export const links: Route.LinksFunction = () => [
+	{
+		rel: "icon",
+		type: "image/svg+xml",
+		href: "../public/reshot-icon-project-management.svg",
+	},
+	{ rel: "stylesheet", href: stylesheet },
+];
+
+export const meta: Route.MetaFunction = (args) => [
+	{ title: "Projects.build | Fullstack React Router" },
+	{ name: "description", content: "Welcome to Projects.build" },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
