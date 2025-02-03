@@ -5,11 +5,11 @@ export default [
 		index("routes/index.tsx"),
 
 		...prefix("projects", [
-			layout("routes/projects-layout.tsx", [
-				index("routes/projects-index.tsx"),
-				route("create", "routes/project-create.tsx"),
-				route(":id", "routes/project.tsx"),
-				route(":id/edit", "routes/project-edit.tsx"),
+			layout("features/projects/routes/projects-layout.tsx", [
+				index("features/projects/routes/projects-index.tsx"),
+				route("create", "features/projects/routes/project-create.tsx"),
+				route(":id", "features/projects/routes/project.tsx"),
+				route(":id/edit", "features/projects/routes/project-edit.tsx"),
 			]),
 		]),
 
