@@ -14,7 +14,7 @@ export const links: Route.LinksFunction = () => [
 	{
 		rel: "icon",
 		type: "image/svg+xml",
-		href: "../public/reshot-icon-project-management.svg",
+		href: "./reshot-icon-project-management.svg",
 	},
 	{ rel: "stylesheet", href: stylesheet },
 ];
@@ -44,6 +44,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
 	return <Outlet />;
+}
+
+export function HydrateFallback() {
+	return <div>Root Loading...</div>;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

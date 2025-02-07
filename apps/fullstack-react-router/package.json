@@ -1,5 +1,5 @@
 {
-	"name": "fullstack-react-router",
+	"name": "@projectsbuild/fullstack-react-router",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -11,6 +11,7 @@
 		"typecheck": "react-router typegen && tsc --noEmit"
 	},
 	"dependencies": {
+		"@projectsbuild/library": "workspace:*",
 		"@projectsbuild/shared": "workspace:*",
 		"@react-router/node": "^7.1.3",
 		"@react-router/serve": "^7.1.3",

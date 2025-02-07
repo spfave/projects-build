@@ -103,6 +103,9 @@ importers:
 
   apps/fullstack-react-router:
     dependencies:
+      '@projectsbuild/library':
+        specifier: workspace:*
+        version: link:../../packages/library
       '@projectsbuild/shared':
         specifier: workspace:*
         version: link:../../packages/shared
