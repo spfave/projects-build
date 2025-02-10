@@ -13,5 +13,6 @@
 		"rootDirs": [".", "./.react-router/types"],
 		"types": ["node", "vite/client"]
 	},
+	"files": ["../../env.d.ts"],
 	"include": ["**/*", "**/.server/**/*", "**/.client/**/*", ".react-router/types/**/*"]
 }
