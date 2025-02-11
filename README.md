@@ -62,9 +62,11 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 - [Heroicons](https://heroicons.com/)
 - [Reshot Free Icons & Illustrations](https://www.reshot.com/)
 
+
 &nbsp;
 ## **Notes/References**
 - [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
+- [Syntax CJ Monorepo Example](https://www.youtube.com/watch?v=KIgPJT806D0&list=WL&index=2&t=12s)
 - [TS Paths in a Monorepo](https://github.com/vercel/turbo/discussions/620)
 - [Data Handling](https://nextjs.org/blog/security-nextjs-server-components-actions)
 
