@@ -1,6 +1,9 @@
 # **Fullstack-React-Router**
 A fullstack react router (remix) web application
 
+## **References**
+[Hono + React Monorepo Example](https://github.com/w3cj/monorepo-example-tasks-app/tree/main)  
+
 ## Welcome to React Router!
 
 A modern, production-ready template for building full-stack React applications using React Router.
