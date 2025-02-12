@@ -1,34 +1,36 @@
 import * as React from "react";
 import { Await, Link, NavLink, Outlet, data } from "react-router";
 
+import * as dbProjects from "@projectsbuild/db-drizzle/data-services/projects.ts";
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import type { Project } from "@projectsbuild/shared/projects";
 import type { Route } from "./+types/projects-layout";
 
 // Server Loader
-// export async function loader(args: Route.LoaderArgs) {
+export async function loader(args: Route.LoaderArgs) {
+	// await new Promise((res, rej) => setTimeout(res, 1000));
+	// const res = await fetch("http://localhost:5001/projects");
+	// const projects = (await res.json()) as Array<Project>;
+	const projects = await dbProjects.selectProjectsSelect();
+
+	// Pass data
+	// return data({ projects }, 200);
+
+	// Pass data promise (streaming)
+	const projectsPromise = new Promise<Array<Project>>((res, rej) =>
+		setTimeout(() => res(projects as Array<Project>), 1000)
+	);
+	return data({ projects: projectsPromise }, 200);
+}
+
+// Client Loader
+// export async function clientLoader(args: Route.ClientLoaderArgs) {
 // 	await new Promise((res, rej) => setTimeout(res, 1000));
 // 	const res = await fetch("http://localhost:5001/projects");
 // 	const projects = (await res.json()) as Array<Project>;
-
-// 	// Pass data
-// 	// return { projects };
-
-// 	// Pass data promise (streaming)
-// 	const projectsPromise = new Promise<Array<Project>>((res, rej) =>
-// 		setTimeout(() => res(projects), 2000)
-// 	);
-// 	return data({ projects: projectsPromise });
+// 	return { projects };
 // }
-
-// Client Loader
-export async function clientLoader(args: Route.ClientLoaderArgs) {
-	await new Promise((res, rej) => setTimeout(res, 1000));
-	const res = await fetch("http://localhost:5001/projects");
-	const projects = (await res.json()) as Array<Project>;
-	return { projects };
-}
-clientLoader.hydrate = true;
+// clientLoader.hydrate = true;
 
 export default function ProjectsLayout(props: Route.ComponentProps) {
 	return (
@@ -58,7 +60,7 @@ export default function ProjectsLayout(props: Route.ComponentProps) {
 					</nav> */}
 
 					{/* Server Loader: SSR Streaming with Suspense */}
-					{/* <React.Suspense fallback={<div>Suspense Loading Projects...</div>}>
+					<React.Suspense fallback={<div>Suspense Loading Projects...</div>}>
 						<Await resolve={props.loaderData.projects}>
 							{(projects) => (
 								<nav className="grid gap-2">
@@ -70,16 +72,16 @@ export default function ProjectsLayout(props: Route.ComponentProps) {
 								</nav>
 							)}
 						</Await>
-					</React.Suspense> */}
+					</React.Suspense>
 
 					{/* Client Loader: Use with hydrate fallback */}
-					<nav className="grid gap-2">
+					{/* <nav className="grid gap-2">
 						{props.loaderData.projects.map((project) => (
 							<NavLink key={project.id} to={`projects/${project.id}`}>
 								<span>{project.name}</span>
 							</NavLink>
 						))}
-					</nav>
+					</nav> */}
 				</section>
 			</aside>
 			<div className="grow">
