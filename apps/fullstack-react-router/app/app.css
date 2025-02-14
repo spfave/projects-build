@@ -1,8 +1,30 @@
 @import "tailwindcss";
 
+@theme {
+	/* Dimensions */
+	--min-width-page: 375px;
+
+	/* Colors */
+	--brand-blue: hsl(203, 73%, 71%);
+	--brand-success: hsl(140 50% 50%);
+	--brand-warn: hsl(49 100% 46%);
+	--brand-danger: hsl(12 88% 58%);
+
+	--color-primary: hsl(from var(--brand-blue) h s l);
+	--color-primary-light: hsl(from var(--brand-blue) h s l / 0.7);
+	--color-primary-xlight: hsl(from var(--brand-blue) h s l / 0.3);
+	--color-success: hsl(from var(--brand-success) h s l / 0.7);
+	--color-success-light: hsl(from var(--brand-success) h s l / 0.4);
+	--color-warn: hsl(from var(--brand-warn) h s l / 0.5);
+	--color-danger: hsl(from var(--brand-danger) h s l);
+	--color-danger-light: hsl(from var(--brand-danger) h s l / 0.7);
+	--color-danger-xlight: hsl(from var(--brand-danger) h s l / 0.4);
+	--color-gray: hsl(0, 0%, 60%);
+}
+
 html,
 body {
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	min-height: 100dvh;
-	/* @apply bg-white dark:bg-gray-950; */
+	min-width: var(--min-width-page);
 }
