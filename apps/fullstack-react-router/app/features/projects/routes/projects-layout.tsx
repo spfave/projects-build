@@ -38,7 +38,7 @@ export default function ProjectsLayout(props: Route.ComponentProps) {
 			<aside className="grid w-[18rem] flex-auto shrink-0 grow-0 gap-4">
 				<div>
 					<Link
-						className="flex items-center justify-between rounded-sm bg-green-600 px-4 py-2 hover:bg-green-300"
+						className="flex items-center justify-between rounded-sm bg-success px-4 py-2 hover:bg-success-light"
 						to="/projects/create"
 						relative="path"
 					>
@@ -60,7 +60,13 @@ export default function ProjectsLayout(props: Route.ComponentProps) {
 					</nav> */}
 
 					{/* Server Loader: SSR Streaming with Suspense */}
-					<React.Suspense fallback={<div>Suspense Loading Projects...</div>}>
+					<React.Suspense
+						fallback={
+							<div className="px-4">
+								<p>Suspense Loading Projects...</p>
+							</div>
+						}
+					>
 						<Await resolve={props.loaderData.projects}>
 							{(projects) => (
 								<nav className="grid gap-2">
