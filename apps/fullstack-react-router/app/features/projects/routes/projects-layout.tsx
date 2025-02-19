@@ -12,15 +12,31 @@ export async function loader(args: Route.LoaderArgs) {
 	// const res = await fetch("http://localhost:5001/projects");
 	// const projects = (await res.json()) as Array<Project>;
 	const projects = await dbProjects.selectProjectsSelect();
+	// throw "thrown string";
+	// throw new Error("thrown Error");
+	// throw new Response(JSON.stringify({ message: "thrown response with msg" }), {
+	// 	status: 414,
+	// });
+	// throw data({ message: "thrown data with msg" }, { status: 424 });
 
 	// Pass data
 	// return data({ projects }, 200);
 
 	// Pass data promise (streaming)
 	const projectsPromise = new Promise<Array<Project>>((res, rej) =>
-		setTimeout(() => res(projects as Array<Project>), 1000)
+		setTimeout(() => {
+			// rej("rej string");
+			// rej(new Error("rej Error projects promise"));
+			// rej(
+			// 	new Response(JSON.stringify({ message: "rej response with msg" }), {
+			// 		status: 434,
+			// 	})
+			// );
+			// rej(data({ message: "rej data with msg" }, { status: 444 }));
+			res(projects as Array<Project>);
+		}, 1000)
 	);
-	return data({ projects: projectsPromise }, 200);
+	return data({ projects: projectsPromise }, { status: 200 });
 }
 
 // Client Loader
@@ -99,4 +115,10 @@ export default function ProjectsLayout(props: Route.ComponentProps) {
 
 export function HydrateFallback() {
 	return <div>Projects layout Loading...</div>;
+}
+
+export function ErrorBoundary(props: Route.ErrorBoundaryProps) {
+	console.warn(`\nERROR BOUNDARY: PROJECTS LAYOUT`); //LOG
+	console.info(`props.error: `, props.error); //LOG
+	return <div>A error occurred on projects layout</div>;
 }
