@@ -3,6 +3,9 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
+	"exports": {
+		"./ui/*": "./src/components/ui/*"
+	},
 	"scripts": {
 		"start": "pnpm run run:local",
 		"run:local": "vite",
