@@ -1,4 +1,4 @@
-import { repoUrl } from "~/views/root";
+import { REPO_URL } from "@projectsbuild/shared/projects";
 
 import styles from "./about-route.module.css";
 
@@ -8,7 +8,7 @@ export default function About() {
 			<h2>About</h2>
 			<div>
 				<p>
-					This app is one version of the <ANewTab text="Projects.build" href={repoUrl} />{" "}
+					This app is one version of the <ANewTab text="Projects.build" href={REPO_URL} />{" "}
 					app built in pursuit of building experience in web application engineering and
 					experimenting with different web technologies.
 				</p>
@@ -33,7 +33,7 @@ export default function About() {
 				</p>
 				<p>
 					Additional implementations of the app can be found on{" "}
-					<ANewTab text="Github" href={repoUrl} />.
+					<ANewTab text="Github" href={REPO_URL} />.
 				</p>
 			</div>
 		</section>

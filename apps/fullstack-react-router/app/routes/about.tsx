@@ -1,4 +1,4 @@
-import { repoUrl } from "~/layouts/root-layout";
+import { REPO_URL } from "@projectsbuild/shared/projects";
 import type { Route } from "./+types/about";
 
 export const meta: Route.MetaFunction = (args) => [{ title: "About | Projects.build" }];
@@ -9,7 +9,7 @@ export default function About() {
 			<h2 className="font-bold text-2xl">About</h2>
 			<div className="grid gap-8">
 				<p className="leading-6">
-					This app is one version of the <ANewTab text="Projects.build" href={repoUrl} />{" "}
+					This app is one version of the <ANewTab text="Projects.build" href={REPO_URL} />{" "}
 					app built in pursuit of building experience in web application engineering and
 					experimenting with different web technologies.
 				</p>
@@ -33,7 +33,7 @@ export default function About() {
 				</p>
 				<p className="leading-6">
 					Additional implementations of the app can be found on{" "}
-					<ANewTab text="Github" href={repoUrl} />.
+					<ANewTab text="Github" href={REPO_URL} />.
 				</p>
 			</div>
 		</section>
