@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Await, Link, NavLink, Outlet, data } from "react-router";
+import { Await, Link, NavLink, Outlet, data, href } from "react-router";
 
 import * as dbProjects from "@projectsbuild/db-drizzle/data-services/projects.ts";
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
@@ -87,7 +87,10 @@ export default function ProjectsLayout(props: Route.ComponentProps) {
 							{(projects) => (
 								<nav className="grid gap-2">
 									{projects.map((project) => (
-										<NavLink key={project.id} to={`projects/${project.id}`}>
+										<NavLink
+											key={project.id}
+											to={href("/projects/:id", { id: project.id })}
+										>
 											<span>{project.name}</span>
 										</NavLink>
 									))}

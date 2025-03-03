@@ -1,11 +1,11 @@
 import { Link, Outlet } from "react-router";
 
+import { REPO_URL } from "@projectsbuild/core/projects";
+
 import githubIcon from "@projectsbuild/core/assets/github.svg";
 import infoIcon from "@projectsbuild/core/assets/heroicons-information-circle.svg";
 import logoIcon from "@projectsbuild/core/assets/reshot-icon-planning.svg";
 import styles from "./root.module.css";
-
-export const repoUrl = "https://github.com/spfave/projects-build";
 
 export default function Root() {
 	return (
@@ -24,7 +24,7 @@ export default function Root() {
 					<Link to="about" title="about">
 						<img height={24} src={infoIcon} alt="about icon" />
 					</Link>
-					<Link to={repoUrl} target="_blank" title="source code">
+					<Link to={REPO_URL} target="_blank" title="source code">
 						<img height={24} src={githubIcon} alt="github icon" />
 					</Link>
 				</div>
