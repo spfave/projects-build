@@ -4,4 +4,11 @@ export default {
 	// Config options...
 	// Server-side render by default, to enable SPA mode set this to `false`
 	ssr: true,
+	prerender: ["/about"],
+
+	future: {
+		unstable_optimizeDeps: true,
+		unstable_splitRouteModules: true,
+		unstable_viteEnvironmentApi: true,
+	},
 } satisfies Config;
