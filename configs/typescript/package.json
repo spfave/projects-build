@@ -2,5 +2,11 @@
 	"name": "@projectsbuild/config-typescript",
 	"version": "0.0.0",
 	"private": true,
-	"description": ""
+	"description": "",
+	"scripts": {
+		"tsc:init": "tsc --init"
+	},
+	"devDependencies": {
+		"typescript": "catalog:"
+	}
 }
