@@ -136,7 +136,11 @@ importers:
 
   configs/biome: {}
 
-  configs/typescript: {}
+  configs/typescript:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.2
 
   packages/api-json-server:
     dependencies:
@@ -2282,6 +2286,10 @@ packages:
       {
         integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==,
       }
+
+  detect-libc@2.0.3:
+    resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
+    engines: {node: '>=8'}
 
   dot-prop@9.0.0:
     resolution:
@@ -4694,8 +4702,6 @@ snapshots:
 
   destroy@1.2.0: {}
 
-  detect-libc@1.0.3: {}
-
   detect-libc@2.0.2: {}
 
   dot-prop@10.1.0:
@@ -5005,8 +5011,6 @@ snapshots:
 
   is-stream@2.0.1: {}
 
-  isarray@1.0.0: {}
-
   isbot@5.1.23: {}
 
   isexe@2.0.0: {}
@@ -5127,17 +5131,11 @@ snapshots:
 
   on-headers@1.0.2: {}
 
-  once@1.4.0:
-    dependencies:
-      wrappy: 1.0.2
-
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
 
   package-json-from-dist@1.0.1: {}
-
-  pako@0.2.9: {}
 
   parseurl@1.3.3: {}
 
@@ -5152,12 +5150,6 @@ snapshots:
 
   pathe@1.1.2: {}
 
-  peek-stream@1.1.3:
-    dependencies:
-      buffer-from: 1.1.2
-      duplexify: 3.7.1
-      through2: 2.0.5
-
   picocolors@1.1.1: {}
 
   picomatch@4.0.3: {}
@@ -5171,8 +5163,6 @@ snapshots:
   prettier@2.8.8: {}
 
   proc-log@3.0.0: {}
-
-  process-nextick-args@2.0.1: {}
 
   promise-inflight@1.0.1: {}
 
@@ -5310,8 +5300,6 @@ snapshots:
 
   steno@4.0.2: {}
 
-  stream-shift@1.0.3: {}
-
   stream-slice@0.1.2: {}
 
   string-width@4.2.3:
@@ -5325,10 +5313,6 @@ snapshots:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
       strip-ansi: 7.1.0
-
-  string_decoder@1.1.1:
-    dependencies:
-      safe-buffer: 5.1.2
 
   strip-ansi@6.0.1:
     dependencies:
@@ -5378,7 +5362,7 @@ snapshots:
       '@types/node': 25.3.0
       fsevents: 2.3.3
       jiti: 2.4.2
-      lightningcss: 1.29.1
+      lightningcss: 1.29.2
 
   web-streams-polyfill@3.3.3: {}
 
