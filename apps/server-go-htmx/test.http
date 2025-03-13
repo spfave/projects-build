@@ -1,0 +1,7 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+@route = http://localhost:5003
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+GET {{route}}
+ContentType: {{contentType}}
