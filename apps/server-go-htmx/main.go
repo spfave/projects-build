@@ -12,14 +12,30 @@ type ResponseMessage struct {
 }
 
 func main() {
-	http.HandleFunc("GET /projects", GetAllProjects)
-	http.HandleFunc("GET /projects/{id}", GetProjectById)
-	http.HandleFunc("POST /projects", CreateProject)
-	http.HandleFunc("PUT /projects/{id}", UpdateProjectById)
-	http.HandleFunc("DELETE /projects/{id}", DeleteProject)
+	log.Fatal(server(":5003"))
+}
 
-	fmt.Println("Server starting on http://localhost:5003")
-	log.Fatal(http.ListenAndServe(":5003", nil))
+func server(addr string) error {
+	router := http.NewServeMux()
+	router.Handle("/", projectsRouter())
+
+	apiServer := http.Server{
+		Addr:    addr,
+		Handler: router,
+	}
+	fmt.Println("Server is running on http://localhost" + addr)
+	return apiServer.ListenAndServe()
+}
+
+func projectsRouter() *http.ServeMux {
+	router := http.NewServeMux()
+	router.HandleFunc("GET /projects", GetAllProjects)
+	router.HandleFunc("GET /projects/{id}", GetProjectById)
+	router.HandleFunc("POST /projects", CreateProject)
+	router.HandleFunc("PUT /projects/{id}", UpdateProjectById)
+	router.HandleFunc("DELETE /projects/{id}", DeleteProject)
+
+	return router
 }
 
 func GetAllProjects(w http.ResponseWriter, r *http.Request) {
