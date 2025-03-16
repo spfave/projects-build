@@ -1,10 +1,12 @@
 # Ref: https://github.com/Huachao/vscode-restclient
-@route = http://localhost:5003/projects
+
+@urlBase = http://localhost:5003
+@urlProjects = {{urlBase}}/api/v1/projects
 @contentType = application/json
 
 ### --------------------------------------------------------------------------------- ###
 # GET projects
-GET {{route}}
+GET {{urlProjects}}
 ContentType: {{contentType}}
 
 
@@ -12,13 +14,13 @@ ContentType: {{contentType}}
 # GET project by id
 @id = 123
 
-GET {{route}}/{{id}}
+GET {{urlProjects}}/{{id}}
 Content-Type: {{contentType}}
 
 
 ### --------------------------------------------------------------------------------- ###
 # CREATE project
-POST {{route}}
+POST {{urlProjects}}
 Content-Type: {{contentType}}
 
 # {
@@ -31,7 +33,7 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # PUT project by id
-PUT  {{route}}/{{id}}
+PUT  {{urlProjects}}/{{id}}
 Content-Type: {{contentType}}
 
 # {
@@ -47,5 +49,6 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # DELETE project by Id
-DELETE  {{route}}/{{id}}
+DELETE  {{urlProjects}}/{{id}}
 Content-Type: {{contentType}}
+
