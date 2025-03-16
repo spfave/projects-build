@@ -1,7 +1,51 @@
 # Ref: https://github.com/Huachao/vscode-restclient
-@route = http://localhost:5003
+@route = http://localhost:5003/projects
 @contentType = application/json
 
 ### --------------------------------------------------------------------------------- ###
+# GET projects
 GET {{route}}
 ContentType: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# GET project by id
+@id = 123
+
+GET {{route}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# CREATE project
+POST {{route}}
+Content-Type: {{contentType}}
+
+# {
+# 	"name": "Sample Project",
+# 	"description": "Using .http",
+# 	"notes": null,
+# 	"status": "building"
+# }
+
+
+### --------------------------------------------------------------------------------- ###
+# PUT project by id
+PUT  {{route}}/{{id}}
+Content-Type: {{contentType}}
+
+# {
+# 	"name": "New name",
+# 	"description": "some project description",
+# 	"notes": "some project notes",
+# 	"status": "complete",
+# 	"dateCompleted": "2024-12-11",
+# 	"rating": 4,
+# 	"recommend": true
+# }
+
+
+### --------------------------------------------------------------------------------- ###
+# DELETE project by Id
+DELETE  {{route}}/{{id}}
+Content-Type: {{contentType}}
