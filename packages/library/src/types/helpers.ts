@@ -1,8 +1,42 @@
-import type { RecordStr } from "./aliases.ts";
+import type { RecordGen, RecordStr } from "./aliases.ts";
 
 // Refs:
 // https://www.totaltypescript.com/concepts/mapped-type
 // https://www.totaltypescript.com/immediately-indexed-mapped-type
+
+// ----------------------------------------------------------------------------------- //
+// #region - TS Utility Type Extensions
+
+export type OmitStrict<T, K extends keyof T> = Omit<T, K>;
+
+export type OmitDistributive<
+	TDU extends RecordGen,
+	K extends KeyOfDistributive<TDU>,
+> = TDU extends RecordGen ? Omit<TDU, K> : never;
+
+// export type PickDistributive<
+// 	TDU extends RecordGen,
+// 	K extends keyof TDU,
+// 	// K extends KeyOfDistributive<TDU>, // result is too broad
+// > = TDU extends RecordGen ? Pick<TDU, K> : never;
+export type PickDistributive<
+	TDU extends RecordGen,
+	K extends KeyOfDistributive<TDU>,
+	D extends PropertyKeyOf<TDU>,
+> = {
+	// @ts-expect-error: U[D] not inferred to be a PropertyKey, but PropertyKeyOf helper on generic type D ensures this
+	[U in TDU as U[D]]: Pick<U, Extract<keyof U, K>>;
+}[TDU[D]];
+
+export type PropertyKeyOf<T extends RecordGen> = {
+	[K in keyof T]: T[K] extends PropertyKey ? K : never;
+}[keyof T];
+
+export type KeyOfDistributive<TDU extends RecordGen> = TDU extends RecordGen
+	? keyof TDU
+	: never;
+
+// #endregion
 
 // ----------------------------------------------------------------------------------- //
 // #region - General Type Helpers
@@ -10,12 +44,12 @@ import type { RecordStr } from "./aliases.ts";
 declare const brand: unique symbol;
 export type Brand<T, TBrand> = T & { [brand]: TBrand };
 
-// Ref: https://x.com/mattpocockuk/status/1822917967316676787
-export type StringOrOptions<T extends string> = T | (string & {});
-
 export type Maybe<T> = T | null | undefined;
 
 export type Pretty<T> = { [K in keyof T]: T[K] } & {};
+
+// Ref: https://x.com/mattpocockuk/status/1822917967316676787
+export type StringOrOptions<T extends string> = T | (string & {});
 
 // #endregion
 

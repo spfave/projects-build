@@ -3,6 +3,7 @@ import type {
 	FormErrors,
 	FormErrorsAttributes,
 	FormFields,
+	OmitDistributive,
 	Pretty,
 } from "@projectsbuild/library/types";
 
@@ -20,7 +21,7 @@ type ProjectTypeBase =
 	| { status: "complete"; dateCompleted: string; rating: number; recommend: boolean };
 
 export type Project = Pretty<ProjectBase & ProjectTypeBase>;
-export type ProjectInput = Omit<ProjectBase, "id"> & ProjectTypeBase;
+export type ProjectInput = OmitDistributive<Project, "id">;
 export type ProjectStatus = ProjectTypeBase["status"];
 
 export type ProjectFormElement = FormElement<
