@@ -4,6 +4,6 @@ packages:
   - configs/*
 
 catalog:
-  "@types/node": ^22.13.10
+  "@types/node": ^22.13.11
   typescript: ^5.8
-  vite: ^6.2.1
+  vite: ^6.2.2

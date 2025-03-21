@@ -20,15 +20,15 @@
 		"@projectsbuild/api-hono": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
 		"@projectsbuild/shared": "workspace:*",
-		"hono": "^4.7.4",
+		"hono": "^4.7.5",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"react-router": "^7.3.0"
+		"react-router": "^7.4.0"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
-		"@types/react": "^19.0.10",
+		"@types/react": "^19.0.12",
 		"@types/react-dom": "^19.0.4",
 		"@vitejs/plugin-react": "^4.3.4",
 		"typescript": "catalog:",
