@@ -8,7 +8,7 @@ import (
 )
 
 type ResponseMessage struct {
-	Msg string `json:"msg"`
+	Msg string `json:"message"`
 }
 
 func main() {
@@ -19,7 +19,8 @@ func main() {
 func server(addr string) error {
 	router := http.NewServeMux()
 	router.Handle("/api/v1/", http.StripPrefix("/api/v1", projectsRouter()))
-	router.HandleFunc("/", NotFoundHandler)
+	router.HandleFunc("/error", handleError)
+	router.HandleFunc("/", handleNotFound)
 
 	apiServer := http.Server{
 		Addr:    addr,
@@ -29,7 +30,7 @@ func server(addr string) error {
 	return apiServer.ListenAndServe()
 }
 
-func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+func handleNotFound(w http.ResponseWriter, r *http.Request) {
 	scheme := "http"
 	if r.TLS != nil {
 		scheme = "https"
@@ -37,6 +38,17 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s://%s%s", scheme, r.Host, r.URL.Path)
 
 	w.WriteHeader(http.StatusNotFound)
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]any{
-		"Msg": "NotFound - " + url})
+		"message": "Not Found - " + url,
+	})
+}
+
+func handleError(w http.ResponseWriter, r *http.Request) {
+	// http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]any{
+		"message": "An Error Occurred",
+	})
 }

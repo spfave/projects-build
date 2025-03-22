@@ -1,0 +1,13 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+
+@urlBase = http://localhost:5003
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+# Error
+GET {{urlBase}}/error
+
+
+### --------------------------------------------------------------------------------- ###
+# Not Found
+GET {{urlBase}}/

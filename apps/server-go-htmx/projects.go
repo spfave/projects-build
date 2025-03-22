@@ -8,37 +8,44 @@ import (
 
 func projectsRouter() *http.ServeMux {
 	router := http.NewServeMux()
-	router.HandleFunc("GET /projects", GetAllProjects)
-	router.HandleFunc("GET /projects/{id}", GetProjectById)
-	router.HandleFunc("POST /projects", CreateProject)
-	router.HandleFunc("PUT /projects/{id}", UpdateProjectById)
-	router.HandleFunc("DELETE /projects/{id}", DeleteProject)
+	router.HandleFunc("GET /projects", getAllProjects)
+	router.HandleFunc("GET /projects/{id}", getProjectById)
+	router.HandleFunc("POST /projects", createProject)
+	router.HandleFunc("PUT /projects/{id}", updateProjectById)
+	router.HandleFunc("DELETE /projects/{id}", deleteProject)
 
 	return router
 }
 
-func GetAllProjects(w http.ResponseWriter, r *http.Request) {
+func getAllProjects(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(ResponseMessage{Msg: "All Projects"})
 }
 
-func GetProjectById(w http.ResponseWriter, r *http.Request) {
+func getProjectById(w http.ResponseWriter, r *http.Request) {
 	projectId := r.PathValue("id")
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(ResponseMessage{Msg: "Project with Id " + projectId})
 }
 
-func CreateProject(w http.ResponseWriter, r *http.Request) {
+func createProject(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(ResponseMessage{Msg: "Project created"})
 }
 
-func UpdateProjectById(w http.ResponseWriter, r *http.Request) {
+func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	projectId := r.PathValue("id")
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(ResponseMessage{
-		Msg: fmt.Sprintf("Project %s updated", projectId)})
+		Msg: fmt.Sprintf("Project %s updated", projectId),
+	})
 }
 
-func DeleteProject(w http.ResponseWriter, r *http.Request) {
+func deleteProject(w http.ResponseWriter, r *http.Request) {
 	projectId := r.PathValue("id")
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(ResponseMessage{
-		Msg: fmt.Sprintf("Project %s deleted", projectId)})
+		Msg: fmt.Sprintf("Project %s deleted", projectId),
+	})
 }
