@@ -12,24 +12,68 @@ type ResponseMessage struct {
 }
 
 func main() {
-	log.Fatal(server(":5003"))
-}
+	// err := server(":5003").ListenAndServe()
+	apiServer := NewApiServer(5003)
 
-// server.go
-func server(addr string) error {
-	router := http.NewServeMux()
-	router.Handle("/api/v1/", http.StripPrefix("/api/v1", projectsRouter()))
-	router.HandleFunc("/error", handleError)
-	router.HandleFunc("/", handleNotFound)
-
-	apiServer := http.Server{
-		Addr:    addr,
-		Handler: router,
+	fmt.Printf("P Server is running on http://localhost:%d\n", apiServer.port)
+	err := apiServer.Run()
+	if err != nil {
+		log.Fatal("Error in API Server execution", err)
 	}
-	fmt.Println("Server is running on http://localhost" + addr)
-	return apiServer.ListenAndServe()
 }
 
+// apiServer.go
+type ApiServer struct {
+	port int
+}
+
+func NewApiServer(port int) *ApiServer {
+	apiServer := &ApiServer{
+		port: port,
+	}
+	return apiServer
+
+	// server := &http.Server{
+	// 	Addr:    fmt.Sprintf(":%d", apiServer.port),
+	// 	Handler: apiServer.RegisterHandlers(),
+	// }
+
+	// return server
+}
+
+func (apiServer *ApiServer) Run() error {
+	server := &http.Server{
+		Addr:    fmt.Sprintf(":%d", apiServer.port),
+		Handler: apiServer.RegisterHandlers(),
+	}
+
+	return server.ListenAndServe()
+}
+
+func (apiServer *ApiServer) RegisterHandlers() http.Handler {
+	mux := http.NewServeMux()
+	mux.Handle("/api/v1/", http.StripPrefix("/api/v1", projectsRouter()))
+	mux.HandleFunc("/error", handleError)
+	mux.HandleFunc("/", handleNotFound)
+
+	return mux
+}
+
+// func server(addr string) *http.Server {
+// 	router := http.NewServeMux()
+// 	router.Handle("/api/v1/", http.StripPrefix("/api/v1", projectsRouter()))
+// 	router.HandleFunc("/error", handleError)
+// 	router.HandleFunc("/", handleNotFound)
+
+// 	apiServer := &http.Server{
+// 		Addr:    addr,
+// 		Handler: router,
+// 	}
+// 	fmt.Println("Server is running on http://localhost" + addr)
+// 	return apiServer
+// }
+
+// httpUtil.go
 func handleNotFound(w http.ResponseWriter, r *http.Request) {
 	scheme := "http"
 	if r.TLS != nil {
