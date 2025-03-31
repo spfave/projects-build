@@ -20,15 +20,17 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # CREATE project
+# @name project
+
 POST {{urlProjects}}
 Content-Type: {{contentType}}
 
-# {
-# 	"name": "Sample Project",
-# 	"description": "Using .http",
-# 	"notes": null,
-# 	"status": "building"
-# }
+{
+	"name": "Sample Project",
+	"description": "Using .http",
+	"notes": null,
+	"status": "building"
+}
 
 
 ### --------------------------------------------------------------------------------- ###
@@ -36,15 +38,15 @@ Content-Type: {{contentType}}
 PUT  {{urlProjects}}/{{id}}
 Content-Type: {{contentType}}
 
-# {
-# 	"name": "New name",
-# 	"description": "some project description",
-# 	"notes": "some project notes",
-# 	"status": "complete",
-# 	"dateCompleted": "2024-12-11",
-# 	"rating": 4,
-# 	"recommend": true
-# }
+{
+	"name": "New name",
+	"description": "some project description",
+	"notes": "some project notes",
+	"status": "complete"
+	# "dateCompleted": "2024-12-11",
+	# "rating": 4,
+	# "recommend": true
+}
 
 
 ### --------------------------------------------------------------------------------- ###

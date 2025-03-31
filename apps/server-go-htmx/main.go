@@ -7,10 +7,6 @@ import (
 	"net/http"
 )
 
-type ResponseMessage struct {
-	Msg string `json:"message"`
-}
-
 func main() {
 	apiServer := NewApiServer(5003)
 
