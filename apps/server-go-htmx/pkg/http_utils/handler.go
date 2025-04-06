@@ -1,21 +1,29 @@
-package web
+package http_utils
 
 import (
 	"fmt"
 	"net/http"
 )
 
-type Router struct{ *http.ServeMux }
+// ----------------------------------------------------------------------------------- //
+// HTTP ROUTER
+type Router struct{ http.ServeMux }
 
 func NewRouter() *Router {
 	return &Router{}
+}
+
+func (router *Router) HandleNotFound() {
+	router.HandleFunc("/", HandlerNotFound)
 }
 
 func (router *Router) HandleSubroute(pattern string, handler http.Handler) {
 	router.Handle(pattern+"/", http.StripPrefix(pattern, handler))
 }
 
-func HandleNotFound(w http.ResponseWriter, r *http.Request) {
+// ----------------------------------------------------------------------------------- //
+// ROUTE HANDLERS
+func HandlerNotFound(w http.ResponseWriter, r *http.Request) {
 	scheme := "http"
 	if r.TLS != nil {
 		scheme = "https"
@@ -27,7 +35,7 @@ func HandleNotFound(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func HandleError(w http.ResponseWriter, r *http.Request) {
+func HandlerError(w http.ResponseWriter, r *http.Request) {
 	// http.Error(w, "error handled", http.StatusInternalServerError)
 	JsonEncode(w, http.StatusInternalServerError, map[string]any{
 		"message": "An Error Occurred",
