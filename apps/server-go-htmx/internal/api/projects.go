@@ -7,10 +7,6 @@ import (
 	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http_utils"
 )
 
-type ResponseMessage struct {
-	Msg string `json:"message"`
-}
-
 func projectsRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /projects", getAllProjects)

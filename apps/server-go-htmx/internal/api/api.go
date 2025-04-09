@@ -29,8 +29,12 @@ func (apiServer *ApiServer) Run() error {
 func (apiServer *ApiServer) RegisterRouteHandlers() http.Handler {
 	router := pHttp.NewRouter()
 	router.HandleSubroute("/api/v1", projectsRouter())
-	router.HandleFunc("/error", pHttp.HandlerError)
+	router.HandleSubroute("/demos", apiDemos())
 	router.HandleFunc("/", pHttp.HandlerNotFound)
 
 	return router
+}
+
+type ResponseMessage struct {
+	Msg string `json:"message"`
 }
