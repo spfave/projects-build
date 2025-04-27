@@ -18,6 +18,11 @@
 
 		"go.mod": "go.sum, .air*"
 	},
+	"files.readonlyInclude": {
+		"**/*lock.yaml": true,
+		"**/.react-router/**/*": true,
+		"**/migrations/**/*": true
+	},
 
 	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
 		"^drizzle-orm/((?!sqlite).+)-core$",
