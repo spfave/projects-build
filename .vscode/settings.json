@@ -15,6 +15,11 @@
 		"*.jsx": "${capture}.js, ${capture}.css, ${capture}.module.css",
 		"*.tsx": "${capture}.ts, ${capture}.css, ${capture}.module.css"
 	},
+	"files.readonlyInclude": {
+		"**/*lock.yaml": true,
+		"**/.react-router/**/*": true,
+		"**/migrations/**/*": true
+	},
 
 	// Language Settings
 	"[javascript]": {
