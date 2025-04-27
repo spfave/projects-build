@@ -31,10 +31,10 @@
 		"drizzle-orm": "^0.38.4"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.39.0",
+		"@dotenvx/dotenvx": "^1.41.0",
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
-		"drizzle-kit": "^0.30.5",
+		"drizzle-kit": "^0.30.6",
 		"typescript": "catalog:"
 	}
 }
