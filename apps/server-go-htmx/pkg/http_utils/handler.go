@@ -24,14 +24,8 @@ func (router *Router) HandleSubroute(pattern string, handler http.Handler) {
 // ----------------------------------------------------------------------------------- //
 // ROUTE HANDLERS
 func HandlerNotFound(w http.ResponseWriter, r *http.Request) {
-	scheme := "http"
-	if r.TLS != nil {
-		scheme = "https"
-	}
-	url := fmt.Sprintf("%s://%s%s", scheme, r.Host, r.URL.Path)
-
 	JsonEncode(w, http.StatusNotFound, map[string]any{
-		"message": "Not Found - " + url,
+		"message": "Not Found - " + FullRequestUrl(r),
 	})
 }
 
@@ -40,4 +34,13 @@ func HandlerError(w http.ResponseWriter, r *http.Request) {
 	JsonEncode(w, http.StatusInternalServerError, map[string]any{
 		"message": "An Error Occurred",
 	})
+}
+
+// ----------------------------------------------------------------------------------- //
+func FullRequestUrl(r *http.Request) string {
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	return fmt.Sprintf("%s://%s%s", scheme, r.Host, r.URL.Path)
 }
