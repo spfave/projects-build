@@ -9,6 +9,56 @@ import (
 )
 
 // ----------------------------------------------------------------------------------- //
+// JSON Response Format
+
+type (
+	Envelope        map[string]any
+	EnvelopeMessage struct {
+		Message string `json:"message"`
+	}
+)
+
+// Ref: https://github.com/omniti-labs/jsend
+type (
+	JSendStatus string
+	JSend       struct {
+		Status  JSendStatus `json:"status"`
+		Data    Envelope    `json:"data,omitzero"`
+		Message string      `json:"message,omitzero"`
+		Code    *int        `json:"code,omitzero"`
+	}
+)
+
+const (
+	JSendStatusSuccess JSendStatus = "success"
+	JSendStatusFail    JSendStatus = "fail"
+	JSendStatusError   JSendStatus = "error"
+)
+
+func JSendSuccess(data Envelope) *JSend {
+	return &JSend{
+		Status: JSendStatusSuccess,
+		Data:   data,
+	}
+}
+func JSendFail(msg string, data Envelope) *JSend {
+	return &JSend{
+		Status:  JSendStatusFail,
+		Message: msg,
+		Data:    data,
+	}
+}
+func JSendError(msg string, data Envelope, code *int) *JSend {
+	return &JSend{
+		Status:  JSendStatusError,
+		Message: msg,
+		Data:    data,
+		Code:    code,
+	}
+}
+
+// ----------------------------------------------------------------------------------- //
+// JSON Encoding/Decoding & Marshalling/Unmarshalling
 // Ref: https://go.dev/blog/json
 // Ref: https://lets-go-further.alexedwards.net/sample/03.02-json-encoding.html
 
