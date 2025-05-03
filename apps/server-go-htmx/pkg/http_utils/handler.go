@@ -7,6 +7,7 @@ import (
 
 // ----------------------------------------------------------------------------------- //
 // HTTP ROUTER
+
 type Router struct{ http.ServeMux }
 
 func NewRouter() *Router {
@@ -34,6 +35,22 @@ func HandlerError(w http.ResponseWriter, r *http.Request) {
 	JsonEncode(w, http.StatusInternalServerError, map[string]any{
 		"message": "An Error Occurred",
 	})
+}
+
+// ----------------------------------------------------------------------------------- //
+func RespondJson[T any](w http.ResponseWriter, status int, data T, headers http.Header) {
+	err := JsonMarshal(w, status, data, headers)
+	if err != nil {
+		RespondJsonError(w, http.StatusInternalServerError, err)
+	}
+}
+
+func RespondJsonError(w http.ResponseWriter, status int, data any) {
+	err := JsonMarshal(w, status, data, nil)
+	if err != nil {
+		slog.Error("An error occurred", "error", err)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 }
 
 // ----------------------------------------------------------------------------------- //
