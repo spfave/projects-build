@@ -41,11 +41,11 @@ func JSendSuccess(data Envelope) *JSend {
 		Data:   data,
 	}
 }
-func JSendFail(msg string, data Envelope) *JSend {
+func JSendFail(data Envelope, msg string) *JSend {
 	return &JSend{
 		Status:  JSendStatusFail,
-		Message: msg,
 		Data:    data,
+		Message: msg,
 	}
 }
 func JSendError(msg string, data Envelope, code *int) *JSend {

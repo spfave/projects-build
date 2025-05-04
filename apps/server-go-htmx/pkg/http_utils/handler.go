@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"strconv"
 )
 
 // ----------------------------------------------------------------------------------- //
@@ -36,6 +37,27 @@ func HandlerError(w http.ResponseWriter, r *http.Request) {
 	JsonEncode(w, http.StatusInternalServerError, EnvelopeMessage{
 		Message: "An Error Occurred",
 	})
+}
+
+// ----------------------------------------------------------------------------------- //
+func RequestParam(r *http.Request, name string) (string, error) {
+	p := r.PathValue(name)
+	if p == "" {
+		return *new(string), fmt.Errorf("request param '%s' is empty", name)
+	}
+	return p, nil
+}
+
+func RequestParamInt(r *http.Request, name string) (int, error) {
+	pStr, err := RequestParam(r, name)
+	if err != nil {
+		return *new(int), err
+	}
+	pInt, err := strconv.Atoi(pStr)
+	if err != nil {
+		return *new(int), fmt.Errorf("request param '%s' is not a valid integer: %w", name, err)
+	}
+	return pInt, nil
 }
 
 // ----------------------------------------------------------------------------------- //
