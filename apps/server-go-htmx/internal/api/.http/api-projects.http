@@ -12,7 +12,7 @@ ContentType: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # GET project by id
-@id = 123
+@id = UTTX2OU2
 
 GET {{urlProjects}}/{{id}}
 Content-Type: {{contentType}}
@@ -21,7 +21,6 @@ Content-Type: {{contentType}}
 ### --------------------------------------------------------------------------------- ###
 # CREATE project
 # @name project
-
 POST {{urlProjects}}
 Content-Type: {{contentType}}
 

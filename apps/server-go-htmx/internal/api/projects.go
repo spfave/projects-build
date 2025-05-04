@@ -1,6 +1,7 @@
 package api
 
 import (
+	"crypto/rand"
 	"fmt"
 	"net/http"
 
@@ -21,14 +22,42 @@ func projectsRouter() *pHttp.Router {
 
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
 	// todo: get all projects
-	pHttp.RespondJson(w, http.StatusOK, ResponseMessage{Msg: "All Projects"}, nil)
-	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"projects": "All Projects"}), nil)
+	projects := []Project{
+		{
+			Id:     rand.Text()[0:8],
+			Name:   "Project 1",
+			Status: ProjectStatusPlanning,
+		},
+		{
+			Id:     rand.Text()[0:8],
+			Name:   "Project 2",
+			Status: ProjectStatusBuilding,
+		},
+	}
+	// todo: handle err for getting all projects
+
+	pHttp.RespondJson(w, http.StatusOK, projects, nil)
+	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"projects": projects}), nil)
 }
 
 func getProjectById(w http.ResponseWriter, r *http.Request) {
-	projectId := r.PathValue("id")
+	// projectId := r.PathValue("id")
+	projectId, err := pHttp.RequestParam(r, "id")
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusUnprocessableEntity, *pHttp.JSendError(err.Error(), nil, nil))
+		return
+	}
+
 	// todo: get project by id
-	pHttp.RespondJson(w, http.StatusOK, ResponseMessage{Msg: "Project with Id " + projectId}, nil)
+	project := Project{
+		Id:     projectId,
+		Name:   "Project " + projectId,
+		Status: ProjectStatusPlanning,
+	}
+	// todo: handle err for getting project by id
+
+	pHttp.RespondJson(w, http.StatusOK, project, nil)
+	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"project": project}), nil)
 }
 
 func createProject(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +81,51 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteProject(w http.ResponseWriter, r *http.Request) {
-	projectId := r.PathValue("id")
+	projectId, err := pHttp.RequestParam(r, "id")
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusUnprocessableEntity, *pHttp.JSendError(err.Error(), nil, nil))
+		return
+	}
+
 	// todo: delete project by id
-	pHttp.RespondJson(w, http.StatusOK, ResponseMessage{Msg: fmt.Sprintf("Project %s deleted", projectId)}, nil)
+	project := Project{
+		Id:     projectId,
+		Name:   "Project " + projectId + " deleted",
+		Status: ProjectStatusPlanning,
+	}
+	// todo: handle err for deleting project by id
+
+	pHttp.RespondJson(w, http.StatusOK, project, nil)
 }
+
+// ----------------------------------------------------------------------------------- //
+type (
+	ProjectStatus string
+	Project       struct {
+		Id            string        `json:"id"`
+		Name          string        `json:"name"`
+		Link          *string       `json:"link,omitzero"`
+		Description   *string       `json:"description,omitzero"`
+		Notes         *string       `json:"notes,omitzero"`
+		Status        ProjectStatus `json:"status"`
+		DateCompleted *string       `json:"dateCompleted,omitzero"`
+		Rating        *int          `json:"rating,omitzero"`
+		Recommend     *bool         `json:"recommend,omitzero"`
+	}
+	ProjectInput struct {
+		Name          string        `json:"name"`
+		Link          *string       `json:"link,omitzero"`
+		Description   *string       `json:"description,omitzero"`
+		Notes         *string       `json:"notes,omitzero"`
+		Status        ProjectStatus `json:"status"`
+		DateCompleted *string       `json:"dateCompleted,omitzero"`
+		Rating        *int          `json:"rating,omitzero"`
+		Recommend     *bool         `json:"recommend,omitzero"`
+	}
+)
+
+const (
+	ProjectStatusPlanning ProjectStatus = "planning"
+	ProjectStatusBuilding ProjectStatus = "building"
+	ProjectStatusComplete ProjectStatus = "complete"
+)
