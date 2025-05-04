@@ -20,18 +20,23 @@ func projectsRouter() *pHttp.Router {
 }
 
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	pHttp.JsonEncode(w, http.StatusOK, ResponseMessage{Msg: "All Projects"})
+	// todo: get all projects
+	pHttp.RespondJson(w, http.StatusOK, ResponseMessage{Msg: "All Projects"}, nil)
+	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"projects": "All Projects"}), nil)
 }
 
 func getProjectById(w http.ResponseWriter, r *http.Request) {
 	projectId := r.PathValue("id")
-	pHttp.JsonEncode(w, http.StatusOK, ResponseMessage{Msg: "Project with Id " + projectId})
+	// todo: get project by id
+	pHttp.RespondJson(w, http.StatusOK, ResponseMessage{Msg: "Project with Id " + projectId}, nil)
 }
 
 func createProject(w http.ResponseWriter, r *http.Request) {
 	payload, _ := pHttp.JsonDecode[any](r)
 	fmt.Printf("payload: %v\n", payload)
+
+	// todo: create project
+
 	pHttp.JsonEncode(w, http.StatusCreated, ResponseMessage{Msg: "Project created"})
 }
 
@@ -40,10 +45,14 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	payload, _ := pHttp.JsonDecode[any](r)
 	fmt.Printf("projectId: %v\n", projectId)
 	fmt.Printf("payload: %v\n", payload)
+
+	// todo: update project by id
+
 	pHttp.JsonEncode(w, http.StatusOK, ResponseMessage{Msg: fmt.Sprintf("Project %s updated", projectId)})
 }
 
 func deleteProject(w http.ResponseWriter, r *http.Request) {
 	projectId := r.PathValue("id")
-	pHttp.JsonEncode(w, http.StatusOK, ResponseMessage{Msg: fmt.Sprintf("Project %s deleted", projectId)})
+	// todo: delete project by id
+	pHttp.RespondJson(w, http.StatusOK, ResponseMessage{Msg: fmt.Sprintf("Project %s deleted", projectId)}, nil)
 }
