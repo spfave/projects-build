@@ -34,7 +34,3 @@ func (apiServer *ApiServer) RegisterRouteHandlers() http.Handler {
 
 	return router
 }
-
-type ResponseMessage struct {
-	Msg string `json:"message"`
-}

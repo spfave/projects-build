@@ -8,10 +8,10 @@ import (
 )
 
 func main() {
-	api := api.New(5003)
+	app := api.New(5003)
 
-	fmt.Printf("Server is running on http://localhost:%d\n", api.Port)
-	err := api.Run()
+	fmt.Printf("Server is running on http://localhost:%d\n", app.Port)
+	err := app.Run()
 	if err != nil {
 		log.Fatal("Error in API Server execution", err)
 	}

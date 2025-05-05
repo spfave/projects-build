@@ -41,17 +41,17 @@ func JSendSuccess(data Envelope) *JSend {
 		Data:   data,
 	}
 }
-func JSendFail(data Envelope, msg string) *JSend {
+func JSendFail(data Envelope, message string) *JSend {
 	return &JSend{
 		Status:  JSendStatusFail,
 		Data:    data,
-		Message: msg,
+		Message: message,
 	}
 }
-func JSendError(msg string, data Envelope, code *int) *JSend {
+func JSendError(message string, data Envelope, code *int) *JSend {
 	return &JSend{
 		Status:  JSendStatusError,
-		Message: msg,
+		Message: message,
 		Data:    data,
 		Code:    code,
 	}
@@ -64,7 +64,7 @@ func JSendError(msg string, data Envelope, code *int) *JSend {
 
 func JsonDecode[T any](r *http.Request) (T, error) {
 	if r.Body == nil {
-		return *new(T), fmt.Errorf("request body is absent")
+		return *new(T), fmt.Errorf("request body absent")
 	}
 
 	var data T

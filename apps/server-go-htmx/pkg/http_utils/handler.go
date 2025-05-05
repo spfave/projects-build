@@ -81,6 +81,7 @@ func RespondJsonError[T any](w http.ResponseWriter, status int, data T) {
 }
 
 // ----------------------------------------------------------------------------------- //
+
 func FullRequestUrl(r *http.Request) string {
 	scheme := "http"
 	if r.TLS != nil {
