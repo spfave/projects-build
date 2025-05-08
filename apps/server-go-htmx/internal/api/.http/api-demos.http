@@ -29,3 +29,7 @@ Content-Type: {{contentType}}
 	"title": "Blog Title",
 	"noField": "noValue"
 }
+
+### --------------------------------------------------------------------------------- ###
+GET {{urlDemos}}/error-checking
+ContentType: {{contentType}}
