@@ -61,12 +61,23 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 }
 
 func createProject(w http.ResponseWriter, r *http.Request) {
-	payload, _ := pHttp.JsonDecode[any](r)
-	fmt.Printf("payload: %v\n", payload)
+	payload, err := pHttp.JsonDecode[ProjectInput](r)
+	fmt.Printf("payload: %+v\n", payload) //LOG
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusBadRequest, *pHttp.JSendFail(nil, err.Error()))
+		return
+	}
+	// todo: validate payload and handle err
 
 	// todo: create project
+	project := Project{
+		Id:     rand.Text()[0:8],
+		Name:   payload.Name,
+		Status: payload.Status,
+	}
+	// todo: handle err for creating project
 
-	pHttp.JsonEncode(w, http.StatusCreated, ResponseMessage{Msg: "Project created"})
+	pHttp.RespondJson(w, http.StatusCreated, project, nil)
 }
 
 func updateProjectById(w http.ResponseWriter, r *http.Request) {
