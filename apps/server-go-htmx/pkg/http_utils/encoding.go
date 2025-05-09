@@ -2,9 +2,11 @@ package http_utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"maps"
+	"math"
 	"net/http"
 )
 
@@ -64,12 +66,38 @@ func JSendError(message string, data Envelope, code *int) *JSend {
 
 func JsonDecode[T any](r *http.Request) (T, error) {
 	if r.Body == nil {
-		return *new(T), fmt.Errorf("request body absent")
+		return *new(T), fmt.Errorf("json decode - request body absent")
 	}
 
 	var data T
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
-		return *new(T), fmt.Errorf("failed to decode request json body: %w", err)
+		return *new(T), fmt.Errorf("json decode - failed to decode request json body: %w", err)
+	}
+
+	return data, nil
+}
+
+var ErrNoValue = errors.New("no value")
+var ErrDataSize = errors.New("maximum data size exceeded")
+var ErrDecode = errors.New("decode failed")
+
+func JsonDecodeStrict[T any](w http.ResponseWriter, r *http.Request) (T, error) {
+	if r.Body == nil {
+		return *new(T), fmt.Errorf("json decode - request body absent: %w", ErrNoValue)
+	}
+
+	maxBytes := int64(math.Pow(2, 20)) // 1MB
+	if r.ContentLength > maxBytes {
+		return *new(T), fmt.Errorf("json decode - request body too large: %w", ErrDataSize)
+	}
+
+	r.Body = http.MaxBytesReader(w, r.Body, maxBytes)
+	decoder := json.NewDecoder(r.Body)
+	decoder.DisallowUnknownFields()
+
+	var data T
+	if err := decoder.Decode(&data); err != nil {
+		return *new(T), fmt.Errorf("json decode - failed to decode request json body: %w", errors.Join(ErrDecode, err))
 	}
 
 	return data, nil
@@ -79,7 +107,7 @@ func JsonEncode[T any](w http.ResponseWriter, status int, data T) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	if err := json.NewEncoder(w).Encode(data); err != nil {
-		return fmt.Errorf("failed to encode data to json and write response: %w", err)
+		return fmt.Errorf("json encode - failed to encode data to json and write response: %w", err)
 	}
 
 	return nil
@@ -88,13 +116,13 @@ func JsonEncode[T any](w http.ResponseWriter, status int, data T) error {
 func JsonUnmarshal[T any](r *http.Request) (T, error) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		return *new(T), fmt.Errorf("failed to read request body: %w", err)
+		return *new(T), fmt.Errorf("json unmarshal - failed to read request body: %w", err)
 	}
 
 	var data T
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		return *new(T), fmt.Errorf("failed to unmarshal request json body: %w", err)
+		return *new(T), fmt.Errorf("json unmarshal - failed to unmarshal request json body: %w", err)
 	}
 
 	return data, nil
@@ -103,7 +131,7 @@ func JsonUnmarshal[T any](r *http.Request) (T, error) {
 func JsonMarshal[T any](w http.ResponseWriter, status int, data T, headers http.Header) error {
 	js, err := json.Marshal(data)
 	if err != nil {
-		return fmt.Errorf("failed to marshal data to json: %w", err)
+		return fmt.Errorf("json marshal - failed to marshal data to json: %w", err)
 	}
 
 	maps.Copy(w.Header(), headers)
@@ -111,7 +139,7 @@ func JsonMarshal[T any](w http.ResponseWriter, status int, data T, headers http.
 	w.WriteHeader(status)
 	_, err = w.Write(js)
 	if err != nil {
-		return fmt.Errorf("failed to write response: %w", err)
+		return fmt.Errorf("json marshal - failed to write response: %w", err)
 	}
 
 	return nil

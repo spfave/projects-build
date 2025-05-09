@@ -43,14 +43,29 @@ func getObj(w http.ResponseWriter, r *http.Request) {
 
 func postObj(w http.ResponseWriter, r *http.Request) {
 	// only first reads from r.Body successfully
-	b0, _ := pHttp.JsonUnmarshal[any](r)
-	b1, _ := pHttp.JsonUnmarshal[obj](r)
-	b2, _ := pHttp.JsonDecode[obj](r)
+	// b0, _ := pHttp.JsonUnmarshal[any](r)
+	// b1, _ := pHttp.JsonUnmarshal[obj](r)
+	// b2, _ := pHttp.JsonDecode[obj](r)
+	b3, err := pHttp.JsonDecodeStrict[obj](w, r)
+	if err != nil {
+		switch {
+		case errors.Is(err, pHttp.ErrNoValue):
+			pHttp.RespondJsonError(w, http.StatusBadRequest, *pHttp.JSendFail(nil, err.Error()))
+		case errors.Is(err, pHttp.ErrDataSize):
+			pHttp.RespondJsonError(w, http.StatusRequestEntityTooLarge, *pHttp.JSendFail(nil, err.Error()))
+		case errors.Is(err, pHttp.ErrDecode):
+			pHttp.RespondJsonError(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(nil, err.Error()))
+		default:
+			pHttp.RespondJsonError(w, http.StatusInternalServerError, *pHttp.JSendError(err.Error(), nil, nil))
+		}
+		return
+	}
 
 	fmt.Println()
-	fmt.Printf("b0: %+v\n", b0)
-	fmt.Printf("b1: %+v\n", b1)
-	fmt.Printf("b2: %+v\n", b2)
+	// fmt.Printf("b0: %+v\n", b0)
+	// fmt.Printf("b1: %+v\n", b1)
+	// fmt.Printf("b2: %+v\n", b2)
+	fmt.Printf("b3: %+v\n", b3)
 
 	// body, _ := io.ReadAll(r.Body)
 	// log struct fields using reflection
