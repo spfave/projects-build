@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
 	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http_utils"
 )
 
@@ -49,11 +50,11 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 	b3, err := pHttp.JsonDecodeStrict[obj](w, r)
 	if err != nil {
 		switch {
-		case errors.Is(err, pHttp.ErrNoValue):
+		case errors.Is(err, pErr.ErrNoValue):
 			pHttp.RespondJsonError(w, http.StatusBadRequest, *pHttp.JSendFail(nil, err.Error()))
-		case errors.Is(err, pHttp.ErrDataSize):
+		case errors.Is(err, pErr.ErrDataSize):
 			pHttp.RespondJsonError(w, http.StatusRequestEntityTooLarge, *pHttp.JSendFail(nil, err.Error()))
-		case errors.Is(err, pHttp.ErrDecode):
+		case errors.Is(err, pErr.ErrTransform):
 			pHttp.RespondJsonError(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(nil, err.Error()))
 		default:
 			pHttp.RespondJsonError(w, http.StatusInternalServerError, *pHttp.JSendError(err.Error(), nil, nil))
@@ -82,68 +83,67 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 func errorChecking(w http.ResponseWriter, r *http.Request) {
 	err1 := errors.New("error 1")
 	fmt.Println("\nERROR 1")                                                          //LOG
-	fmt.Printf("err1: %+v\n", err1)                                                   //LOG
+	fmt.Printf("err1: %+v\n", err1)                                                   //LOG: calls .Error() method for string representation
 	fmt.Printf("err1.Error(): %+v\n", err1.Error())                                   //LOG
 	fmt.Printf("err1 == errors.New(\"error1\"): %+v\n", err1 == errors.New("error1")) //LOG: false
 
 	err2 := ErrSentinel
 	fmt.Println("\nERROR 2")                                                        //LOG
 	fmt.Printf("err2: %+v\n", err2)                                                 //LOG
-	fmt.Printf("err2.Error(): %+v\n", err2.Error())                                 //LOG
 	fmt.Printf("err2 == ErrSentinel: %+v\n", err2 == ErrSentinel)                   //LOG: legacy, true
 	fmt.Printf("errors.Is(err2, ErrSentinel): %+v\n", errors.Is(err2, ErrSentinel)) //LOG: true
 
 	err3 := fmt.Errorf("error 3: %w", ErrSentinel)
 	fmt.Println("\nERROR 3")                                                        //LOG
 	fmt.Printf("err3: %+v\n", err3)                                                 //LOG
-	fmt.Printf("err3.Error(): %+v\n", err3.Error())                                 //LOG
+	fmt.Printf("err3 == ErrSentinel: %+v\n", err3 == ErrSentinel)                   //LOG: false
 	fmt.Printf("errors.Is(err3, ErrSentinel): %+v\n", errors.Is(err3, ErrSentinel)) //LOG: true
 	fmt.Printf("errors.Unwrap(err3): %+v\n", errors.Unwrap(err3))                   //LOG
 
-	err4 := &TestError{
-		msg:   "test error 4",
-		cause: ErrSentinel,
+	err4 := &pErr.Error{
+		Message: "test error 4",
+		Cause:   ErrSentinel,
 	}
 	fmt.Println("\nERROR 4")                                                        //LOG
 	fmt.Printf("err4: %+v\n", err4)                                                 //LOG
-	fmt.Printf("err4.Error(): %+v\n", err4.Error())                                 //LOG
-	fmt.Printf("err4 == &TestError{}: %+v\n", err4 == &TestError{})                 //LOG: always false
+	fmt.Printf("err4 == &pErr.Error{}: %+v\n", err4 == &pErr.Error{})               //LOG: always false
 	fmt.Printf("errors.Is(err4, ErrSentinel): %+v\n", errors.Is(err4, ErrSentinel)) //LOG: true
-	var terr *TestError
-	fmt.Printf("terr: %+v\n", terr) //LOG
-	// fmt.Printf("varName: %+v\n", err4 == err4.(*TestError))                 //LOG
-	fmt.Printf("errors.As(err4, &TestError{}): %+v\n", errors.As(err4, &terr)) //LOG: true
-	fmt.Printf("errors.Unwrap(err4): %+v\n", errors.Unwrap(err4))              //LOG
+	var werr *pErr.Error
+	fmt.Printf("terr: %+v\n", werr) //LOG
+	// fmt.Printf("varName: %+v\n", err4 == err4.(*pErr.Error))                 //LOG
+	fmt.Printf("errors.As(err4, &pErr.Error{}): %+v\n", errors.As(err4, &werr)) //LOG: true
+	fmt.Printf("errors.Unwrap(err4): %+v\n", errors.Unwrap(err4))               //LOG
 
-	err5 := &TestError{
-		msg:   "error 5",
-		cause: errors.Join(err1, err4, errors.ErrUnsupported),
+	err5 := &pErr.Error{
+		Message: "error 5",
+		Cause:   errors.Join(err1, err4, errors.ErrUnsupported),
 	}
 	fmt.Println("\nERROR 5")
 	fmt.Printf("err5: %+v\n", err5)                                                                     //LOG
-	fmt.Printf("err5.Error(): %+v\n", err5.Error())                                                     //LOG
 	fmt.Printf("errors.Is(err5, err1): %+v\n", errors.Is(err5, err1))                                   //LOG: true
 	fmt.Printf("errors.Is(err5, ErrSentinel): %+v\n", errors.Is(err5, ErrSentinel))                     //LOG: true
 	fmt.Printf("errors.Is(err5, errors.ErrUnsupported): %+v\n", errors.Is(err5, errors.ErrUnsupported)) //LOG: true
-	var terr2 *TestError
-	fmt.Printf("errors.As(err5, &terr2): %+v\n", errors.As(err5, &terr2)) //LOG: true
+	var werr2 *pErr.Error
+	fmt.Printf("errors.As(err5, &werr2): %+v\n", errors.As(err5, &werr2)) //LOG: true
 	fmt.Printf("errors.Unwrap(err5): %+v\n", errors.Unwrap(err5))         //LOG
 
 	// err6 := fmt.Errorf("error 6: %w: %w", ErrSentinel, errors.ErrUnsupported) // doesn't double wrap
-	err6 := fmt.Errorf("error 6: %w", errors.Join(ErrSentinel, errors.ErrUnsupported))
-	// err6 := &TestError{
-	// 	msg: "error 6",
-	// 	cause: &TestError{
-	// 		msg:   "error 6 cause 1",
-	// 		cause: ErrSentinel,
-	// 	},
-	// }
+	// err6 := fmt.Errorf("error 6: %w", errors.Join(ErrSentinel, errors.ErrUnsupported))
+	err6 := &pErr.Error{
+		Message: "error 6",
+		Cause: &TestError{
+			Message: "error 6 cause 1",
+			Cause:   ErrSentinel,
+		},
+	}
 	fmt.Println("\nERROR 6")                                                                            //LOG
 	fmt.Printf("err6: %+v\n", err6)                                                                     //LOG
 	fmt.Printf("errors.Is(err6, errors.ErrUnsupported): %+v\n", errors.Is(err6, errors.ErrUnsupported)) //LOG
 	fmt.Printf("errors.Is(err6, ErrSentinel): %+v\n", errors.Is(err6, ErrSentinel))                     //LOG
-	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(err6))                                       //LOG
-	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(errors.Unwrap(err6)))                        //LOG
+	var werr3 *TestError
+	fmt.Printf("errors.As(err6, &werr2): %+v\n", errors.As(err6, &werr3))        //LOG: true
+	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(err6))                //LOG
+	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(errors.Unwrap(err6))) //LOG
 
 	pHttp.RespondJson(w, http.StatusOK, "error checking done", nil)
 }
@@ -151,15 +151,14 @@ func errorChecking(w http.ResponseWriter, r *http.Request) {
 var ErrSentinel = errors.New("sentinel error")
 
 type TestError struct {
-	msg   string
-	cause error
+	Message string
+	Cause   error
 }
 
-func (e *TestError) Error() string {
-	// return e.msg
-	return fmt.Sprintf("%s: %v", e.msg, e.cause)
+func (err *TestError) Error() string {
+	return fmt.Sprintf("%s: %v", err.Message, err.Cause)
 }
 
-func (e *TestError) Unwrap() error {
-	return e.cause
+func (err *TestError) Unwrap() error {
+	return err.Cause
 }

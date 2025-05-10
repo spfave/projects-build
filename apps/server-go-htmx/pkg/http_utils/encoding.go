@@ -8,6 +8,8 @@ import (
 	"maps"
 	"math"
 	"net/http"
+
+	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
 )
 
 // ----------------------------------------------------------------------------------- //
@@ -77,18 +79,14 @@ func JsonDecode[T any](r *http.Request) (T, error) {
 	return data, nil
 }
 
-var ErrNoValue = errors.New("no value")
-var ErrDataSize = errors.New("maximum data size exceeded")
-var ErrDecode = errors.New("decode failed")
-
 func JsonDecodeStrict[T any](w http.ResponseWriter, r *http.Request) (T, error) {
 	if r.Body == nil {
-		return *new(T), fmt.Errorf("json decode - request body absent: %w", ErrNoValue)
+		return *new(T), fmt.Errorf("json decode - request body absent: %w", pErr.ErrNoValue)
 	}
 
 	maxBytes := int64(math.Pow(2, 20)) // 1MB
 	if r.ContentLength > maxBytes {
-		return *new(T), fmt.Errorf("json decode - request body too large: %w", ErrDataSize)
+		return *new(T), fmt.Errorf("json decode - request body too large: %w", pErr.ErrDataSize)
 	}
 
 	r.Body = http.MaxBytesReader(w, r.Body, maxBytes)
@@ -97,7 +95,7 @@ func JsonDecodeStrict[T any](w http.ResponseWriter, r *http.Request) (T, error) 
 
 	var data T
 	if err := decoder.Decode(&data); err != nil {
-		return *new(T), fmt.Errorf("json decode - failed to decode request json body: %w", errors.Join(ErrDecode, err))
+		return *new(T), fmt.Errorf("json decode - failed to decode request json body: %w", errors.Join(pErr.ErrTransform, err))
 	}
 
 	return data, nil
