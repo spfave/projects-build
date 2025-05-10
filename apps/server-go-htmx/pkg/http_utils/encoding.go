@@ -45,7 +45,7 @@ func JSendSuccess(data Envelope) *JSend {
 		Data:   data,
 	}
 }
-func JSendFail(data Envelope, message string) *JSend {
+func JSendFail(message string, data Envelope) *JSend {
 	return &JSend{
 		Status:  JSendStatusFail,
 		Data:    data,
@@ -55,8 +55,8 @@ func JSendFail(data Envelope, message string) *JSend {
 func JSendError(message string, data Envelope, code *int) *JSend {
 	return &JSend{
 		Status:  JSendStatusError,
-		Message: message,
 		Data:    data,
+		Message: message,
 		Code:    code,
 	}
 }
