@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http_utils"
+	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
 )
 
 func projectsRouter() *pHttp.Router {

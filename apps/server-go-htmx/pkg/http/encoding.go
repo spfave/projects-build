@@ -1,4 +1,4 @@
-package http_utils
+package http_pkg
 
 import (
 	"encoding/json"
@@ -74,6 +74,7 @@ func JsonDecode[T any](r *http.Request) (T, error) {
 	var data T
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		return *new(T), fmt.Errorf("json decode - failed to decode request json body: %w", err)
+		// return *new(T), err
 	}
 
 	return data, nil
