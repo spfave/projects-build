@@ -39,13 +39,15 @@ PUT  {{urlProjects}}/{{id}}
 Content-Type: {{contentType}}
 
 {
+	"id": "{{project.response.body.$.id}}",
 	"name": "New name",
+	"link": "some.url",
 	"description": "some project description",
-	"notes": "some project notes",
-	"status": "complete"
-	# "dateCompleted": "2024-12-11",
-	# "rating": 4,
-	# "recommend": true
+	# "notes": "some project notes",
+	"status": "complete",
+	"dateCompleted": "2024-12-11",
+	"rating": 4,
+	"recommend": true
 }
 
 
