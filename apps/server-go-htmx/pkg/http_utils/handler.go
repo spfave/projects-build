@@ -26,9 +26,28 @@ func (router *Router) HandleSubroute(pattern string, handler http.Handler) {
 
 // ----------------------------------------------------------------------------------- //
 // ROUTE HANDLERS
+
+// type RouteHandler func(w http.ResponseWriter, r *http.Request) error
+
+// func (rh RouteHandler) ServeHttp(w http.ResponseWriter, r *http.Request) {
+// 	if err := rh(w, r); err != nil {
+// 		slog.Error("An error occurred", "error", err)
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 	}
+// }
+
+// func MakeHandler(routeHandler RouteHandler) http.HandlerFunc {
+// 	return func(w http.ResponseWriter, r *http.Request) {
+// 		if err := routeHandler(w, r); err != nil {
+// 			slog.Error("An error occurred", "error", err)
+// 			w.WriteHeader(http.StatusInternalServerError)
+// 		}
+// 	}
+// }
+
 func HandlerNotFound(w http.ResponseWriter, r *http.Request) {
 	JsonEncode(w, http.StatusNotFound, EnvelopeMessage{
-		Message: "Not Found - " + FullRequestUrl(r),
+		Message: "Not Found - " + RequestFullUrl(r),
 	})
 }
 
@@ -40,10 +59,12 @@ func HandlerError(w http.ResponseWriter, r *http.Request) {
 }
 
 // ----------------------------------------------------------------------------------- //
+//
+
 func RequestParam(r *http.Request, name string) (string, error) {
 	p := r.PathValue(name)
 	if p == "" {
-		return *new(string), fmt.Errorf("request param '%s' is empty", name)
+		return *new(string), fmt.Errorf("request param - param '%s' is empty", name)
 	}
 	return p, nil
 }
@@ -55,12 +76,18 @@ func RequestParamInt(r *http.Request, name string) (int, error) {
 	}
 	pInt, err := strconv.Atoi(pStr)
 	if err != nil {
-		return *new(int), fmt.Errorf("request param '%s' is not a valid integer: %w", name, err)
+		return *new(int), fmt.Errorf("request param - param '%s' is not a valid integer: %w", name, err)
 	}
 	return pInt, nil
 }
 
-// ----------------------------------------------------------------------------------- //
+func RequestFullUrl(r *http.Request) string {
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	return fmt.Sprintf("%s://%s%s", scheme, r.Host, r.URL.RequestURI())
+}
 
 // func RespondJson(w http.ResponseWriter, status int, data JSend, headers http.Header) {
 func RespondJson[T any](w http.ResponseWriter, status int, data T, headers http.Header) {
@@ -81,11 +108,19 @@ func RespondJsonError[T any](w http.ResponseWriter, status int, data T) {
 }
 
 // ----------------------------------------------------------------------------------- //
+// ERRORS
 
-func FullRequestUrl(r *http.Request) string {
-	scheme := "http"
-	if r.TLS != nil {
-		scheme = "https"
-	}
-	return fmt.Sprintf("%s://%s%s", scheme, r.Host, r.URL.RequestURI())
+type HttpError struct {
+	Message    string
+	Cause      error
+	StatusCode int
+}
+
+func (err *HttpError) Error() string {
+	return err.Message
+	// return fmt.Sprintf("Status: %d %s, Message: %s", err.StatusCode, http.StatusText(err.StatusCode), err.Message)
+}
+
+func (err *HttpError) Unwrap() error {
+	return err.Cause
 }
