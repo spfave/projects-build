@@ -30,6 +30,29 @@ Content-Type: {{contentType}}
 	"title": "Blog Title"
 }
 
+
 ### --------------------------------------------------------------------------------- ###
+# Auth basic
+GET {{urlDemos}}/auth-basic
+Authorization: Basic username:password
+
+
+### --------------------------------------------------------------------------------- ###
+# Query Params and Form Data
+POST {{urlDemos}}/post-form
+?qp1=qp1
+&qp2=qp2	
+&qpAry=qpAry1
+&qpAry=qpAry2
+&content=qContent
+Content-Type: application/x-www-form-urlencoded
+
+title=Blog Title
+&content=Blog content...
+&qp2=qp22
+
+
+### --------------------------------------------------------------------------------- ###
+# Error Checking
 GET {{urlDemos}}/error-checking
 ContentType: {{contentType}}

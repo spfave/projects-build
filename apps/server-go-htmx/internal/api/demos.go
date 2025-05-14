@@ -13,6 +13,8 @@ func apiDemos() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /obj/{id}", getObj)
 	router.HandleFunc("POST /obj", postObj)
+	router.HandleFunc("GET /auth-basic", authBasic)
+	router.HandleFunc("POST /post-form", postForm)
 	router.HandleFunc("GET /error-checking", errorChecking)
 	router.HandleFunc("/error", pHttp.HandlerError)
 	router.HandleNotFound()
@@ -76,6 +78,61 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 	// 	value := val.Field(i)
 	// 	fmt.Printf("Key: %s, Value: %v\n", field.Name, value.Interface())
 	// }
+
+	w.Write([]byte("Done"))
+}
+
+func authBasic(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nAUTH BASIC") //LOG
+	un, pw, ok := r.BasicAuth()
+	if !ok {
+		http.Error(w, "Missing credentials", http.StatusBadRequest)
+		return
+	}
+
+	// validate credentials, if err return http.StatusUnauthorized
+
+	fmt.Printf("credentials: username=%s, password=%s", un, pw) //LOG
+	pHttp.RespondJson(w, http.StatusOK, pHttp.Envelope{"username": un, "password": pw}, nil)
+}
+
+func postForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nPOST FORM")                                   //LOG
+	fmt.Printf("RequestFullUrl: %+v\n", pHttp.RequestFullUrl(r)) //LOG
+
+	fmt.Printf("r.URL.Query(): %+v\n", r.URL.Query()) //LOG
+	fmt.Printf("r.Form: %+v\n", r.Form)               //LOG
+	fmt.Printf("r.PostForm: %+v\n", r.PostForm)       //LOG
+
+	query := r.URL.Query()
+	err := r.ParseForm()
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil))
+		return
+	}
+
+	fmt.Println()
+	fmt.Printf("query: %+v\n", query)           //LOG
+	fmt.Printf("r.Form: %+v\n", r.Form)         //LOG
+	fmt.Printf("r.PostForm: %+v\n", r.PostForm) //LOG
+	fmt.Println()
+	fmt.Printf("query.Get(qpAry): %+v\n", query.Get("qpAry")) //LOG
+	fmt.Printf("query[qpAry]: %+v\n", query["qpAry"])         //LOG
+	fmt.Printf("query[qp1]: %+v\n", query["qp1"])             //LOG
+	fmt.Println()
+	fmt.Printf("r.Form.Get(qp1): %+v\n", r.Form.Get("qp1"))         //LOG
+	fmt.Printf("r.Form.Get(qpAry): %+v\n", r.Form.Get("qpAry"))     //LOG
+	fmt.Printf("r.Form[qpAry]: %+v\n", r.Form["qpAry"])             //LOG
+	fmt.Printf("r.Form.Get(title): %+v\n", r.Form.Get("title"))     //LOG
+	fmt.Printf("r.Form[content]: %+v\n", r.Form["content"])         //LOG
+	fmt.Printf("r.PostForm[content]: %+v\n", r.PostForm["content"]) //LOG
+	fmt.Println()
+	fmt.Printf("r.FormValue(qp1): %+v\n", r.FormValue("qp1"))     //LOG
+	fmt.Printf("r.FormValue(qpAry): %+v\n", r.FormValue("qpAry")) //LOG
+	fmt.Printf("r.FormValue(title): %+v\n", r.FormValue("title")) //LOG
+	fmt.Println()
+	fmt.Printf("r.PostFormValue(qp1): %+v\n", r.PostFormValue("qp1"))         //LOG
+	fmt.Printf("r.PostFormValue(content): %+v\n", r.PostFormValue("content")) //LOG
 
 	w.Write([]byte("Done"))
 }
