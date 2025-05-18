@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
+	"github.com/spfave/projects-build/apps/server-go-htmx/internal/store"
 	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
 )
 
@@ -22,20 +23,15 @@ func projectsRouter() *pHttp.Router {
 }
 
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
-	// todo: get all projects
-	projects := []core.Project{
-		{
-			Id:     rand.Text()[0:8],
-			Name:   "Project 1",
-			Status: core.ProjectStatusPlanning,
-		},
-		{
-			Id:     rand.Text()[0:8],
-			Name:   "Project 2",
-			Status: core.ProjectStatusBuilding,
-		},
+	projects, err := store.ProjectMemStr.GetAll()
+	// projects, err := store.GetAll()
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(
+			"error getting all projects",
+			pHttp.Envelope{"cause": err.Error()},
+			nil))
+		return
 	}
-	// todo: handle err for getting all projects
 
 	pHttp.RespondJson(w, http.StatusOK, projects, nil)
 	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"projects": projects}), nil)

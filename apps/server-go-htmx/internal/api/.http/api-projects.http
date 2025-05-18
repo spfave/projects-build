@@ -5,7 +5,7 @@
 @contentType = application/json
 
 ### --------------------------------------------------------------------------------- ###
-# GET projects
+# GET all projects
 GET {{urlProjects}}
 ContentType: {{contentType}}
 
