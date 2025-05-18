@@ -30,6 +30,9 @@ Content-Type: {{contentType}}
 	# "description": "Using .http",
 	"notes": null,
 	"status": "building"
+	# "dateCompleted": "2025-05-11",
+	# "rating": 0,
+	# "recommend": true
 }
 
 

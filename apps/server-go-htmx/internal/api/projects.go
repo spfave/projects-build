@@ -68,7 +68,14 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
-	// todo: validate payload and handle err
+
+	validation := core.ValidateProject(&payload)
+	fmt.Printf("validation: %+v\n", validation) //LOG
+	if !validation.Success {
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(
+			"invalid project input", pHttp.Envelope{"errors": validation.Errors}), nil)
+		return
+	}
 
 	// todo: create project
 	project := core.Project{

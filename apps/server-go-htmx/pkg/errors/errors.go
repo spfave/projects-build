@@ -27,6 +27,7 @@ var (
 // ----------------------------------------------------------------------------------- //
 // CUSTOM ERRORS
 
+// General error
 type Error struct {
 	Message string
 	Cause   error
@@ -43,7 +44,27 @@ func (err *Error) Unwrap() error {
 	return err.Cause
 }
 
-// type ValidationError struct {
-// 	Entity []string
-// 	Fields map[string][]string
-// }
+// Struct validation error
+type ValidationError struct {
+	Entity []string            `json:"entity"`
+	Fields map[string][]string `json:"fields"`
+}
+
+func (vErr *ValidationError) HasErrors() bool {
+	hasErrors := false
+
+	if len(vErr.Entity) > 0 {
+		hasErrors = true
+	} else {
+		for _, fieldErrs := range vErr.Fields {
+			if len(fieldErrs) > 0 {
+				hasErrors = true
+				break
+			}
+		}
+	}
+
+	return hasErrors
+}
+
+// func (vErr *ValidationError) Error() string {}
