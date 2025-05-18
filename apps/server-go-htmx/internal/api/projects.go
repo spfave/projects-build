@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
 	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
 )
 
@@ -22,16 +23,16 @@ func projectsRouter() *pHttp.Router {
 
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
 	// todo: get all projects
-	projects := []Project{
+	projects := []core.Project{
 		{
 			Id:     rand.Text()[0:8],
 			Name:   "Project 1",
-			Status: ProjectStatusPlanning,
+			Status: core.ProjectStatusPlanning,
 		},
 		{
 			Id:     rand.Text()[0:8],
 			Name:   "Project 2",
-			Status: ProjectStatusBuilding,
+			Status: core.ProjectStatusBuilding,
 		},
 	}
 	// todo: handle err for getting all projects
@@ -49,10 +50,10 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// todo: get project by id
-	project := Project{
+	project := core.Project{
 		Id:     projectId,
 		Name:   "Project " + projectId,
-		Status: ProjectStatusPlanning,
+		Status: core.ProjectStatusPlanning,
 	}
 	// todo: handle err for getting project by id
 
@@ -61,7 +62,7 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 }
 
 func createProject(w http.ResponseWriter, r *http.Request) {
-	payload, err := pHttp.JsonDecode[ProjectInput](r)
+	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
 	fmt.Printf("payload: %+v\n", payload) //LOG
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil), nil)
@@ -70,7 +71,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	// todo: validate payload and handle err
 
 	// todo: create project
-	project := Project{
+	project := core.Project{
 		Id:     rand.Text()[0:8],
 		Name:   payload.Name,
 		Status: payload.Status,
@@ -87,7 +88,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	payload, err := pHttp.JsonDecode[Project](r)
+	payload, err := pHttp.JsonDecode[core.Project](r)
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(err.Error(), nil), nil)
 		return
@@ -95,7 +96,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	// todo: validate payload and handle err
 
 	// todo: update project by id
-	project := Project{
+	project := core.Project{
 		Id:            payload.Id,
 		Name:          payload.Name,
 		Status:        payload.Status,
@@ -119,44 +120,12 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// todo: delete project by id
-	project := Project{
+	project := core.Project{
 		Id:     projectId,
 		Name:   "Project " + projectId + " deleted",
-		Status: ProjectStatusPlanning,
+		Status: core.ProjectStatusPlanning,
 	}
 	// todo: handle err for deleting project by id
 
 	pHttp.RespondJson(w, http.StatusOK, project, nil)
 }
-
-// ----------------------------------------------------------------------------------- //
-type (
-	ProjectStatus string
-	Project       struct {
-		Id            string        `json:"id"`
-		Name          string        `json:"name"`
-		Link          *string       `json:"link,omitzero"`
-		Description   *string       `json:"description,omitzero"`
-		Notes         *string       `json:"notes,omitzero"`
-		Status        ProjectStatus `json:"status"`
-		DateCompleted *string       `json:"dateCompleted,omitzero"`
-		Rating        *int          `json:"rating,omitzero"`
-		Recommend     *bool         `json:"recommend,omitzero"`
-	}
-	ProjectInput struct {
-		Name          string        `json:"name"`
-		Link          *string       `json:"link,omitzero"`
-		Description   *string       `json:"description,omitzero"`
-		Notes         *string       `json:"notes,omitzero"`
-		Status        ProjectStatus `json:"status"`
-		DateCompleted *string       `json:"dateCompleted,omitzero"`
-		Rating        *int          `json:"rating,omitzero"`
-		Recommend     *bool         `json:"recommend,omitzero"`
-	}
-)
-
-const (
-	ProjectStatusPlanning ProjectStatus = "planning"
-	ProjectStatusBuilding ProjectStatus = "building"
-	ProjectStatusComplete ProjectStatus = "complete"
-)
