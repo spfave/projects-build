@@ -7,6 +7,7 @@ import (
 
 	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
 	"github.com/spfave/projects-build/apps/server-go-htmx/internal/store"
+	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
 	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
 )
 
@@ -41,17 +42,20 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 	// projectId := r.PathValue("id")
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(err.Error(), nil), nil)
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
 
-	// todo: get project by id
-	project := core.Project{
-		Id:     projectId,
-		Name:   "Project " + projectId,
-		Status: core.ProjectStatusPlanning,
+	project, err := store.ProjectMemStr.GetById(projectId)
+	if err != nil {
+		switch err {
+		case pErr.ErrNotFound:
+			pHttp.RespondJson(w, http.StatusNotFound, pHttp.JSendFail("project not found", nil), nil)
+		default:
+			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error getting project", nil, nil))
+		}
+		return
 	}
-	// todo: handle err for getting project by id
 
 	pHttp.RespondJson(w, http.StatusOK, project, nil)
 	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"project": project}), nil)
@@ -122,13 +126,16 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// todo: delete project by id
-	project := core.Project{
-		Id:     projectId,
-		Name:   "Project " + projectId + " deleted",
-		Status: core.ProjectStatusPlanning,
+	project, err := store.ProjectMemStr.Delete(projectId)
+	if err != nil {
+		switch err {
+		case pErr.ErrNotFound:
+			pHttp.RespondJson(w, http.StatusNotFound, pHttp.JSendFail("project not found", nil), nil)
+		default:
+			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error deleting project", nil, nil))
+		}
+		return
 	}
-	// todo: handle err for deleting project by id
 
 	pHttp.RespondJson(w, http.StatusOK, project, nil)
 }

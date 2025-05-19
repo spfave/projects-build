@@ -19,8 +19,9 @@ import (
 // SENTINEL ERRORS
 
 var (
-	ErrNoValue   = errors.New("no value")
 	ErrDataSize  = errors.New("maximum data size exceeded")
+	ErrNoValue   = errors.New("no value")
+	ErrNotFound  = errors.New("not found")
 	ErrTransform = errors.New("data transform failed")
 )
 

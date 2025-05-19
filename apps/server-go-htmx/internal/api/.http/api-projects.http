@@ -12,9 +12,9 @@ ContentType: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # GET project by id
-@id = UTTX2OU2
+@projectId = UTTX2OU2
 
-GET {{urlProjects}}/{{id}}
+GET {{urlProjects}}/{{projectId}}
 Content-Type: {{contentType}}
 
 
@@ -56,6 +56,7 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # DELETE project by Id
-DELETE  {{urlProjects}}/{{project.response.body.$.id}}
+DELETE  {{urlProjects}}/{{projectId}}
+# DELETE  {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
 

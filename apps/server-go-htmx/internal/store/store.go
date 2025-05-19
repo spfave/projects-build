@@ -1,9 +1,8 @@
 package store
 
 import (
-	"fmt"
-
 	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
+	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
 )
 
 // Ref: https://www.alexedwards.net/blog/implementing-an-in-memory-cache-in-go
@@ -26,31 +25,30 @@ type ProjectMemoryStore struct {
 
 var (
 	// ProjectMemStr = ProjectMemoryStore{} // init'd with nil "projects" map, write op will panic
-	ProjectMemStr = ProjectMemoryStore{projects: make(map[string]core.Project, 10)} // init'd with defined "projects" map
-	// ProjectMemStr = ProjectMemoryStore{ // init'd with defined "projects" map
-	// 	projects: map[string]core.Project{
-	// 		"io3q487p": {
-	// 			Id:     rand.Text()[0:8],
-	// 			Name:   "Project 1",
-	// 			Status: core.ProjectStatusPlanning,
-	// 		},
-	// 		"ok3mbep4": {
-	// 			Id:     rand.Text()[0:8],
-	// 			Name:   "Project 2",
-	// 			Status: core.ProjectStatusBuilding,
-	// 		},
-	// 	},
-	// }
+	// ProjectMemStr = ProjectMemoryStore{projects: make(map[string]core.Project, 10)} // init'd with defined "projects" map
+	ProjectMemStr = ProjectMemoryStore{ // init'd with defined "projects" map
+		projects: map[string]core.Project{
+			"io3q487p": {
+				Id:     "io3q487p",
+				Name:   "Project 1",
+				Status: core.ProjectStatusPlanning,
+			},
+			"ok3mbep4": {
+				Id:     "ok3mbep4",
+				Name:   "Project 2",
+				Status: core.ProjectStatusBuilding,
+			},
+		},
+	}
 
 	// projectMap map[string]core.Project // init'd as nil "projects" map, write op will panic
-	projectMap = make(map[string]core.Project, 10)
+	// projectMap = make(map[string]core.Project, 10)
 )
 
 // note: working with global ProjectMemStr struct variable
 func (str *ProjectMemoryStore) GetAll() (*[]core.Project, error) {
 	// return nil, fmt.Errorf("projectMemoryStore.GetAll() error")
 
-	fmt.Printf("str.projects: %+v\n", str.projects) //LOG
 	projects := make([]core.Project, 0, len(str.projects))
 	for _, project := range str.projects {
 		projects = append(projects, project)
@@ -67,3 +65,25 @@ func (str *ProjectMemoryStore) GetAll() (*[]core.Project, error) {
 // 	}
 // 	return &projects, nil
 // }
+
+func (str *ProjectMemoryStore) GetById(projectId string) (*core.Project, error) {
+	project, ok := str.projects[projectId]
+	if !ok {
+		return nil, pErr.ErrNotFound
+	}
+	return &project, nil
+}
+
+// func (str *ProjectMemoryStore) Create() {}
+
+// func (str *ProjectMemoryStore) Update() {}
+
+func (str *ProjectMemoryStore) Delete(projectId string) (*core.Project, error) {
+	project, ok := str.projects[projectId]
+	if !ok {
+		return nil, pErr.ErrNotFound
+	}
+	delete(str.projects, projectId)
+	return &project, nil
+
+}
