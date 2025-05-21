@@ -14,7 +14,8 @@ ContentType: {{contentType}}
 # GET project by id
 @projectId = UTTX2OU2
 
-GET {{urlProjects}}/{{projectId}}
+# GET {{urlProjects}}/{{projectId}}
+GET {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
 
 

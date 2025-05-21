@@ -1,6 +1,8 @@
 package store
 
 import (
+	"crypto/rand"
+
 	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
 	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
 )
@@ -74,7 +76,21 @@ func (str *ProjectMemoryStore) GetById(projectId string) (*core.Project, error) 
 	return &project, nil
 }
 
-// func (str *ProjectMemoryStore) Create() {}
+func (str *ProjectMemoryStore) Create(input *core.ProjectInput) (*core.Project, error) {
+	project := core.Project{
+		Id:            rand.Text()[0:8],
+		Name:          input.Name,
+		Link:          input.Link,
+		Description:   input.Description,
+		Notes:         input.Notes,
+		Status:        input.Status,
+		DateCompleted: input.DateCompleted,
+		Rating:        input.Rating,
+		Recommend:     input.Recommend,
+	}
+	str.projects[project.Id] = project
+	return &project, nil
+}
 
 // func (str *ProjectMemoryStore) Update() {}
 

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"crypto/rand"
 	"fmt"
 	"net/http"
 
@@ -77,13 +76,11 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// todo: create project
-	project := core.Project{
-		Id:     rand.Text()[0:8],
-		Name:   payload.Name,
-		Status: payload.Status,
+	projectPayload := core.TransformProject(&payload)
+	project, err := store.ProjectMemStr.Create(projectPayload)
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error creating project", nil, nil))
 	}
-	// todo: handle err for creating project
 
 	pHttp.RespondJson(w, http.StatusCreated, project, nil)
 }
