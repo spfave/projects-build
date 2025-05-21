@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"regexp"
 	"slices"
 	"strings"
@@ -59,11 +58,12 @@ type ValidationResult struct {
 }
 
 func ValidateProject(input *ProjectInput) *ValidationResult {
-	// var projErrs *ValidationError // init as nil
+	// var projErrs *pErr.ValidationError // init as nil
 	projErrs := &pErr.ValidationError{Entity: make([]string, 0), Fields: make(map[string][]string)}
 
 	// validate input struct
 	if input == nil {
+		projErrs.Entity = append(projErrs.Entity, "project data is required")
 		return &ValidationResult{Success: false, Errors: projErrs}
 	}
 
@@ -132,9 +132,36 @@ func ValidateProject(input *ProjectInput) *ValidationResult {
 		}
 	}
 
-	fmt.Printf("projErrs: %+v\n", projErrs) //LOG
 	if projErrs.HasErrors() {
 		return &ValidationResult{Success: false, Errors: projErrs}
 	}
 	return &ValidationResult{Success: true, Errors: nil}
+}
+
+func TransformProject(p *ProjectInput) *ProjectInput {
+	project := &ProjectInput{
+		Name:   strings.TrimSpace(p.Name),
+		Status: p.Status,
+	}
+
+	if p.Link != nil {
+		trimmedLink := strings.TrimSpace(*p.Link)
+		project.Link = &trimmedLink
+	}
+	if p.Description != nil {
+		trimmedDescription := strings.TrimSpace(*p.Description)
+		project.Description = &trimmedDescription
+	}
+	if p.Notes != nil {
+		trimmedNotes := strings.TrimSpace(*p.Notes)
+		project.Notes = &trimmedNotes
+	}
+
+	if p.Status == ProjectStatusComplete {
+		project.DateCompleted = p.DateCompleted
+		project.Rating = p.Rating
+		project.Recommend = p.Recommend
+	}
+
+	return project
 }
