@@ -38,10 +38,9 @@ func getAllProjects(w http.ResponseWriter, r *http.Request) {
 }
 
 func getProjectById(w http.ResponseWriter, r *http.Request) {
-	// projectId := r.PathValue("id")
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(err.Error(), nil), nil)
+		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
 
@@ -64,7 +63,8 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
 	fmt.Printf("payload: %+v\n", payload) //LOG
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil), nil)
+		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(
+			"failed to parse json body ", pHttp.Envelope{"errors": err.Error()}), nil)
 		return
 	}
 
@@ -72,7 +72,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("validation: %+v\n", validation) //LOG
 	if !validation.Success {
 		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(
-			"invalid project input", pHttp.Envelope{"errors": validation.Errors}), nil)
+			"invalid project", pHttp.Envelope{"errors": validation.Errors}), nil)
 		return
 	}
 
@@ -86,40 +86,43 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateProjectById(w http.ResponseWriter, r *http.Request) {
-	_, err := pHttp.RequestParam(r, "id")
+	// 1. Parse data payload(s) from request
+	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(err.Error(), nil), nil)
+		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil), nil)
+		return
+	}
+	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
+	if err != nil {
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(
+			"failed to parse json body ", pHttp.Envelope{"errors": err.Error()}), nil)
 		return
 	}
 
-	payload, err := pHttp.JsonDecode[core.Project](r)
-	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(err.Error(), nil), nil)
+	// 2. Validate data payload(s)
+	validation := core.ValidateProject(&payload)
+	if !validation.Success {
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(
+			"invalid project", pHttp.Envelope{"errors": validation.Errors}), nil)
 		return
 	}
-	// todo: validate payload and handle err
 
-	// todo: update project by id
-	project := core.Project{
-		Id:            payload.Id,
-		Name:          payload.Name,
-		Status:        payload.Status,
-		Link:          payload.Link,
-		Description:   payload.Description,
-		Notes:         payload.Notes,
-		DateCompleted: payload.DateCompleted,
-		Rating:        payload.Rating,
-		Recommend:     payload.Recommend,
+	// 3. Parse data payload(s) into domain entity
+	projectPayload := core.TransformProject(&payload)
+	// 4. Execute service method
+	project, err := store.ProjectMemStr.Update(projectId, projectPayload)
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))
 	}
-	// todo: handle err for updating project by id
 
+	// 5. Return response
 	pHttp.RespondJson(w, http.StatusOK, project, nil)
 }
 
 func deleteProject(w http.ResponseWriter, r *http.Request) {
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(err.Error(), nil), nil)
+		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
 

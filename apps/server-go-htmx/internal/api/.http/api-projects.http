@@ -39,17 +39,18 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # PUT project by id
-PUT  {{urlProjects}}/{{id}}
+# PUT  {{urlProjects}}/{{id}}
+PUT  {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
 
 {
-	"id": "{{project.response.body.$.id}}",
+	# "id": "{{project.response.body.$.id}}",
 	"name": "New name",
 	"link": "some.url",
 	"description": "some project description",
 	# "notes": "some project notes",
 	"status": "complete",
-	"dateCompleted": "2024-12-11",
+	"dateCompleted": "2025-05-20",
 	"rating": 4,
 	"recommend": true
 }
@@ -57,7 +58,7 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # DELETE project by Id
-DELETE  {{urlProjects}}/{{projectId}}
-# DELETE  {{urlProjects}}/{{project.response.body.$.id}}
+# DELETE  {{urlProjects}}/{{projectId}}
+DELETE  {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
 
