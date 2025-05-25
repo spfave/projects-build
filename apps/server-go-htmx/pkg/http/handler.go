@@ -94,7 +94,7 @@ func RespondJson[T any](w http.ResponseWriter, status int, data T, headers http.
 	err := JsonMarshal(w, status, data, headers)
 	if err != nil {
 		// RespondJsonError(w, http.StatusInternalServerError, EnvelopeMessage{Message: err.Error()})
-		RespondJsonError(w, http.StatusInternalServerError, *JSendError(err.Error(), nil, nil))
+		RespondJsonError(w, http.StatusInternalServerError, JSendError("An error occurred", Envelope{"errors": err.Error()}, nil))
 	}
 }
 

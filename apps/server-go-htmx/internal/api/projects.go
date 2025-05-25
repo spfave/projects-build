@@ -63,7 +63,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
 	fmt.Printf("payload: %+v\n", payload) //LOG
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(
+		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(
 			"failed to parse json body ", pHttp.Envelope{"errors": err.Error()}), nil)
 		return
 	}
@@ -71,7 +71,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	validation := core.ValidateProject(&payload)
 	fmt.Printf("validation: %+v\n", validation) //LOG
 	if !validation.Success {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(
 			"invalid project", pHttp.Envelope{"errors": validation.Errors}), nil)
 		return
 	}
@@ -89,12 +89,12 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	// 1. Parse data payload(s) from request
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil), nil)
+		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
 	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(
 			"failed to parse json body ", pHttp.Envelope{"errors": err.Error()}), nil)
 		return
 	}
@@ -102,7 +102,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	// 2. Validate data payload(s)
 	validation := core.ValidateProject(&payload)
 	if !validation.Success {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(
 			"invalid project", pHttp.Envelope{"errors": validation.Errors}), nil)
 		return
 	}
@@ -122,7 +122,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 func deleteProject(w http.ResponseWriter, r *http.Request) {
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil), nil)
+		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
 

@@ -53,13 +53,13 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNoValue):
-			pHttp.RespondJsonError(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil))
+			pHttp.RespondJsonError(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil))
 		case errors.Is(err, pErr.ErrDataSize):
-			pHttp.RespondJsonError(w, http.StatusRequestEntityTooLarge, *pHttp.JSendFail(err.Error(), nil))
+			pHttp.RespondJsonError(w, http.StatusRequestEntityTooLarge, pHttp.JSendFail(err.Error(), nil))
 		case errors.Is(err, pErr.ErrTransform):
-			pHttp.RespondJsonError(w, http.StatusUnprocessableEntity, *pHttp.JSendFail(err.Error(), nil))
+			pHttp.RespondJsonError(w, http.StatusUnprocessableEntity, pHttp.JSendFail(err.Error(), nil))
 		default:
-			pHttp.RespondJsonError(w, http.StatusInternalServerError, *pHttp.JSendError(err.Error(), nil, nil))
+			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(err.Error(), nil, nil))
 		}
 		return
 	}
@@ -107,7 +107,7 @@ func postForm(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	err := r.ParseForm()
 	if err != nil {
-		pHttp.RespondJsonError(w, http.StatusBadRequest, *pHttp.JSendFail(err.Error(), nil))
+		pHttp.RespondJsonError(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil))
 		return
 	}
 
