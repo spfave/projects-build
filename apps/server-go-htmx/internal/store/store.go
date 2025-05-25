@@ -12,24 +12,24 @@ import (
 
 type ProjectRepository interface {
 	GetAll() (*[]core.Project, error)
-	GetById(id string) (*core.Project, error)
+	GetById(id core.ProjectId) (*core.Project, error)
 	Create(project *core.Project) (*core.Project, error)
-	Update(id string, project *core.Project) (*core.Project, error)
-	Delete(id string) (*core.Project, error)
+	Update(id core.ProjectId, project *core.Project) (*core.Project, error)
+	Delete(id core.ProjectId) (*core.Project, error)
 }
 
 // ----------------------------------------------------------------------------------- //
 // IN-MEMORY STORE
 
 type ProjectMemoryStore struct {
-	projects map[string]core.Project
+	projects map[core.ProjectId]core.Project
 }
 
 var (
 	// ProjectMemStr = ProjectMemoryStore{} // init'd with nil "projects" map, write op will panic
-	ProjectMemStr = ProjectMemoryStore{projects: make(map[string]core.Project, 10)} // init'd with defined "projects" map
+	ProjectMemStr = ProjectMemoryStore{projects: make(map[core.ProjectId]core.Project, 10)} // init'd with defined "projects" map
 	// ProjectMemStr = ProjectMemoryStore{ // init'd with defined "projects" map
-	// 	projects: map[string]core.Project{
+	// 	projects: map[core.ProjectId]core.Project{
 	// 		"io3q487p": {
 	// 			Id:     "io3q487p",
 	// 			Name:   "Project 1",
@@ -43,8 +43,8 @@ var (
 	// 	},
 	// }
 
-	// projectMap map[string]core.Project // init'd as nil "projects" map, write op will panic
-	// projectMap = make(map[string]core.Project, 10)
+	// projectMap map[core.ProjectId]core.Project // init'd as nil "projects" map, write op will panic
+	// projectMap = make(map[core.ProjectId]core.Project, 10)
 )
 
 // note: working with global ProjectMemStr struct variable
@@ -68,8 +68,8 @@ func (str *ProjectMemoryStore) GetAll() (*[]core.Project, error) {
 // 	return &projects, nil
 // }
 
-func (str *ProjectMemoryStore) GetById(projectId string) (*core.Project, error) {
-	project, ok := str.projects[projectId]
+func (str *ProjectMemoryStore) GetById(id core.ProjectId) (*core.Project, error) {
+	project, ok := str.projects[id]
 	if !ok {
 		return nil, pErr.ErrNotFound
 	}
@@ -92,7 +92,7 @@ func (str *ProjectMemoryStore) Create(input *core.ProjectInput) (*core.Project, 
 	return &project, nil
 }
 
-func (str *ProjectMemoryStore) Update(id string, input *core.ProjectInput) (*core.Project, error) {
+func (str *ProjectMemoryStore) Update(id core.ProjectId, input *core.ProjectInput) (*core.Project, error) {
 	project, ok := str.projects[id]
 	if !ok {
 		return nil, pErr.ErrNotFound
@@ -111,12 +111,12 @@ func (str *ProjectMemoryStore) Update(id string, input *core.ProjectInput) (*cor
 	return &project, nil
 }
 
-func (str *ProjectMemoryStore) Delete(projectId string) (*core.Project, error) {
-	project, ok := str.projects[projectId]
+func (str *ProjectMemoryStore) Delete(id core.ProjectId) (*core.Project, error) {
+	project, ok := str.projects[id]
 	if !ok {
 		return nil, pErr.ErrNotFound
 	}
-	delete(str.projects, projectId)
+	delete(str.projects, id)
 	return &project, nil
 
 }

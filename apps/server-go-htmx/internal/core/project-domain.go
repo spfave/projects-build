@@ -11,9 +11,10 @@ import (
 // ----------------------------------------------------------------------------------- //
 // TYPES
 type (
+	ProjectId     = string
 	ProjectStatus string
 	Project       struct {
-		Id            string        `json:"id"`
+		Id            ProjectId     `json:"id"`
 		Name          string        `json:"name"`
 		Link          *string       `json:"link,omitzero"`
 		Description   *string       `json:"description,omitzero"`
