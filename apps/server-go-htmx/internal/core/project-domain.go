@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"slices"
 	"strings"
+	"time"
 
 	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
 )
@@ -107,7 +108,11 @@ func ValidateProject(input *ProjectInput) *ValidationResult {
 			projErrs.Fields["dateCompleted"] = append(projErrs.Fields["dateCompleted"], "Date completed is required")
 		} else if !isYMD.MatchString(*input.DateCompleted) {
 			projErrs.Fields["dataCompleted"] = append(projErrs.Fields["dataCompleted"], "Invalid format. Use YYYY-MM-DD")
-		} // else if valid date {}
+		} else if date, err := time.Parse("2006-01-02", *input.DateCompleted); err != nil || date.IsZero() {
+			projErrs.Fields["dateCompleted"] = append(projErrs.Fields["dateCompleted"], "Invalid date")
+		} else if date.After(time.Now()) {
+			projErrs.Fields["dateCompleted"] = append(projErrs.Fields["dateCompleted"], "Invalid date: cannot be in the future")
+		}
 
 		// rating
 		if input.Rating == nil {
