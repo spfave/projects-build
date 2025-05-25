@@ -13,6 +13,7 @@ import (
 func projectsRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /projects", getAllProjects)
+	router.Handle("GET /projects-handler", pHttp.RouteHandler(handlerGetAllProjects))
 	router.HandleFunc("GET /projects/{id}", getProjectById)
 	router.HandleFunc("POST /projects", createProject)
 	router.HandleFunc("PUT /projects/{id}", updateProjectById)
@@ -35,6 +36,22 @@ func getAllProjects(w http.ResponseWriter, r *http.Request) {
 
 	pHttp.RespondJson(w, http.StatusOK, projects, nil)
 	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"projects": projects}), nil)
+}
+
+// note: variant returning error, handled by pHttp.RouteHandler attached .ServeHTTP method
+func handlerGetAllProjects(w http.ResponseWriter, r *http.Request) *pHttp.HttpError {
+	projects, err := store.ProjectMemStr.GetAll()
+
+	if err != nil {
+		return &pHttp.HttpError{
+			StatusCode: http.StatusBadRequest,
+			Message:    "error getting all projects",
+			Cause:      err,
+		}
+	}
+
+	pHttp.RespondJson(w, http.StatusOK, projects, nil)
+	return nil
 }
 
 func getProjectById(w http.ResponseWriter, r *http.Request) {

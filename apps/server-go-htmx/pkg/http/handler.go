@@ -27,23 +27,28 @@ func (router *Router) HandleSubroute(pattern string, handler http.Handler) {
 // ----------------------------------------------------------------------------------- //
 // ROUTE HANDLERS
 
-// type RouteHandler func(w http.ResponseWriter, r *http.Request) error
+type RouteHandler func(w http.ResponseWriter, r *http.Request) *HttpError
 
-// func (rh RouteHandler) ServeHttp(w http.ResponseWriter, r *http.Request) {
-// 	if err := rh(w, r); err != nil {
-// 		slog.Error("An error occurred", "error", err)
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 	}
-// }
+func (rh RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if err := rh(w, r); err != nil {
+		slog.Error("An error occurred", "error", err, "path", r.URL.Path, "method", r.Method)
 
-// func MakeHandler(routeHandler RouteHandler) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		if err := routeHandler(w, r); err != nil {
-// 			slog.Error("An error occurred", "error", err)
-// 			w.WriteHeader(http.StatusInternalServerError)
-// 		}
-// 	}
-// }
+		if err.StatusCode >= 400 && err.StatusCode < 500 {
+			RespondJson(w, err.StatusCode, JSendFail(err.Message, nil), nil)
+		} else {
+			RespondJsonError(w, err.StatusCode, JSendError(err.Message, nil, nil))
+		}
+	}
+}
+
+func MakeHandler(rh RouteHandler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if err := rh(w, r); err != nil {
+			slog.Error("An error occurred", "error", err, "path", r.URL.Path, "method", r.Method)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+	}
+}
 
 func HandlerNotFound(w http.ResponseWriter, r *http.Request) {
 	JsonEncode(w, http.StatusNotFound, EnvelopeMessage{
