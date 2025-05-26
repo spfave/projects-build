@@ -34,7 +34,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 - [API Node + Hono](./apps/api-hono)
 
-<!-- - [Server Go + HTMX](./apps/server-go-htmx) -->
+- [Server Go](./apps/server-go)
 
 <!-- - [Fullstack Astro](./apps/fullstack-astro) -->
 <!-- - [Fullstack Next](./apps/fullstack-next) -->
