@@ -1,0 +1,58 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+
+@urlBase = http://localhost:5003
+@urlDemos = {{urlBase}}/demos
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+# Error
+{{urlDemos}}/error
+
+
+### --------------------------------------------------------------------------------- ###
+# Not Found
+GET {{urlDemos}}/test
+
+
+### --------------------------------------------------------------------------------- ###
+# GET demo
+GET {{urlDemos}}/obj/123
+
+
+### --------------------------------------------------------------------------------- ###
+# POST demo
+POST {{urlDemos}}/obj
+Content-Type: {{contentType}}
+
+{
+	# "noField": "noValue",
+	"id": 123,
+	"title": "Blog Title"
+}
+
+
+### --------------------------------------------------------------------------------- ###
+# Auth basic
+GET {{urlDemos}}/auth-basic
+Authorization: Basic username:password
+
+
+### --------------------------------------------------------------------------------- ###
+# Query Params and Form Data
+POST {{urlDemos}}/post-form
+?qp1=qp1
+&qp2=qp2	
+&qpAry=qpAry1
+&qpAry=qpAry2
+&content=qContent
+Content-Type: application/x-www-form-urlencoded
+
+title=Blog Title
+&content=Blog content...
+&qp2=qp22
+
+
+### --------------------------------------------------------------------------------- ###
+# Error Checking
+GET {{urlDemos}}/error-checking
+ContentType: {{contentType}}

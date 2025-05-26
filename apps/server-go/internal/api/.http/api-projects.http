@@ -1,0 +1,64 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+
+@urlBase = http://localhost:5003
+@urlProjects = {{urlBase}}/api/v1/projects
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+# GET all projects
+GET {{urlProjects}}
+ContentType: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# GET project by id
+@projectId = UTTX2OU2
+
+# GET {{urlProjects}}/{{projectId}}
+GET {{urlProjects}}/{{project.response.body.$.id}}
+Content-Type: {{contentType}}
+
+
+### --------------------------------------------------------------------------------- ###
+# CREATE project
+# @name project
+POST {{urlProjects}}
+Content-Type: {{contentType}}
+
+{
+	# "id": 987,
+	"name": "Sample Project",
+	# "description": "Using .http",
+	"notes": null,
+	"status": "building"
+	# "dateCompleted": "2025-05-11",
+	# "rating": 3,
+	# "recommend": true
+}
+
+
+### --------------------------------------------------------------------------------- ###
+# PUT project by id
+# PUT  {{urlProjects}}/{{id}}
+PUT  {{urlProjects}}/{{project.response.body.$.id}}
+Content-Type: {{contentType}}
+
+{
+	# "id": "{{project.response.body.$.id}}",
+	"name": "New name",
+	"link": "some.url",
+	"description": "some project description",
+	# "notes": "some project notes",
+	"status": "complete",
+	"dateCompleted": "2025-05-20",
+	"rating": 4,
+	"recommend": true
+}
+
+
+### --------------------------------------------------------------------------------- ###
+# DELETE project by Id
+# DELETE  {{urlProjects}}/{{projectId}}
+DELETE  {{urlProjects}}/{{project.response.body.$.id}}
+Content-Type: {{contentType}}
+

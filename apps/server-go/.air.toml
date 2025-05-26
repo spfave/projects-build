@@ -1,0 +1,55 @@
+# Config file for [Air](https://github.com/air-verse/air)
+
+root = "."                             # Working directory: . or absoulte path, note directories following must be under root
+tmp_dir = "tmp"
+testdata_dir = "testdata"
+
+[build]
+  cmd = "go build -o ./tmp/main ./cmd/api/main.go"         # Just plain old shell command. You could use `make` as well
+  pre_cmd = []                         # Array of commands to run before each build
+  post_cmd = []                        # Array of commands to run after ^C
+  bin = "./tmp/main"                   # Binary file yields from `cmd`
+  full_bin = ""                        # Customize binary, can setup environment variables when run your app
+  args_bin = []                        # Add additional arguments when running binary (bin/full_bin). Will run './tmp/main hello world'
+  include_dir = []                     # Watch these directories if you specified
+  include_file = []                    # Watch these files
+  exclude_file = []                    # Exclude files
+  exclude_dir = ["assets", "tmp", "vendor", "testdata"]    # Ignore these filename extensions or directories.
+  exclude_regex = ["_test.go"]         # Exclude specific regular expressions
+  include_ext = ["go", "html", "tpl", "tmpl"]              # Watch these filename extensions
+  exclude_unchanged = true             # Exclude unchanged files
+  follow_symlink = false               # Follow symlink for directories
+  log = "build-errors.log"             # Log file in tmp_dir
+  poll = false                         # Poll files for changes instead of using fsnotify
+  poll_interval = 0
+  delay = 1000
+  stop_on_error = false                # Stop running old binary when build errors occur
+  send_interrupt = false               # Send Interrupt signal before killing process (windows does not support this feature)
+  kill_delay = "0s"                    # Delay (nanosecond) after sending Interrupt signal
+  rerun = false                        # Rerun binary or not
+  rerun_delay = 500                    # Delay after each execution
+
+
+[color]                                # Customize each part's color. If no color found, use the raw app log
+  main = "magenta"
+  watcher = "cyan"
+  build = "yellow"
+  runner = "green"
+  app = ""
+
+[log]
+  main_only = false                    # Only show main log (silences watcher, build, runner)
+  silent = false                       # Silence all logs produced by air 
+  time = false                         # Show log time
+
+[misc]
+  clean_on_exit = true                 # Delete tmp directory on exit
+
+[screen]
+  clear_on_rebuild = false
+  keep_scroll = true
+
+[proxy]                                # Enable live-reloading on the browser
+  enabled = false
+  proxy_port = 0
+  app_port = 0
