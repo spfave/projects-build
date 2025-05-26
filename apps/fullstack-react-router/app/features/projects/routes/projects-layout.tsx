@@ -1,23 +1,23 @@
 import * as React from "react";
 import { Await, Link, NavLink, Outlet, data, href } from "react-router";
 
-import * as dbProjects from "@projectsbuild/db-drizzle/data-services/projects.ts";
+import * as dbProjects from "@projectsbuild/db-drizzle/data-services/projects.ts"; // SSR only
 import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
 import type { Project } from "@projectsbuild/shared/projects";
 import type { Route } from "./+types/projects-layout";
 
-// Server Loader
+// Server Loader: SSR
 export async function loader(args: Route.LoaderArgs) {
 	// await new Promise((res, rej) => setTimeout(res, 1000));
 	// const res = await fetch("http://localhost:5001/projects");
 	// const projects = (await res.json()) as Array<Project>;
 	const projects = await dbProjects.selectProjectsSelect();
-	// throw "thrown string";
-	// throw new Error("thrown Error");
-	// throw new Response(JSON.stringify({ message: "thrown response with msg" }), {
+	// throw "throw projects string";
+	// throw new Error("throw projects Error");
+	// throw new Response(JSON.stringify({ message: "throw projects response" }), {
 	// 	status: 414,
 	// });
-	// throw data({ message: "thrown data with msg" }, { status: 424 });
+	// throw data({ message: "throw projects data" }, { status: 424 });
 
 	// Pass data
 	// return data({ projects }, 200);
@@ -25,28 +25,29 @@ export async function loader(args: Route.LoaderArgs) {
 	// Pass data promise (streaming)
 	const projectsPromise = new Promise<Array<Project>>((res, rej) =>
 		setTimeout(() => {
-			// rej("rej string");
-			// rej(new Error("rej Error projects promise"));
+			// rej("reject projects string");
+			// rej(new Error("reject projects Error"));
 			// rej(
-			// 	new Response(JSON.stringify({ message: "rej response with msg" }), {
+			// 	new Response(JSON.stringify({ message: "reject projects response" }), {
 			// 		status: 434,
 			// 	})
 			// );
-			// rej(data({ message: "rej data with msg" }, { status: 444 }));
+			// rej(data({ message: "reject projects data" }, { status: 444 }));
 			res(projects as Array<Project>);
 		}, 1000)
 	);
 	return data({ projects: projectsPromise }, { status: 200 });
 }
 
-// Client Loader
+// Client Loader: SPA mode
 // export async function clientLoader(args: Route.ClientLoaderArgs) {
 // 	await new Promise((res, rej) => setTimeout(res, 1000));
-// 	const res = await fetch("http://localhost:5001/projects");
+// 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`);
+// 	// const res = await fetch(`${import.meta.env.VITE_URL_API_HONO}/api/v1/projects`);
 // 	const projects = (await res.json()) as Array<Project>;
 // 	return { projects };
 // }
-// clientLoader.hydrate = true;
+// clientLoader.hydrate = true as const;
 
 export default function ProjectsLayout(props: Route.ComponentProps) {
 	return (
@@ -116,6 +117,12 @@ export default function ProjectsLayout(props: Route.ComponentProps) {
 	);
 }
 
+// Notes:
+// - SSR with client loader
+//   on initial page load the fallback is shown, component renders after client loader data is ready
+//   on navigation the fallback is not show, page navigation(url change)/component render is delayed
+//   until client loader data is ready
+// - In SPA mode HydrateFallback only allowed on the root route (root.tsx)
 export function HydrateFallback() {
 	return <div>Projects layout Loading...</div>;
 }
