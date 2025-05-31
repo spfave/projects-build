@@ -13,13 +13,12 @@ export function defaultRouter() {
 }
 
 export function createApp() {
-	const app = defaultApp();
+	const app = defaultApp()
+		.use(cors())
+		.use(logger())
 
-	app.use(cors());
-	app.use(logger());
-
-	app.notFound(notFound);
-	app.onError(onError);
+		.notFound(notFound)
+		.onError(onError);
 
 	return app;
 }
