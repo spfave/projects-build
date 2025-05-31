@@ -3,24 +3,30 @@ import { validator } from "hono/validator";
 
 import { defaultRouter } from "#lib/core-app.ts";
 import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
-import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
-import { transformProject, validateProject } from "@projectsbuild/shared/projects";
+import {
+	transformProject,
+	validateProject,
+	validateProjectId,
+} from "@projectsbuild/shared/projects";
 
 // Validators
 const validateParamProjectId = validator("param", (params, ctx) => {
 	const { id } = params;
-	if (!id || typeof id !== "string" || id.length !== UUID_DEFAULT_LENGTH)
+	if (!validateProjectId(id).success)
 		return ctx.json(
 			{ message: HttpStatus.UNPROCESSABLE_ENTITY.phrase },
 			HttpStatus.UNPROCESSABLE_ENTITY.code
 		);
 
-	return { id };
+	return { id: String(id) }; // validation ensures id is string with value
+	// return { id } as { id: string };
 });
 
 const validateJsonProject = validator("json", async (_json, ctx) => {
 	const json = await ctx.req.json(); // _json function parameter value not coming through with fetch
+	// console.info(`_json: `, _json); //LOG
+	// console.info(`json: `, json); //LOG
 	const validation = validateProject(json);
 	if (validation.status === "error")
 		return ctx.json(
