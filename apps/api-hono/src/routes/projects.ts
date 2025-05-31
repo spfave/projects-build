@@ -1,10 +1,10 @@
 import { validator } from "hono/validator";
 
+import { defaultRouter } from "#lib/core-app.ts";
 import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
-import { defaultRouter } from "#lib/core-app.ts";
 
 const api = defaultRouter().basePath("/v1/projects");
 
@@ -56,13 +56,13 @@ api.get("/:id", validateParamProjectId, async (ctx) => {
 
 // api.post("/", async (ctx) => {
 // 	const payload = await ctx.req.json();
-// 	const [result] = await db.insertProject(payload);
-// 	return ctx.json(result, HttpStatus.CREATED.code);
+// 	const [project] = await db.insertProject(payload);
+// 	return ctx.json(project, HttpStatus.CREATED.code);
 // });
 api.post("/", validateJsonProject, async (ctx) => {
 	const payload = ctx.req.valid("json");
-	const [result] = await db.insertProject(payload);
-	return ctx.json(result, HttpStatus.CREATED.code);
+	const [project] = await db.insertProject(payload);
+	return ctx.json(project, HttpStatus.CREATED.code);
 });
 
 api.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {

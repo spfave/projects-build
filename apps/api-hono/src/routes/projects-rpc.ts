@@ -1,11 +1,11 @@
 import { hc } from "hono/client";
 import { validator } from "hono/validator";
 
+import { defaultRouter } from "#lib/core-app.ts";
 import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { transformProject, validateProject } from "@projectsbuild/shared/projects";
-import { defaultRouter } from "#lib/core-app.ts";
 
 // Validators
 const validateParamProjectId = validator("param", (params, ctx) => {
@@ -72,16 +72,16 @@ export const apiProjects = defaultRouter()
 
 	.post("/", validateJsonProject, async (ctx) => {
 		const payload = ctx.req.valid("json");
-		const [result] = await db.insertProject(payload);
+		const [project] = await db.insertProject(payload);
 
 		// Note: Included for return type inference, validator should ensure this doesn't occur
-		if (!result)
+		if (!project)
 			return ctx.json(
 				{ message: HttpStatus.INTERNAL_SERVER_ERROR.phrase },
 				HttpStatus.INTERNAL_SERVER_ERROR.code
 			);
 
-		return ctx.json(result, HttpStatus.CREATED.code);
+		return ctx.json(project, HttpStatus.CREATED.code);
 	})
 
 	.put("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
