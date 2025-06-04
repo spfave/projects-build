@@ -4,6 +4,7 @@ import { validator } from "hono/validator";
 import { defaultRouter } from "#lib/core-app.ts";
 import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
+import { jSend } from "@projectsbuild/library/utils";
 import {
 	transformProject,
 	validateProject,
@@ -15,7 +16,7 @@ const validateParamProjectId = validator("param", (params, ctx) => {
 	const { id } = params;
 	if (!validateProjectId(id).success)
 		return ctx.json(
-			{ message: HttpStatus.UNPROCESSABLE_ENTITY.phrase },
+			jSend({ status: "fail", message: "invalid project id" }),
 			HttpStatus.UNPROCESSABLE_ENTITY.code
 		);
 
@@ -30,11 +31,11 @@ const validateJsonProject = validator("json", async (_json, ctx) => {
 	const validation = validateProject(json);
 	if (validation.status === "error")
 		return ctx.json(
-			{
-				success: false,
-				message: HttpStatus.UNPROCESSABLE_ENTITY.phrase,
-				errors: validation.errors,
-			},
+			jSend({
+				status: "fail",
+				message: "invalid project",
+				data: { errors: validation.errors },
+			}),
 			HttpStatus.UNPROCESSABLE_ENTITY.code
 		);
 
@@ -59,6 +60,7 @@ export const apiProjects = defaultRouter()
 		const projects = await db.selectProjectsQuery();
 		// const projects = await db.selectProjectsSelect();
 		return ctx.json(projects, HttpStatus.OK.code);
+		// return ctx.json(jSend({ status: "success", data: { projects } }), HttpStatus.OK.code);
 	})
 
 	.get("/:id", validateParamProjectId, async (ctx) => {
@@ -72,8 +74,13 @@ export const apiProjects = defaultRouter()
 				{ message: HttpStatus.NOT_FOUND.phrase },
 				HttpStatus.NOT_FOUND.code
 			);
+		// return ctx.json(
+		// 	jSend({ status: "fail", message: "project not found" }),
+		// 	HttpStatus.NOT_FOUND.code
+		// );
 
 		return ctx.json(project, HttpStatus.OK.code);
+		// return ctx.json(jSend({ status: "success", data: { project } }), HttpStatus.OK.code);
 	})
 
 	.post("/", validateJsonProject, async (ctx) => {
