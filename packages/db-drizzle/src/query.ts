@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "#db/db.ts";
 import * as schema from "#db/schema.ts";
-import * as ds from "./data-services/projects.ts";
+import * as repo from "./repositories/projects.ts";
 
 // Projects
 const [p1] = await db
@@ -25,7 +25,7 @@ const [p1] = await db
 console.info(`p1: `, p1, `\n`); //LOG
 
 try {
-	const [p2] = await ds.insertProject({
+	const [p2] = await repo.insertProject({
 		name: "b2",
 		status: "complete",
 		dateCompleted: new Date().toISOString(),

@@ -2,7 +2,7 @@ import { hc } from "hono/client";
 import { validator } from "hono/validator";
 
 import { defaultRouter } from "#lib/core-app.ts";
-import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
+import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { jSend } from "@projectsbuild/library/utils";
 import {
