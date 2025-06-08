@@ -4,8 +4,8 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./data-services/*": "./src/data-services/*",
 		"./db": "./src/db/db.ts",
+		"./repositories/*": "./src/repositories/*",
 		"./schema": "./src/db/schema.ts",
 		"./schema-type": "./src/db/schema-type-helpers.ts"
 	},
@@ -18,8 +18,8 @@
 		"db:migrate": "dotenvx run -f ../../.env.local -- drizzle-kit migrate",
 		"db:push": "dotenvx run -f ../../.env.local -- drizzle-kit push",
 		"db:studio": "dotenvx run -f ../../.env.local -- drizzle-kit studio --verbose",
-		"db:seed": "DB_SEEDING=true node --env-file=../../.env.local --experimental-strip-types src/seed/seed.ts",
-		"dev:query": "node --env-file=../../.env.local --experimental-strip-types ./src/query.ts",
+		"db:seed": "DB_SEEDING=true node --env-file=../../.env.local src/seed/seed.ts",
+		"dev:query": "node --env-file=../../.env.local ./src/query.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
@@ -28,13 +28,13 @@
 	"dependencies": {
 		"@libsql/client": "^0.14.0",
 		"@projectsbuild/shared": "workspace:*",
-		"drizzle-orm": "^0.38.3"
+		"drizzle-orm": "^0.38.4"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.32.1",
+		"@dotenvx/dotenvx": "^1.44.1",
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
-		"drizzle-kit": "^0.30.1",
+		"drizzle-kit": "^0.30.6",
 		"typescript": "catalog:"
 	}
 }

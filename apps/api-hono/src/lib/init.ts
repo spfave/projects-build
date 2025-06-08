@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
-import { notFound, onError } from "#utils/route.utils.ts";
+import { notFound, onError } from "./handlers.ts";
 
 export function defaultApp() {
 	return new Hono({ strict: false });
@@ -13,13 +13,12 @@ export function defaultRouter() {
 }
 
 export function createApp() {
-	const app = defaultApp();
+	const app = defaultApp()
+		.use(cors())
+		.use(logger())
 
-	app.use(cors());
-	app.use(logger());
-
-	app.notFound(notFound);
-	app.onError(onError);
+		.notFound(notFound)
+		.onError(onError);
 
 	return app;
 }

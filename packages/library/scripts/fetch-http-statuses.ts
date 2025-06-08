@@ -27,7 +27,7 @@ async function fetchHttpStatuses() {
 	const filePath = "./src/constants/data/http-statuses.json";
 
 	log("⬇️  Fetching HTTP status data");
-	// biome-ignore format:
+	// biome-ignore format: single line
 	const res = await fetch("https://raw.githubusercontent.com/prettymuchbryce/http-status-codes/refs/heads/master/codes.json");
 	if (!res.ok) throw new Error(`Error retrieving HTTP statuses: ${res.statusText}`);
 	const httpStatuses = (await res.json()) as HttpStatus[];

@@ -15,6 +15,11 @@
 		"go.mod": ".air*"
 	},
 
+	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
+		"^drizzle-orm/((?!sqlite).+)-core$",
+		"^drizzle-orm/((?!sqlite).+)-core/.*$"
+	],
+
 	// Language Settings
 	"[javascript]": {
 		"editor.defaultFormatter": "biomejs.biome"
