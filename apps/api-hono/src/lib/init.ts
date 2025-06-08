@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
-import { notFound, onError } from "#utils/route.utils.ts";
+import { notFound, onError } from "./handlers.ts";
 
 export function defaultApp() {
 	return new Hono({ strict: false });

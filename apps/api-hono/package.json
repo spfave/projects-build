@@ -10,8 +10,7 @@
 	},
 	"imports": {
 		"#lib/*": "./src/lib/*",
-		"#routes/*": "./src/routes/*",
-		"#utils/*": "./src/utils/*"
+		"#routes/*": "./src/routes/*"
 	},
 	"scripts": {
 		"start": "pnpm run dev:local",

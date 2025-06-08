@@ -8,7 +8,7 @@ import { requestId } from "hono/request-id";
 import { timeout } from "hono/timeout";
 import { validator } from "hono/validator";
 
-import { defaultRouter } from "#lib/core-app.ts";
+import { defaultRouter } from "#lib/init.ts";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
 
 const api = defaultRouter().basePath("/demos");
@@ -222,3 +222,4 @@ api.post(
 );
 
 export default api;
+export { api as apiDemos };
