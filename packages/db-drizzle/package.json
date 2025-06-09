@@ -19,7 +19,7 @@
 		"db:push": "dotenvx run -f ../../.env.local -- drizzle-kit push",
 		"db:studio": "dotenvx run -f ../../.env.local -- drizzle-kit studio --verbose",
 		"db:seed": "DB_SEEDING=true node --env-file=../../.env.local src/seed/seed.ts",
-		"dev:query": "node --env-file=../../.env.local ./src/query.ts",
+		"run:query": "node --env-file=../../.env.local ./src/query.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",

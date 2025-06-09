@@ -13,8 +13,8 @@
 		"#routes/*": "./src/routes/*"
 	},
 	"scripts": {
-		"start": "pnpm run dev:local",
-		"dev:local": "node --watch --env-file=../../.env.local --env-file=.env.api-hono.local --experimental-strip-types src/index.ts",
+		"start": "pnpm run run:local",
+		"run:local": "node --watch --env-file=../../.env.local --env-file=.env.api-hono.local --experimental-strip-types src/index.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
