@@ -29,7 +29,7 @@ const validateJsonProject = validator("json", async (_json, ctx) => {
 	// console.info(`_json: `, _json); //LOG
 	// console.info(`json: `, json); //LOG
 	const validation = validateProject(json);
-	if (validation.status === "error")
+	if (!validation.success)
 		return ctx.json(
 			jSend({
 				status: "fail",

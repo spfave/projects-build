@@ -2,12 +2,12 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router";
 
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
-import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import type {
 	ProjectErrors,
 	ProjectFields,
 	ProjectStatus,
 } from "@projectsbuild/shared/projects";
+import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import ErrorList from "~/components/error-list";
 import * as client from "~/feature-projects/client-api-fetch";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
@@ -34,7 +34,7 @@ export default function ProjectCreateRoute() {
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries());
 		const validation = validateProject(formObj);
-		if (validation.status === "error") return setProjectErrors(validation.errors);
+		if (!validation.success) return setProjectErrors(validation.errors);
 		if (projectErrors) setProjectErrors(null);
 
 		const projectPayload = transformProject(formObj as ProjectFields);

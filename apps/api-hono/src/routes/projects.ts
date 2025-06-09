@@ -21,7 +21,7 @@ const validateParamProjectId = validator("param", (params, ctx) => {
 
 const validateJsonProject = validator("json", (json, ctx) => {
 	const validation = validateProject(json);
-	if (validation.status === "error")
+	if (!validation.success)
 		return ctx.json(
 			{
 				success: false,

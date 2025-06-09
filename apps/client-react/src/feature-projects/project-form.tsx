@@ -2,13 +2,14 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router";
 
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
-import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import type {
 	Project,
 	ProjectErrors,
 	ProjectFields,
+	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/shared/projects";
+import { transformProject, validateProject } from "@projectsbuild/shared/projects";
 import ErrorList from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
@@ -17,7 +18,7 @@ import { useProjectsContext } from "~/views/projects-route";
 import styles from "./project-form.module.css";
 
 type ProjectFormBaseProps = {
-	action: (project: Project) => Promise<Project>;
+	action: (project: ProjectInput) => Promise<Project>;
 	// handleSubmit: (evt: React.FormEvent<HTMLFormElement>) => void;
 	// handleReset?: (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 	cancelRedirectUrl: string;
@@ -48,7 +49,7 @@ export default function ProjectForm(props: ProjectFormProps) {
 		const formData = new FormData(evt.currentTarget);
 		const formObj = Object.fromEntries(formData.entries());
 		const validation = validateProject(formObj);
-		if (validation.status === "error") return setProjectErrors(validation.errors);
+		if (!validation.success) return setProjectErrors(validation.errors);
 		if (projectErrors) setProjectErrors(null);
 
 		const projectPayload = transformProject(formObj as ProjectFields);
