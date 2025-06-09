@@ -14,7 +14,7 @@
 	},
 	"scripts": {
 		"start": "pnpm run run:local",
-		"run:local": "node --watch --env-file=../../.env.local --env-file=.env.api-hono.local --experimental-strip-types src/index.ts",
+		"run:local": "node --watch --env-file=../../.env.local src/index.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
