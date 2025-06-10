@@ -1,8 +1,8 @@
 import { Link, Outlet } from "react-router";
 
-import githubIcon from "@projectsbuild/shared/assets/github.svg";
-import infoIcon from "@projectsbuild/shared/assets/heroicons-information-circle.svg";
-import logoIcon from "@projectsbuild/shared/assets/reshot-icon-planning.svg";
+import githubIcon from "@projectsbuild/core/assets/github.svg";
+import infoIcon from "@projectsbuild/core/assets/heroicons-information-circle.svg";
+import logoIcon from "@projectsbuild/core/assets/reshot-icon-planning.svg";
 import styles from "./root.module.css";
 
 export const repoUrl = "https://github.com/spfave/projects-build";

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router";
 
+import type { Project } from "@projectsbuild/core/projects";
 import { ymdPretty } from "@projectsbuild/library/utils";
-import type { Project } from "@projectsbuild/shared/projects";
 import GeneralErrorFallback from "~/components/error-fallback";
 import Show from "~/components/ui/show";
 import * as client from "~/feature-projects/client-api-fetch";

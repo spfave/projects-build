@@ -27,7 +27,7 @@
 	},
 	"dependencies": {
 		"@libsql/client": "^0.14.0",
-		"@projectsbuild/shared": "workspace:*",
+		"@projectsbuild/core": "workspace:*",
 		"drizzle-orm": "^0.38.4"
 	},
 	"devDependencies": {

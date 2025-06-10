@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Link, useNavigate, useParams } from "react-router";
 
-import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import type {
 	Project,
 	ProjectErrors,
 	ProjectFields,
 	ProjectStatus,
-} from "@projectsbuild/shared/projects";
-import { transformProject, validateProject } from "@projectsbuild/shared/projects";
+} from "@projectsbuild/core/projects";
+import { transformProject, validateProject } from "@projectsbuild/core/projects";
+import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorList from "~/components/error-list";
 import * as client from "~/feature-projects/client-api-fetch";

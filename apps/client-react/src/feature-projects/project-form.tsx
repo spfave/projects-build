@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router";
 
-import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import type {
 	Project,
 	ProjectErrors,
 	ProjectFields,
 	ProjectInput,
 	ProjectStatus,
-} from "@projectsbuild/shared/projects";
-import { transformProject, validateProject } from "@projectsbuild/shared/projects";
+} from "@projectsbuild/core/projects";
+import { transformProject, validateProject } from "@projectsbuild/core/projects";
+import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import ErrorList from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";

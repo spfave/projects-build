@@ -1,9 +1,9 @@
+import type { Project, ProjectInput } from "@projectsbuild/core/projects";
 import {
 	FetchError,
 	FetchResponseError,
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
-import type { Project, ProjectInput } from "@projectsbuild/shared/projects";
 
 const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
 const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
