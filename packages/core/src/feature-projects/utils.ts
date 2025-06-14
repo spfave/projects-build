@@ -5,7 +5,7 @@ import { isStringParsableInt } from "@projectsbuild/library/validation";
 import { PROJECT_ID_LENGTH, PROJECT_STATUS, PROJECT_STATUSES } from "./constants.ts";
 import type { Project, ProjectErrors, ProjectFields, ProjectInput } from "./types.ts";
 
-export function validateProjectId(id: string | undefined | null) {
+export function validateProjectId(id: string | null | undefined) {
 	if (!id || typeof id !== "string" || id.length !== PROJECT_ID_LENGTH) {
 		return { success: false } as const;
 	}
@@ -31,7 +31,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	// validate input is an object
 	if (input == null || Array.isArray(input) || typeof input !== "object") {
 		errors.form.push("Invalid project input");
-		return { status: "error", errors } as const;
+		return { success: false, errors } as const;
 	}
 
 	const { name, link, description, notes, status, dateCompleted, rating, recommend } =
@@ -108,8 +108,8 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		errors.form.length ||
 		Object.values(errors.fields).some((fieldErrs) => fieldErrs.length);
 
-	if (hasErrors) return { status: "error", errors } as const;
-	return { status: "valid" } as const;
+	if (hasErrors) return { success: false, errors } as const;
+	return { success: true } as const;
 }
 
 // Define function overloads to specify return type ProjectInput/Project for "create"/"update" action

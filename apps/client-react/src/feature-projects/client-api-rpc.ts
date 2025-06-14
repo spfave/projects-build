@@ -1,12 +1,12 @@
 import { hc } from "hono/client";
 
 import type { ApiProject } from "@projectsbuild/api-hono/routes/projects-rpc.ts";
+import type { Project, ProjectInput } from "@projectsbuild/core/projects";
 import {
 	FetchError,
 	FetchResponseError,
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
-import type { Project, ProjectInput } from "@projectsbuild/shared/projects";
 
 // Note: pre-typed client does not work as process.env is not defined when run through vite import
 // const client = hcApiProjectsTyped(import.meta.env.VITE_URL_API_HONO);

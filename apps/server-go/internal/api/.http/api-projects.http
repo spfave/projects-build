@@ -39,8 +39,8 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # PUT project by id
-# PUT  {{urlProjects}}/{{id}}
-PUT  {{urlProjects}}/{{project.response.body.$.id}}
+# PUT {{urlProjects}}/{{id}}
+PUT {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
 
 {
@@ -58,7 +58,7 @@ Content-Type: {{contentType}}
 
 ### --------------------------------------------------------------------------------- ###
 # DELETE project by Id
-# DELETE  {{urlProjects}}/{{projectId}}
-DELETE  {{urlProjects}}/{{project.response.body.$.id}}
+# DELETE {{urlProjects}}/{{projectId}}
+DELETE {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
 

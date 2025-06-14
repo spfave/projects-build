@@ -28,14 +28,14 @@ type HTMLFormFieldElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaE
  * Constructs a `HTMLFormElement` type with the property keys of `TForm` paired to a
  * `HTMLFormFieldElement` type.
  */
-export type FormElement<
+export interface FormElement<
 	TForm extends RecordStr,
 	TFormFields extends Record<keyof TForm, HTMLFormFieldElement>,
-> = HTMLFormElement & {
+> extends HTMLFormElement {
 	readonly elements: HTMLFormControlsCollection & {
 		[Field in keyof TForm]-?: TFormFields[Field];
 	};
-};
+}
 
 /**
  * Constructs a type with the properties of `TForm` converting `non-string` type properties

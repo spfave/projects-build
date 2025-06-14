@@ -8,6 +8,7 @@
 		},
 		"jsx": "react-jsx"
 	},
+	"files": ["../../env.d.ts"],
 	"include": ["src"],
 	"exclude": ["assets", "styles"],
 	"references": [{ "path": "./tsconfig.node.json" }]

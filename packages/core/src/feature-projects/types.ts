@@ -6,8 +6,9 @@ import type {
 	Pretty,
 } from "@projectsbuild/library/types";
 
+export type ProjectId = string;
 type ProjectBase = {
-	id: string;
+	id: ProjectId;
 	name: string;
 	link?: string;
 	description?: string;

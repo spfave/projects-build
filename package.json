@@ -15,7 +15,7 @@
 		"pnpm": ">=10.0.0"
 	},
 	"scripts": {
-		"start": "pnpm -r --stream --parallel run start",
+		"start": "pnpm -r --parallel run start",
 		"format": "pnpm -r --stream run format",
 		"lint": "pnpm -r --stream run lint",
 		"typecheck": "pnpm -r --stream run typecheck",

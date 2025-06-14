@@ -1,12 +1,14 @@
 import { sql } from "drizzle-orm";
-import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { check, integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
 
 import {
 	PROJECT_ID_LENGTH,
 	PROJECT_STATUS,
 	PROJECT_STATUSES,
-} from "@projectsbuild/shared/projects";
+} from "@projectsbuild/core/projects";
 import { boolean, timestamps, uuidRandom } from "./schema-type-helpers.ts";
+
+const sqliteTable = sqliteTableCreator((name) => `pb_${name}`);
 
 export const projects = sqliteTable(
 	"projects",
