@@ -16,8 +16,8 @@
 		"#types": "./src/types/index.ts"
 	},
 	"scripts": {
-		"script:fetch-http": "node --experimental-strip-types ./scripts/fetch-http-statuses.ts",
-		"script:gen-http": "node --experimental-strip-types ./scripts/gen-http-statuses.ts",
+		"script:fetch-http": "node ./scripts/fetch-http-statuses.ts",
+		"script:gen-http": "node ./scripts/gen-http-statuses.ts",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
 		"typecheck": "tsc --noEmit"

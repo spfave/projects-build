@@ -9,6 +9,7 @@ import (
 
 // Ref: https://www.alexedwards.net/blog/implementing-an-in-memory-cache-in-go
 // Ref: https://www.alexedwards.net/blog/organising-database-access
+// Ref: https://www.youtube.com/watch?v=eE8nqgryW_8
 
 type ProjectRepository interface {
 	GetAll() (*[]core.Project, error)

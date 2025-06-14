@@ -8,8 +8,8 @@ import { requestId } from "hono/request-id";
 import { timeout } from "hono/timeout";
 import { validator } from "hono/validator";
 
+import { defaultRouter } from "#lib/init.ts";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
-import { defaultRouter } from "#lib/core-app.ts";
 
 const api = defaultRouter().basePath("/demos");
 
@@ -182,6 +182,8 @@ api.post(
 		// const reqForm = await ctx.req.formData();
 		const reqForm = Object.fromEntries(await ctx.req.formData());
 		console.info(`reqForm: `, reqForm); //LOG
+		const reqFormBody = await ctx.req.parseBody();
+		console.info(`reqFormBody: `, reqFormBody); //LOG
 
 		const validForm = ctx.req.valid("form");
 		console.info(`validForm: `, validForm); //LOG
@@ -220,3 +222,4 @@ api.post(
 );
 
 export default api;
+export { api as apiDemos };

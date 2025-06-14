@@ -2,6 +2,7 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "@projectsbuild/config-typescript/nodejs.json",
 	"compilerOptions": {
+		"lib": ["ESNext", "DOM", "DOM.Iterable"] // needed if running tsc check with a /library dependency using DOM/DOM.Iterable types
 		// "types": ["node"]
 	},
 	"files": ["../../env.d.ts", "drizzle.config.ts"],

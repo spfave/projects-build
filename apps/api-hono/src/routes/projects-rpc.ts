@@ -1,34 +1,41 @@
 import { hc } from "hono/client";
 import { validator } from "hono/validator";
 
-import * as db from "@projectsbuild/db-drizzle/data-services/projects.ts";
-import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
+import { defaultRouter } from "#lib/init.ts";
+import {
+	transformProject,
+	validateProject,
+	validateProjectId,
+} from "@projectsbuild/core/projects";
+import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
-import { transformProject, validateProject } from "@projectsbuild/shared/projects";
-import { defaultRouter } from "#lib/core-app.ts";
+import { jSend } from "@projectsbuild/library/utils";
 
 // Validators
 const validateParamProjectId = validator("param", (params, ctx) => {
 	const { id } = params;
-	if (!id || typeof id !== "string" || id.length !== UUID_DEFAULT_LENGTH)
+	if (!validateProjectId(id).success)
 		return ctx.json(
-			{ message: HttpStatus.UNPROCESSABLE_ENTITY.phrase },
+			jSend({ status: "fail", message: "invalid project id" }),
 			HttpStatus.UNPROCESSABLE_ENTITY.code
 		);
 
-	return { id };
+	return { id: String(id) }; // validation ensures id is string with value
+	// return { id } as { id: string };
 });
 
 const validateJsonProject = validator("json", async (_json, ctx) => {
 	const json = await ctx.req.json(); // _json function parameter value not coming through with fetch
+	// console.info(`_json: `, _json); //LOG
+	// console.info(`json: `, json); //LOG
 	const validation = validateProject(json);
-	if (validation.status === "error")
+	if (!validation.success)
 		return ctx.json(
-			{
-				success: false,
-				message: HttpStatus.UNPROCESSABLE_ENTITY.phrase,
-				errors: validation.errors,
-			},
+			jSend({
+				status: "fail",
+				message: "invalid project",
+				data: { errors: validation.errors },
+			}),
 			HttpStatus.UNPROCESSABLE_ENTITY.code
 		);
 
@@ -53,6 +60,7 @@ export const apiProjects = defaultRouter()
 		const projects = await db.selectProjectsQuery();
 		// const projects = await db.selectProjectsSelect();
 		return ctx.json(projects, HttpStatus.OK.code);
+		// return ctx.json(jSend({ status: "success", data: { projects } }), HttpStatus.OK.code);
 	})
 
 	.get("/:id", validateParamProjectId, async (ctx) => {
@@ -66,22 +74,27 @@ export const apiProjects = defaultRouter()
 				{ message: HttpStatus.NOT_FOUND.phrase },
 				HttpStatus.NOT_FOUND.code
 			);
+		// return ctx.json(
+		// 	jSend({ status: "fail", message: "project not found" }),
+		// 	HttpStatus.NOT_FOUND.code
+		// );
 
 		return ctx.json(project, HttpStatus.OK.code);
+		// return ctx.json(jSend({ status: "success", data: { project } }), HttpStatus.OK.code);
 	})
 
 	.post("/", validateJsonProject, async (ctx) => {
 		const payload = ctx.req.valid("json");
-		const [result] = await db.insertProject(payload);
+		const [project] = await db.insertProject(payload);
 
 		// Note: Included for return type inference, validator should ensure this doesn't occur
-		if (!result)
+		if (!project)
 			return ctx.json(
 				{ message: HttpStatus.INTERNAL_SERVER_ERROR.phrase },
 				HttpStatus.INTERNAL_SERVER_ERROR.code
 			);
 
-		return ctx.json(result, HttpStatus.CREATED.code);
+		return ctx.json(project, HttpStatus.CREATED.code);
 	})
 
 	.put("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {

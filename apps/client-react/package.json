@@ -4,8 +4,8 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "pnpm run dev:local",
-		"dev:local": "vite",
+		"start": "pnpm run run:local",
+		"run:local": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"check": "biome check ./src",
@@ -15,8 +15,8 @@
 	},
 	"dependencies": {
 		"@projectsbuild/api-hono": "workspace:*",
+		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"@projectsbuild/shared": "workspace:*",
 		"hono": "^4.7.10",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
@@ -25,7 +25,7 @@
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
-		"@types/react": "^19.1.5",
+		"@types/react": "^19.1.6",
 		"@types/react-dom": "^19.1.5",
 		"@vitejs/plugin-react": "^4.5.0",
 		"typescript": "catalog:",

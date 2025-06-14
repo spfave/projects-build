@@ -2,8 +2,15 @@ import "@total-typescript/ts-reset/array-includes";
 
 import { isValidYMD, isYMD, valueIfTruthy, ymdToday } from "@projectsbuild/library/utils";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
-import { PROJECT_STATUS, PROJECT_STATUSES } from "./constants.ts";
+import { PROJECT_ID_LENGTH, PROJECT_STATUS, PROJECT_STATUSES } from "./constants.ts";
 import type { Project, ProjectErrors, ProjectFields, ProjectInput } from "./types.ts";
+
+export function validateProjectId(id: string | null | undefined) {
+	if (!id || typeof id !== "string" || id.length !== PROJECT_ID_LENGTH) {
+		return { success: false } as const;
+	}
+	return { success: true } as const;
+}
 
 export function validateProject(input: Record<string, FormDataEntryValue>) {
 	const errors: ProjectErrors = {
@@ -24,7 +31,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	// validate input is an object
 	if (input == null || Array.isArray(input) || typeof input !== "object") {
 		errors.form.push("Invalid project input");
-		return { status: "error", errors } as const;
+		return { success: false, errors } as const;
 	}
 
 	const { name, link, description, notes, status, dateCompleted, rating, recommend } =
@@ -38,7 +45,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		if (name.trim().length < 2)
 			errors.fields.name.push("Name must be at least 2 characters");
 		if (name.trim().length > 125)
-			errors.fields.name.push("Name cannot be more than 100 characters");
+			errors.fields.name.push("Name cannot be more than 125 characters");
 	}
 
 	// link
@@ -75,7 +82,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		else if (!["string", "number"].includes(typeof rating))
 			errors.fields.rating.push("Invalid rating type");
 		else if (
-			// biome-ignore format: maintain condition checks on single line
+			// biome-ignore format: single line per type based validation check
 			(typeof rating === "string" && (!isStringParsableInt(rating) || +rating < 1 || +rating > 5)) ||
 			(typeof rating === "number" && (!Number.isInteger(rating) || rating < 1 || rating > 5))
 		) {
@@ -98,10 +105,11 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	}
 
 	const hasErrors =
-		errors.form.length || Object.values(errors.fields).some((fields) => fields.length);
+		errors.form.length ||
+		Object.values(errors.fields).some((fieldErrs) => fieldErrs.length);
 
-	if (hasErrors) return { status: "error", errors } as const;
-	return { status: "valid" } as const;
+	if (hasErrors) return { success: false, errors } as const;
+	return { success: true } as const;
 }
 
 // Define function overloads to specify return type ProjectInput/Project for "create"/"update" action

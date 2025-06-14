@@ -1,5 +1,5 @@
-import { createApp } from "#lib/core-app.ts";
-import apiDemos from "#routes/demos.ts";
+import { createApp } from "#lib/init.ts";
+import { apiDemos } from "#routes/demos.ts";
 import { apiProjects } from "#routes/projects-rpc.ts";
 
 const app = createApp();
@@ -16,4 +16,4 @@ export default app;
 // ----------------------------------------------------------------------------------- //
 // Alternate option: import app with routes previously added directly in routes/* definitions
 
-// import { app } from "./lib/core-app.ts";
+// import { app } from "./lib/init.ts";
