@@ -11,25 +11,25 @@
 		"typecheck": "react-router typegen && tsc --noEmit"
 	},
 	"dependencies": {
+		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/db-drizzle": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"@projectsbuild/shared": "workspace:*",
-		"@react-router/node": "^7.5.2",
-		"@react-router/serve": "^7.5.2",
-		"isbot": "^5.1.27",
+		"@react-router/node": "^7.6.2",
+		"@react-router/serve": "^7.6.2",
+		"isbot": "^5.1.28",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
-		"react-router": "^7.5.2"
+		"react-router": "^7.6.2"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.41.0",
+		"@dotenvx/dotenvx": "^1.44.2",
 		"@projectsbuild/config-typescript": "workspace:*",
-		"@react-router/dev": "^7.5.2",
-		"@tailwindcss/vite": "^4.1.4",
+		"@react-router/dev": "^7.6.2",
+		"@tailwindcss/vite": "^4.1.10",
 		"@types/node": "catalog:",
-		"@types/react": "^19.1.2",
-		"@types/react-dom": "^19.1.2",
-		"tailwindcss": "^4.1.4",
+		"@types/react": "^19.1.8",
+		"@types/react-dom": "^19.1.6",
+		"tailwindcss": "^4.1.10",
 		"typescript": "catalog:",
 		"vite": "catalog:",
 		"vite-tsconfig-paths": "^5.1.4"

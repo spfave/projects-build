@@ -1,4 +1,4 @@
-import { REPO_URL } from "@projectsbuild/shared/projects";
+import { REPO_URL } from "@projectsbuild/core/projects";
 
 import styles from "./about-route.module.css";
 
