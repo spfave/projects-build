@@ -14,7 +14,7 @@
 	},
 	"scripts": {
 		"start": "pnpm run run:local",
-		"run:local": "node --watch --env-file=../../.env.local src/index.ts",
+		"run:local": "node --watch src/index.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
