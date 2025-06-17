@@ -9,6 +9,9 @@ export default defineConfig({
 		alias: { "~": path.resolve(__dirname, "./src") },
 	},
 
-	server: { port: 3001 },
+	server: {
+		port: 3001,
+		proxy: { "/api": { target: "http://localhost:5003", changeOrigin: true } },
+	},
 	envDir: "../../",
 });
