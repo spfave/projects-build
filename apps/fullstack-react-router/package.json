@@ -4,8 +4,8 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "pnpm run dev:local",
-		"dev:local": "dotenvx run -f .env.fullstack-react-router.local -f ../../.env.local -- react-router dev",
+		"start": "pnpm run run:local",
+		"run:local": "dotenvx run -f ../../.env.local -- react-router dev",
 		"build": "react-router build",
 		"serve:build": "react-router-serve ./build/server/index.js",
 		"typecheck": "react-router typegen && tsc --noEmit"

@@ -2,16 +2,17 @@ import * as React from "react";
 import { Await, Link, NavLink, Outlet, data, href } from "react-router";
 
 import type { Project } from "@projectsbuild/core/projects";
-import * as dbProjects from "@projectsbuild/db-drizzle/repositories/projects.ts"; // SSR only
-import plusIcon from "@projectsbuild/shared/assets/heroicons-plus.svg";
+import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts"; // SSR only
 import type { Route } from "./+types/projects-layout";
+
+import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 
 // Server Loader: SSR
 export async function loader(args: Route.LoaderArgs) {
 	// await new Promise((res, rej) => setTimeout(res, 1000));
 	// const res = await fetch("http://localhost:5001/projects");
 	// const projects = (await res.json()) as Array<Project>;
-	const projects = await dbProjects.selectProjectsSelect();
+	const projects = await db.selectProjectsSelect();
 	// throw "throw projects string";
 	// throw new Error("throw projects Error");
 	// throw new Response(JSON.stringify({ message: "throw projects response" }), {
