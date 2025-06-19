@@ -23,8 +23,13 @@ func projectsRouter() *pHttp.Router {
 	return router
 }
 
+var (
+	projectRepo = store.ProjectMemStr
+	// projectRepo2 = store.ProjectSqliteStr
+)
+
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
-	projects, err := store.ProjectMemStr.GetAll()
+	projects, err := projectRepo.GetAll()
 	// projects, err := store.GetAll()
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(
@@ -40,7 +45,7 @@ func getAllProjects(w http.ResponseWriter, r *http.Request) {
 
 // note: variant returning error, handled by pHttp.RouteHandler attached .ServeHTTP method
 func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError {
-	projects, err := store.ProjectMemStr.GetAll()
+	projects, err := projectRepo.GetAll()
 
 	if err != nil {
 		return &pHttp.HttpError{
@@ -61,7 +66,7 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	project, err := store.ProjectMemStr.GetById(projectId)
+	project, err := projectRepo.GetById(projectId)
 	if err != nil {
 		switch err {
 		case pErr.ErrNotFound:
@@ -94,7 +99,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	projectPayload := core.TransformProject(&payload)
-	project, err := store.ProjectMemStr.Create(projectPayload)
+	project, err := projectRepo.Create(projectPayload)
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error creating project", nil, nil))
 	}
@@ -127,7 +132,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	// 3. Parse data payload(s) into domain entity
 	projectPayload := core.TransformProject(&payload)
 	// 4. Execute service method
-	project, err := store.ProjectMemStr.Update(projectId, projectPayload)
+	project, err := projectRepo.Update(projectId, projectPayload)
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))
 	}
@@ -143,7 +148,7 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	project, err := store.ProjectMemStr.Delete(projectId)
+	project, err := projectRepo.Delete(projectId)
 	if err != nil {
 		switch err {
 		case pErr.ErrNotFound:
