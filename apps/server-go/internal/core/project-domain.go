@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
+	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
 )
 
 // ----------------------------------------------------------------------------------- //

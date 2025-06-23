@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
+	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
 )
 
 type ApiServer struct {

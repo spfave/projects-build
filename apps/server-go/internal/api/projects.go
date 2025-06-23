@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
-	"github.com/spfave/projects-build/apps/server-go-htmx/internal/store"
-	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
-	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
+	"github.com/spfave/projects-build/apps/server-go/internal/core"
+	"github.com/spfave/projects-build/apps/server-go/internal/store"
+	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
+	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
 )
 
 func projectsRouter() *pHttp.Router {

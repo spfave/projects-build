@@ -1,7 +1,7 @@
 package store
 
 import (
-	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
+	"github.com/spfave/projects-build/apps/server-go/internal/core"
 )
 
 // Refs

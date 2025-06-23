@@ -3,8 +3,8 @@ package store
 import (
 	"crypto/rand"
 
-	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
-	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
+	"github.com/spfave/projects-build/apps/server-go/internal/core"
+	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
 )
 
 type ProjectMemoryStore struct {
