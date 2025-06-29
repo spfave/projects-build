@@ -40,7 +40,7 @@ audit:
 
 ## Format code
 format:
-	gofmt -w -s- d .
+	gofmt -w -s .
 
 ## Lint code
 lint:
@@ -51,13 +51,21 @@ lint:
 # ---------------------------------------------------------------------------------------
 # MAINTENANCE
 
+## Clean up build cache
+clean:
+	rm -rf bin
+
 ## Tidy modfiles
 tidy:
 	go mod tidy -v -x
 
-## Check if dependencies are up to date
-updateable:
+## Check if new dependencies version are available
+new-deps:
 	go list -m -u all
+
+## Update all dependencies
+update-deps:
+	go get -u ./...
 
 ## Update tools
 update-tools:
