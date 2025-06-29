@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -68,8 +69,8 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 
 	project, err := projectRepo.GetById(projectId)
 	if err != nil {
-		switch err {
-		case pErr.ErrNotFound:
+		switch {
+		case errors.Is(err, pErr.ErrNotFound):
 			pHttp.RespondJson(w, http.StatusNotFound, pHttp.JSendFail("project not found", nil), nil)
 		default:
 			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error getting project", nil, nil))
@@ -116,7 +117,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	}
 	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(
+		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(
 			"failed to parse json body ", pHttp.Envelope{"errors": err.Error()}), nil)
 		return
 	}
@@ -134,6 +135,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	// 4. Execute service method
 	project, err := projectRepo.Update(projectId, projectPayload)
 	if err != nil {
+		// handle not found case
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))
 	}
 
@@ -150,8 +152,8 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 
 	project, err := projectRepo.Delete(projectId)
 	if err != nil {
-		switch err {
-		case pErr.ErrNotFound:
+		switch {
+		case errors.Is(err, pErr.ErrNotFound):
 			pHttp.RespondJson(w, http.StatusNotFound, pHttp.JSendFail("project not found", nil), nil)
 		default:
 			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error deleting project", nil, nil))
