@@ -37,6 +37,8 @@ run-local-web:
 audit:
 	go mod tidy -diff
 	go mod verify
+	go vet ./...
+	lint
 
 ## Format code
 format:
@@ -44,8 +46,7 @@ format:
 
 ## Lint code
 lint:
-	go vet ./...
-	go tool golint ./...
+	go tool staticcheck ./...
 
 
 # ---------------------------------------------------------------------------------------
@@ -61,7 +62,7 @@ tidy:
 
 ## Check if new dependencies version are available
 new-deps:
-	go list -m -u all
+	go list -u -f '{{if (and (not (or .Main .Indirect)) .Update)}}{{.Path}}: {{.Version}} -> {{.Update.Version}}{{end}}' -m all
 
 ## Update all dependencies
 update-deps:
