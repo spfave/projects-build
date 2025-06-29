@@ -24,12 +24,12 @@ func projectsRouter() *pHttp.Router {
 }
 
 var (
-	projectRepo = store.ProjectMemStr
-	// projectRepo2 = store.ProjectSqliteStr
+	projectRepo  = store.ProjectMemStr
+	projectRepo2 = store.ProjectSqliteStr
 )
 
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
-	projects, err := projectRepo.GetAll()
+	projects, err := projectRepo2.GetAll()
 	// projects, err := store.GetAll()
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(

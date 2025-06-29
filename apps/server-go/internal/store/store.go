@@ -6,11 +6,13 @@ import (
 
 // Refs
 // https://go.dev/doc/database/
+// http://go-database-sql.org/index.html
 // https://www.alexedwards.net/blog/implementing-an-in-memory-cache-in-go
 // https://www.alexedwards.net/blog/introduction-to-using-sql-databases-in-go
 // https://www.alexedwards.net/blog/organising-database-access
 // https://www.alexedwards.net/blog/configuring-sqldb
 // https://www.alexedwards.net/blog/how-to-manage-database-timeouts-and-cancellations-in-go
+// https://github.com/sikozonpc/GopherSocial/blob/main/internal/db/db.go
 // https://www.youtube.com/watch?v=eE8nqgryW_8
 
 type ProjectRepository interface {
