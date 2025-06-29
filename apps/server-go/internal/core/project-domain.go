@@ -21,7 +21,7 @@ type (
 		Description   *string       `json:"description,omitzero"`
 		Notes         *string       `json:"notes,omitzero"`
 		Status        ProjectStatus `json:"status,omitzero"`
-		DateCompleted *string       `json:"dateCompleted,omitzero"`
+		DateCompleted *string       `json:"dateCompleted,omitzero" db:"date_completed"`
 		Rating        *int          `json:"rating,omitzero"`
 		Recommend     *bool         `json:"recommend,omitzero"`
 	}

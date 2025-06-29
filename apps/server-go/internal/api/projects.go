@@ -30,8 +30,7 @@ var (
 )
 
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
-	projects, err := projectRepo2.GetAll()
-	// projects, err := store.GetAll()
+	projects, err := projectRepo2.GetAllX()
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(
 			"error getting all projects",

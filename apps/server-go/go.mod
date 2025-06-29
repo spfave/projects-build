@@ -2,7 +2,10 @@ module github.com/spfave/projects-build/apps/server-go
 
 go 1.24.1
 
-require modernc.org/sqlite v1.38.0
+require (
+	github.com/jmoiron/sqlx v1.4.0
+	modernc.org/sqlite v1.38.0
+)
 
 require (
 	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
