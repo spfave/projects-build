@@ -2,14 +2,18 @@ package store
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/spfave/projects-build/apps/server-go/internal/core"
+	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
 	_ "modernc.org/sqlite"
 )
+
+// Ref: jmoiron.github.io/sqlx/
 
 var (
 	db  *sql.DB
@@ -38,6 +42,7 @@ func init() {
 	if err != nil {
 		log.Fatal("dbx init - error contacting database: ", err)
 	}
+	// dbx.Close()
 
 	ProjectSqliteStr.db = db
 	ProjectSqliteStr.dbx = dbx
@@ -87,7 +92,50 @@ func (str *ProjectSqliteStore) GetAllX() (*[]core.Project, error) {
 	return &projects, nil
 }
 
-// func (str *ProjectSqliteStore) GetById(id core.ProjectId) (*core.Project, error) {}
+func (str *ProjectSqliteStore) GetById(id core.ProjectId) (*core.Project, error) {
+	query := `
+		SELECT id, name, link, description, notes, status, date_completed, rating, recommend 
+		FROM pb_projects 
+		WHERE id = $1
+	`
+
+	var project core.Project
+	err := str.db.QueryRow(query, id).Scan(
+		&project.Id, &project.Name, &project.Link,
+		&project.Description, &project.Notes, &project.Status,
+		&project.DateCompleted, &project.Rating, &project.Recommend,
+	)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, pErr.ErrNotFound
+		default:
+			return nil, fmt.Errorf("project str - error querying project by id: %w", err)
+		}
+	}
+
+	return &project, nil
+}
+
+func (str *ProjectSqliteStore) GetByIdX(id core.ProjectId) (*core.Project, error) {
+	query := `
+		SELECT id, name, link, description, notes, status, date_completed, rating, recommend 
+		FROM pb_projects 
+		WHERE id = $1
+	`
+
+	var project core.Project
+	if err := str.dbx.Get(&project, query, id); err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, pErr.ErrNotFound
+		default:
+			return nil, fmt.Errorf("project str - error getting project by id: %w", err)
+		}
+	}
+
+	return &project, nil
+}
 
 // func (str *ProjectSqliteStore) Create(project *core.Project) (*core.Project, error) {}
 
