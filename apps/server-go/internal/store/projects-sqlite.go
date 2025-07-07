@@ -13,6 +13,8 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+// Ref: https://go.dev/doc/database/querying
+// Ref: https://go.dev/doc/database/change-data
 // Ref: jmoiron.github.io/sqlx/
 
 var (
@@ -143,4 +145,45 @@ func (str *ProjectSqliteStore) GetByIdX(id core.ProjectId) (*core.Project, error
 
 // func (str *ProjectSqliteStore) Update(id core.ProjectId, project *core.Project) (*core.Project, error) {}
 
-// func (str *ProjectSqliteStore) Delete(id core.ProjectId) (*core.Project, error) {}
+func (str *ProjectSqliteStore) Delete(id core.ProjectId) (*core.Project, error) {
+	query := "DELETE FROM pb_projects WHERE id = $1"
+
+	result, err := str.db.Exec(query, id)
+	if err != nil {
+		return nil, fmt.Errorf("project str - error deleting project: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return nil, fmt.Errorf("project str - error getting rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return nil, pErr.ErrNotFound
+	}
+
+	return &core.Project{Id: id}, nil
+}
+
+func (str *ProjectSqliteStore) DeleteReturning(id core.ProjectId) (*core.Project, error) {
+	project, err := str.GetById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	query := "DELETE FROM pb_projects WHERE id = $1"
+
+	result, err := str.db.Exec(query, id)
+	if err != nil {
+		return nil, fmt.Errorf("project str - error deleting project: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return nil, fmt.Errorf("project str - error getting rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return nil, pErr.ErrNotFound
+	}
+
+	return project, nil
+}
