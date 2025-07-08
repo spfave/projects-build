@@ -149,7 +149,7 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	project, err := projectRepo2.DeleteReturning(projectId)
+	project, err := projectRepo2.Delete(projectId)
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNotFound):

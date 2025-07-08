@@ -145,7 +145,8 @@ func (str *ProjectSqliteStore) GetByIdX(id core.ProjectId) (*core.Project, error
 
 // func (str *ProjectSqliteStore) Update(id core.ProjectId, project *core.Project) (*core.Project, error) {}
 
-func (str *ProjectSqliteStore) Delete(id core.ProjectId) (*core.Project, error) {
+// Delete with execution, sql default returns number of rows affected
+func (str *ProjectSqliteStore) DeleteNR(id core.ProjectId) (*core.Project, error) {
 	query := "DELETE FROM pb_projects WHERE id = $1"
 
 	result, err := str.db.Exec(query, id)
@@ -161,29 +162,41 @@ func (str *ProjectSqliteStore) Delete(id core.ProjectId) (*core.Project, error) 
 		return nil, pErr.ErrNotFound
 	}
 
-	return &core.Project{Id: id}, nil
+	return &core.Project{Id: id}, nil // Return project with Id only
 }
 
-func (str *ProjectSqliteStore) DeleteReturning(id core.ProjectId) (*core.Project, error) {
-	project, err := str.GetById(id)
+// Delete and return project with separate query and execute statements
+func (str *ProjectSqliteStore) Delete(id core.ProjectId) (*core.Project, error) {
+	project, err := str.GetById(id) // Get the project first to return it after deletion
 	if err != nil {
 		return nil, err
 	}
 
-	query := "DELETE FROM pb_projects WHERE id = $1"
-
-	result, err := str.db.Exec(query, id)
+	_, err = str.DeleteNR(id) // Delete project, ignore incomplete returned project
 	if err != nil {
-		return nil, fmt.Errorf("project str - error deleting project: %w", err)
-	}
-
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return nil, fmt.Errorf("project str - error getting rows affected: %w", err)
-	}
-	if rowsAffected == 0 {
-		return nil, pErr.ErrNotFound
+		return nil, err
 	}
 
 	return project, nil
+}
+
+// Delete and return project with single 'returning' query, simplified with sqlx
+func (str *ProjectSqliteStore) DeleteX(id core.ProjectId) (*core.Project, error) {
+	query := `
+		DELETE FROM pb_projects 
+		WHERE id = $1
+		RETURNING id, name, link, description, notes, status, date_completed, rating, recommend
+	`
+
+	var project core.Project
+	if err := str.dbx.Get(&project, query, id); err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, pErr.ErrNotFound
+		default:
+			return nil, fmt.Errorf("project str - error deleting project: %w", err)
+		}
+	}
+
+	return &project, nil
 }
