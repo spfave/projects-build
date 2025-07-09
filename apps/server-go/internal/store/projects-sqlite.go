@@ -1,6 +1,7 @@
 package store
 
 import (
+	"crypto/rand"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -83,7 +84,7 @@ func (str *ProjectSqliteStore) GetAll() (*[]core.Project, error) {
 }
 
 func (str *ProjectSqliteStore) GetAllX() (*[]core.Project, error) {
-	// query := "SELECT * FROM pb_projects" // fails for "audit" columns: created_at, updated_at since not define in Project struct
+	// query := "SELECT * FROM pb_projects" // fails for "audit" columns: created_at, updated_at since not define in core.Project struct
 	query := "SELECT id, name FROM pb_projects"
 
 	var projects []core.Project
@@ -139,9 +140,57 @@ func (str *ProjectSqliteStore) GetByIdX(id core.ProjectId) (*core.Project, error
 	return &project, nil
 }
 
-// func (str *ProjectSqliteStore) Create(project *core.Project) (*core.Project, error) {}
+// Insert and return new project with separate execute and query statements
+func (str *ProjectSqliteStore) Create(input *core.ProjectInput) (*core.Project, error) {
+	projectId := rand.Text()[0:8]
+	query := `
+		INSERT INTO pb_projects (id, name, link, description, notes, status, date_completed, rating, recommend)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+	`
+	fmt.Println("PROJECT STORE: CREATE") //LOG
 
-// func (str *ProjectSqliteStore) CreateX(project *core.Project) (*core.Project, error) {}
+	result, err := str.db.Exec(
+		query,
+		projectId, input.Name, input.Link,
+		input.Description, input.Notes, input.Status,
+		input.DateCompleted, input.Rating, input.Recommend,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("project str - error inserting new project: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return nil, fmt.Errorf("project str - error getting rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return nil, fmt.Errorf("project str - no rows affected, project not created")
+	}
+
+	return str.GetById(projectId)
+}
+
+// Insert and return new project with single 'returning' statement, simplified with sqlx
+func (str *ProjectSqliteStore) CreateX(input *core.ProjectInput) (*core.Project, error) {
+	projectId := rand.Text()[0:8]
+	query := `
+		INSERT INTO pb_projects (id, name, link, description, notes, status, date_completed, rating, recommend)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		RETURNING id, name, link, description, notes, status, date_completed, rating, recommend
+	`
+
+	var project core.Project
+	if err := str.dbx.Get(
+		&project, query,
+		projectId, input.Name, input.Link,
+		input.Description, input.Notes, input.Status,
+		input.DateCompleted, input.Rating, input.Recommend,
+	); err != nil {
+		return nil, fmt.Errorf("project str - error inserting new project: %w", err)
+	}
+
+	return &project, nil
+}
 
 // func (str *ProjectSqliteStore) Update(id core.ProjectId, project *core.Project) (*core.Project, error) {}
 

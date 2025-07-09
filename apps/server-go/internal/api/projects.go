@@ -99,7 +99,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	projectPayload := core.TransformProject(&payload)
-	project, err := projectRepo.Create(projectPayload)
+	project, err := projectRepo2.Create(projectPayload)
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error creating project", nil, nil))
 	}
