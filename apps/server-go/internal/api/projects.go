@@ -17,7 +17,7 @@ func projectsRouter() *pHttp.Router {
 	router.Handle("GET /projects-handler", pHttp.RouteHandler(handlerGetAllError))
 	router.HandleFunc("GET /projects/{id}", getProjectById)
 	router.HandleFunc("POST /projects", createProject)
-	router.HandleFunc("PUT /projects/{id}", updateProjectById)
+	router.HandleFunc("PUT /projects/{id}", updateProject)
 	router.HandleFunc("DELETE /projects/{id}", deleteProject)
 	router.HandleNotFound()
 
@@ -107,7 +107,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	pHttp.RespondJson(w, http.StatusCreated, project, nil)
 }
 
-func updateProjectById(w http.ResponseWriter, r *http.Request) {
+func updateProject(w http.ResponseWriter, r *http.Request) {
 	// 1. Parse data payload(s) from request
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
@@ -131,8 +131,8 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 
 	// 3. Parse data payload(s) into domain entity
 	projectPayload := core.TransformProject(&payload)
-	// 4. Execute service method
-	project, err := projectRepo.Update(projectId, projectPayload)
+	// 4. Execute service/repo method
+	project, err := projectRepo2.Update(projectId, projectPayload)
 	if err != nil {
 		// handle not found case
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))

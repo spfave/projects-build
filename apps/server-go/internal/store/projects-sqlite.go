@@ -192,7 +192,62 @@ func (str *ProjectSqliteStore) CreateX(input *core.ProjectInput) (*core.Project,
 	return &project, nil
 }
 
-// func (str *ProjectSqliteStore) Update(id core.ProjectId, project *core.Project) (*core.Project, error) {}
+// Update and return new project with separate execute and query statements
+func (str *ProjectSqliteStore) Update(id core.ProjectId, project *core.ProjectInput) (*core.Project, error) {
+	query := `
+		UPDATE pb_projects 
+		SET name = $1, link = $2, description = $3, notes = $4, status = $5, date_completed = $6, rating = $7, recommend = $8
+		WHERE id = $9
+	`
+
+	result, err := str.db.Exec(
+		query,
+		project.Name, project.Link,
+		project.Description, project.Notes, project.Status,
+		project.DateCompleted, project.Rating, project.Recommend, id,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("project str - error updating project: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return nil, fmt.Errorf("project str - error getting rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return nil, pErr.ErrNotFound
+	}
+
+	return str.GetById(id)
+}
+
+// Update and return new project with single 'returning' statement, simplified with sqlx
+func (str *ProjectSqliteStore) UpdateX(id core.ProjectId, project *core.ProjectInput) (*core.Project, error) {
+	query := `
+		UPDATE pb_projects 
+		SET name = $1, link = $2, description = $3, notes = $4, status = $5, date_completed = $6, rating = $7, recommend = $8
+		WHERE id = $9
+		RETURNING id, name, link, description, notes, status, date_completed, rating, recommend
+	`
+
+	var updatedProject core.Project
+	if err := str.dbx.Get(
+		&updatedProject,
+		query,
+		project.Name, project.Link,
+		project.Description, project.Notes, project.Status,
+		project.DateCompleted, project.Rating, project.Recommend, id,
+	); err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, pErr.ErrNotFound
+		default:
+			return nil, fmt.Errorf("project str - error updating project: %w", err)
+		}
+	}
+
+	return &updatedProject, nil
+}
 
 // Delete with execution, sql default returns number of rows affected
 func (str *ProjectSqliteStore) DeleteNR(id core.ProjectId) (*core.Project, error) {
