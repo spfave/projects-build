@@ -56,7 +56,7 @@ type ProjectSqliteStore struct {
 	dbx *sqlx.DB
 }
 
-var ProjectSqliteStr = ProjectSqliteStore{db: db}
+var ProjectSqliteStr = ProjectSqliteStore{db: db, dbx: dbx}
 
 func (str *ProjectSqliteStore) GetAll() (*[]core.Project, error) {
 	// query := "SELECT * FROM pb_projects" // need to scan into all struct fields
