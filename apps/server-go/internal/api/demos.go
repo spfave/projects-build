@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
-	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
+	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
+	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
 )
 
 func apiDemos() *pHttp.Router {
