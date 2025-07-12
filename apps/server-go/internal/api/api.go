@@ -20,7 +20,7 @@ func New(port int) *ApiServer {
 func (apiServer *ApiServer) Run() error {
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%d", apiServer.Port),
-		Handler: apiServer.RegisterRouteHandlers(),
+		Handler: pHttp.CorsMiddleware(apiServer.RegisterRouteHandlers()),
 	}
 
 	return server.ListenAndServe()
