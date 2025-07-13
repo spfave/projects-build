@@ -27,7 +27,7 @@ export default function ProjectRoute() {
 		evt.preventDefault();
 		if (!params.id) return;
 
-		await client.deleteProjectById(params.id);
+		await client.deleteProject(params.id);
 		fetchProjects();
 		navigate("/projects");
 	}

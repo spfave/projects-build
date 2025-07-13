@@ -68,7 +68,7 @@ export async function updateProject(project: Project) {
 	return updatedProject;
 }
 
-export async function deleteProjectById(id: string) {
+export async function deleteProject(id: string) {
 	const res = await fetch(`${urlApi}/projects/${id}`, {
 		method: "DELETE",
 	});
