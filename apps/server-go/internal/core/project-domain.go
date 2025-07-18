@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
+	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
 )
 
 // ----------------------------------------------------------------------------------- //
@@ -16,12 +16,12 @@ type (
 	ProjectStatus string
 	Project       struct {
 		Id            ProjectId     `json:"id"`
-		Name          string        `json:"name"`
+		Name          string        `json:"name,omitzero"`
 		Link          *string       `json:"link,omitzero"`
 		Description   *string       `json:"description,omitzero"`
 		Notes         *string       `json:"notes,omitzero"`
-		Status        ProjectStatus `json:"status"`
-		DateCompleted *string       `json:"dateCompleted,omitzero"`
+		Status        ProjectStatus `json:"status,omitzero"`
+		DateCompleted *string       `json:"dateCompleted,omitzero" db:"date_completed"`
 		Rating        *int          `json:"rating,omitzero"`
 		Recommend     *bool         `json:"recommend,omitzero"`
 	}

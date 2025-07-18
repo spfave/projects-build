@@ -17,7 +17,7 @@
 		"*.jsx": "${capture}.js, ${capture}.css, ${capture}.module.css",
 		"*.tsx": "${capture}.ts, ${capture}.css, ${capture}.module.css",
 
-		"go.mod": ".air*"
+		"go.mod": "go.sum, .air*"
 	},
 
 	"typescript.preferences.autoImportSpecifierExcludeRegexes": [

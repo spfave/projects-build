@@ -1,13 +1,14 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
-	"github.com/spfave/projects-build/apps/server-go-htmx/internal/core"
-	"github.com/spfave/projects-build/apps/server-go-htmx/internal/store"
-	pErr "github.com/spfave/projects-build/apps/server-go-htmx/pkg/errors"
-	pHttp "github.com/spfave/projects-build/apps/server-go-htmx/pkg/http"
+	"github.com/spfave/projects-build/apps/server-go/internal/core"
+	"github.com/spfave/projects-build/apps/server-go/internal/store"
+	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
+	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
 )
 
 func projectsRouter() *pHttp.Router {
@@ -16,16 +17,20 @@ func projectsRouter() *pHttp.Router {
 	router.Handle("GET /projects-handler", pHttp.RouteHandler(handlerGetAllError))
 	router.HandleFunc("GET /projects/{id}", getProjectById)
 	router.HandleFunc("POST /projects", createProject)
-	router.HandleFunc("PUT /projects/{id}", updateProjectById)
+	router.HandleFunc("PUT /projects/{id}", updateProject)
 	router.HandleFunc("DELETE /projects/{id}", deleteProject)
 	router.HandleNotFound()
 
 	return router
 }
 
+var (
+	projectRepo  = store.ProjectMemStr
+	projectRepo2 = store.ProjectSqliteStr
+)
+
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
-	projects, err := store.ProjectMemStr.GetAll()
-	// projects, err := store.GetAll()
+	projects, err := projectRepo2.GetAll()
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(
 			"error getting all projects",
@@ -40,7 +45,7 @@ func getAllProjects(w http.ResponseWriter, r *http.Request) {
 
 // note: variant returning error, handled by pHttp.RouteHandler attached .ServeHTTP method
 func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError {
-	projects, err := store.ProjectMemStr.GetAll()
+	projects, err := projectRepo.GetAll()
 
 	if err != nil {
 		return &pHttp.HttpError{
@@ -61,10 +66,10 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	project, err := store.ProjectMemStr.GetById(projectId)
+	project, err := projectRepo2.GetById(projectId)
 	if err != nil {
-		switch err {
-		case pErr.ErrNotFound:
+		switch {
+		case errors.Is(err, pErr.ErrNotFound):
 			pHttp.RespondJson(w, http.StatusNotFound, pHttp.JSendFail("project not found", nil), nil)
 		default:
 			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error getting project", nil, nil))
@@ -94,7 +99,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	projectPayload := core.TransformProject(&payload)
-	project, err := store.ProjectMemStr.Create(projectPayload)
+	project, err := projectRepo2.Create(projectPayload)
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error creating project", nil, nil))
 	}
@@ -102,7 +107,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	pHttp.RespondJson(w, http.StatusCreated, project, nil)
 }
 
-func updateProjectById(w http.ResponseWriter, r *http.Request) {
+func updateProject(w http.ResponseWriter, r *http.Request) {
 	// 1. Parse data payload(s) from request
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
@@ -111,7 +116,7 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 	}
 	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
 	if err != nil {
-		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(
+		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(
 			"failed to parse json body ", pHttp.Envelope{"errors": err.Error()}), nil)
 		return
 	}
@@ -126,9 +131,10 @@ func updateProjectById(w http.ResponseWriter, r *http.Request) {
 
 	// 3. Parse data payload(s) into domain entity
 	projectPayload := core.TransformProject(&payload)
-	// 4. Execute service method
-	project, err := store.ProjectMemStr.Update(projectId, projectPayload)
+	// 4. Execute service/repo method
+	project, err := projectRepo2.Update(projectId, projectPayload)
 	if err != nil {
+		// handle not found case
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))
 	}
 
@@ -143,10 +149,10 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	project, err := store.ProjectMemStr.Delete(projectId)
+	project, err := projectRepo2.Delete(projectId)
 	if err != nil {
-		switch err {
-		case pErr.ErrNotFound:
+		switch {
+		case errors.Is(err, pErr.ErrNotFound):
 			pHttp.RespondJson(w, http.StatusNotFound, pHttp.JSendFail("project not found", nil), nil)
 		default:
 			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error deleting project", nil, nil))
