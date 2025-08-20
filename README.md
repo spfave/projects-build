@@ -20,7 +20,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 - The `apps` directory contains the client, api, server, and fullstack app implementations (e.g. React, Remix, etc.).
 
-- The `packages` directory mostly contains logic that is shared across apps. It is primarily split between the `library` and `shared` packages. The `library` package contains general code that is not application specific, and the `shared` package contains shareable code that is application context specific. 
+- The `packages` directory mostly contains logic that is shared across apps. It is primarily split between the `library` and `core` packages. The `library` package contains general code that is not application specific, and the `core` package contains shareable code that is application context specific. 
 
 - The `configs` directory contains shared base configurations for tools or dependencies (e.g. eslint, typescript, etc).
 
@@ -34,6 +34,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 - [API Node + Hono](./apps/api-hono)
 
+<!-- - [Server ASP.NET](./apps/server-aspnet) -->
 - [Server Go](./apps/server-go)
 
 <!-- - [Fullstack Astro](./apps/fullstack-astro) -->
@@ -48,7 +49,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 - [API Json Server](./packages/api-json-server)
 - [DB Schema Drizzle](./packages/db-drizzle)
 - [Library](./packages/library)
-- [Shared](./packages/shared)
+- [Core](./packages/core)
 
 &nbsp;
 ## **Configs**
