@@ -5,12 +5,12 @@ import {
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
 
-const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
-const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
+// const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
+// const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
 // const URL_API_GO = `${import.meta.env.VITE_URL_API_GO}/api/v1`; // Use full path for direct fetch calls, requires CORS config on the server
-const URL_API_GO = `/api/v1`; // Use relative path for vite dev server proxy
+// const URL_API_GO = `/api/v1`; // Use relative path for vite dev server proxy
 
-const urlApi = URL_API_HONO;
+const urlApi = import.meta.env.VITE_URL_API;
 
 export async function getProjects() {
 	// fetch can error: network connection failure
