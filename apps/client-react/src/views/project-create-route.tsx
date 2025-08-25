@@ -7,7 +7,7 @@ import type {
 	ProjectStatus,
 } from "@projectsbuild/core/projects";
 import { transformProject, validateProject } from "@projectsbuild/core/projects";
-import { formErrorsAttributes, wait, ymdToday } from "@projectsbuild/library/utils";
+import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import ErrorList from "~/components/error-list";
 import * as client from "~/feature-projects/client-api-fetch";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
@@ -17,9 +17,6 @@ import { useProjectsContext } from "./projects-route";
 import styles from "./project-create-route.module.css";
 
 export default function ProjectCreateRoute() {
-	const navigate = useNavigate();
-	const { fetchProjects } = useProjectsContext();
-
 	const refForm = React.useRef<HTMLFormElement>(null);
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
@@ -28,10 +25,11 @@ export default function ProjectCreateRoute() {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
-	const [isPending, startTransition] = React.useTransition();
-	async function createProjectAction(formData: FormData) {
-		// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s&list=WL&index=12&t=861s
-		startTransition(async () => {
+	const { fetchProjects } = useProjectsContext();
+	const navigate = useNavigate();
+	const [state, createProjectAction, isPending] = React.useActionState(
+		// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s
+		async (prevState: unknown, formData: FormData) => {
 			const formObj = Object.fromEntries(formData.entries());
 			const validation = validateProject(formObj);
 			if (!validation.success) return setProjectErrors(validation.errors);
@@ -39,28 +37,12 @@ export default function ProjectCreateRoute() {
 
 			const projectPayload = transformProject(formObj as ProjectFields);
 			const project = await client.createProject(projectPayload);
-			await wait(1000);
 
 			fetchProjects();
 			navigate(`/projects/${project.id}`);
-		});
-	}
-
-	// async function handleCreateProject(evt: React.FormEvent<HTMLFormElement>) {
-	// 	evt.preventDefault();
-
-	// 	const formData = new FormData(evt.currentTarget);
-	// 	const formObj = Object.fromEntries(formData.entries());
-	// 	const validation = validateProject(formObj);
-	// 	if (!validation.success) return setProjectErrors(validation.errors);
-	// 	if (projectErrors) setProjectErrors(null);
-
-	// 	const projectPayload = transformProject(formObj as ProjectFields);
-	// 	const project = await client.createProject(projectPayload);
-
-	// 	fetchProjects();
-	// 	navigate(`/projects/${project.id}`);
-	// }
+		},
+		null
+	);
 
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		setProjectStatus(undefined);
