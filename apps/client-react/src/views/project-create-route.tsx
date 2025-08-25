@@ -7,7 +7,7 @@ import type {
 	ProjectStatus,
 } from "@projectsbuild/core/projects";
 import { transformProject, validateProject } from "@projectsbuild/core/projects";
-import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
+import { formErrorsAttributes, wait, ymdToday } from "@projectsbuild/library/utils";
 import ErrorList from "~/components/error-list";
 import * as client from "~/feature-projects/client-api-fetch";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
@@ -28,21 +28,39 @@ export default function ProjectCreateRoute() {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
-	async function handleCreateProject(evt: React.FormEvent<HTMLFormElement>) {
-		evt.preventDefault();
+	const [isPending, startTransition] = React.useTransition();
+	async function createProjectAction(formData: FormData) {
+		// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s&list=WL&index=12&t=861s
+		startTransition(async () => {
+			const formObj = Object.fromEntries(formData.entries());
+			const validation = validateProject(formObj);
+			if (!validation.success) return setProjectErrors(validation.errors);
+			if (projectErrors) setProjectErrors(null);
 
-		const formData = new FormData(evt.currentTarget);
-		const formObj = Object.fromEntries(formData.entries());
-		const validation = validateProject(formObj);
-		if (!validation.success) return setProjectErrors(validation.errors);
-		if (projectErrors) setProjectErrors(null);
+			const projectPayload = transformProject(formObj as ProjectFields);
+			const project = await client.createProject(projectPayload);
+			await wait(1000);
 
-		const projectPayload = transformProject(formObj as ProjectFields);
-		const project = await client.createProject(projectPayload);
-
-		fetchProjects();
-		navigate(`/projects/${project.id}`);
+			fetchProjects();
+			navigate(`/projects/${project.id}`);
+		});
 	}
+
+	// async function handleCreateProject(evt: React.FormEvent<HTMLFormElement>) {
+	// 	evt.preventDefault();
+
+	// 	const formData = new FormData(evt.currentTarget);
+	// 	const formObj = Object.fromEntries(formData.entries());
+	// 	const validation = validateProject(formObj);
+	// 	if (!validation.success) return setProjectErrors(validation.errors);
+	// 	if (projectErrors) setProjectErrors(null);
+
+	// 	const projectPayload = transformProject(formObj as ProjectFields);
+	// 	const project = await client.createProject(projectPayload);
+
+	// 	fetchProjects();
+	// 	navigate(`/projects/${project.id}`);
+	// }
 
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		setProjectStatus(undefined);
@@ -60,7 +78,7 @@ export default function ProjectCreateRoute() {
 			<h2>New Project</h2>
 			<form
 				ref={refForm}
-				onSubmit={handleCreateProject}
+				action={createProjectAction}
 				noValidate={isHydrated}
 				aria-invalid={errAttrForm?.hasErrors}
 				aria-describedby={errAttrForm?.id}
