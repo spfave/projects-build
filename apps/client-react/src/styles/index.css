@@ -51,7 +51,8 @@ fieldset {
 	--color-danger: hsl(from var(--brand-danger) h s l);
 	--color-danger-light: hsl(from var(--brand-danger) h s l / 0.7);
 	--color-danger-xlight: hsl(from var(--brand-danger) h s l / 0.4);
-	--color-gray: hsl(0, 0%, 60%);
+	--color-gray: hsl(0 0% 60%);
+	--color-gray-light: hsl(from var(--color-gray) h s l / 0.2);
 }
 
 /* Styles */
@@ -75,7 +76,7 @@ button.action {
 	&.primary {
 		background-color: var(--color-primary-light);
 		border: 1px solid var(--color-primary);
-		&:hover {
+		&:not(:disabled, [aria-disabled="true"]):hover {
 			background-color: var(--color-primary-xlight);
 		}
 	}
@@ -83,21 +84,28 @@ button.action {
 	&.success {
 		background-color: var(--color-success);
 		border: 1px solid var(--color-success);
-		&:hover {
+		&:not(:disabled, [aria-disabled="true"]):hover {
 			background-color: var(--color-success-light);
 		}
 	}
 
 	&.danger {
 		background-color: var(--color-danger-light);
-		background-color: i;
 		border: 1px solid var(--color-danger-light);
-		&:hover {
+		&:not(:disabled, [aria-disabled="true"]):hover {
 			background-color: var(--color-danger-xlight);
 		}
 	}
 
 	&.outline {
 		background-color: white;
+	}
+
+	&:disabled,
+	&[aria-disabled="true"] {
+		cursor: auto;
+		color: var(--color-gray);
+		background-color: var(--color-gray-light);
+		border: 1px solid var(--color-gray);
 	}
 }

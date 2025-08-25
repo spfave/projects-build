@@ -252,13 +252,22 @@ export default function ProjectCreateRoute() {
 				</div>
 
 				<div className={styles.formActions}>
-					<button className="action primary" type="submit">
+					<button className="action primary" type="submit" disabled={isPending}>
 						Create Project
 					</button>
-					<button className="action danger outline" type="reset" onClick={handleReset}>
+					<button
+						className="action danger outline"
+						type="reset"
+						onClick={handleReset}
+						disabled={isPending}
+					>
 						Clear Form
 					</button>
-					<Link className="action danger outline" to="/projects">
+					<Link
+						className="action danger outline"
+						to={isPending ? "" : "/projects"}
+						aria-disabled={isPending}
+					>
 						Cancel
 					</Link>
 				</div>
