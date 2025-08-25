@@ -13,8 +13,6 @@ import styles from "./project-route.module.css";
 
 export default function ProjectRoute() {
 	const params = useParams();
-	const navigate = useNavigate();
-	const { fetchProjects } = useProjectsContext();
 
 	const projectQ = useAsync<Project>();
 	React.useEffect(() => {
@@ -23,13 +21,17 @@ export default function ProjectRoute() {
 		projectQ.run(client.getProjectById(params.id));
 	}, [projectQ.run, params.id]);
 
-	async function handleDeleteProject(evt: React.FormEvent<HTMLFormElement>) {
-		evt.preventDefault();
-		if (!params.id) return;
+	const [isPending, startTransition] = React.useTransition();
+	const { fetchProjects } = useProjectsContext();
+	const navigate = useNavigate();
+	async function deleteProjectAction() {
+		startTransition(async () => {
+			if (!params.id) return;
 
-		await client.deleteProject(params.id);
-		fetchProjects();
-		navigate("/projects");
+			await client.deleteProject(params.id);
+			fetchProjects();
+			navigate("/projects");
+		});
 	}
 
 	if (projectQ.isPending) return <div>Loading Project...</div>;
@@ -86,11 +88,21 @@ export default function ProjectRoute() {
 				</Show>
 			</dl>
 			<div className={styles.projectActions}>
-				<Link className="action primary" to="edit">
+				<Link
+					className="action primary"
+					to={isPending ? "" : "edit"}
+					aria-disabled={isPending}
+				>
 					Edit
 				</Link>
-				<form method="POST" onSubmit={handleDeleteProject}>
-					<button className="action danger" type="submit" name="intent" value="delete">
+				<form action={deleteProjectAction}>
+					<button
+						className="action danger"
+						type="submit"
+						name="intent"
+						value="delete"
+						disabled={isPending}
+					>
 						Delete
 					</button>
 				</form>
