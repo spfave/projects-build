@@ -4,6 +4,7 @@ import {
 	FetchResponseError,
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
+import { wait } from "@projectsbuild/library/utils";
 
 // const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
 // const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
@@ -27,6 +28,7 @@ export async function getProjects() {
 
 	// json parsing can error: SyntaxError
 	const projects = (await res.json()) as Project[];
+	await wait(500);
 	return projects;
 }
 
@@ -40,6 +42,7 @@ export async function getProjectById(id: string) {
 	if (!res.ok) throw new FetchResponseError("Fetch response not ok for getProjectById");
 
 	const project = (await res.json()) as Project;
+	await wait(500);
 	return project;
 }
 
@@ -50,6 +53,7 @@ export async function createProject(project: ProjectInput) {
 	});
 
 	const newProject = (await res.json()) as Project;
+	await wait(500);
 	return newProject;
 }
 
@@ -65,6 +69,7 @@ export async function updateProject(project: Project) {
 	if (!res.ok) throw new FetchResponseError("Fetch response not ok for updateProject");
 
 	const updatedProject = (await res.json()) as Project;
+	await wait(500);
 	return updatedProject;
 }
 
@@ -74,5 +79,6 @@ export async function deleteProject(id: string) {
 	});
 
 	const deletedProject = (await res.json()) as Project;
+	await wait(500);
 	return deletedProject;
 }
