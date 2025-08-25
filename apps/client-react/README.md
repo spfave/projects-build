@@ -2,8 +2,8 @@
 A client side [React](https://react.dev/) web application
 
 ## **References**
-[React 19 Whats New](https://www.youtube.com/watch?v=AJOGzVygGcY&list=WL&index=2)  
-[React 19 Roadmap to V19](https://www.youtube.com/watch?v=R0B2HsSM78s&list=WL&index=3&t=104s)  
+[React 19 Whats New](https://www.youtube.com/watch?v=AJOGzVygGcY)  
+[React 19 Roadmap to V19](https://www.youtube.com/watch?v=R0B2HsSM78s)  
 
 
 ## React + TypeScript + Vite
