@@ -5,6 +5,8 @@ import styles from "./about-route.module.css";
 export default function About() {
 	return (
 		<section className={styles.about}>
+			<title>About | Projects.build</title>
+
 			<h2>About</h2>
 			<div>
 				<p>
