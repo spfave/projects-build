@@ -19,9 +19,7 @@ This repo additionally over-engineers overall code organization, function & type
 This monorepo contains client rendered JS apps, api endpoint server apps, server rendered apps, and fullstack JS framework apps. Each app is a component (i.e. client SPA or api endpoints) for composition into a fullstack web application or a fullstack web application itself. Each fullstack application implementation provides the same functionality, to create and manage a list of project builds. 
 
 - The `apps` directory contains the client, api, server, and fullstack app implementations (e.g. React, Remix, etc.).
-
 - The `packages` directory mostly contains logic that is shared across apps. It is primarily split between the `library` and `core` packages. The `library` package contains general code that is not application specific, and the `core` package contains shareable code that is application context specific. 
-
 - The `configs` directory contains shared base configurations for tools or dependencies (e.g. eslint, typescript, etc).
 
 
@@ -34,7 +32,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 - [API Node + Hono](./apps/api-hono)
 
-<!-- - [Server ASP.NET](./apps/server-aspnet) -->
+<!-- - [Server ASP.NET](./apps/server-dotnet) -->
 - [Server Go](./apps/server-go)
 
 <!-- - [Fullstack Astro](./apps/fullstack-astro) -->
@@ -69,3 +67,4 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 - [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
 - [TS Paths in a Monorepo](https://github.com/vercel/turbo/discussions/620)
 - [Data Handling](https://nextjs.org/blog/security-nextjs-server-components-actions)
+
