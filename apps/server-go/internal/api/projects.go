@@ -49,7 +49,7 @@ func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError
 
 	if err != nil {
 		return &pHttp.HttpError{
-			StatusCode: http.StatusBadRequest,
+			StatusCode: http.StatusInternalServerError,
 			Message:    "error getting all projects",
 			Cause:      err,
 		}
