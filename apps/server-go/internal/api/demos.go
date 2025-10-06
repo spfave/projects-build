@@ -14,6 +14,7 @@ func apiDemos() *pHttp.Router {
 	router.HandleFunc("GET /obj/{id}", getObj)
 	router.HandleFunc("POST /obj", postObj)
 	router.HandleFunc("GET /auth-basic", authBasic)
+	router.Handle("GET /panic", pHttp.PanicRecoveryMiddleware(http.HandlerFunc(panicRecovery)))
 	router.HandleFunc("POST /post-form", postForm)
 	router.HandleFunc("GET /error-checking", errorChecking)
 	router.HandleFunc("/error", pHttp.HandlerError)
@@ -94,6 +95,11 @@ func authBasic(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("credentials: username=%s, password=%s", un, pw) //LOG
 	pHttp.RespondJson(w, http.StatusOK, pHttp.Envelope{"username": un, "password": pw}, nil)
+}
+
+func panicRecovery(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nPANIC") // LOG
+	panic("AHH! Panic!")
 }
 
 func postForm(w http.ResponseWriter, r *http.Request) {

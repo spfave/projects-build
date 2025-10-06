@@ -38,6 +38,11 @@ Authorization: Basic username:password
 
 
 ### --------------------------------------------------------------------------------- ###
+# Panic recovery
+GET {{urlDemos}}/panic
+
+
+### --------------------------------------------------------------------------------- ###
 # Query Params and Form Data
 POST {{urlDemos}}/post-form
 ?qp1=qp1
