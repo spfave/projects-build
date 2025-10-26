@@ -1,0 +1,29 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// Ref: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		// api-hono
+		{
+			"name": "Api Hono Launch",
+			"request": "launch",
+			"type": "node",
+			// "program": "./src/index.ts", //
+			"runtimeArgs": ["--watch", "./src/index.ts"], // to use nodejs native "--watch" for restart on code changes
+			"cwd": "${workspaceFolder}/apps/api-hono", // required so .env path variables work correctly
+			"envFile": "${workspaceFolder}/.env.local",
+			"skipFiles": ["<node_internals>/**"]
+		},
+		{
+			"name": "Api Hono Launch Script",
+			"request": "launch",
+			"type": "node",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["run", "run:local"],
+			"cwd": "${workspaceFolder}/apps/api-hono",
+			// "envFile": "${workspaceFolder}/.env.local", // not needed since specified in package.json script
+			"skipFiles": ["<node_internals>/**"]
+		}
+	]
+}
