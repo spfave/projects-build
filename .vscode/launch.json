@@ -13,17 +13,30 @@
 			"runtimeArgs": ["--watch", "./src/index.ts"], // to use nodejs native "--watch" for restart on code changes
 			"cwd": "${workspaceFolder}/apps/api-hono", // required so .env path variables work correctly
 			"envFile": "${workspaceFolder}/.env.local",
-			"skipFiles": ["<node_internals>/**"]
+			"skipFiles": ["**/<node_internals>/**"]
 		},
+		// {
+		// 	// Prefer above approach: direct launch, not using package.json script
+		// 	"name": "Api Hono Launch Script",
+		// 	"request": "launch",
+		// 	"type": "node",
+		// 	"runtimeExecutable": "pnpm",
+		// 	"runtimeArgs": ["run", "run:local"],
+		// 	"cwd": "${workspaceFolder}/apps/api-hono",
+		// 	// "envFile": "${workspaceFolder}/.env.local", // not needed since specified in package.json script
+		// 	"skipFiles": ["**/<node_internals>/**"]
+		// },
 		{
-			"name": "Api Hono Launch Script",
-			"request": "launch",
+			"name": "Api Hono Attach",
+			"request": "attach",
 			"type": "node",
-			"runtimeExecutable": "pnpm",
-			"runtimeArgs": ["run", "run:local"],
-			"cwd": "${workspaceFolder}/apps/api-hono",
-			// "envFile": "${workspaceFolder}/.env.local", // not needed since specified in package.json script
-			"skipFiles": ["<node_internals>/**"]
+			"restart": true,
+			"timeout": 5000,
+			"port": 9252,
+			// "address": "localhost",
+			// "localRoot": "${workspaceFolder}/apps/api-hono",
+			// "remoteRoot": "${workspaceFolder}/apps/api-hono",
+			"skipFiles": ["**/<node_internals>/**"]
 		}
 	]
 }
