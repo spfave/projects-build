@@ -2,9 +2,13 @@ import type { ErrorHandler, NotFoundHandler } from "hono";
 import { HTTPException } from "hono/http-exception";
 
 import { HttpStatus } from "@projectsbuild/library/constants";
+import { jSend } from "@projectsbuild/library/utils";
 
 export const notFound: NotFoundHandler = (ctx) => {
-	return ctx.json({ message: `Not Found - ${ctx.req.url}` }, HttpStatus.NOT_FOUND.code);
+	return ctx.json(
+		jSend({ status: "fail", message: `not found - ${ctx.req.url}` }),
+		HttpStatus.NOT_FOUND.code
+	);
 };
 
 export const onError: ErrorHandler = (error, ctx) => {
@@ -14,10 +18,11 @@ export const onError: ErrorHandler = (error, ctx) => {
 	const env = process.env.NODE_ENV;
 
 	return ctx.json(
-		{
-			message: error.message || "An error occurred",
-			stack: env === "development" ? error.stack : undefined,
-		},
+		jSend({
+			status: "error",
+			message: error.message || HttpStatus.INTERNAL_SERVER_ERROR.phrase,
+			data: { stack: env === "development" ? error.stack : undefined },
+		}),
 		statusCode
 	);
 };

@@ -71,13 +71,9 @@ export const apiProjects = defaultRouter()
 
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.NOT_FOUND.phrase },
+				jSend({ status: "fail", message: "project not found" }),
 				HttpStatus.NOT_FOUND.code
 			);
-		// return ctx.json(
-		// 	jSend({ status: "fail", message: "project not found" }),
-		// 	HttpStatus.NOT_FOUND.code
-		// );
 
 		return ctx.json(project, HttpStatus.OK.code);
 		// return ctx.json(jSend({ status: "success", data: { project } }), HttpStatus.OK.code);
@@ -90,7 +86,7 @@ export const apiProjects = defaultRouter()
 		// Note: Included for return type inference, validator should ensure this doesn't occur
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.INTERNAL_SERVER_ERROR.phrase },
+				jSend({ status: "error", message: HttpStatus.INTERNAL_SERVER_ERROR.phrase }),
 				HttpStatus.INTERNAL_SERVER_ERROR.code
 			);
 
@@ -104,7 +100,7 @@ export const apiProjects = defaultRouter()
 
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.NOT_FOUND.phrase },
+				jSend({ status: "fail", message: "project not found" }),
 				HttpStatus.NOT_FOUND.code
 			);
 
@@ -117,7 +113,7 @@ export const apiProjects = defaultRouter()
 
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.NOT_FOUND.phrase },
+				jSend({ status: "fail", message: "project not found" }),
 				HttpStatus.NOT_FOUND.code
 			);
 
