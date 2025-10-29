@@ -4,14 +4,14 @@
 	// Ref: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
-		// api-hono
+		// API-Hono
 		{
 			"name": "Api Hono Launch",
 			"request": "launch",
 			"type": "node",
-			// "program": "./src/index.ts", //
-			"runtimeArgs": ["--watch", "./src/index.ts"], // to use nodejs native "--watch" for restart on code changes
-			"cwd": "${workspaceFolder}/apps/api-hono", // required so .env path variables work correctly
+			// "program": "./src/index.ts", // replace by below
+			"runtimeArgs": ["--watch", "./src/index.ts"], // run with nodejs native "--watch" for reload on code changes
+			"cwd": "${workspaceFolder}/apps/api-hono", // so .env path variables work correctly
 			"envFile": "${workspaceFolder}/.env.local",
 			"skipFiles": ["**/<node_internals>/**"]
 		},
@@ -27,12 +27,11 @@
 		// 	"skipFiles": ["**/<node_internals>/**"]
 		// },
 		{
-			"name": "Api Hono Attach",
+			"name": "Api Hono Attach", // requires process is run in debug mode, via node "--inspect=<?port_number>"
 			"request": "attach",
 			"type": "node",
 			"restart": true,
-			"timeout": 5000,
-			"port": 9252,
+			"port": 9252, // match optional port specified to "--inspect", default is 9222
 			// "address": "localhost",
 			// "localRoot": "${workspaceFolder}/apps/api-hono",
 			// "remoteRoot": "${workspaceFolder}/apps/api-hono",
