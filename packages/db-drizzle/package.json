@@ -26,15 +26,15 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@libsql/client": "^0.14.0",
+		"@libsql/client": "^0.15.15",
 		"@projectsbuild/core": "workspace:*",
-		"drizzle-orm": "^0.38.4"
+		"drizzle-orm": "^0.44.7"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.44.1",
+		"@dotenvx/dotenvx": "^1.51.0",
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
-		"drizzle-kit": "^0.30.6",
+		"drizzle-kit": "^0.31.6",
 		"typescript": "catalog:"
 	}
 }
