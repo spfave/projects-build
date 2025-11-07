@@ -1,4 +1,4 @@
-# ***DB-Drizzle*
+# **DB-Drizzle**
 A SQLite database using [Drizzle](https://orm.drizzle.team/)
 
 ## **References** 
