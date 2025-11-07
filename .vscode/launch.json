@@ -7,8 +7,8 @@
 		// API-Hono
 		{
 			"name": "Api Hono Launch",
-			"request": "launch",
 			"type": "node",
+			"request": "launch",
 			// "program": "./src/index.ts", // replace by below
 			"runtimeArgs": ["--watch", "./src/index.ts"], // run with nodejs native "--watch" for reload on code changes
 			"cwd": "${workspaceFolder}/apps/api-hono", // so .env path variables work correctly
@@ -18,8 +18,8 @@
 		// {
 		// 	// Prefer above approach: direct launch, not using package.json script
 		// 	"name": "Api Hono Launch Script",
-		// 	"request": "launch",
 		// 	"type": "node",
+		// 	"request": "launch",
 		// 	"runtimeExecutable": "pnpm",
 		// 	"runtimeArgs": ["run", "run:local"],
 		// 	"cwd": "${workspaceFolder}/apps/api-hono",
@@ -28,8 +28,8 @@
 		// },
 		{
 			"name": "Api Hono Attach", // requires process is run in debug mode, via node "--inspect=<?port_number>"
-			"request": "attach",
 			"type": "node",
+			"request": "attach",
 			"restart": true,
 			"port": 9252, // match optional port specified to "--inspect", default is 9222
 			// "address": "localhost",

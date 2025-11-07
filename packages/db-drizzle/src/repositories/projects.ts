@@ -32,7 +32,14 @@ export async function selectProjectByIdSelect(projectId: ProjectId) {
 }
 
 export async function insertProject(project: ProjectInsert) {
-	return await db.insert(projects).values(project).returning();
+	return await db
+		.insert(projects)
+		.values(project)
+		.returning()
+		.catch((err) => {
+			console.info(`error: DB insert project: `, err);
+			throw err;
+		});
 }
 
 // export async function updateProject(project: ProjectUpdate) {}
