@@ -1,0 +1,193 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "96405390-59c9-420c-a6e9-f2f047fd167d",
+  "prevId": "09fd5498-cac1-40d1-85b6-16fce1fc1004",
+  "tables": {
+    "pb_timestamps": {
+      "name": "pb_timestamps",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "num_created_at": {
+          "name": "num_created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "num_updated_at": {
+          "name": "num_updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "txt_created_at": {
+          "name": "txt_created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "txt_updated_at": {
+          "name": "txt_updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "pb_projects": {
+      "name": "pb_projects",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "link": {
+          "name": "link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'planning'"
+        },
+        "date_completed": {
+          "name": "date_completed",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rating": {
+          "name": "rating",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "recommend": {
+          "name": "recommend",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "chk_name": {
+          "name": "chk_name",
+          "value": "length(\"pb_projects\".\"name\") > 1 AND length(\"pb_projects\".\"name\") <= 125"
+        },
+        "chk_status": {
+          "name": "chk_status",
+          "value": "\"pb_projects\".\"status\" IN ('planning', 'building', 'complete')"
+        },
+        "chk_dateCompleted": {
+          "name": "chk_dateCompleted",
+          "value": "(\"pb_projects\".\"status\" == 'complete' AND \"pb_projects\".\"date_completed\" IS NOT NULL) OR (\"pb_projects\".\"status\" != 'complete' AND \"pb_projects\".\"date_completed\" IS NULL)"
+        },
+        "chk_rating": {
+          "name": "chk_rating",
+          "value": "(\"pb_projects\".\"status\" == 'complete' AND \"pb_projects\".\"rating\" IS NOT NULL AND \"pb_projects\".\"rating\" >= 1 AND \"pb_projects\".\"rating\" <= 5) OR (\"pb_projects\".\"status\" != 'complete' AND \"pb_projects\".\"rating\" IS NULL)"
+        },
+        "chk_recommend": {
+          "name": "chk_recommend",
+          "value": "(\"pb_projects\".\"status\" == 'complete' AND \"pb_projects\".\"recommend\" IS NOT NULL) OR (\"pb_projects\".\"status\" != 'complete' AND \"pb_projects\".\"recommend\" IS NULL)"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

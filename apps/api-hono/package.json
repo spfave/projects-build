@@ -14,18 +14,18 @@
 	},
 	"scripts": {
 		"start": "pnpm run run:local",
-		"run:local": "node --watch --env-file=../../.env.local src/index.ts",
+		"run:local": "node --inspect=9252 --watch --env-file=../../.env.local src/index.ts",
 		"check": "biome check ./src",
 		"format": "biome format ./src",
 		"lint": "biome lint ./src",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@hono/node-server": "^1.19.1",
+		"@hono/node-server": "^1.19.6",
 		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/db-drizzle": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"hono": "^4.9.5",
+		"hono": "^4.10.4",
 		"hono-rate-limiter": "^0.4.2"
 	},
 	"devDependencies": {

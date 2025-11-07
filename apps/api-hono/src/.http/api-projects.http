@@ -32,6 +32,20 @@ Content-Type: {{contentType}}
 
 
 ### --------------------------------------------------------------------------------- ###
+# CREATE project w/ error
+# @name project
+POST {{urlProjects}}/error
+Content-Type: {{contentType}}
+
+{
+	"name": "Erroring Project Input",
+	"description": "This invalid project input will fail db constraint validation and return an internal server error response",
+	"status": "invalid",
+	"rating": 0
+}
+
+
+### --------------------------------------------------------------------------------- ###
 # PUT project by id
 # PUT {{urlProjects}}/{{id}}
 PUT {{urlProjects}}/{{project.response.body.$.id}}

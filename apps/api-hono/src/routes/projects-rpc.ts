@@ -71,18 +71,19 @@ export const apiProjects = defaultRouter()
 
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.NOT_FOUND.phrase },
+				jSend({ status: "fail", message: "project not found" }),
 				HttpStatus.NOT_FOUND.code
 			);
-		// return ctx.json(
-		// 	jSend({ status: "fail", message: "project not found" }),
-		// 	HttpStatus.NOT_FOUND.code
-		// );
 
 		return ctx.json(project, HttpStatus.OK.code);
 		// return ctx.json(jSend({ status: "success", data: { project } }), HttpStatus.OK.code);
 	})
 
+	// Responses:
+	// 201 created
+	// 400 bad request
+	// 422 unprocessable entity: validation error
+	// 500 internal server error: exception (unknown error), db error
 	.post("/", validateJsonProject, async (ctx) => {
 		const payload = ctx.req.valid("json");
 		const [project] = await db.insertProject(payload);
@@ -90,9 +91,17 @@ export const apiProjects = defaultRouter()
 		// Note: Included for return type inference, validator should ensure this doesn't occur
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.INTERNAL_SERVER_ERROR.phrase },
+				jSend({ status: "error", message: HttpStatus.INTERNAL_SERVER_ERROR.phrase }),
 				HttpStatus.INTERNAL_SERVER_ERROR.code
 			);
+
+		return ctx.json(project, HttpStatus.CREATED.code);
+	})
+
+	// Note: for demo only, lacks input validation to test DB constraints (DB error, internal server error)
+	.post("/error", async (ctx) => {
+		const payload = await ctx.req.json();
+		const [project] = await db.insertProject(payload); // will error for an invalid project input payload
 
 		return ctx.json(project, HttpStatus.CREATED.code);
 	})
@@ -104,7 +113,7 @@ export const apiProjects = defaultRouter()
 
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.NOT_FOUND.phrase },
+				jSend({ status: "fail", message: "project not found" }),
 				HttpStatus.NOT_FOUND.code
 			);
 
@@ -117,7 +126,7 @@ export const apiProjects = defaultRouter()
 
 		if (!project)
 			return ctx.json(
-				{ message: HttpStatus.NOT_FOUND.phrase },
+				jSend({ status: "fail", message: "project not found" }),
 				HttpStatus.NOT_FOUND.code
 			);
 
