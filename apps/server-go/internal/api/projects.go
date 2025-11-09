@@ -65,6 +65,10 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
+	if !core.ValidateProjectId(projectId).Success {
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail("invalid project id", nil), nil)
+		return
+	}
 
 	project, err := projectRepo2.GetById(projectId)
 	if err != nil {
