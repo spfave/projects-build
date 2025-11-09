@@ -37,14 +37,15 @@ type (
 	}
 )
 
+// ----------------------------------------------------------------------------------- //
+// CONSTANTS
 const (
+	ProjectIdLength                     = 8
 	ProjectStatusPlanning ProjectStatus = "planning"
 	ProjectStatusBuilding ProjectStatus = "building"
 	ProjectStatusComplete ProjectStatus = "complete"
 )
 
-// ----------------------------------------------------------------------------------- //
-// CONSTANTS
 var PROJECT_STATUSES = [3]ProjectStatus{ProjectStatusBuilding, ProjectStatusPlanning, ProjectStatusComplete}
 
 // ----------------------------------------------------------------------------------- //
@@ -57,6 +58,13 @@ var isYMD = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
 type ValidationResult struct {
 	Success bool
 	Errors  *pErr.ValidationError
+}
+
+func ValidateProjectId(input ProjectId) *ValidationResult {
+	if len(input) != ProjectIdLength {
+		return &ValidationResult{Success: false}
+	}
+	return &ValidationResult{Success: true}
 }
 
 func ValidateProject(input *ProjectInput) *ValidationResult {

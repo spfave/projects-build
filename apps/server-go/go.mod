@@ -4,6 +4,7 @@ go 1.24.1
 
 require (
 	github.com/jmoiron/sqlx v1.4.0
+	github.com/rs/cors v1.11.1
 	modernc.org/sqlite v1.38.0
 )
 

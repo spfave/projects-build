@@ -11,15 +11,30 @@ import (
 
 func apiDemos() *pHttp.Router {
 	router := pHttp.NewRouter()
+	router.HandleFunc("GET /auth-basic", authBasic)
 	router.HandleFunc("GET /obj/{id}", getObj)
 	router.HandleFunc("POST /obj", postObj)
-	router.HandleFunc("GET /auth-basic", authBasic)
 	router.HandleFunc("POST /post-form", postForm)
+	router.HandleFunc("GET /error", pHttp.HandlerError)
 	router.HandleFunc("GET /error-checking", errorChecking)
-	router.HandleFunc("/error", pHttp.HandlerError)
+	router.Handle("/panic", pHttp.PanicRecoveryMiddleware(http.HandlerFunc(panicRecovery)))
 	router.HandleNotFound()
 
 	return router
+}
+
+func authBasic(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nAUTH BASIC") //LOG
+	un, pw, ok := r.BasicAuth()
+	if !ok {
+		http.Error(w, "Missing credentials", http.StatusBadRequest)
+		return
+	}
+
+	// validate credentials, if err return http.StatusUnauthorized
+
+	fmt.Printf("credentials: username=%s, password=%s", un, pw) //LOG
+	pHttp.RespondJson(w, http.StatusOK, pHttp.Envelope{"username": un, "password": pw}, nil)
 }
 
 type obj struct {
@@ -80,20 +95,6 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	w.Write([]byte("Done"))
-}
-
-func authBasic(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\nAUTH BASIC") //LOG
-	un, pw, ok := r.BasicAuth()
-	if !ok {
-		http.Error(w, "Missing credentials", http.StatusBadRequest)
-		return
-	}
-
-	// validate credentials, if err return http.StatusUnauthorized
-
-	fmt.Printf("credentials: username=%s, password=%s", un, pw) //LOG
-	pHttp.RespondJson(w, http.StatusOK, pHttp.Envelope{"username": un, "password": pw}, nil)
 }
 
 func postForm(w http.ResponseWriter, r *http.Request) {
@@ -218,4 +219,9 @@ func (err *TestError) Error() string {
 
 func (err *TestError) Unwrap() error {
 	return err.Cause
+}
+
+func panicRecovery(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nPANIC") // LOG
+	panic("AHH! Panic!")
 }
