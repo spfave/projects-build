@@ -64,7 +64,7 @@ func HandlerError(w http.ResponseWriter, r *http.Request) {
 }
 
 // ----------------------------------------------------------------------------------- //
-//
+// REQUEST/RESPONSE UTILS
 
 func RequestParam(r *http.Request, name string) (string, error) {
 	p := r.PathValue(name)
