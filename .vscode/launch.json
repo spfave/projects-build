@@ -36,6 +36,27 @@
 			// "localRoot": "${workspaceFolder}/apps/api-hono",
 			// "remoteRoot": "${workspaceFolder}/apps/api-hono",
 			"skipFiles": ["**/<node_internals>/**"]
+		},
+
+		// Server-Go
+		{
+			"name": "Api Go Launch",
+			"type": "go",
+			"request": "launch",
+			"mode": "debug",
+			"program": "${workspaceFolder}/apps/server-go/cmd/api",
+			"envFile": "${workspaceFolder}/.env.local",
+			"env": {
+				"DB_FILE_NAME": "file:../../../../db-sqlite-projectsbuild.db"
+			}
+		},
+		{
+			"name": "Api Go Attach", // doesn't restart with air reload on code change
+			"type": "go",
+			"request": "attach",
+			"mode": "remote",
+			"host": "127.0.0.1",
+			"port": 9253
 		}
 	]
 }

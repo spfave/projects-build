@@ -1,15 +1,15 @@
 # Config file for [Air](https://github.com/air-verse/air)
 
-root = "."                             # Working directory: . or absoulte path, note directories following must be under root
+root = "."                             # Working directory: . or absolute path, note directories following must be under root
 tmp_dir = "tmp"
 testdata_dir = "testdata"
 
 [build]
-  cmd = "go build -o ./tmp/main ./cmd/api/main.go"         # Just plain old shell command. You could use `make` as well
+  cmd = "make build-api-debug"         # Just plain old shell command. You could use `make` as well
   pre_cmd = []                         # Array of commands to run before each build
   post_cmd = []                        # Array of commands to run after ^C
-  bin = "./tmp/main"                   # Binary file yields from `cmd`
-  full_bin = ""                        # Customize binary, can setup environment variables when run your app
+  bin = "./bin/api-debug"              # Binary file yields from `cmd`
+  full_bin = "dlv exec ./bin/api-debug --listen=127.0.0.1:9253 --headless=true --api-version=2 --accept-multiclient --continue --log -- "     # Customize binary, can setup environment variables when run your app
   args_bin = []                        # Add additional arguments when running binary (bin/full_bin). Will run './tmp/main hello world'
   include_dir = []                     # Watch these directories if you specified
   include_file = []                    # Watch these files
