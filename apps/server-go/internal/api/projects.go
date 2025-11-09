@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"runtime/debug"
 
 	"github.com/spfave/projects-build/apps/server-go/internal/core"
 	"github.com/spfave/projects-build/apps/server-go/internal/store"
@@ -17,6 +18,7 @@ func projectsRouter() *pHttp.Router {
 	router.Handle("GET /projects-handler", pHttp.RouteHandler(handlerGetAllError))
 	router.HandleFunc("GET /projects/{id}", getProjectById)
 	router.HandleFunc("POST /projects", createProject)
+	router.HandleFunc("POST /projects/error", createProjectError)
 	router.HandleFunc("PUT /projects/{id}", updateProject)
 	router.HandleFunc("DELETE /projects/{id}", deleteProject)
 	router.HandleNotFound()
@@ -49,7 +51,7 @@ func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError
 
 	if err != nil {
 		return &pHttp.HttpError{
-			StatusCode: http.StatusBadRequest,
+			StatusCode: http.StatusInternalServerError,
 			Message:    "error getting all projects",
 			Cause:      err,
 		}
@@ -63,6 +65,10 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
+		return
+	}
+	if !core.ValidateProjectId(projectId).Success {
+		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail("invalid project id", nil), nil)
 		return
 	}
 
@@ -81,6 +87,11 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 	// pHttp.RespondJson(w, http.StatusOK, pHttp.JSendSuccess(pHttp.Envelope{"project": project}), nil)
 }
 
+// Responses:
+// 201 created
+// 400 bad request: failed json decode
+// 422 unprocessable entity: validation error
+// 500 internal server error: exception (unknown error), db error
 func createProject(w http.ResponseWriter, r *http.Request) {
 	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
 	fmt.Printf("payload: %+v\n", payload) //LOG
@@ -102,6 +113,28 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	project, err := projectRepo2.Create(projectPayload)
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error creating project", nil, nil))
+		return
+	}
+
+	pHttp.RespondJson(w, http.StatusCreated, project, nil)
+}
+
+// Note: for demo only, lacks input validation to test DB constraints (DB error, internal server error)
+func createProjectError(w http.ResponseWriter, r *http.Request) {
+	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
+	if err != nil {
+		debug.PrintStack() // LOG
+		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(
+			"failed to parse json body ", pHttp.Envelope{"errors": err.Error(), "stack": string(debug.Stack())}), nil)
+		return
+	}
+
+	// projectPayload := core.TransformProject(&payload)
+	project, err := projectRepo2.Create(&payload)
+	if err != nil {
+		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(
+			"error creating project", pHttp.Envelope{"errors": err.Error(), "stack": string(debug.Stack())}, nil))
+		return
 	}
 
 	pHttp.RespondJson(w, http.StatusCreated, project, nil)
@@ -136,6 +169,7 @@ func updateProject(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// handle not found case
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))
+		return
 	}
 
 	// 5. Return response

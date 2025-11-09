@@ -147,7 +147,6 @@ func (str *ProjectSqliteStore) Create(input *core.ProjectInput) (*core.Project, 
 		INSERT INTO pb_projects (id, name, link, description, notes, status, date_completed, rating, recommend)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
-	fmt.Println("PROJECT STORE: CREATE") //LOG
 
 	result, err := str.db.Exec(
 		query,

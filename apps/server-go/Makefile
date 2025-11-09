@@ -23,7 +23,13 @@ run-local-api:
 
 ## Build the api application
 build-api:
-	go build -o bin/api ./cmd/api
+	rm -f ./bin/api
+	go build -o ./bin/api ./cmd/api
+
+## Build the api application for debugging
+build-api-debug:
+	rm -f ./bin/api-debug
+	CGO_ENABLED=0 go build -gcflags=all="-N -l" -o ./bin/api-debug ./cmd/api
 
 ## Run the web application
 run-local-web:
@@ -52,7 +58,7 @@ lint:
 # ---------------------------------------------------------------------------------------
 # MAINTENANCE
 
-## Clean up build cache
+## Clean up build directory
 clean:
 	rm -rf bin
 
