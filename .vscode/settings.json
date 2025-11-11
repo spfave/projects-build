@@ -1,10 +1,15 @@
 {
+	"editor.codeActionsOnSave": {
+		"source.organizeImports.biome": "always"
+		// "source.fixAll.biome": "always"
+	},
+
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.expand": false,
 	"explorer.fileNesting.patterns": {
+		".config*": "biome.*, drizzle.config.*, tsconfig.*, vite.*",
 		".env*": "*.env, .env.*, .envrc, env.d.ts",
 		".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
-		".config*": "biome.json, drizzle.config.*, tsconfig.*, vite.*",
 
 		"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, pnpm-workspace.yaml",
 		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
