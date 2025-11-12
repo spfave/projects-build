@@ -1,12 +1,42 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
 	"files": {
-		"includes": ["**", "!!**/dist", "!!**/assets", "!**/public", "!!**/migrations"]
+		"includes": [
+			"**",
+			"!!**/assets",
+			"!!**/data",
+			"!!**/dist",
+			"!**/public",
+			"!!**/migrations"
+		]
 	},
 	"vcs": {},
 	"assist": {
 		"enabled": true,
-		"actions": { "source": { "organizeImports": "on" } }
+		"actions": {
+			"source": {
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							[
+								":URL:",
+								":BUN:",
+								":NODE:",
+								":PACKAGE_WITH_PROTOCOL:",
+								":PACKAGE:",
+								"!@projectsbuild/**"
+							],
+							":BLANK_LINE:",
+							["@projectsbuild/**", ":ALIAS:", ":PATH:", "!**/*.css"],
+							":BLANK_LINE:",
+							["**/*.css"]
+						]
+					}
+				},
+				"useSortedProperties": "on"
+			}
+		}
 	},
 	"formatter": {
 		"enabled": true,

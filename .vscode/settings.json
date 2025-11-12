@@ -1,7 +1,8 @@
 {
 	"editor.codeActionsOnSave": {
-		"source.organizeImports.biome": "always"
-		// "source.fixAll.biome": "always"
+		"source.action.useSortedProperties.biome": "always",
+		"source.organizeImports.biome": "always",
+		"source.fixAll.biome": "always"
 	},
 
 	"explorer.fileNesting.enabled": true,
