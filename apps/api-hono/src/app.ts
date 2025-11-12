@@ -8,7 +8,9 @@ const app = createApp();
 // const appRoutes = app.route("/", apiDemos).route("/", apiProjects);
 
 const appRoutes = [apiDemos, apiProjects] as const;
-appRoutes.forEach((r, _) => app.route("/", r));
+appRoutes.forEach((r) => {
+	app.route("/", r);
+});
 
 export type AppRoutes = (typeof appRoutes)[number];
 export default app;

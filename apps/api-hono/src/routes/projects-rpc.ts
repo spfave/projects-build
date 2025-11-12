@@ -1,7 +1,6 @@
 import { hc } from "hono/client";
 import { validator } from "hono/validator";
 
-import { defaultRouter } from "#lib/init.ts";
 import {
 	transformProject,
 	validateProject,
@@ -10,6 +9,7 @@ import {
 import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { jSend } from "@projectsbuild/library/utils";
+import { defaultRouter } from "#lib/init.ts";
 
 // Validators
 const validateParamProjectId = validator("param", (params, ctx) => {

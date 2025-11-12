@@ -1,4 +1,4 @@
-import { type Table, getTableName } from "drizzle-orm";
+import { getTableName, type Table } from "drizzle-orm";
 
 import { type DB, db } from "#db/db.ts";
 import * as schema from "#db/schema.ts";
@@ -10,12 +10,12 @@ if (process.env.DB_SEEDING !== "true")
 async function resetDBTables() {
 	for (const table of [schema.projects, schema.audit]) {
 		await db.delete(table);
-		// await resetTable(db, table);
+		// await _resetTable(db, table);
 	}
 	db.$client.execute("VACUUM");
 }
 
-async function resetTable(db: DB, table: Table) {
+async function _resetTable(db: DB, table: Table) {
 	await db.$client.execute(`DELETE FROM ${getTableName(table)}`);
 }
 

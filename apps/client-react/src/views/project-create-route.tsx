@@ -17,9 +17,6 @@ import { useProjectsContext } from "./projects-route";
 import styles from "./project-create-route.module.css";
 
 export default function ProjectCreateRoute() {
-	const navigate = useNavigate();
-	const { fetchProjects } = useProjectsContext();
-
 	const refForm = React.useRef<HTMLFormElement>(null);
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
@@ -28,21 +25,24 @@ export default function ProjectCreateRoute() {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
-	async function handleCreateProject(evt: React.FormEvent<HTMLFormElement>) {
-		evt.preventDefault();
+	const { fetchProjects } = useProjectsContext();
+	const navigate = useNavigate();
+	const [state, createProjectAction, isPending] = React.useActionState(
+		// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s
+		async (prevState: unknown, formData: FormData) => {
+			const formObj = Object.fromEntries(formData.entries());
+			const validation = validateProject(formObj);
+			if (!validation.success) return setProjectErrors(validation.errors);
+			if (projectErrors) setProjectErrors(null);
 
-		const formData = new FormData(evt.currentTarget);
-		const formObj = Object.fromEntries(formData.entries());
-		const validation = validateProject(formObj);
-		if (!validation.success) return setProjectErrors(validation.errors);
-		if (projectErrors) setProjectErrors(null);
+			const projectPayload = transformProject(formObj as ProjectFields);
+			const project = await client.createProject(projectPayload);
 
-		const projectPayload = transformProject(formObj as ProjectFields);
-		const project = await client.createProject(projectPayload);
-
-		fetchProjects();
-		navigate(`/projects/${project.id}`);
-	}
+			fetchProjects();
+			navigate(`/projects/${project.id}`);
+		},
+		null
+	);
 
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		setProjectStatus(undefined);
@@ -60,7 +60,7 @@ export default function ProjectCreateRoute() {
 			<h2>New Project</h2>
 			<form
 				ref={refForm}
-				onSubmit={handleCreateProject}
+				action={createProjectAction}
 				noValidate={isHydrated}
 				aria-invalid={errAttrForm?.hasErrors}
 				aria-describedby={errAttrForm?.id}
@@ -234,13 +234,22 @@ export default function ProjectCreateRoute() {
 				</div>
 
 				<div className={styles.formActions}>
-					<button className="action primary" type="submit">
+					<button className="action primary" type="submit" disabled={isPending}>
 						Create Project
 					</button>
-					<button className="action danger outline" type="reset" onClick={handleReset}>
+					<button
+						className="action danger outline"
+						type="reset"
+						onClick={handleReset}
+						disabled={isPending}
+					>
 						Clear Form
 					</button>
-					<Link className="action danger outline" to="/projects">
+					<Link
+						className="action danger outline"
+						to={isPending ? "" : "/projects"}
+						aria-disabled={isPending}
+					>
 						Cancel
 					</Link>
 				</div>

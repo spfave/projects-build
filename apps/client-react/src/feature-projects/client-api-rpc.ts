@@ -7,6 +7,7 @@ import {
 	FetchResponseError,
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
+import { wait } from "@projectsbuild/library/utils";
 
 // Note: pre-typed client does not work as process.env is not defined when run through vite import
 // const client = hcApiProjectsTyped(import.meta.env.VITE_URL_API_HONO);
@@ -26,6 +27,7 @@ export async function getProjects() {
 
 	// json parsing can error: SyntaxError
 	const projects = res.json();
+	await wait(500);
 	return projects;
 }
 
@@ -50,7 +52,7 @@ export async function updateProject(project: Project) {
 	return updatedProject;
 }
 
-export async function deleteProjectById(id: string) {
+export async function deleteProject(id: string) {
 	const res = await client.api.v1.projects[":id"].$delete({ param: { id } });
 	const deletedProject = res.json();
 	return deletedProject;
