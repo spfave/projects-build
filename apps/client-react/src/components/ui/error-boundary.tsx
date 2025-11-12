@@ -4,19 +4,22 @@ import * as React from "react";
 // https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 // https://github.com/bvaughn/react-error-boundary
 // https://docs.solidjs.com/reference/components/error-boundary
-type ErrorBoundaryFallbackComponentProps = { error: unknown };
+interface ErrorBoundaryFallbackComponentProps {
+	error: unknown;
+}
 
-type ErrorBoundaryBaseProps = React.PropsWithChildren<{
-	onError?: (error: unknown, info?: React.ErrorInfo) => void;
-}>;
-type ErrorBoundaryPropsWithFallback = ErrorBoundaryBaseProps & {
+interface ErrorBoundaryBaseProps
+	extends React.PropsWithChildren<{
+		onError?: (error: unknown, info?: React.ErrorInfo) => void;
+	}> {}
+interface ErrorBoundaryPropsWithFallback extends ErrorBoundaryBaseProps {
 	fallback: React.ReactNode | ((error: unknown) => React.JSX.Element);
 	FallbackComponent?: never;
-};
-type ErrorBoundaryPropsWithComponent = ErrorBoundaryBaseProps & {
+}
+interface ErrorBoundaryPropsWithComponent extends ErrorBoundaryBaseProps {
 	fallback?: never;
 	FallbackComponent: React.ComponentType<ErrorBoundaryFallbackComponentProps>;
-};
+}
 type ErrorBoundaryProps =
 	| ErrorBoundaryPropsWithFallback
 	| ErrorBoundaryPropsWithComponent;
