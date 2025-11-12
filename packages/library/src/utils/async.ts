@@ -34,8 +34,8 @@ export async function wait(duration: number): Promise<void> {
  */
 export async function safeAsync<TError = unknown, TPromise = unknown>(
 	asyncFn: () => Promise<TPromise>,
-	onCatch = (err: unknown) => {},
-	onFinally = () => {}
+	onCatch = (_err: unknown): void => {},
+	onFinally = (): void => {}
 ) {
 	try {
 		const value = await asyncFn().catch((err) => {

@@ -1,3 +1,36 @@
+.formFlexGroup {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+
+	> div {
+		flex: 1;
+		min-width: 25ch;
+	}
+}
+.formColGroup {
+	/* input: css auto-fill grid with max number of columns  */
+	/* Ref: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns */
+	--grid-col-max-num: 2;
+	--grid-col-gap: 1rem;
+	--grid-col-min-width: 25ch;
+	--grid-row-gap: 0.5rem;
+
+	/* calc values */
+	--gap-count: calc(var(--grid-col-max-num) - 1);
+	--total-gap-width: calc(var(--gap-count) * var(--grid-col-gap));
+	--grid-item-max-width: calc((100% - var(--total-gap-width)) / var(--grid-col-max-num));
+
+	/* grid */
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fill,
+		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
+	);
+	row-gap: var(--grid-row-gap);
+	column-gap: var(--grid-col-gap);
+}
+
 .projectCreate {
 	display: grid;
 	gap: 1rem;
@@ -23,9 +56,9 @@
 		select,
 		textarea {
 			padding: 0.25rem;
-			border-radius: 0.25rem;
-			border-width: 0px;
 			outline: 1px solid grey;
+			border-width: 0px;
+			border-radius: 0.25rem;
 
 			&:focus-visible {
 				outline-width: 2px;
@@ -57,15 +90,15 @@
 
 		fieldset {
 			> div {
-				height: 29.6px;
 				display: flex;
-				align-items: center;
 				gap: 2rem;
+				align-items: center;
+				height: 29.6px;
 
 				> span {
 					display: flex;
-					align-items: center;
 					gap: 0.5rem;
+					align-items: center;
 
 					/* > label {
 						margin: 0;
@@ -89,43 +122,10 @@
 	}
 }
 
-.formFlexGroup {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-
-	> div {
-		min-width: 25ch;
-		flex: 1;
-	}
-}
-.formColGroup {
-	/* input: css auto-fill grid with max number of columns  */
-	/* Ref: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns */
-	--grid-col-max-num: 2;
-	--grid-col-gap: 1rem;
-	--grid-col-min-width: 25ch;
-	--grid-row-gap: 0.5rem;
-
-	/* calc values */
-	--gap-count: calc(var(--grid-col-max-num) - 1);
-	--total-gap-width: calc(var(--gap-count) * var(--grid-col-gap));
-	--grid-item-max-width: calc((100% - var(--total-gap-width)) / var(--grid-col-max-num));
-
-	/* grid */
-	display: grid;
-	grid-template-columns: repeat(
-		auto-fill,
-		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
-	);
-	column-gap: var(--grid-col-gap);
-	row-gap: var(--grid-row-gap);
-}
-
 .formActions {
 	display: flex;
-	align-items: stretch;
 	gap: 2rem;
+	align-items: stretch;
 
 	a,
 	button {

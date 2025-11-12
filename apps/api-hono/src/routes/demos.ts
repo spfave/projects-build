@@ -1,5 +1,4 @@
 import { getConnInfo } from "@hono/node-server/conninfo";
-import { rateLimiter } from "hono-rate-limiter";
 import { basicAuth } from "hono/basic-auth";
 import { bearerAuth } from "hono/bearer-auth";
 import { HTTPException } from "hono/http-exception";
@@ -7,14 +6,15 @@ import { ipRestriction } from "hono/ip-restriction";
 import { requestId } from "hono/request-id";
 import { timeout } from "hono/timeout";
 import { validator } from "hono/validator";
+import { rateLimiter } from "hono-rate-limiter";
 
-import { defaultRouter } from "#lib/init.ts";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
+import { defaultRouter } from "#lib/init.ts";
 
 const api = defaultRouter().basePath("/demos");
 
 // Endpoint demos
-api.get("/error", (ctx) => {
+api.get("/error", (_ctx) => {
 	throw new Error("Endpoint Error");
 });
 
@@ -24,7 +24,7 @@ api.use(
 	basicAuth({
 		username: process.env.AUTH_USERNAME,
 		password: process.env.AUTH_PASSWORD,
-		invalidUserMessage: (ctx) => {
+		invalidUserMessage: (_ctx) => {
 			throw new HTTPException(401, {
 				message: "Not Authenticated - Invalid Credentials",
 			});
@@ -40,7 +40,7 @@ api.use(
 	"/auth-bearer",
 	bearerAuth({
 		token: process.env.AUTH_TOKEN,
-		invalidTokenMessage: (ctx) => {
+		invalidTokenMessage: (_ctx) => {
 			throw new HTTPException(401, {
 				message: "Not Authenticated - Invalid Bearer Token",
 			});
@@ -88,7 +88,7 @@ api.get("/timeout/:time?", async (ctx) => {
 	console.info(`query param: `, ctx.req.query("time")); //LOG
 
 	const delay = Number(ctx.req.param("time") ?? ctx.req.query("time")) || 1000 * 5;
-	await new Promise((resolve, reject) => setTimeout(resolve, delay));
+	await new Promise((resolve, _reject) => setTimeout(resolve, delay));
 	return ctx.json({ message: "Request completed in time allowed" }, 200);
 });
 
@@ -111,7 +111,7 @@ api.get("/rate-limit", (ctx) => {
 // Validator demos
 api.get(
 	"/validate-path-query-params/prm1/:p1/prm2/:p2",
-	validator("param", (params, ctx) => {
+	validator("param", (params, _ctx) => {
 		console.info("\nVALIDATOR PARAMS"); //LOG
 		console.info(`params: `, params); //LOG
 
@@ -121,7 +121,7 @@ api.get(
 
 		return { p1: validP1, p2: validP2 };
 	}),
-	validator("query", (qParams, ctx) => {
+	validator("query", (qParams, _ctx) => {
 		console.info("\nVALIDATOR QUERY PARAMS"); //LOG
 		console.info(`qParams: `, qParams); //LOG
 
