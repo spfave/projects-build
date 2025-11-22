@@ -16,13 +16,13 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 textarea,
 select {
 	font: inherit;
-	letter-spacing: inherit;
 	word-spacing: inherit;
+	letter-spacing: inherit;
 }
 
 textarea {
-	resize: vertical;
 	min-height: 1.75rem;
+	resize: vertical;
 }
 
 fieldset {
@@ -32,9 +32,6 @@ fieldset {
 
 /* Variables */
 :root {
-	color-scheme: light dark;
-
-	/* Dimensions */
 	--min-width-page: 375px;
 	--standard-radius: 0.3rem;
 
@@ -56,6 +53,8 @@ fieldset {
 	--color-dark: hsl(0, 0%, 14%);
 	--color-gray: hsl(0 0% 60%);
 	--color-gray-light: hsl(from var(--color-gray) h s l / 0.2);
+
+	color-scheme: light dark;
 }
 
 /* Styles */
@@ -68,17 +67,17 @@ body {
 }
 
 #root {
-	min-height: 100dvh;
-	min-width: var(--min-width-page);
 	display: flex;
 	flex-direction: column;
+	min-width: var(--min-width-page);
+	min-height: 100dvh;
 }
 
 a.action,
 button.action {
 	padding: 0.25rem 0.5rem;
-	border-radius: var(--standard-radius);
 	cursor: pointer;
+	border-radius: var(--standard-radius);
 
 	&.primary {
 		background-color: var(--color-primary-light);
@@ -110,8 +109,8 @@ button.action {
 
 	&:disabled,
 	&[aria-disabled="true"] {
-		cursor: auto;
 		color: var(--color-gray);
+		cursor: auto;
 		background-color: var(--color-gray-light);
 		border: 1px solid var(--color-gray);
 	}
