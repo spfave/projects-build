@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Navigate, createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { RouterProvider } from "react-router/dom";
 
 import GeneralErrorFallback from "~/components/error-fallback";
