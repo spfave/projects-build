@@ -41,17 +41,25 @@
 		// Client React
 		{
 			"name": "Client React Launch",
-			"request": "launch",
 			"type": "msedge",
+			"request": "launch",
 			"url": "http://localhost:3001",
 			"runtimeArgs": [
-				// "--headless"
-				// "--remote-debugging-port=9231"
+				// "--headless",
+				"--remote-debugging-port=9231"
 				// "--user-data-dir=remote-debug-profile"
 			],
-			// "cwd": "${workspaceFolder}/apps/client-react",
 			"webRoot": "${workspaceFolder}/apps/client-react"
+			// "presentation": { "hidden": true }
 		},
+		// {
+		// 	"name": "Open Edge DevTools",
+		// 	"type": "vscode-edge-devtools.debug",
+		// 	"request": "attach",
+		// 	"url": "http://localhost:3001",
+		// 	// "port": 9231,
+		// 	"presentation": { "hidden": true }
+		// },
 
 		// Server-Go
 		{
@@ -73,5 +81,38 @@
 			"host": "127.0.0.1",
 			"port": 9253
 		}
+	],
+	"compounds": [
+		// {
+		// 	"name": "Client React Launch w/ Dev Tools",
+		// 	"configurations": ["Client React Launch", "Open Edge DevTools"]
+		// }
 	]
 }
+
+// {
+// 			"name": "Launch Microsoft Edge",
+// 			"type": "pwa-msedge",
+// 			"request": "launch",
+// 			"runtimeArgs": ["--remote-debugging-port=9222"],
+// 			"url": "c:\\Users\\spfav\\.vscode\\extensions\\ms-edgedevtools.vscode-edge-devtools-2.1.10\\out\\startpage\\index.html",
+// 			"presentation": {
+// 				"hidden": true
+// 			}
+// 		},
+// 		{
+// 			"name": "Open Edge DevTools",
+// 			"type": "vscode-edge-devtools.debug",
+// 			"request": "attach",
+// 			"url": "c:\\Users\\spfav\\.vscode\\extensions\\ms-edgedevtools.vscode-edge-devtools-2.1.10\\out\\startpage\\index.html",
+// 			"presentation": {
+// 				"hidden": true
+// 			}
+// 		}
+// 	],
+// 	"compounds": [
+// 		{
+// 			"name": "Launch Edge and attach DevTools",
+// 			"configurations": ["Launch Microsoft Edge", "Open Edge DevTools"]
+// 		}
+// 	]
