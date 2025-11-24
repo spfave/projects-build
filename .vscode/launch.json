@@ -31,11 +31,26 @@
 			"type": "node",
 			"request": "attach",
 			"restart": true,
-			"port": 9252, // match optional port specified to "--inspect", default is 9222
+			"port": 9252, // match optional port specified to "--inspect", default is 9229
 			// "address": "localhost",
 			// "localRoot": "${workspaceFolder}/apps/api-hono",
 			// "remoteRoot": "${workspaceFolder}/apps/api-hono",
 			"skipFiles": ["**/<node_internals>/**"]
+		},
+
+		// Client React
+		{
+			"name": "Client React Launch",
+			"request": "launch",
+			"type": "msedge",
+			"url": "http://localhost:3001",
+			"runtimeArgs": [
+				// "--headless"
+				// "--remote-debugging-port=9231"
+				// "--user-data-dir=remote-debug-profile"
+			],
+			// "cwd": "${workspaceFolder}/apps/client-react",
+			"webRoot": "${workspaceFolder}/apps/client-react"
 		},
 
 		// Server-Go
