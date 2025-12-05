@@ -21,7 +21,10 @@ export const onError: ErrorHandler = (error, ctx) => {
 		jSend({
 			status: "error",
 			message: error.message || HttpStatus.INTERNAL_SERVER_ERROR.phrase,
-			data: { stack: env === "development" ? error.stack : undefined },
+			data: {
+				cause: error.cause,
+				stack: env === "development" ? error.stack : undefined,
+			},
 		}),
 		statusCode
 	);
