@@ -55,7 +55,7 @@ type HttpResponseErrorHandler = (info: {
 }) => React.JSX.Element;
 type GeneralErrorFallbackProps = {
 	error: unknown;
-	httpResponseErrorHandlers?: Record<string, HttpResponseErrorHandler>;
+	httpResponseErrorHandlers?: Record<number, HttpResponseErrorHandler>;
 	defaultHttpResponseErrorHandler?: HttpResponseErrorHandler;
 	unexpectedErrorHandler?: React.ReactNode | ((error: unknown) => React.JSX.Element);
 };
