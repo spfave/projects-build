@@ -28,7 +28,7 @@
 	"dependencies": {
 		"@libsql/client": "^0.15.15",
 		"@projectsbuild/core": "workspace:*",
-		"drizzle-orm": "^0.45.0"
+		"drizzle-orm": "^0.45.1"
 	},
 	"devDependencies": {
 		"@dotenvx/dotenvx": "^1.51.1",
