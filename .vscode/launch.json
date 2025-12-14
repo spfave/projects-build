@@ -45,7 +45,7 @@
 			"request": "launch",
 			"url": "http://localhost:3001",
 			"runtimeArgs": [
-				// "--headless",
+				"--headless",
 				"--remote-debugging-port=9231"
 				// "--user-data-dir=remote-debug-profile"
 			],
