@@ -82,6 +82,9 @@ importers:
       '@projectsbuild/config-typescript':
         specifier: workspace:*
         version: link:../../configs/typescript
+      '@total-typescript/ts-reset':
+        specifier: ^0.6.1
+        version: 0.6.1
       '@types/node':
         specifier: 'catalog:'
         version: 25.0.1
