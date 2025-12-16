@@ -35,12 +35,10 @@ export function DefaultHttpResponseErrorFallback(
 			<p>
 				<Show when={error.context.message}>
 					<samp>Error Message: {error.context.message}</samp>
-					<br />
 				</Show>
 				<samp>
 					Response Status: {error.context.status} ({error.context.statusText})
 				</samp>
-				<br />
 				<samp>Request URL: {error.context.url}</samp>
 			</p>
 		</div>
