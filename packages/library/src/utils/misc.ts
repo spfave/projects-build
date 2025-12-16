@@ -1,4 +1,4 @@
-// Use function overload to get inferred result type
+// Use function overloads to narrow return type
 /**
  * Evaluates a value as truthy or falsely for determining the return value.
  * @param input Value to evaluate as truthy/falsely

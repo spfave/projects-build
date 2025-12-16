@@ -112,7 +112,7 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 	return { success: true } as const;
 }
 
-// Define function overloads to specify return type ProjectInput/Project for "create"/"update" action
+// Use function overloads to narrow return type ProjectInput/Project for "create"/"update" action
 export function transformProject(
 	input: Project | ProjectFields,
 	action?: "create"
