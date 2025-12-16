@@ -4,7 +4,7 @@ import {
 	FetchResponseError,
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
-import { wait } from "@projectsbuild/library/utils";
+import { getErrorMessage, wait } from "@projectsbuild/library/utils";
 
 // const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
 // const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
@@ -14,22 +14,27 @@ import { wait } from "@projectsbuild/library/utils";
 const urlApi = import.meta.env.VITE_URL_API;
 
 export async function getProjects() {
-	// fetch can error: network connection failure
+	await wait(500);
+
+	// fetch can error: TypeError (network connection failure)
 	const res = await fetch(`${urlApi}/projects`).catch((err) => {
 		throw new FetchError("Fetch failed for getProjects", { cause: err });
 	});
 
+	// json parsing can error: SyntaxError
+	const js = await res.json();
+
 	// response 'status' or 'ok' property can indicate an error
-	if (res.status >= 400)
-		// throw new HttpResponseError(res, "Http status error for getProjects");
-		throw new HttpResponseError(res, "Failed to get projects");
+	if (res.status >= 400) {
+		const msg = getErrorMessage(js, {
+			fallbackMessage: "Failed to get projects",
+		});
+		throw new HttpResponseError(res, msg);
+	}
 	if (!res.ok)
 		throw new FetchResponseError("Fetch response not ok for getProjects", { cause: res });
 
-	// json parsing can error: SyntaxError
-	const projects = (await res.json()) as Project[];
-	await wait(500);
-	return projects;
+	return js as Project[];
 }
 
 export async function getProjectById(id: string) {
