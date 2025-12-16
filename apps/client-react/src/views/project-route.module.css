@@ -1,11 +1,13 @@
 .project {
-	display: grid;
-	gap: 2rem;
+	> * + * {
+		margin-block-start: 2rem;
+	}
 }
 
 .projectContent {
-	display: grid;
-	gap: 1rem;
+	> * + * {
+		margin-block-start: 1rem;
+	}
 
 	& div:first-of-type {
 		dd {
@@ -25,6 +27,6 @@
 
 .projectActions {
 	display: flex;
-	align-items: center;
 	gap: 2rem;
+	align-items: center;
 }
