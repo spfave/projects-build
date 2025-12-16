@@ -43,7 +43,7 @@ export default function ProjectEditRoute() {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
-	async function handelUpdateProject(evt: React.FormEvent<HTMLFormElement>) {
+	async function handleUpdateProject(evt: React.FormEvent<HTMLFormElement>) {
 		evt.preventDefault();
 
 		const formData = new FormData(evt.currentTarget);
@@ -84,7 +84,7 @@ export default function ProjectEditRoute() {
 			<h2>Edit Project</h2>
 			<form
 				ref={refForm}
-				onSubmit={handelUpdateProject}
+				onSubmit={handleUpdateProject}
 				noValidate={isHydrated}
 				aria-invalid={errAttrForm?.hasErrors}
 				aria-describedby={errAttrForm?.id}

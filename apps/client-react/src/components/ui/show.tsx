@@ -4,18 +4,18 @@ import type * as React from "react";
 // https://react.dev/reference/react/cloneElement#passing-data-with-a-render-prop
 // https://github.com/romac/react-if/tree/master
 // https://docs.solidjs.com/reference/components/show
-type ShowBaseProps<T> = {
+interface ShowBaseProps<T> {
 	when: T | false | null | undefined;
 	fallback?: React.ReactNode;
-};
-type ShowPropsWithChildren<T> = ShowBaseProps<T> & {
+}
+interface ShowPropsWithChildren<T> extends ShowBaseProps<T> {
 	children: React.ReactNode | ((item: T) => React.JSX.Element);
 	display?: never;
-};
-type ShowPropsWithDisplay<T> = ShowBaseProps<T> & {
+}
+interface ShowPropsWithDisplay<T> extends ShowBaseProps<T> {
 	children?: never;
 	display: React.ReactNode | ((item: T) => React.JSX.Element);
-};
+}
 type ShowProps<T> = ShowPropsWithChildren<T> | ShowPropsWithDisplay<T>;
 
 /**

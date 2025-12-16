@@ -34,7 +34,7 @@ async function fetchHttpStatuses() {
 	httpStatuses.sort((s1, s2) => s1.code - s2.code);
 
 	log("📝 Writing HTTP status data to json file");
-	const httpStatusesJSON = JSON.stringify(httpStatuses, null, 2);
+	const httpStatusesJSON = JSON.stringify(httpStatuses, null, "\t");
 	writeFileSync(filePath, httpStatusesJSON, { flag: "w" });
 
 	log(`✅ Successfully generated ${filePath}`);

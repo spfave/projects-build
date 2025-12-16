@@ -10,12 +10,12 @@ import type { RecordStr } from "./aliases.ts";
 declare const brand: unique symbol;
 export type Brand<T, TBrand> = T & { [brand]: TBrand };
 
-// Ref: https://x.com/mattpocockuk/status/1822917967316676787
-export type StringOrOptions<T extends string> = T | (string & {});
-
 export type Maybe<T> = T | null | undefined;
 
 export type Pretty<T> = { [K in keyof T]: T[K] } & {};
+
+// Ref: https://x.com/mattpocockuk/status/1822917967316676787
+export type StringOrOptions<T extends string> = T | (string & {});
 
 // #endregion
 

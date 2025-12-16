@@ -5,19 +5,19 @@ import type { AsyncStatus } from "~/hooks/use-async";
 // Ref: Switch Component
 // https://github.com/romac/react-if/tree/master
 // https://docs.solidjs.com/reference/components/switch-and-match
-type SwitchBaseProps = {
+interface SwitchBaseProps {
 	fallback?: React.ReactNode;
-};
-// type SwitchPropsWithChildren = SwitchBaseProps & {
+}
+// interface SwitchPropsWithChildren extends SwitchBaseProps {
 // 	children: React.ReactNode;
 // 	state?: never;
 // 	display?: never;
 // };
-type SwitchPropsWithDisplay<TState extends string> = SwitchBaseProps & {
+interface SwitchPropsWithDisplay<TState extends string> extends SwitchBaseProps {
 	// children?: never;
 	state: TState;
 	display: Record<TState, React.ReactNode>;
-};
+}
 type SwitchProps<TState extends string> =
 	// | SwitchPropsWithChildren
 	SwitchPropsWithDisplay<TState>;

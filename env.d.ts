@@ -6,6 +6,7 @@ declare namespace NodeJS {
 
 		PORT: number;
 
+		VITE_URL_API: string;
 		VITE_URL_API_JSON_SERVER: string;
 		VITE_URL_API_HONO: string;
 		VITE_URL_API_GO: string;

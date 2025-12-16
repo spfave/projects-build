@@ -77,8 +77,8 @@ export function getErrorMessage(
 // Ref: https://twitter.com/mattpocockuk/status/1633064377518628866
 export function makeSafe<TArgs extends unknown[], TReturn>(
 	func: (...args: TArgs) => TReturn,
-	onCatch = (err: unknown) => {},
-	onFinally = () => {}
+	onCatch = (_err: unknown): void => {},
+	onFinally = (): void => {}
 ) {
 	return (...args: TArgs) => {
 		try {

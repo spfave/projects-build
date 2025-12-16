@@ -70,10 +70,10 @@ export default function GeneralErrorFallback(props: GeneralErrorFallbackProps) {
 
 	if (error instanceof HttpResponseError) {
 		return (
-			// biome-ignore format:
+			// biome-ignore format: single line per case
 			httpResponseErrorHandlers?.[error.context.status]?.({ error, params })
-			?? defaultHttpResponseErrorHandler?.({ error, params }) 
-			?? <DefaultHttpResponseErrorFallback error={error} />
+				?? defaultHttpResponseErrorHandler?.({ error, params }) 
+				?? <DefaultHttpResponseErrorFallback error={error} />
 		);
 	}
 

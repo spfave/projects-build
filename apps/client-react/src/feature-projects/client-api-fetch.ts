@@ -4,11 +4,14 @@ import {
 	FetchResponseError,
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
+import { wait } from "@projectsbuild/library/utils";
 
-const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
-const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
+// const URL_API_JSON_SERVER = import.meta.env.VITE_URL_API_JSON_SERVER;
+// const URL_API_HONO = `${import.meta.env.VITE_URL_API_HONO}/api/v1`;
+// const URL_API_GO = `${import.meta.env.VITE_URL_API_GO}/api/v1`; // Use full path for direct fetch calls, requires CORS config on the server
+// const URL_API_GO = `/api/v1`; // Use relative path for vite dev server proxy
 
-const urlApi = URL_API_HONO;
+const urlApi = import.meta.env.VITE_URL_API;
 
 export async function getProjects() {
 	// fetch can error: network connection failure
@@ -25,6 +28,7 @@ export async function getProjects() {
 
 	// json parsing can error: SyntaxError
 	const projects = (await res.json()) as Project[];
+	await wait(500);
 	return projects;
 }
 
@@ -38,6 +42,7 @@ export async function getProjectById(id: string) {
 	if (!res.ok) throw new FetchResponseError("Fetch response not ok for getProjectById");
 
 	const project = (await res.json()) as Project;
+	await wait(500);
 	return project;
 }
 
@@ -48,6 +53,7 @@ export async function createProject(project: ProjectInput) {
 	});
 
 	const newProject = (await res.json()) as Project;
+	await wait(500);
 	return newProject;
 }
 
@@ -63,14 +69,16 @@ export async function updateProject(project: Project) {
 	if (!res.ok) throw new FetchResponseError("Fetch response not ok for updateProject");
 
 	const updatedProject = (await res.json()) as Project;
+	await wait(500);
 	return updatedProject;
 }
 
-export async function deleteProjectById(id: string) {
+export async function deleteProject(id: string) {
 	const res = await fetch(`${urlApi}/projects/${id}`, {
 		method: "DELETE",
 	});
 
 	const deletedProject = (await res.json()) as Project;
+	await wait(500);
 	return deletedProject;
 }

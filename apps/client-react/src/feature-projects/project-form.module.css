@@ -1,3 +1,35 @@
+.formFlexGroup {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+
+	> div {
+		flex: 1;
+		min-width: 25ch;
+	}
+}
+.formColGroup {
+	/* Def: css auto-fill grid with max number of columns  */
+	/* Ref: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns */
+	--grid-col-max-num: 2;
+	--grid-col-gap: 1rem;
+	--grid-col-min-width: 25ch;
+
+	/* calc values */
+	--gap-count: calc(var(--grid-col-max-num) - 1);
+	--total-gap-width: calc(var(--gap-count) * var(--grid-col-gap));
+	--grid-item-max-width: calc((100% - var(--total-gap-width)) / var(--grid-col-max-num));
+
+	/* grid */
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fill,
+		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
+	);
+	row-gap: 0.5rem;
+	column-gap: var(--grid-col-gap);
+}
+
 .projectForm {
 	display: grid;
 	gap: 1rem;
@@ -26,14 +58,14 @@
 
 		fieldset {
 			> div {
-				height: 27px;
 				display: flex;
 				gap: 2rem;
+				height: 27px;
 
 				> span {
 					display: flex;
-					align-items: stretch;
 					gap: 0.5rem;
+					align-items: stretch;
 				}
 			}
 		}
@@ -51,42 +83,10 @@
 	}
 }
 
-.formFlexGroup {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-
-	> div {
-		min-width: 25ch;
-		flex: 1;
-	}
-}
-.formColGroup {
-	/* Def: css auto-fill grid with max number of columns  */
-	/* Ref: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns */
-	--grid-col-max-num: 2;
-	--grid-col-gap: 1rem;
-	--grid-col-min-width: 25ch;
-
-	/* calc values */
-	--gap-count: calc(var(--grid-col-max-num) - 1);
-	--total-gap-width: calc(var(--gap-count) * var(--grid-col-gap));
-	--grid-item-max-width: calc((100% - var(--total-gap-width)) / var(--grid-col-max-num));
-
-	/* grid */
-	display: grid;
-	grid-template-columns: repeat(
-		auto-fill,
-		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
-	);
-	column-gap: var(--grid-col-gap);
-	row-gap: 0.5rem;
-}
-
 .formActions {
 	display: flex;
-	align-items: stretch;
 	gap: 2rem;
+	align-items: stretch;
 
 	a,
 	button {

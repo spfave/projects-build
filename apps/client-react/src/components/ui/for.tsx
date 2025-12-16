@@ -3,19 +3,19 @@ import * as React from "react";
 // Ref: For/List Component
 // https://docs.solidjs.com/reference/components/for
 // https://www.youtube.com/watch?v=5s6dIkrv6Y4&list=PLL7pT-2dDRHgjTlmQAdnLpx9LxqWTGeO5
-type ForBaseProps<TItem> = {
+interface ForBaseProps<TItem> {
 	array: TItem[] | false | null | undefined;
 	getKey: (item: TItem) => React.Key;
 	fallback?: React.ReactNode;
-};
-type ForPropsWithChildren<TItem> = ForBaseProps<TItem> & {
+}
+interface ForPropsWithChildren<TItem> extends ForBaseProps<TItem> {
 	children: (item: TItem) => React.JSX.Element;
 	display?: never;
-};
-type ForPropsWithDisplay<TItem> = ForBaseProps<TItem> & {
+}
+interface ForPropsWithDisplay<TItem> extends ForBaseProps<TItem> {
 	children?: never;
 	display: (item: TItem) => React.JSX.Element;
-};
+}
 type ForProps<TItem> = ForPropsWithChildren<TItem> | ForPropsWithDisplay<TItem>;
 
 /**

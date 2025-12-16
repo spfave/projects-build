@@ -39,20 +39,22 @@ try {
 }
 
 // Audit
-// const [tmp1] = await db
-// 	.insert(schema.audit)
-// 	.values({
-// 		text: `Init: ${Math.floor(Math.random() * 10)}`,
-// 	})
-// 	.returning();
-// console.log("\ntmp1: ", tmp1);
+const [tmp1] = await db
+	.insert(schema.audit)
+	.values({
+		text: `Init: ${Math.floor(Math.random() * 10)}`,
+	})
+	.returning();
+console.log("\ntmp1: ", tmp1);
 
-// await new Promise((resolve) => setTimeout(resolve, 1500));
-// const tmp2 = await db
-// 	.update(schema.audit)
-// 	.set({
-// 		text: `Mod: ${Math.floor(Math.random() * 10)}`,
-// 	})
-// 	.where(eq(schema.audit.id, tmp1.id))
-// 	.returning();
-// console.log("\ntmp2: ", tmp2);
+await new Promise((resolve) => setTimeout(resolve, 1500));
+if (tmp1) {
+	const tmp2 = await db
+		.update(schema.audit)
+		.set({
+			text: `Mod: ${Math.floor(Math.random() * 10)}`,
+		})
+		.where(eq(schema.audit.id, tmp1.id))
+		.returning();
+	console.log("\ntmp2: ", tmp2);
+}

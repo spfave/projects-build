@@ -1,10 +1,10 @@
 import { validator } from "hono/validator";
 
-import { defaultRouter } from "#lib/init.ts";
 import { transformProject, validateProject } from "@projectsbuild/core/projects";
 import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
 import { HttpStatus } from "@projectsbuild/library/constants";
+import { defaultRouter } from "#lib/init.ts";
 
 const api = defaultRouter().basePath("/v1/projects");
 
