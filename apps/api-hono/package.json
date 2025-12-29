@@ -25,8 +25,8 @@
 		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/db-drizzle": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"hono": "^4.10.8",
-		"hono-rate-limiter": "^0.4.2"
+		"hono": "^4.11.3",
+		"hono-rate-limiter": "^0.5.2"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
