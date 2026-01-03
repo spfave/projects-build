@@ -6,7 +6,8 @@
 		"paths": {
 			"~/*": ["./*"]
 		},
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"types": ["vite/client"]
 	},
 	"files": ["../../env.d.ts"],
 	"include": ["src"],
