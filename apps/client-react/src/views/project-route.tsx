@@ -116,24 +116,27 @@ function ProjectErrorFallback(props: ProjectErrorFallbackProps) {
 	return (
 		<GeneralErrorFallback
 			error={props.error}
+			// note: for custom http response status code error ui
 			httpResponseErrorHandlers={{
 				404: ({ params }) => (
-					<div
-						style={{
-							background: "var(--color-danger)",
-							color: "white",
-							fontWeight: "bold",
-							display: "flex",
-							justifyContent: "center",
-							padding: "1rem",
-						}}
-					>
-						<p>No project with id "{params.id}" could be found</p>
+					<div className={styles.error}>
+						<p>Project with id "{params.id}" could not be found</p>
+					</div>
+				),
+				422: ({ error, params }) => (
+					<div className={styles.error}>
+						{/* ui defined message */}
+						<p>Invalid project id: "{params.id}"</p>
+						{/* error defined message (server or api client defined) */}
+						<p>{error.context.message}</p>{" "}
 					</div>
 				),
 			}}
-			defaultHttpResponseErrorHandler={() => <p>Project could not be found</p>}
+			// note: to override default http response error ui
+			defaultHttpResponseErrorHandler={() => <p>Failed to load project</p>}
+			// note: for custom unexpected error ui
 			unexpectedErrorHandler={<p>Oh-no an error occurred, sorry</p>}
+			// else uses DefaultHttpResponseErrorFallback or DefaultErrorFallback
 		/>
 	);
 }

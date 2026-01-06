@@ -30,3 +30,12 @@
 	gap: 2rem;
 	align-items: center;
 }
+
+.error {
+	padding: 1rem;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+	background: var(--color-danger);
+	border-radius: 0.5rem;
+}

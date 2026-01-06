@@ -38,17 +38,22 @@ export async function getProjects() {
 }
 
 export async function getProjectById(id: string) {
+	await wait(500);
+
 	const res = await fetch(`${urlApi}/projects/${id}`).catch((err) => {
 		throw new FetchError("Fetch failed for getProjectById", { cause: err });
 	});
 
-	if (res.status >= 400)
-		throw new HttpResponseError(res, `Failed to get project with id: ${id}`);
+	const js = await res.json();
+	if (res.status >= 400) {
+		const msg = getErrorMessage(js, {
+			fallbackMessage: `Failed to get project with id: ${id}`,
+		});
+		throw new HttpResponseError(res, msg);
+	}
 	if (!res.ok) throw new FetchResponseError("Fetch response not ok for getProjectById");
 
-	const project = (await res.json()) as Project;
-	await wait(500);
-	return project;
+	return js as Project;
 }
 
 export async function createProject(project: ProjectInput) {
