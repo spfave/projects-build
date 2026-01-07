@@ -6,7 +6,7 @@ import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorBoundary from "~/components/ui/error-boundary";
 import ProjectCreateRoute from "~/views/project-create-route";
 import ProjectEditRoute from "~/views/project-edit-route";
-import ProjectRoute from "~/views/project-route";
+import ProjectRoute, { ProjectErrorBoundary } from "~/views/project-route";
 import ProjectsRoute from "~/views/projects-route";
 import Root from "~/views/root";
 
@@ -17,7 +17,7 @@ const router = createBrowserRouter(
 		{
 			path: "/",
 			element: <Root />,
-			// errorElement: <div>An Error Occurred</div>,
+			errorElement: <div>An Error Occurred</div>,
 			children: [
 				{ index: true, element: <Navigate to="projects" /> },
 				{
@@ -33,7 +33,11 @@ const router = createBrowserRouter(
 							element: <p>Create or select a project to get started</p>,
 						},
 						{ path: "create", element: <ProjectCreateRoute /> },
-						{ path: ":id", element: <ProjectRoute /> },
+						{
+							path: ":id",
+							element: <ProjectRoute />,
+							ErrorBoundary: ProjectErrorBoundary, // note: will catch render and in-transition thrown errors, but not async thrown errors outside a transition
+						},
 						{ path: ":id/edit", element: <ProjectEditRoute /> },
 					],
 				},
@@ -58,5 +62,12 @@ const router = createBrowserRouter(
 );
 
 export default function App() {
-	return <RouterProvider router={router} />;
+	return (
+		<RouterProvider
+			router={router}
+			onError={(error, { errorInfo: info }) => {
+				console.error("Router error:", error, info);
+			}}
+		/>
+	);
 }

@@ -1,4 +1,4 @@
-import type { Project, ProjectInput } from "@projectsbuild/core/projects";
+import type { Project, ProjectId, ProjectInput } from "@projectsbuild/core/projects";
 import {
 	FetchError,
 	FetchResponseError,
@@ -25,6 +25,8 @@ export async function getProjects() {
 	const js = await res.json();
 
 	// response 'status' or 'ok' property can indicate an error
+	// Possible HTTP errors:
+	// 500 internal server error: exception (unknown error, db error)
 	if (res.status >= 400) {
 		const msg = getErrorMessage(js, {
 			fallbackMessage: "Failed to get projects",
@@ -37,13 +39,18 @@ export async function getProjects() {
 	return js as Project[];
 }
 
-export async function getProjectById(id: string) {
+export async function getProjectById(id: ProjectId) {
 	await wait(500);
 
 	const res = await fetch(`${urlApi}/projects/${id}`).catch((err) => {
 		throw new FetchError("Fetch failed for getProjectById", { cause: err });
 	});
 
+	// Possible HTTP errors:
+	// 400 bad request: malformed input (unparsable/missing id)
+	// 422 unprocessable entity: validation error (invalid id)
+	// 404 not found
+	// 500 internal server error: exception (unknown error, db error)
 	const js = await res.json();
 	if (res.status >= 400) {
 		const msg = getErrorMessage(js, {
@@ -83,12 +90,26 @@ export async function updateProject(project: Project) {
 	return updatedProject;
 }
 
-export async function deleteProject(id: string) {
+export async function deleteProject(id: ProjectId) {
+	await wait(500);
+
 	const res = await fetch(`${urlApi}/projects/${id}`, {
 		method: "DELETE",
-	});
+	}); //.catch();
 
-	const deletedProject = (await res.json()) as Project;
-	await wait(500);
-	return deletedProject;
+	// Possible HTTP errors:
+	// 400 bad request: malformed input (unparsable/missing id)
+	// 422 unprocessable entity: validation error (invalid id)
+	// 404 not found: nonexistent id
+	// 500 internal server error: exception (db error)
+	const js = await res.json();
+	if (res.status >= 400) {
+		const msg = getErrorMessage(js, {
+			fallbackMessage: `Failed to delete project`,
+		});
+		throw new HttpResponseError(res, msg);
+	}
+	// if (!res.ok)
+
+	return js as Project;
 }

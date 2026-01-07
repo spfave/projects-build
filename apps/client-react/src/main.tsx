@@ -14,8 +14,8 @@ import "~/styles/index.css";
 // Ref: https://react.dev/reference/react-dom/client/createRoot#error-logging-in-production
 const container = document.getElementById("root") as HTMLDivElement;
 const root = ReactDOM.createRoot(container, {
-	onCaughtError: (error, info) => console.error("Caught error:", error, info),
-	onUncaughtError: (error, info) => console.error("Uncaught error:", error, info),
+	onCaughtError: (error, info) => console.error("Root caught error:", error, info),
+	onUncaughtError: (error, info) => console.error("Root uncaught error:", error, info),
 });
 root.render(
 	<React.StrictMode>

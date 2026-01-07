@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams, useRouteError } from "react-router";
 
 import type { Project } from "@projectsbuild/core/projects";
 import { ymdPretty } from "@projectsbuild/library/utils";
@@ -28,7 +28,7 @@ export default function ProjectRoute() {
 		startTransition(async () => {
 			if (!params.id) return;
 
-			await client.deleteProject(params.id);
+			await client.deleteProject(params.id); // note: errors thrown in transitions are caught by error boundary
 			fetchProjects();
 			navigate("/projects");
 		});
@@ -111,6 +111,11 @@ export default function ProjectRoute() {
 	);
 }
 
+export function ProjectErrorBoundary() {
+	const error = useRouteError();
+	return <ProjectErrorFallback error={error} />;
+}
+
 type ProjectErrorFallbackProps = { error: unknown };
 function ProjectErrorFallback(props: ProjectErrorFallbackProps) {
 	return (
@@ -128,12 +133,17 @@ function ProjectErrorFallback(props: ProjectErrorFallbackProps) {
 						{/* ui defined message */}
 						<p>Invalid project id: "{params.id}"</p>
 						{/* error defined message (server or api client defined) */}
-						<p>{error.context.message}</p>{" "}
+						<p>{error.context.message}</p>
 					</div>
 				),
+				// 500: () => (
+				// 	<div className={styles.error}>
+				// 		<p>Internal server error occurred</p>
+				// 	</div>
+				// ),
 			}}
 			// note: to override default http response error ui
-			defaultHttpResponseErrorHandler={() => <p>Failed to load project</p>}
+			defaultHttpResponseErrorHandler={() => <p>Project request failed</p>}
 			// note: for custom unexpected error ui
 			unexpectedErrorHandler={<p>Oh-no an error occurred, sorry</p>}
 			// else uses DefaultHttpResponseErrorFallback or DefaultErrorFallback
