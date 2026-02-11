@@ -58,11 +58,11 @@ export default function ProjectRoute() {
 				</div>
 				<div>
 					<dt>Description</dt>
-					<dd>{project.description || "--"}</dd>
+					<dd style={{ whiteSpace: "pre-wrap" }}>{project.description || "--"}</dd>
 				</div>
 				<div>
 					<dt>Notes</dt>
-					<dd>{project.notes || "--"}</dd>
+					<dd style={{ whiteSpace: "pre-wrap" }}>{project.notes || "--"}</dd>
 				</div>
 				<Show when={project.status === "complete" ? project : false}>
 					{(project) => (
