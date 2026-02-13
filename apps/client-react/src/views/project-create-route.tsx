@@ -4,22 +4,31 @@ import { Link, useNavigate } from "react-router";
 import type {
 	ProjectErrors,
 	ProjectFields,
+	ProjectInput,
 	ProjectStatus,
 } from "@projectsbuild/core/projects";
 import { transformProject, validateProject } from "@projectsbuild/core/projects";
+import { HttpResponseError } from "@projectsbuild/library/errors";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import ErrorList from "~/components/error-list";
+import Show from "~/components/ui/show";
 import * as client from "~/feature-projects/client-api-fetch";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
+import { useRerender } from "~/hooks/use-rerender";
 import { useProjectsContext } from "./projects-route";
 
 import styles from "./project-create-route.module.css";
 
+type ProjectCreateActionState = {
+	data?: ProjectInput | null;
+	projectErrors?: ProjectErrors | null;
+	error?: string | null;
+};
+
 export default function ProjectCreateRoute() {
 	const refForm = React.useRef<HTMLFormElement>(null);
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
-	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
 
 	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
 		setProjectStatus(evt.target.value as ProjectStatus);
@@ -27,29 +36,49 @@ export default function ProjectCreateRoute() {
 
 	const { fetchProjects } = useProjectsContext();
 	const navigate = useNavigate();
-	const [state, createProjectAction, isPending] = React.useActionState(
 		// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s
-		async (prevState: unknown, formData: FormData) => {
-			const formObj = Object.fromEntries(formData.entries());
+	const [state, createProjectAction, isPending] = React.useActionState<
+		ProjectCreateActionState,
+		FormData
+	>(async (_prevState, formData) => {
+		const formObj = Object.fromEntries(formData);
 			const validation = validateProject(formObj);
-			if (!validation.success) return setProjectErrors(validation.errors);
-			if (projectErrors) setProjectErrors(null);
+		if (!validation.success)
+			return {
+				data: formObj as ProjectInput,
+				error: "Invalid project",
+				projectErrors: validation.errors,
+			};
 
 			const projectPayload = transformProject(formObj as ProjectFields);
+		try {
 			const project = await client.createProject(projectPayload);
-
 			fetchProjects();
 			navigate(`/projects/${project.id}`);
-		},
-		null
-	);
+			return {};
+		} catch (error) {
+			if (error instanceof HttpResponseError && error.context.status === 422) {
+				// biome-ignore lint/suspicious/noExplicitAny: access <unknown> error.cause
+				const errors = (error.cause as any)?.data?.errors as ProjectErrors | undefined;
+				return { data: projectPayload, error: error.message, projectErrors: errors }; // data: formData, formObj, projectPayload
+			} else if (error instanceof Error) {
+				return { data: projectPayload, error: error.message };
+			} else throw error;
+		}
+	}, {});
 
+	const rerender = useRerender();
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		setProjectStatus(undefined);
-		setProjectErrors(null);
+		// refForm.current?.reset(); // ?? needed
+		state.data = null; // Note: hack to reset useActionState state variable: clears input defaultValues, top-level error message, and input field errors
+		state.error = null;
+		state.projectErrors = null;
+		rerender(); // Note: needed in case project status is unset
 	}
 
 	const { isHydrated } = useHydrated();
+	const projectErrors = state?.projectErrors;
 	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
@@ -58,6 +87,9 @@ export default function ProjectCreateRoute() {
 	return (
 		<section className={styles.projectCreate}>
 			<h2>New Project</h2>
+			<Show when={state.error}>
+				<p className={styles.error}>{state.error}</p>
+			</Show>
 			<form
 				ref={refForm}
 				action={createProjectAction}
@@ -76,6 +108,7 @@ export default function ProjectCreateRoute() {
 							placeholder="project title"
 							required
 							minLength={2}
+							defaultValue={state.data?.name ?? ""}
 							aria-invalid={errAttrFields?.name.hasErrors}
 							aria-describedby={errAttrFields?.name.id}
 						/>
@@ -90,6 +123,7 @@ export default function ProjectCreateRoute() {
 							type="url"
 							name="link"
 							placeholder="image or site url"
+							defaultValue={state.data?.link ?? ""}
 							aria-invalid={errAttrFields?.link.hasErrors}
 							aria-describedby={errAttrFields?.link.id}
 						/>
@@ -104,6 +138,7 @@ export default function ProjectCreateRoute() {
 						id="description"
 						name="description"
 						placeholder="add description..."
+						defaultValue={state.data?.description ?? ""}
 						aria-invalid={errAttrFields?.description.hasErrors}
 						aria-describedby={errAttrFields?.description.id}
 					/>
@@ -120,6 +155,7 @@ export default function ProjectCreateRoute() {
 						id="notes"
 						name="notes"
 						placeholder="add notes..."
+						defaultValue={state.data?.notes ?? ""}
 						aria-invalid={errAttrFields?.notes.hasErrors}
 						aria-describedby={errAttrFields?.notes.id}
 					/>
@@ -136,11 +172,12 @@ export default function ProjectCreateRoute() {
 							required
 							value={projectStatus}
 							onChange={handleSelectProjectStatus}
+							// defaultValue={state.data?.status ?? ""} // note: does not work for controlled select
 							aria-invalid={errAttrFields?.status.hasErrors}
 							aria-describedby={errAttrFields?.status.id}
 						>
 							<option hidden value="">
-								Select Status
+								select status
 							</option>
 							<option value="planning">Planning</option>
 							<option value="building">Building</option>
@@ -159,6 +196,11 @@ export default function ProjectCreateRoute() {
 								name="dateCompleted"
 								required
 								max={ymdToday()}
+							defaultValue={
+									state.data?.status === "complete"
+										? (state.data?.dateCompleted ?? "")
+										: ""
+							}
 								aria-invalid={errAttrFields?.dateCompleted.hasErrors}
 								aria-describedby={errAttrFields?.dateCompleted.id}
 							/>
@@ -184,6 +226,8 @@ export default function ProjectCreateRoute() {
 								required
 								min={1}
 								max={5}
+							// @ts-expect-error: optional chaining check over type narrowing
+							defaultValue={state.data?.rating ?? ""}
 								aria-invalid={errAttrFields?.rating.hasErrors}
 								aria-describedby={errAttrFields?.rating.id}
 							/>
@@ -205,6 +249,8 @@ export default function ProjectCreateRoute() {
 											name="recommend"
 											required
 											value="true"
+										// @ts-expect-error: optional chaining check over type narrowing
+										defaultChecked={state.data?.recommend === true}
 										/>
 										<label htmlFor="recommend-yes">Yes</label>
 									</span>
@@ -215,6 +261,8 @@ export default function ProjectCreateRoute() {
 											name="recommend"
 											required
 											value="false"
+										// @ts-expect-error: optional chaining check over type narrowing
+										defaultChecked={state.data?.recommend === false}
 										/>
 										<label htmlFor="recommend-no">No</label>
 									</span>
@@ -235,7 +283,7 @@ export default function ProjectCreateRoute() {
 
 				<div className={styles.formActions}>
 					<button className="action primary" type="submit" disabled={isPending}>
-						Create Project
+						{isPending ? "Creating..." : "Create Project"}
 					</button>
 					<button
 						className="action danger outline"

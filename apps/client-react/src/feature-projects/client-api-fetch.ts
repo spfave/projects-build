@@ -64,14 +64,25 @@ export async function getProjectById(id: ProjectId) {
 }
 
 export async function createProject(project: ProjectInput) {
+	await wait(500);
+
 	const res = await fetch(`${urlApi}/projects`, {
 		method: "POST",
 		body: JSON.stringify(project),
-	});
+	}); //.catch();
 
-	const newProject = (await res.json()) as Project;
-	await wait(500);
-	return newProject;
+	// Possible HTTP errors:
+	// 400 bad request: malformed input (invalid json)
+	// 422 unprocessable entity: validation error (invalid input)
+	// 500 internal server error: exception (unknown error, db error)
+	const js = await res.json();
+	if (res.status >= 400) {
+		const msg = getErrorMessage(js, { fallbackMessage: "Failed to create project" });
+		throw new HttpResponseError(res, msg, { cause: js });
+	}
+	// if (!res.ok) throw new FetchResponseError("Fetch response not ok for createProject");
+
+	return js as Project;
 }
 
 export async function updateProject(project: Project) {

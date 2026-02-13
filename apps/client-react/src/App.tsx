@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createBrowserRouter, Navigate } from "react-router";
+import { createBrowserRouter, Navigate, useRouteError } from "react-router";
 import { RouterProvider } from "react-router/dom";
 
 import GeneralErrorFallback from "~/components/error-fallback";
@@ -32,7 +32,11 @@ const router = createBrowserRouter(
 							index: true,
 							element: <p>Create or select a project to get started</p>,
 						},
-						{ path: "create", element: <ProjectCreateRoute /> },
+						{
+							path: "create",
+							element: <ProjectCreateRoute />,
+							ErrorBoundary: () => <GeneralErrorFallback error={useRouteError()} />,
+						},
 						{
 							path: ":id",
 							element: <ProjectRoute />,

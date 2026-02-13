@@ -1,3 +1,7 @@
+.error {
+	color: var(--color-danger);
+}
+
 .formFlexGroup {
 	display: flex;
 	flex-wrap: wrap;
