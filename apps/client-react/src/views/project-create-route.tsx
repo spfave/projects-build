@@ -28,11 +28,6 @@ type ProjectCreateActionState = {
 
 export default function ProjectCreateRoute() {
 	const refForm = React.useRef<HTMLFormElement>(null);
-	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
-
-	function handleSelectProjectStatus(evt: React.ChangeEvent<HTMLSelectElement>) {
-		setProjectStatus(evt.target.value as ProjectStatus);
-	}
 
 	const { fetchProjects } = useProjectsContext();
 	const navigate = useNavigate();
@@ -42,6 +37,7 @@ export default function ProjectCreateRoute() {
 		FormData
 	>(async (_prevState, formData) => {
 		const formObj = Object.fromEntries(formData) as ProjectFields;
+		console.info(`formObj: `, formObj); // LOG
 		const validation = validateProject(formObj);
 		if (!validation.success)
 			return {
@@ -51,6 +47,7 @@ export default function ProjectCreateRoute() {
 			};
 
 		const projectPayload = transformProject(formObj);
+		console.info(`projectPayload: `, projectPayload); // LOG
 		try {
 			const project = await client.createProject(projectPayload);
 			fetchProjects();
@@ -69,8 +66,7 @@ export default function ProjectCreateRoute() {
 
 	const rerender = useRerender();
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-		setProjectStatus(undefined);
-		// refForm.current?.reset(); // ?? needed
+		refForm.current?.reset(); // ?? needed
 		state.data = null; // Note: hack to reset useActionState state variable: clears defaultValues on inputs, top-level error message, and input field errors
 		state.error = null;
 		state.projectErrors = null;
@@ -167,12 +163,11 @@ export default function ProjectCreateRoute() {
 					<div>
 						<label htmlFor="status">Status</label>
 						<select
+							key={state.data?.status} // note: forces remount so defaultValue updates when status changes, uncontrolled select ignores new defaultValue otherwise
 							id="status"
 							name="status"
 							required
-							value={projectStatus}
-							onChange={handleSelectProjectStatus}
-							// defaultValue={state.data?.status ?? ""} // note: does not work for controlled select
+							defaultValue={state.data?.status ?? ""} // note: does not work for controlled select
 							aria-invalid={errAttrFields?.status.hasErrors}
 							aria-describedby={errAttrFields?.status.id}
 						>
@@ -187,97 +182,86 @@ export default function ProjectCreateRoute() {
 							<ErrorList id={errAttrFields?.status.id} errors={errFields?.status} />
 						</div>
 					</div>
-					{projectStatus === "complete" && (
+					<div className={styles.conditional}>
+						<label htmlFor="dateCompleted">Date completed</label>
+						<input
+							id="dateCompleted"
+							type="date"
+							name="dateCompleted"
+							required
+							max={ymdToday()}
+							defaultValue={
+								state.data?.status === "complete" ? state.data?.dateCompleted : undefined
+							}
+							aria-invalid={errAttrFields?.dateCompleted.hasErrors}
+							aria-describedby={errAttrFields?.dateCompleted.id}
+						/>
 						<div>
-							<label htmlFor="dateCompleted">Date completed</label>
-							<input
-								id="dateCompleted"
-								type="date"
-								name="dateCompleted"
-								required
-								max={ymdToday()}
-								// defaultValue={
-								// 	state.data?.status === "complete"
-								// 		? state.data?.dateCompleted
-								// 		: undefined
-								// }
-								defaultValue={state.data?.dateCompleted ?? ""} // temp
-								aria-invalid={errAttrFields?.dateCompleted.hasErrors}
-								aria-describedby={errAttrFields?.dateCompleted.id}
+							<ErrorList
+								id={errAttrFields?.dateCompleted.id}
+								errors={errFields?.dateCompleted}
 							/>
-							<div>
-								<ErrorList
-									id={errAttrFields?.dateCompleted.id}
-									errors={errFields?.dateCompleted}
-								/>
-							</div>
-						</div>
-					)}
-				</div>
-
-				{projectStatus === "complete" && (
-					<div className={styles.formFlexGroup}>
-						<div>
-							<label htmlFor="rating">Rating</label>
-							<input
-								id="rating"
-								type="number"
-								name="rating"
-								placeholder="value 1 through 5"
-								required
-								min={1}
-								max={5}
-								// @ts-expect-error: optional chaining check over type narrowing
-								defaultValue={state.data?.rating ?? ""}
-								aria-invalid={errAttrFields?.rating.hasErrors}
-								aria-describedby={errAttrFields?.rating.id}
-							/>
-							<div>
-								<ErrorList id={errAttrFields?.rating.id} errors={errFields?.rating} />
-							</div>
-						</div>
-						<div>
-							<fieldset
-								aria-invalid={errAttrFields?.rating.hasErrors}
-								aria-describedby={errAttrFields?.rating.id}
-							>
-								<legend>Would you recommend</legend>
-								<div>
-									<span>
-										<input
-											id="recommend-yes"
-											type="radio"
-											name="recommend"
-											required
-											value="true"
-											// @ts-expect-error: optional chaining check over type narrowing
-											defaultChecked={state.data?.recommend === "true"}
-										/>
-										<label htmlFor="recommend-yes">Yes</label>
-									</span>
-									<span>
-										<input
-											id="recommend-no"
-											type="radio"
-											name="recommend"
-											required
-											value="false"
-											// @ts-expect-error: optional chaining check over type narrowing
-											defaultChecked={state.data?.recommend === "false"}
-										/>
-										<label htmlFor="recommend-no">No</label>
-									</span>
-								</div>
-							</fieldset>
-							<div>
-								<ErrorList
-									id={errAttrFields?.recommend.id}
-									errors={errFields?.recommend}
-								/>
-							</div>
 						</div>
 					</div>
-				)}
+				</div>
+				<div className={styles.formFlexGroup}>
+					<div className={styles.conditional}>
+						<label htmlFor="rating">Rating</label>
+						<input
+							id="rating"
+							type="number"
+							name="rating"
+							placeholder="value 1 through 5"
+							required
+							min={1}
+							max={5}
+							// @ts-expect-error: optional chaining check over type narrowing
+							defaultValue={state.data?.rating ?? ""}
+							aria-invalid={errAttrFields?.rating.hasErrors}
+							aria-describedby={errAttrFields?.rating.id}
+						/>
+						<div>
+							<ErrorList id={errAttrFields?.rating.id} errors={errFields?.rating} />
+						</div>
+					</div>
+					<div className={styles.conditional}>
+						<fieldset
+							aria-invalid={errAttrFields?.rating.hasErrors}
+							aria-describedby={errAttrFields?.rating.id}
+						>
+							<legend>Would you recommend</legend>
+							<div>
+								<span>
+									<input
+										id="recommend-yes"
+										type="radio"
+										name="recommend"
+										required
+										value="true"
+										// @ts-expect-error: optional chaining check over type narrowing
+										defaultChecked={state.data?.recommend === "true"}
+									/>
+									<label htmlFor="recommend-yes">Yes</label>
+								</span>
+								<span>
+									<input
+										id="recommend-no"
+										type="radio"
+										name="recommend"
+										required
+										value="false"
+										// @ts-expect-error: optional chaining check over type narrowing
+										defaultChecked={state.data?.recommend === "false"}
+									/>
+									<label htmlFor="recommend-no">No</label>
+								</span>
+							</div>
+						</fieldset>
+						<div>
+							<ErrorList id={errAttrFields?.recommend.id} errors={errFields?.recommend} />
+						</div>
+					</div>
+				</div>
 				<div className={styles.containerErrorList}>
 					<ErrorList id={errAttrForm?.id} errors={errForm} />
 				</div>

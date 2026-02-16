@@ -28,9 +28,9 @@
 	/* grid */
 	display: grid;
 	grid-template-columns: repeat(
-		auto-fill,
-		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
-	);
+			auto-fill,
+			minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
+		);
 	row-gap: var(--grid-row-gap);
 	column-gap: var(--grid-col-gap);
 }
@@ -124,6 +124,13 @@
 				padding: 0.25rem;
 				font-size: 0.9rem;
 			}
+		}
+
+		.conditional {
+			display: none;
+		}
+		&:has(select option[value="complete"]:checked) .conditional {
+			display: block;
 		}
 	}
 }
