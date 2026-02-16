@@ -21,7 +21,7 @@ import { useProjectsContext } from "./projects-route";
 import styles from "./project-create-route.module.css";
 
 type ProjectCreateActionState = {
-	data?: ProjectInput | null;
+	data?: ProjectFields | null;
 	projectErrors?: ProjectErrors | null;
 	error?: string | null;
 };
@@ -36,21 +36,21 @@ export default function ProjectCreateRoute() {
 
 	const { fetchProjects } = useProjectsContext();
 	const navigate = useNavigate();
-		// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s
+	// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s
 	const [state, createProjectAction, isPending] = React.useActionState<
 		ProjectCreateActionState,
 		FormData
 	>(async (_prevState, formData) => {
-		const formObj = Object.fromEntries(formData);
-			const validation = validateProject(formObj);
+		const formObj = Object.fromEntries(formData) as ProjectFields;
+		const validation = validateProject(formObj);
 		if (!validation.success)
 			return {
-				data: formObj as ProjectInput,
+				data: formObj,
 				error: "Invalid project",
 				projectErrors: validation.errors,
 			};
 
-			const projectPayload = transformProject(formObj as ProjectFields);
+		const projectPayload = transformProject(formObj);
 		try {
 			const project = await client.createProject(projectPayload);
 			fetchProjects();
@@ -60,9 +60,9 @@ export default function ProjectCreateRoute() {
 			if (error instanceof HttpResponseError && error.context.status === 422) {
 				// biome-ignore lint/suspicious/noExplicitAny: access <unknown> error.cause
 				const errors = (error.cause as any)?.data?.errors as ProjectErrors | undefined;
-				return { data: projectPayload, error: error.message, projectErrors: errors }; // data: formData, formObj, projectPayload
+				return { data: formObj, error: error.message, projectErrors: errors };
 			} else if (error instanceof Error) {
-				return { data: projectPayload, error: error.message };
+				return { data: formObj, error: error.message };
 			} else throw error;
 		}
 	}, {});
@@ -71,7 +71,7 @@ export default function ProjectCreateRoute() {
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		setProjectStatus(undefined);
 		// refForm.current?.reset(); // ?? needed
-		state.data = null; // Note: hack to reset useActionState state variable: clears input defaultValues, top-level error message, and input field errors
+		state.data = null; // Note: hack to reset useActionState state variable: clears defaultValues on inputs, top-level error message, and input field errors
 		state.error = null;
 		state.projectErrors = null;
 		rerender(); // Note: needed in case project status is unset
@@ -196,11 +196,12 @@ export default function ProjectCreateRoute() {
 								name="dateCompleted"
 								required
 								max={ymdToday()}
-							defaultValue={
-									state.data?.status === "complete"
-										? (state.data?.dateCompleted ?? "")
-										: ""
-							}
+								// defaultValue={
+								// 	state.data?.status === "complete"
+								// 		? state.data?.dateCompleted
+								// 		: undefined
+								// }
+								defaultValue={state.data?.dateCompleted ?? ""} // temp
 								aria-invalid={errAttrFields?.dateCompleted.hasErrors}
 								aria-describedby={errAttrFields?.dateCompleted.id}
 							/>
@@ -226,8 +227,8 @@ export default function ProjectCreateRoute() {
 								required
 								min={1}
 								max={5}
-							// @ts-expect-error: optional chaining check over type narrowing
-							defaultValue={state.data?.rating ?? ""}
+								// @ts-expect-error: optional chaining check over type narrowing
+								defaultValue={state.data?.rating ?? ""}
 								aria-invalid={errAttrFields?.rating.hasErrors}
 								aria-describedby={errAttrFields?.rating.id}
 							/>
@@ -249,8 +250,8 @@ export default function ProjectCreateRoute() {
 											name="recommend"
 											required
 											value="true"
-										// @ts-expect-error: optional chaining check over type narrowing
-										defaultChecked={state.data?.recommend === true}
+											// @ts-expect-error: optional chaining check over type narrowing
+											defaultChecked={state.data?.recommend === "true"}
 										/>
 										<label htmlFor="recommend-yes">Yes</label>
 									</span>
@@ -261,8 +262,8 @@ export default function ProjectCreateRoute() {
 											name="recommend"
 											required
 											value="false"
-										// @ts-expect-error: optional chaining check over type narrowing
-										defaultChecked={state.data?.recommend === false}
+											// @ts-expect-error: optional chaining check over type narrowing
+											defaultChecked={state.data?.recommend === "false"}
 										/>
 										<label htmlFor="recommend-no">No</label>
 									</span>
