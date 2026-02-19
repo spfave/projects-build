@@ -95,7 +95,7 @@ export default function ProjectCreateRoute() {
 	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
-	useFocusInvalid(refForm.current, Boolean(projectErrors)); // ?? Needs additional condition on hasErrors
+	useFocusInvalid(refForm.current, Boolean(projectErrors) && !isPending);
 
 	return (
 		<section className={styles.projectCreate}>
@@ -211,6 +211,7 @@ export default function ProjectCreateRoute() {
 							defaultValue={
 								state.form?.status === "complete" ? state.form?.dateCompleted : undefined
 							}
+							// disabled={refStatus.current?.value !== "complete"} // Note: doesn't work without a rerender
 							aria-invalid={errAttrFields?.dateCompleted.hasErrors}
 							aria-describedby={errAttrFields?.dateCompleted.id}
 						/>
@@ -243,10 +244,7 @@ export default function ProjectCreateRoute() {
 						</div>
 					</div>
 					<div className={styles.conditional}>
-						<fieldset
-							aria-invalid={errAttrFields?.rating.hasErrors}
-							aria-describedby={errAttrFields?.rating.id}
-						>
+						<fieldset aria-describedby={errAttrFields?.recommend.id}>
 							<legend>Would you recommend</legend>
 							<div>
 								<span>
@@ -258,6 +256,7 @@ export default function ProjectCreateRoute() {
 										value="true"
 										// @ts-expect-error: optional chaining check over type narrowing
 										defaultChecked={state.form?.recommend === "true"}
+										aria-invalid={errAttrFields?.recommend.hasErrors}
 									/>
 									<label htmlFor="recommend-yes">Yes</label>
 								</span>

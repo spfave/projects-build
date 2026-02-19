@@ -51,14 +51,14 @@
 			margin-bottom: 0.25rem;
 		}
 
-		& input:not([type="radio"]),
+		input:not([type="radio"]),
 		legend,
 		textarea,
 		select {
 			width: 100%;
 		}
 
-		& input:not([type="radio"]),
+		input:not([type="radio"]),
 		select,
 		textarea {
 			padding: 0.25rem;
@@ -83,9 +83,23 @@
 		}
 
 		input[type="radio"] {
+			position: relative;
+			accent-color: var(--color-primary);
+
 			&:focus-visible {
-				outline-width: 2px;
-				outline-color: var(--color-primary);
+				outline: none;
+			}
+			&:focus-visible::after {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 20px;
+				height: 20px;
+				pointer-events: none;
+				content: "";
+				border: 2px solid var(--color-primary);
+				border-radius: 50%;
+				translate: -50% -50%;
 			}
 		}
 
