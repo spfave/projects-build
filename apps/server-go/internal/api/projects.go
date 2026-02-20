@@ -31,6 +31,9 @@ var (
 	projectRepo2 = store.ProjectSqliteStr
 )
 
+// Responses:
+// 200 ok
+// 500 internal server error: exception (unknown error, db error)
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
 	projects, err := projectRepo2.GetAll()
 	if err != nil {
@@ -61,6 +64,12 @@ func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError
 	return nil
 }
 
+// Responses:
+// 200 ok
+// 400 bad request: bad data (missing id param)
+// 422 unprocessable entity: validation error (invalid id)
+// 404 not found
+// 500 internal server error: exception (unknown error, db error)
 func getProjectById(w http.ResponseWriter, r *http.Request) {
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
@@ -89,7 +98,7 @@ func getProjectById(w http.ResponseWriter, r *http.Request) {
 
 // Responses:
 // 201 created
-// 400 bad request: failed json decode
+// 400 bad request: bad data (failed json decode)
 // 422 unprocessable entity: validation error
 // 500 internal server error: exception (unknown error), db error
 func createProject(w http.ResponseWriter, r *http.Request) {
@@ -140,6 +149,12 @@ func createProjectError(w http.ResponseWriter, r *http.Request) {
 	pHttp.RespondJson(w, http.StatusCreated, project, nil)
 }
 
+// Responses:
+// 200 ok
+// 400 bad request: bad data (missing id param, failed json decode)
+// 422 unprocessable entity: validation error
+// 404 not found
+// 500 internal server error: exception (unknown error), db error
 func updateProject(w http.ResponseWriter, r *http.Request) {
 	// 1. Parse data payload(s) from request
 	projectId, err := pHttp.RequestParam(r, "id")
@@ -167,8 +182,12 @@ func updateProject(w http.ResponseWriter, r *http.Request) {
 	// 4. Execute service/repo method
 	project, err := projectRepo2.Update(projectId, projectPayload)
 	if err != nil {
-		// handle not found case
-		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))
+		switch {
+		case errors.Is(err, pErr.ErrNotFound):
+			pHttp.RespondJson(w, http.StatusNotFound, pHttp.JSendFail("project not found", nil), nil)
+		default:
+			pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error updating project", nil, nil))
+		}
 		return
 	}
 
@@ -176,12 +195,19 @@ func updateProject(w http.ResponseWriter, r *http.Request) {
 	pHttp.RespondJson(w, http.StatusOK, project, nil)
 }
 
+// Responses:
+// 200 ok
+// 400 bad request: bad data (missing id param)
+// 422 unprocessable entity: validation error (invalid id)
+// 404 not found
+// 500 internal server error: exception (unknown error, db error)
 func deleteProject(w http.ResponseWriter, r *http.Request) {
 	projectId, err := pHttp.RequestParam(r, "id")
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
+	// Validate project id
 
 	project, err := projectRepo2.Delete(projectId)
 	if err != nil {
