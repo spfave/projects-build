@@ -179,16 +179,16 @@ api.post(
 	async (ctx) => {
 		console.info("\nROUTE FORM"); //LOG
 
-		// const reqForm = await ctx.req.formData();
+		const reqFormRaw = await ctx.req.formData();
+		console.info(`reqFormRaw: `, reqFormRaw); // LOG
 		const reqForm = Object.fromEntries(await ctx.req.formData());
 		console.info(`reqForm: `, reqForm); //LOG
 		const reqFormBody = await ctx.req.parseBody();
 		console.info(`reqFormBody: `, reqFormBody); //LOG
-
 		const validForm = ctx.req.valid("form");
 		console.info(`validForm: `, validForm); //LOG
 
-		return ctx.json({ reqForm, validForm }, 200);
+		return ctx.json({ reqForm, reqFormBody, validForm }, 200);
 	}
 );
 
@@ -212,8 +212,7 @@ api.post(
 		console.info("\nROUTE JSON BODY"); //LOG
 
 		const reqJson = await ctx.req.json();
-		console.info(`reqForm: `, reqJson); //LOG
-
+		console.info(`reqJson: `, reqJson); //LOG
 		const validJson = ctx.req.valid("json");
 		console.info(`validForm: `, validJson); //LOG
 

@@ -73,6 +73,8 @@ Content-Type: application/x-www-form-urlencoded
 todo=test
 &content=test form validation endpoint
 &complete=false
+&numStr="42"
+&numNum=42
 
 ### --------------------------------------------------------------------------------- ###
 # Validate JSON Body
@@ -81,6 +83,8 @@ Content-Type: {{contentType}}
 
 {
 	"todo": "test",
-	"content": "test form validation endpoint",
-	"complete": false
+	"content": "test json validation endpoint",
+	"complete": false,
+	"numStr": "42",
+	"numNum": 42
 }

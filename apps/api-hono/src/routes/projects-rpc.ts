@@ -1,4 +1,5 @@
 import { hc } from "hono/client";
+import { HTTPException } from "hono/http-exception";
 import { validator } from "hono/validator";
 
 import {
@@ -56,13 +57,27 @@ export const apiProjects = defaultRouter()
 	//	 	return ctx.json(projects, 200);
 	//	 });
 
+	// Responses:
+	// 200 ok
+	// 500 internal server error: exception (unknown error, db error)
 	.get("/", async (ctx) => {
+		// throw new Error("error - api get projects", { cause: "api error demo" });
+		// throw new HTTPException(HttpStatus.NOT_IMPLEMENTED.code, {
+		// 	message: "exception - api get projects",
+		// 	cause: "api exception demo",
+		// });
+
 		const projects = await db.selectProjectsQuery();
 		// const projects = await db.selectProjectsSelect();
 		return ctx.json(projects, HttpStatus.OK.code);
 		// return ctx.json(jSend({ status: "success", data: { projects } }), HttpStatus.OK.code);
 	})
 
+	// Responses:
+	// 200 ok
+	// 422 unprocessable entity: validation error (invalid id)
+	// 404 not found
+	// 500 internal server error: exception (unknown error, db error)
 	.get("/:id", validateParamProjectId, async (ctx) => {
 		const { id } = ctx.req.valid("param");
 
@@ -81,9 +96,8 @@ export const apiProjects = defaultRouter()
 
 	// Responses:
 	// 201 created
-	// 400 bad request
 	// 422 unprocessable entity: validation error
-	// 500 internal server error: exception (unknown error), db error
+	// 500 internal server error: exception (unknown error, db error)
 	.post("/", validateJsonProject, async (ctx) => {
 		const payload = ctx.req.valid("json");
 		const [project] = await db.insertProject(payload);
@@ -100,12 +114,19 @@ export const apiProjects = defaultRouter()
 
 	// Note: for demo only, lacks input validation to test DB constraints (DB error, internal server error)
 	.post("/error", async (ctx) => {
+		console.warn(`PROJECTS POST ERROR`); // LOG_WARN
 		const payload = await ctx.req.json();
+		console.info(`payload: `, payload); // LOG
 		const [project] = await db.insertProject(payload); // will error for an invalid project input payload
 
 		return ctx.json(project, HttpStatus.CREATED.code);
 	})
 
+	// Responses:
+	// 200 ok
+	// 422 unprocessable entity: validation error (invalid id, invalid project)
+	// 404 not found
+	// 500 internal server error: exception (unknown error, db error)
 	.put("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 		const { id } = ctx.req.valid("param");
 		const payload = ctx.req.valid("json");
@@ -120,6 +141,11 @@ export const apiProjects = defaultRouter()
 		return ctx.json(project, HttpStatus.OK.code);
 	})
 
+	// Responses:
+	// 200 ok
+	// 422 unprocessable entity: validation error (invalid id)
+	// 404 not found
+	// 500 internal server error: exception (unknown error, db error)
 	.delete("/:id", validateParamProjectId, async (ctx) => {
 		const { id } = ctx.req.valid("param");
 		const [project] = await db.deleteProjectReturning(id);
