@@ -5,6 +5,7 @@ import (
 	"slices"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
 )
@@ -61,7 +62,7 @@ type ValidationResult struct {
 }
 
 func ValidateProjectId(input ProjectId) *ValidationResult {
-	if len(input) != ProjectIdLength {
+	if utf8.RuneCountInString(input) != ProjectIdLength {
 		return &ValidationResult{Success: false}
 	}
 	return &ValidationResult{Success: true}
@@ -81,9 +82,9 @@ func ValidateProject(input *ProjectInput) *ValidationResult {
 	// name
 	if strings.TrimSpace(input.Name) == "" {
 		projErrs.Fields["name"] = append(projErrs.Fields["name"], "Name is required")
-	} else if len(strings.TrimSpace(input.Name)) < 2 {
+	} else if utf8.RuneCountInString(strings.TrimSpace(input.Name)) < 2 {
 		projErrs.Fields["name"] = append(projErrs.Fields["name"], "Name must be at least 2 characters")
-	} else if len(strings.TrimSpace(input.Name)) > 125 {
+	} else if utf8.RuneCountInString(strings.TrimSpace(input.Name)) > 125 {
 		projErrs.Fields["name"] = append(projErrs.Fields["name"], "Name must be less than 125 characters")
 	}
 
