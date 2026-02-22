@@ -41,8 +41,8 @@ export class Success<T> {
 // ----------------------------------------------------------------------------------- //
 // #region - Error Handling
 
-type ErrorMessageConfig = { stringifyUnknownError: boolean; fallbackMessage: string };
-const DefaultErrorMessageConfig: ErrorMessageConfig = {
+type ErrorMessageOptions = { stringifyUnknownError: boolean; fallbackMessage: string };
+const DefaultErrorMessageOptions: ErrorMessageOptions = {
 	stringifyUnknownError: false,
 	fallbackMessage: "Unknown Error",
 };
@@ -55,9 +55,9 @@ const DefaultErrorMessageConfig: ErrorMessageConfig = {
 // Ref: https://github.com/epicweb-dev/epic-stack/blob/main/app/utils/misc.tsx
 export function getErrorMessage(
 	error: unknown,
-	inputConfig: Partial<ErrorMessageConfig> = {}
+	options: Partial<ErrorMessageOptions> = {}
 ): string {
-	const config = { ...DefaultErrorMessageConfig, ...inputConfig };
+	const _options = { ...DefaultErrorMessageOptions, ...options };
 	if (typeof error === "string") return error;
 	if (
 		error &&
@@ -69,7 +69,9 @@ export function getErrorMessage(
 	}
 
 	console.error("Unable to get error message from error", error);
-	return config.stringifyUnknownError ? JSON.stringify(error) : config.fallbackMessage;
+	return _options.stringifyUnknownError
+		? JSON.stringify(error)
+		: _options.fallbackMessage;
 }
 
 /**
