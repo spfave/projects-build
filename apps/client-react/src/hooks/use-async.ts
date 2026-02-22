@@ -113,7 +113,7 @@ export function useAsync<TData>(initialState?: AsyncState<TData>) {
 	};
 }
 
-// Ref:https://tanstack.com/query/latest/docs/framework/react/guides/queries
+// Ref: https://tanstack.com/query/latest/docs/framework/react/guides/queries
 export function useQuery<TData>(queryFn: () => Promise<TData>) {
 	const query = useAsync<TData>();
 
@@ -139,7 +139,7 @@ export function useQuery<TData>(queryFn: () => Promise<TData>) {
 export function useMutation<TMutation extends (...args: any[]) => Promise<any>>(
 	mutationFn: TMutation
 ) {
-	const mutation = useAsync<ReturnType<TMutation>>({
+	const mutation = useAsync<Awaited<ReturnType<TMutation>>>({
 		status: "IDLE",
 		data: null,
 		error: null,
