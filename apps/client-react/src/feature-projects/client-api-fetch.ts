@@ -86,6 +86,8 @@ export async function createProject(project: ProjectInput) {
 }
 
 export async function updateProject(project: Project) {
+	await wait(500);
+
 	const res = await fetch(`${urlApi}/projects/${project.id}`, {
 		method: "PUT",
 		body: JSON.stringify(project),
@@ -93,12 +95,19 @@ export async function updateProject(project: Project) {
 		throw new FetchError("Fetch failed for updateProject", { cause: err });
 	});
 
-	if (res.status >= 400) throw new HttpResponseError(res, "Failed to update project");
+	// Possible HTTP errors:
+	// 400 bad request: malformed input (invalid json)
+	// 422 unprocessable entity: validation error (invalid input)
+	// 404 not found
+	// 500 internal server error: exception (unknown error, db error)
+	const js = await res.json();
+	if (res.status >= 400) {
+		const msg = getErrorMessage(js, { fallbackMessage: "Failed to update project" });
+		throw new HttpResponseError(res, msg, { cause: js });
+	}
 	if (!res.ok) throw new FetchResponseError("Fetch response not ok for updateProject");
 
-	const updatedProject = (await res.json()) as Project;
-	await wait(500);
-	return updatedProject;
+	return js as Project;
 }
 
 export async function deleteProject(id: ProjectId) {

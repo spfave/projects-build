@@ -13,7 +13,6 @@ import styles from "./project-route.module.css";
 
 export default function ProjectRoute() {
 	const params = useParams();
-
 	const projectQ = useAsync<Project>();
 	React.useEffect(() => {
 		if (!params.id) throw new Error("Parameter id must exist.");

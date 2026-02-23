@@ -42,7 +42,11 @@ const router = createBrowserRouter(
 							element: <ProjectRoute />,
 							ErrorBoundary: ProjectErrorBoundary, // note: will catch render and in-transition thrown errors, but not async thrown errors outside a transition
 						},
-						{ path: ":id/edit", element: <ProjectEditRoute /> },
+						{
+							path: ":id/edit",
+							element: <ProjectEditRoute />,
+							ErrorBoundary: ProjectErrorBoundary,
+						},
 					],
 				},
 				{

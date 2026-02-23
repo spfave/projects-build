@@ -8,9 +8,11 @@ import type {
 	ProjectStatus,
 } from "@projectsbuild/core/projects";
 import { transformProject, validateProject } from "@projectsbuild/core/projects";
+import { HttpResponseError } from "@projectsbuild/library/errors";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorList from "~/components/error-list";
+import Show from "~/components/ui/show";
 import * as client from "~/feature-projects/client-api-fetch";
 import { useMutation, useQuery } from "~/hooks/use-async";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
@@ -22,14 +24,8 @@ import styles from "./project-create-route.module.css";
 
 export default function ProjectEditRoute() {
 	const params = useParams();
-	const navigate = useNavigate();
-	const rerender = useRerender();
-	const { fetchProjects } = useProjectsContext();
-
-	const refForm = React.useRef<HTMLFormElement>(null);
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
-
 	const projectQ = useQuery(async () => {
 		if (!params.id) throw new Error("Parameter id must exist.");
 
@@ -43,22 +39,37 @@ export default function ProjectEditRoute() {
 		setProjectStatus(evt.target.value as ProjectStatus);
 	}
 
-	async function handleUpdateProject(evt: React.FormEvent<HTMLFormElement>) {
+	const { fetchProjects } = useProjectsContext();
+	const navigate = useNavigate();
+	async function handleUpdateProject(evt: React.SubmitEvent<HTMLFormElement>) {
 		evt.preventDefault();
 
 		const formData = new FormData(evt.currentTarget);
-		const formObj = Object.fromEntries(formData.entries());
+		const formObj = Object.fromEntries(formData);
 		const validation = validateProject(formObj);
 		if (!validation.success) return setProjectErrors(validation.errors);
 		if (projectErrors) setProjectErrors(null);
 
 		const projectPayload = transformProject(formObj as ProjectFields, "update");
-		const project = await mutation.mutate(projectPayload);
-
-		fetchProjects();
-		navigate(`/projects/${project.id}`);
+		mutation
+			.mutate(projectPayload)
+			.then((project) => {
+				fetchProjects();
+				navigate(`/projects/${project.id}`);
+			})
+			.catch((error) => {
+				if (error instanceof HttpResponseError && error.context.status === 422) {
+					// biome-ignore lint/suspicious/noExplicitAny: access <unknown> error.cause
+					const formErrors = (error.cause as any).data.errors as ProjectErrors | null;
+					setProjectErrors(formErrors);
+				} else if (error instanceof Error) {
+					if (projectErrors) setProjectErrors(null);
+				} // else throw error; // Note: errors throw in async handlers are not caught by error boundary, for non-Error mutation error fallback to render check
+			});
 	}
 
+	const refForm = React.useRef<HTMLFormElement>(null);
+	const rerender = useRerender();
 	function handleReset(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		evt.preventDefault();
 		refForm.current?.reset();
@@ -71,17 +82,21 @@ export default function ProjectEditRoute() {
 	const { form: errForm, fields: errFields } = projectErrors || {};
 	const { form: errAttrForm, fields: errAttrFields } =
 		formErrorsAttributes(projectErrors) || {};
-	useFocusInvalid(refForm.current, Boolean(projectErrors));
+	useFocusInvalid(refForm.current, Boolean(projectErrors) && !mutation.isPending);
 
 	// if (projectQ.isPending) return <div>Loading project...</div>; // handled as blank/placeholder form
 	if (projectQ.error) return <GeneralErrorFallback error={projectQ.error} />;
-	if (mutation.isPending) return <div>Updating project...</div>;
-	if (mutation.isError) return <GeneralErrorFallback error={mutation.error} />;
+	// if (mutation.isPending) return <div>Updating project...</div>; // handled by disabling form buttons
+	if (mutation.isError && !(mutation.error instanceof Error))
+		return <GeneralErrorFallback error={mutation.error} />; // handle non-Error mutation errors with error fallback
 
 	const project = projectQ.data;
 	return (
 		<section className={styles.projectCreate}>
 			<h2>Edit Project</h2>
+			<Show when={mutation.error instanceof Error ? mutation.error : null}>
+				{(err) => <p className={styles.error}>{err.message}</p>}
+			</Show>
 			<form
 				ref={refForm}
 				onSubmit={handleUpdateProject}
@@ -227,10 +242,7 @@ export default function ProjectEditRoute() {
 							</div>
 						</div>
 						<div>
-							<fieldset
-								aria-invalid={errAttrFields?.rating.hasErrors}
-								aria-describedby={errAttrFields?.rating.id}
-							>
+							<fieldset aria-describedby={errAttrFields?.recommend.id}>
 								<legend>Would you recommend</legend>
 								<div>
 									<span>
@@ -243,6 +255,7 @@ export default function ProjectEditRoute() {
 											defaultChecked={
 												project?.status === "complete" ? project.recommend : undefined
 											}
+											aria-invalid={errAttrFields?.recommend.hasErrors}
 										/>
 										<label htmlFor="recommend-yes">Yes</label>
 									</span>
@@ -275,13 +288,22 @@ export default function ProjectEditRoute() {
 				</div>
 
 				<div className={styles.formActions}>
-					<button className="action primary" type="submit">
+					<button className="action primary" type="submit" disabled={mutation.isPending}>
 						Update Project
 					</button>
-					<button className="action danger outline" type="reset" onClick={handleReset}>
+					<button
+						className="action danger outline"
+						type="reset"
+						onClick={handleReset}
+						disabled={mutation.isPending}
+					>
 						Revert Changes
 					</button>
-					<Link className="action danger outline" to={`/projects/${params.id}`}>
+					<Link
+						className="action danger outline"
+						to={mutation.isPending ? "" : `/projects/${params.id}`}
+						aria-disabled={mutation.isPending}
+					>
 						Cancel
 					</Link>
 				</div>
