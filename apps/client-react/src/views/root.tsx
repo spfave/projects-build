@@ -21,6 +21,7 @@ export default function Root() {
 					</Link>
 				</div>
 				<div>
+					<ThemeToggle />
 					<Link to="about" title="about">
 						<img height={24} src={infoIcon} alt="about icon" />
 					</Link>
@@ -33,5 +34,26 @@ export default function Root() {
 				<Outlet />
 			</main>
 		</>
+	);
+}
+
+// theme toggle refs:
+// https://www.youtube.com/watch?v=F1s8MZoGVL8&list=WL&index=7&t=263s
+// https://github.com/pacocoursey/next-themes/tree/main
+
+// type Theme = "system" | "light" | "dark";
+function ThemeToggle() {
+	return (
+		<select id="theme-select">
+			<option id="theme-option-system" value="system">
+				System
+			</option>
+			<option id="theme-option-light" value="light">
+				Light
+			</option>
+			<option id="theme-option-dark" value="dark">
+				Dark
+			</option>
+		</select>
 	);
 }
