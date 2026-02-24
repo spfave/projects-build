@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Link, Outlet } from "react-router";
 
 import githubIcon from "@projectsbuild/core/assets/github.svg";
@@ -41,10 +42,19 @@ export default function Root() {
 // https://www.youtube.com/watch?v=F1s8MZoGVL8&list=WL&index=7&t=263s
 // https://github.com/pacocoursey/next-themes/tree/main
 
-// type Theme = "system" | "light" | "dark";
+type Theme = "system" | "light" | "dark";
+const keyTheme = "theme";
+
 function ThemeToggle() {
+	const [theme, setTheme] = React.useState<Theme>(
+		(localStorage.getItem(keyTheme) as Theme) || "system"
+	);
+	React.useEffect(() => {
+		localStorage.setItem(keyTheme, theme);
+	}, [theme]);
+
 	return (
-		<select id="theme-select">
+		<select value={theme} onChange={(e) => setTheme(e.target.value as Theme)}>
 			<option id="theme-option-system" value="system">
 				System
 			</option>
