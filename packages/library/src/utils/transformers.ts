@@ -8,9 +8,11 @@
  * arrayToObjectMap(["a", "b"]); // returns { a: "a", b: "b" }
  */
 export function arrayToObjectMap<TItem extends string>(array: readonly TItem[]) {
-	const obj = {} as { [item in Array<TItem>[number]]: item };
-	for (const item of array) {
-		obj[item] = item;
-	}
-	return obj;
+	const keyedArray = array.map((item) => [item, item]);
+	return Object.fromEntries(keyedArray) as { [item in TItem]: item };
+}
+
+export function arrayToObjectMapUpper<TItem extends string>(array: readonly TItem[]) {
+	const keyedArray = array.map((item) => [item.toUpperCase(), item]);
+	return Object.fromEntries(keyedArray) as { [item in TItem as Uppercase<item>]: item };
 }
