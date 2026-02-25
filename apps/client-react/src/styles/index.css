@@ -58,12 +58,15 @@ fieldset {
 	color-scheme: light dark;
 	background: light-dark(white, var(--color-dark));
 
+	&[data-theme="system"],
 	&:has(option[id="theme-option-system"]:checked) {
 		color-scheme: light dark;
 	}
+	&[data-theme="light"],
 	&:has(option[id="theme-option-light"]:checked) {
 		color-scheme: light;
 	}
+	&[data-theme="dark"],
 	&:has(option[id="theme-option-dark"]:checked) {
 		color-scheme: dark;
 	}
