@@ -1,5 +1,7 @@
 import { Link, Outlet } from "react-router";
 
+import ThemeToggle from "~/components/theme-toggle";
+
 import githubIcon from "@projectsbuild/core/assets/github.svg";
 import infoIcon from "@projectsbuild/core/assets/heroicons-information-circle.svg";
 import logoIcon from "@projectsbuild/core/assets/reshot-icon-planning.svg";
@@ -21,6 +23,7 @@ export default function Root() {
 					</Link>
 				</div>
 				<div>
+					<ThemeToggle />
 					<Link to="about" title="about">
 						<img height={24} src={infoIcon} alt="about icon" />
 					</Link>

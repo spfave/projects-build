@@ -1,3 +1,7 @@
+.error {
+	color: var(--color-danger);
+}
+
 .formFlexGroup {
 	display: flex;
 	flex-wrap: wrap;
@@ -24,20 +28,22 @@
 	/* grid */
 	display: grid;
 	grid-template-columns: repeat(
-		auto-fill,
-		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
-	);
+			auto-fill,
+			minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
+		);
 	row-gap: var(--grid-row-gap);
 	column-gap: var(--grid-col-gap);
 }
 
 .projectCreate {
-	display: grid;
-	gap: 1rem;
+	> * + * {
+		margin-block-start: 1rem;
+	}
 
 	form {
-		display: grid;
-		gap: 0.5rem;
+		> * + * {
+			margin-block-start: 0.5rem;
+		}
 
 		label,
 		legend {
@@ -45,14 +51,14 @@
 			margin-bottom: 0.25rem;
 		}
 
-		& input:not([type="radio"]),
+		input:not([type="radio"]),
 		legend,
 		textarea,
 		select {
 			width: 100%;
 		}
 
-		& input:not([type="radio"]),
+		input:not([type="radio"]),
 		select,
 		textarea {
 			padding: 0.25rem;
@@ -77,9 +83,23 @@
 		}
 
 		input[type="radio"] {
+			position: relative;
+			accent-color: var(--color-primary);
+
 			&:focus-visible {
-				outline-width: 2px;
-				outline-color: var(--color-primary);
+				outline: none;
+			}
+			&:focus-visible::after {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 20px;
+				height: 20px;
+				pointer-events: none;
+				content: "";
+				border: 2px solid var(--color-primary);
+				border-radius: 50%;
+				translate: -50% -50%;
 			}
 		}
 
@@ -118,6 +138,13 @@
 				padding: 0.25rem;
 				font-size: 0.9rem;
 			}
+		}
+
+		.conditional {
+			display: none;
+		}
+		&:has(select option[value="complete"]:checked) .conditional {
+			display: block;
 		}
 	}
 }

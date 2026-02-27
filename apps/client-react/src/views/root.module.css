@@ -1,14 +1,14 @@
 .header {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
+	justify-content: space-between;
 	height: 4rem;
 	padding: 0 1rem;
 
 	& div:first-child {
 		display: flex;
-		align-items: center;
 		gap: 1rem;
+		align-items: center;
 
 		h1 {
 			margin: 0;

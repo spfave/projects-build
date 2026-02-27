@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams, useRouteError } from "react-router";
 
 import type { Project } from "@projectsbuild/core/projects";
 import { ymdPretty } from "@projectsbuild/library/utils";
@@ -13,7 +13,6 @@ import styles from "./project-route.module.css";
 
 export default function ProjectRoute() {
 	const params = useParams();
-
 	const projectQ = useAsync<Project>();
 	React.useEffect(() => {
 		if (!params.id) throw new Error("Parameter id must exist.");
@@ -28,7 +27,7 @@ export default function ProjectRoute() {
 		startTransition(async () => {
 			if (!params.id) return;
 
-			await client.deleteProject(params.id);
+			await client.deleteProject(params.id); // note: errors thrown in transitions are caught by error boundary
 			fetchProjects();
 			navigate("/projects");
 		});
@@ -58,11 +57,11 @@ export default function ProjectRoute() {
 				</div>
 				<div>
 					<dt>Description</dt>
-					<dd>{project.description || "--"}</dd>
+					<dd style={{ whiteSpace: "pre-wrap" }}>{project.description || "--"}</dd>
 				</div>
 				<div>
 					<dt>Notes</dt>
-					<dd>{project.notes || "--"}</dd>
+					<dd style={{ whiteSpace: "pre-wrap" }}>{project.notes || "--"}</dd>
 				</div>
 				<Show when={project.status === "complete" ? project : false}>
 					{(project) => (
@@ -111,29 +110,42 @@ export default function ProjectRoute() {
 	);
 }
 
+export function ProjectErrorBoundary() {
+	const error = useRouteError();
+	return <ProjectErrorFallback error={error} />;
+}
+
 type ProjectErrorFallbackProps = { error: unknown };
 function ProjectErrorFallback(props: ProjectErrorFallbackProps) {
 	return (
 		<GeneralErrorFallback
 			error={props.error}
+			// note: for custom http response status code error ui
 			httpResponseErrorHandlers={{
 				404: ({ params }) => (
-					<div
-						style={{
-							background: "var(--color-danger)",
-							color: "white",
-							fontWeight: "bold",
-							display: "flex",
-							justifyContent: "center",
-							padding: "1rem",
-						}}
-					>
-						<p>No project with id "{params.id}" could be found</p>
+					<div className={styles.error}>
+						<p>Project with id "{params.id}" could not be found</p>
 					</div>
 				),
+				422: ({ error, params }) => (
+					<div className={styles.error}>
+						{/* ui defined message */}
+						<p>Invalid project id: "{params.id}"</p>
+						{/* error defined message (server or api client defined) */}
+						<p>{error.context.message}</p>
+					</div>
+				),
+				// 500: () => (
+				// 	<div className={styles.error}>
+				// 		<p>Internal server error occurred</p>
+				// 	</div>
+				// ),
 			}}
-			defaultHttpResponseErrorHandler={() => <p>Project could not be found</p>}
+			// note: to override default http response error ui
+			defaultHttpResponseErrorHandler={() => <p>Project request failed</p>}
+			// note: for custom unexpected error ui
 			unexpectedErrorHandler={<p>Oh-no an error occurred, sorry</p>}
+			// else uses DefaultHttpResponseErrorFallback or DefaultErrorFallback
 		/>
 	);
 }

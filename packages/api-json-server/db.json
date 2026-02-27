@@ -24,6 +24,17 @@
 			"status": "building"
 		},
 		{
+			"id": "r5x0",
+			"name": "Demo multiline entry in textareas",
+			"link": null,
+			"description": "How \nare\nmultiple\nlines\n\n\n\nhandled\n?",
+			"notes": "1. number 1\n2. number 2\n\na. letter \"a\"\n- bullet point\n\n\nmore...",
+			"status": "complete",
+			"dateCompleted": "2026-02-11",
+			"rating": 4,
+			"recommend": true
+		},
+		{
 			"id": "0444",
 			"name": "Project with an absurdly longer name compared to all others Why would someone even type this much in the name field?",
 			"link": "",

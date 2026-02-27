@@ -6,6 +6,7 @@ export default function About() {
 	return (
 		<section className={styles.about}>
 			<title>About | Projects.build</title>
+			<meta name="description" content="About the Projects.build app" />
 
 			<h2>About</h2>
 			<div>

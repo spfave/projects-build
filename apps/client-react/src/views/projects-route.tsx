@@ -3,7 +3,7 @@ import { Link, Outlet, useOutletContext } from "react-router";
 import type { Project } from "@projectsbuild/core/projects";
 import GeneralErrorFallback from "~/components/error-fallback";
 import { SwitchAsync } from "~/components/ui/switch";
-import * as client from "~/feature-projects/client-api-rpc";
+import * as client from "~/feature-projects/client-api-fetch";
 import ProjectNavList from "~/feature-projects/projects-nav-list";
 import { useQuery } from "~/hooks/use-async";
 

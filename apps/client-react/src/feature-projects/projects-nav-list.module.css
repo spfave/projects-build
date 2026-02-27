@@ -11,14 +11,14 @@
 		}
 
 		span {
-			padding: initial;
 			--max-lines: 2;
 
 			display: -webkit-box;
 			-webkit-box-orient: vertical;
+			padding: initial;
+			overflow: clip;
 			-webkit-line-clamp: var(--max-lines);
 			line-clamp: var(--max-lines);
-			overflow: clip;
 		}
 	}
 }

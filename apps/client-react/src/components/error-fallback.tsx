@@ -35,12 +35,10 @@ export function DefaultHttpResponseErrorFallback(
 			<p>
 				<Show when={error.context.message}>
 					<samp>Error Message: {error.context.message}</samp>
-					<br />
 				</Show>
 				<samp>
 					Response Status: {error.context.status} ({error.context.statusText})
 				</samp>
-				<br />
 				<samp>Request URL: {error.context.url}</samp>
 			</p>
 		</div>
@@ -55,7 +53,7 @@ type HttpResponseErrorHandler = (info: {
 }) => React.JSX.Element;
 type GeneralErrorFallbackProps = {
 	error: unknown;
-	httpResponseErrorHandlers?: Record<string, HttpResponseErrorHandler>;
+	httpResponseErrorHandlers?: Record<number, HttpResponseErrorHandler>;
 	defaultHttpResponseErrorHandler?: HttpResponseErrorHandler;
 	unexpectedErrorHandler?: React.ReactNode | ((error: unknown) => React.JSX.Element);
 };

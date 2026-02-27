@@ -27,6 +27,9 @@
 	],
 
 	// Language Settings
+	"[css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
 	"[javascript]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
