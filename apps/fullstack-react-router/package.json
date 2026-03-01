@@ -8,6 +8,9 @@
 		"run:local": "dotenvx run -f ../../.env.local -- react-router dev",
 		"build": "react-router build",
 		"serve:build": "react-router-serve ./build/server/index.js",
+		"check": "biome check ./app",
+		"format": "biome format ./app",
+		"lint": "biome lint ./app",
 		"typecheck": "react-router typegen && tsc --noEmit"
 	},
 	"dependencies": {

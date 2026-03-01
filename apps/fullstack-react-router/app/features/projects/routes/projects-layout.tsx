@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Await, Link, NavLink, Outlet, data, href } from "react-router";
+import { Await, data, href, Link, NavLink, Outlet } from "react-router";
 
 import type { Project } from "@projectsbuild/core/projects";
 import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts"; // SSR only
