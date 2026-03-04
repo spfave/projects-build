@@ -84,7 +84,7 @@ func (str *ProjectSqliteStore) GetAll() (*[]core.Project, error) {
 }
 
 func (str *ProjectSqliteStore) GetAllX() (*[]core.Project, error) {
-	// query := "SELECT * FROM pb_projects" // fails for "audit" columns: created_at, updated_at since not define in core.Project struct
+	// query := "SELECT * FROM pb_projects" // fails for "audit" columns: created_at, updated_at since not defined in core.Project struct
 	query := "SELECT id, name FROM pb_projects"
 
 	var projects []core.Project

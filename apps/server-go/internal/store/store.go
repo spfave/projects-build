@@ -15,7 +15,7 @@ import (
 // https://github.com/sikozonpc/GopherSocial/blob/main/internal/db/db.go
 // https://www.youtube.com/watch?v=eE8nqgryW_8
 
-type ProjectRepository interface {
+type ProjectStore interface {
 	GetAll() (*[]core.Project, error)
 	GetById(id core.ProjectId) (*core.Project, error)
 	Create(project *core.Project) (*core.Project, error)

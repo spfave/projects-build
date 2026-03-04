@@ -7,7 +7,7 @@ import {
 	validateProject,
 	validateProjectId,
 } from "@projectsbuild/core/projects";
-import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts";
+import * as db from "@projectsbuild/db-drizzle/stores/projects.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { jSend } from "@projectsbuild/library/utils";
 import { defaultRouter } from "#lib/init.ts";
