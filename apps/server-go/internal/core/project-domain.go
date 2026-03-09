@@ -160,16 +160,13 @@ func TransformProject(p *ProjectInput) *ProjectInput {
 	}
 
 	if p.Link != nil {
-		trimmedLink := strings.TrimSpace(*p.Link)
-		project.Link = &trimmedLink
+		project.Link = new(strings.TrimSpace(*p.Link))
 	}
 	if p.Description != nil {
-		trimmedDescription := strings.TrimSpace(*p.Description)
-		project.Description = &trimmedDescription
+		project.Description = new(strings.TrimSpace(*p.Description))
 	}
 	if p.Notes != nil {
-		trimmedNotes := strings.TrimSpace(*p.Notes)
-		project.Notes = &trimmedNotes
+		project.Notes = new(strings.TrimSpace(*p.Notes))
 	}
 
 	if p.Status == ProjectStatusComplete {

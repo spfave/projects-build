@@ -166,11 +166,11 @@ func errorChecking(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("err4: %+v\n", err4)                                                 //LOG
 	fmt.Printf("err4 == &pErr.Error{}: %+v\n", err4 == &pErr.Error{})               //LOG: always false
 	fmt.Printf("errors.Is(err4, ErrSentinel): %+v\n", errors.Is(err4, ErrSentinel)) //LOG: true
-	var werr *pErr.Error
-	fmt.Printf("terr: %+v\n", werr) //LOG
+	var werr4 *pErr.Error
+	fmt.Printf("werr4: %+v\n", werr4) //LOG
 	// fmt.Printf("varName: %+v\n", err4 == err4.(*pErr.Error))                 //LOG
-	fmt.Printf("errors.As(err4, &pErr.Error{}): %+v\n", errors.As(err4, &werr)) //LOG: true
-	fmt.Printf("errors.Unwrap(err4): %+v\n", errors.Unwrap(err4))               //LOG
+	fmt.Printf("errors.As(err4, &werr4[pErr.Error]): %+v\n", errors.As(err4, &werr4)) //LOG: true
+	fmt.Printf("errors.Unwrap(err4): %+v\n", errors.Unwrap(err4))                     //LOG
 
 	err5 := &pErr.Error{
 		Message: "error 5",
@@ -181,9 +181,9 @@ func errorChecking(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("errors.Is(err5, err1): %+v\n", errors.Is(err5, err1))                                   //LOG: true
 	fmt.Printf("errors.Is(err5, ErrSentinel): %+v\n", errors.Is(err5, ErrSentinel))                     //LOG: true
 	fmt.Printf("errors.Is(err5, errors.ErrUnsupported): %+v\n", errors.Is(err5, errors.ErrUnsupported)) //LOG: true
-	var werr2 *pErr.Error
-	fmt.Printf("errors.As(err5, &werr2): %+v\n", errors.As(err5, &werr2)) //LOG: true
-	fmt.Printf("errors.Unwrap(err5): %+v\n", errors.Unwrap(err5))         //LOG
+	var werr5 *pErr.Error
+	fmt.Printf("errors.As(err5, &werr5[pErr.Error]): %+v\n", errors.As(err5, &werr5)) //LOG: true
+	fmt.Printf("errors.Unwrap(err5): %+v\n", errors.Unwrap(err5))                     //LOG
 
 	// err6 := fmt.Errorf("error 6: %w: %w", ErrSentinel, errors.ErrUnsupported) // doesn't double wrap
 	// err6 := fmt.Errorf("error 6: %w", errors.Join(ErrSentinel, errors.ErrUnsupported))
@@ -198,10 +198,15 @@ func errorChecking(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("err6: %+v\n", err6)                                                                     //LOG
 	fmt.Printf("errors.Is(err6, errors.ErrUnsupported): %+v\n", errors.Is(err6, errors.ErrUnsupported)) //LOG
 	fmt.Printf("errors.Is(err6, ErrSentinel): %+v\n", errors.Is(err6, ErrSentinel))                     //LOG
-	var werr3 *TestError
-	fmt.Printf("errors.As(err6, &werr2): %+v\n", errors.As(err6, &werr3))        //LOG: true
-	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(err6))                //LOG
-	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(errors.Unwrap(err6))) //LOG
+	var werr6 *TestError
+	fmt.Printf("errors.As(err6, &werr6[pErr.Error]): %+v\n", errors.As(err6, &werr6))           //LOG: true
+	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(err6))                               //LOG
+	fmt.Printf("errors.Unwrap(errors.Unwrap(err6)): %+v\n", errors.Unwrap(errors.Unwrap(err6))) //LOG
+	werr6a, ok6a := errors.AsType[*pErr.Error](err6)
+	werr6b, ok6b := errors.AsType[*TestError](err6)
+	fmt.Printf("errors.AsType[*pErr.Error](err6) ok6a: %+v, werr6a: %+v\n", ok6a, werr6a) // LOG
+	fmt.Printf("errors.AsType[*pErr.Error](err6) ok6b: %+v, werr6b: %+v\n", ok6b, werr6b) // LOG
+	fmt.Println()                                                                         // LOG
 
 	pHttp.RespondJson(w, http.StatusOK, "error checking done", nil)
 }
