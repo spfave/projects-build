@@ -11,15 +11,15 @@ import { rateLimiter } from "hono-rate-limiter";
 import { isStringParsableInt } from "@projectsbuild/library/validation";
 import { defaultRouter } from "#lib/init.ts";
 
-const api = defaultRouter().basePath("/demos");
+const router = defaultRouter().basePath("/demos");
 
 // Endpoint demos
-api.get("/error", (_ctx) => {
+router.get("/error", (_ctx) => {
 	throw new Error("Endpoint Error");
 });
 
 // Middleware demos
-api.use(
+router.use(
 	"/auth-basic",
 	basicAuth({
 		username: process.env.AUTH_USERNAME,
@@ -31,12 +31,12 @@ api.use(
 		},
 	})
 );
-api.get("/auth-basic", (ctx) => {
+router.get("/auth-basic", (ctx) => {
 	console.log(ctx.newResponse(null).status);
 	return ctx.json({ message: "Authenticated - Basically" }, 200);
 });
 
-api.use(
+router.use(
 	"/auth-bearer",
 	bearerAuth({
 		token: process.env.AUTH_TOKEN,
@@ -47,12 +47,12 @@ api.use(
 		},
 	})
 );
-api.get("/auth-bearer", (ctx) => {
+router.get("/auth-bearer", (ctx) => {
 	console.log(ctx.newResponse(null).status);
 	return ctx.json({ message: "Authenticated - Bearer" }, 200);
 });
 
-api.use(
+router.use(
 	"/restrict-ip",
 	ipRestriction(
 		getConnInfo,
@@ -64,16 +64,16 @@ api.use(
 			ctx.json({ message: `Blocking access from ${remote.type} ${remote.addr}` }, 403)
 	)
 );
-api.get("/restrict-ip", (ctx) => {
+router.get("/restrict-ip", (ctx) => {
 	return ctx.json({ message: "Your ip made it through", ...getConnInfo(ctx) }, 200);
 });
 
-api.use("/request-id", requestId()).get((ctx) => {
+router.use("/request-id", requestId()).get((ctx) => {
 	console.debug("requestId:", ctx.var.requestId);
 	return ctx.json({ message: `Request id is ${ctx.get("requestId")}` }, 200);
 });
 
-api.use(
+router.use(
 	"/timeout/*",
 	timeout(
 		1000 * 3,
@@ -83,7 +83,7 @@ api.use(
 			})
 	)
 );
-api.get("/timeout/:time?", async (ctx) => {
+router.get("/timeout/:time?", async (ctx) => {
 	console.info(`params: `, ctx.req.param()); //LOG
 	console.info(`query param: `, ctx.req.query("time")); //LOG
 
@@ -93,7 +93,7 @@ api.get("/timeout/:time?", async (ctx) => {
 });
 
 // Ref: https://github.com/rhinobase/hono-rate-limiter
-api.use(
+router.use(
 	"/rate-limit",
 	rateLimiter({
 		keyGenerator: (ctx) => ctx.req.header("x-forwarded-for") ?? "",
@@ -103,13 +103,13 @@ api.use(
 			ctx.json({ message: "Now you've been rate limited. Please try again later" }, 429),
 	})
 );
-api.get("/rate-limit", (ctx) => {
+router.get("/rate-limit", (ctx) => {
 	console.info(`Not limited currently`); //LOG
 	return ctx.json({ message: "Not rate limited, for now..." }, 200);
 });
 
 // Validator demos
-api.get(
+router.get(
 	"/validate-path-query-params/prm1/:p1/prm2/:p2",
 	validator("param", (params, _ctx) => {
 		console.info("\nVALIDATOR PARAMS"); //LOG
@@ -150,7 +150,7 @@ api.get(
 	}
 );
 
-api.post(
+router.post(
 	"/validate-form",
 	validator("form", (form, ctx) => {
 		console.info("\nVALIDATOR FORM"); //LOG
@@ -192,7 +192,7 @@ api.post(
 	}
 );
 
-api.post(
+router.post(
 	"/validate-json",
 	validator("json", (json, ctx) => {
 		console.info("\nVALIDATOR JSON"); //LOG
@@ -220,5 +220,5 @@ api.post(
 	}
 );
 
-export default api;
-export { api as apiDemos };
+export default router;
+export { router as demosRouter };

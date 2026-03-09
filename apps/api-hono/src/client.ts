@@ -7,8 +7,8 @@
 
 import { hc } from "hono/client";
 
-// import { type ApiProject, hcApiProjectsTyped } from "#routes/projects-rpc.ts";
-import type { AppRoutes } from "./app.ts";
+// import { type ProjectsRouter, hcProjectsClientTyped } from "#routes/projects-rpc.ts";
+import type { AppRouter } from "./app.ts";
 
 // ----------------------------------------------------------------------------------- //
 // App rpc client
@@ -16,22 +16,22 @@ import type { AppRoutes } from "./app.ts";
 // const clientA = hc<App>("");
 // clientA.api.v1.projects.
 
-// const clientR = hc<AppRoutes>("");
+// const clientR = hc<AppRouter>("");
 // clientR.api.v1.projects.
 
 // Create compiled typed client
-// const client = hc<AppRoutes>("");
+// const client = hc<AppRouter>("");
 // export type Client = typeof client;
-type Client = ReturnType<typeof hc<AppRoutes>>;
+type Client = ReturnType<typeof hc<AppRouter>>;
 export default function hcAppTyped(...args: Parameters<typeof hc>): Client {
-	return hc<AppRoutes>(...args);
+	return hc<AppRouter>(...args);
 }
 
 // ----------------------------------------------------------------------------------- //
 // App sub-route rpc client
 
-// const clientAP = hc<ApiProject>("");
-// clientAP.api.v1.projects.
+// const clientPR = hc<ProjectsRouter>("");
+// clientPR.api.v1.projects.
 
-// const clientAPT = hcApiProjectsTyped("");
-// clientAPT.api.v1.projects.
+// const clientPCT = hcProjectsClientTyped("");
+// clientPCT.api.v1.projects.

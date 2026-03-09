@@ -9,7 +9,7 @@ import (
 	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
 )
 
-func apiDemos() *pHttp.Router {
+func demosRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /auth-basic", authBasic)
 	router.HandleFunc("GET /obj/{id}", getObj)
