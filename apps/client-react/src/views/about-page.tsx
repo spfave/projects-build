@@ -2,7 +2,7 @@ import { repoUrl } from "~/views/root";
 
 import styles from "./about-route.module.css";
 
-export default function About() {
+export default function AboutPage() {
 	return (
 		<section className={styles.about}>
 			<title>About | Projects.build</title>

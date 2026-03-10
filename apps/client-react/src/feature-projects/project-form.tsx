@@ -13,7 +13,7 @@ import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import ErrorList from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
-import { useProjectsContext } from "~/views/projects-route";
+import { useProjectsContext } from "~/views/projects-layout";
 
 import styles from "./project-form.module.css";
 

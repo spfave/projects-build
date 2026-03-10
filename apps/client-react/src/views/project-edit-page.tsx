@@ -18,11 +18,11 @@ import { useMutation, useQuery } from "~/hooks/use-async";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useRerender } from "~/hooks/use-rerender";
-import { useProjectsContext } from "./projects-route";
+import { useProjectsContext } from "./projects-layout";
 
-import styles from "./project-create-route.module.css";
+import styles from "./project-create-page.module.css";
 
-export default function ProjectEditRoute() {
+export default function ProjectEditPage() {
 	const params = useParams();
 	const [projectStatus, setProjectStatus] = React.useState<ProjectStatus>();
 	const [projectErrors, setProjectErrors] = React.useState<ProjectErrors | null>(null);
