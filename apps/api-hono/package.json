@@ -21,11 +21,11 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@hono/node-server": "^1.19.9",
+		"@hono/node-server": "^1.19.11",
 		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/db-drizzle": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"hono": "^4.12.0",
+		"hono": "^4.12.5",
 		"hono-rate-limiter": "^0.5.3"
 	},
 	"devDependencies": {
