@@ -24,7 +24,7 @@ function log(string: string) {
 }
 
 async function fetchHttpStatuses() {
-	const filePath = "./src/constants/data/http-statuses.json";
+	const fileSavePath = "./data/http-statuses.json";
 
 	log("⬇️  Fetching HTTP status data");
 	// biome-ignore format: single line
@@ -35,9 +35,9 @@ async function fetchHttpStatuses() {
 
 	log("📝 Writing HTTP status data to json file");
 	const httpStatusesJSON = JSON.stringify(httpStatuses, null, "\t");
-	writeFileSync(filePath, httpStatusesJSON, { flag: "w" });
+	writeFileSync(fileSavePath, httpStatusesJSON, { flag: "w" });
 
-	log(`✅ Successfully generated ${filePath}`);
+	log(`✅ Successfully generated ${fileSavePath}`);
 }
 
 fetchHttpStatuses();
