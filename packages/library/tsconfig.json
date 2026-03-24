@@ -1,6 +1,16 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@projectsbuild/config-typescript/client.json",
-	"compilerOptions": {},
+	"extends": "@projectsbuild/config-typescript/tsconfig.base.json",
+	"compilerOptions": {
+		"lib": ["ESNext", "DOM"],
+		"types": ["node"],
+		"module": "nodenext",
+		"allowImportingTsExtensions": true,
+		"rootDir": "./",
+
+		"noEmit": true
+	},
 	"include": ["src", "scripts"]
 }
+
+// Note: define a separate tsconfig file for building "src" directory only

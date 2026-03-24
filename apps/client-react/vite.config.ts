@@ -1,4 +1,3 @@
-import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
@@ -6,9 +5,10 @@ const viteEnv = loadEnv("", "../../", "VITE");
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	envDir: "../../",
 	plugins: [react()],
 	resolve: {
-		alias: { "~": path.resolve(__dirname, "./src") },
+		tsconfigPaths: true,
 	},
 
 	server: {
@@ -20,5 +20,4 @@ export default defineConfig({
 			},
 		},
 	},
-	envDir: "../../",
 });

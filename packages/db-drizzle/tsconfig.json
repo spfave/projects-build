@@ -1,10 +1,16 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@projectsbuild/config-typescript/nodejs.json",
+	"extends": "@projectsbuild/config-typescript/tsconfig.base.json",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"] // needed if running tsc check with a /library dependency using DOM/DOM.Iterable types
-		// "types": ["node"]
+		"lib": ["ESNext", "DOM"], // note: need DOM type since "core" package dependency uses barrel exports that include DOM types
+		"types": ["node"],
+		"module": "nodenext",
+		"allowImportingTsExtensions": true,
+		"rootDir": "./",
+
+		"noEmit": true
 	},
 	"files": ["../../env.d.ts", "drizzle.config.ts"],
-	"include": ["src"]
+	"include": ["src"],
+	"exclude": ["seed"]
 }
