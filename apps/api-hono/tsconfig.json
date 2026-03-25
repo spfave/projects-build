@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "@projectsbuild/config-typescript/tsconfig.base.json",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"], // note: need DOM type since "core"/"library" package dependency uses barrel exports that include DOM types
+		"lib": ["ESNext", "DOM"], // note: need DOM type since "core"/"library" package dependency uses barrel exports that include DOM types
 		"types": ["node"],
 		"module": "nodenext",
 		"allowImportingTsExtensions": true,

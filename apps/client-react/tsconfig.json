@@ -7,7 +7,7 @@
 		},
 
 		"target": "esnext",
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"lib": ["ESNext", "DOM"],
 		"types": ["node", "vite/client"],
 		"jsx": "react-jsx",
 		"module": "esnext",
