@@ -16,7 +16,7 @@ func projectsRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /projects", getAllProjects)
 	router.Handle("GET /projects-handler", pHttp.RouteHandler(handlerGetAllError))
-	router.HandleFunc("GET /projects/{id}", getProjectById)
+	router.HandleFunc("GET /projects/{id}", getProjectByID)
 	router.HandleFunc("POST /projects", createProject)
 	router.HandleFunc("POST /projects/error", createProjectError)
 	router.HandleFunc("PUT /projects/{id}", updateProject)
@@ -70,18 +70,18 @@ func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError
 // 422 unprocessable entity: validation error (invalid id)
 // 404 not found
 // 500 internal server error: exception (unknown error, db error)
-func getProjectById(w http.ResponseWriter, r *http.Request) {
-	projectId, err := pHttp.RequestParam(r, "id")
+func getProjectByID(w http.ResponseWriter, r *http.Request) {
+	projectID, err := pHttp.RequestParam(r, "id")
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
-	if !core.ValidateProjectId(projectId).Success {
+	if !core.ValidateProjectID(projectID).Success {
 		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail("invalid project id", nil), nil)
 		return
 	}
 
-	project, err := projectRepo2.GetById(projectId)
+	project, err := projectRepo2.GetByID(projectID)
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNotFound):
@@ -157,7 +157,7 @@ func createProjectError(w http.ResponseWriter, r *http.Request) {
 // 500 internal server error: exception (unknown error), db error
 func updateProject(w http.ResponseWriter, r *http.Request) {
 	// 1. Parse data payload(s) from request
-	projectId, err := pHttp.RequestParam(r, "id")
+	projectID, err := pHttp.RequestParam(r, "id")
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
@@ -180,7 +180,7 @@ func updateProject(w http.ResponseWriter, r *http.Request) {
 	// 3. Parse data payload(s) into domain entity
 	projectPayload := core.TransformProject(&payload)
 	// 4. Execute service/repo method
-	project, err := projectRepo2.Update(projectId, projectPayload)
+	project, err := projectRepo2.Update(projectID, projectPayload)
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNotFound):
@@ -202,14 +202,14 @@ func updateProject(w http.ResponseWriter, r *http.Request) {
 // 404 not found
 // 500 internal server error: exception (unknown error, db error)
 func deleteProject(w http.ResponseWriter, r *http.Request) {
-	projectId, err := pHttp.RequestParam(r, "id")
+	projectID, err := pHttp.RequestParam(r, "id")
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(err.Error(), nil), nil)
 		return
 	}
 	// Validate project id
 
-	project, err := projectRepo2.Delete(projectId)
+	project, err := projectRepo2.Delete(projectID)
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNotFound):

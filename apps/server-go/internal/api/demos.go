@@ -38,7 +38,7 @@ func authBasic(w http.ResponseWriter, r *http.Request) {
 }
 
 type obj struct {
-	Id      int     `json:"id"`
+	ID      int     `json:"id"`
 	Title   string  `json:"title"`
 	Content *string `json:"content"`
 	Link    *string `json:"link,omitzero"`

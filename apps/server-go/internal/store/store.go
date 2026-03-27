@@ -17,8 +17,8 @@ import (
 
 type ProjectStore interface {
 	GetAll() (*[]core.Project, error)
-	GetById(id core.ProjectId) (*core.Project, error)
+	GetByID(id core.ProjectID) (*core.Project, error)
 	Create(project *core.Project) (*core.Project, error)
-	Update(id core.ProjectId, project *core.Project) (*core.Project, error)
-	Delete(id core.ProjectId) (*core.Project, error)
+	Update(id core.ProjectID, project *core.Project) (*core.Project, error)
+	Delete(id core.ProjectID) (*core.Project, error)
 }

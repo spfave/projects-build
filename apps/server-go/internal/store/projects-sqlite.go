@@ -71,7 +71,7 @@ func (str *ProjectSqliteStore) GetAll() (*[]core.Project, error) {
 	var projects []core.Project
 	for rows.Next() {
 		var project core.Project
-		if err := rows.Scan(&project.Id, &project.Name); err != nil {
+		if err := rows.Scan(&project.ID, &project.Name); err != nil {
 			return nil, fmt.Errorf("project str - error scanning project row: %w", err)
 		}
 		projects = append(projects, project)
@@ -95,7 +95,7 @@ func (str *ProjectSqliteStore) GetAllX() (*[]core.Project, error) {
 	return &projects, nil
 }
 
-func (str *ProjectSqliteStore) GetById(id core.ProjectId) (*core.Project, error) {
+func (str *ProjectSqliteStore) GetByID(id core.ProjectID) (*core.Project, error) {
 	query := `
 		SELECT id, name, link, description, notes, status, date_completed, rating, recommend 
 		FROM pb_projects 
@@ -104,7 +104,7 @@ func (str *ProjectSqliteStore) GetById(id core.ProjectId) (*core.Project, error)
 
 	var project core.Project
 	err := str.db.QueryRow(query, id).Scan(
-		&project.Id, &project.Name, &project.Link,
+		&project.ID, &project.Name, &project.Link,
 		&project.Description, &project.Notes, &project.Status,
 		&project.DateCompleted, &project.Rating, &project.Recommend,
 	)
@@ -120,7 +120,7 @@ func (str *ProjectSqliteStore) GetById(id core.ProjectId) (*core.Project, error)
 	return &project, nil
 }
 
-func (str *ProjectSqliteStore) GetByIdX(id core.ProjectId) (*core.Project, error) {
+func (str *ProjectSqliteStore) GetByIDX(id core.ProjectID) (*core.Project, error) {
 	query := `
 		SELECT id, name, link, description, notes, status, date_completed, rating, recommend 
 		FROM pb_projects 
@@ -142,7 +142,7 @@ func (str *ProjectSqliteStore) GetByIdX(id core.ProjectId) (*core.Project, error
 
 // Insert and return new project with separate execute and query statements
 func (str *ProjectSqliteStore) Create(input *core.ProjectInput) (*core.Project, error) {
-	projectId := rand.Text()[0:8]
+	projectID := rand.Text()[0:8]
 	query := `
 		INSERT INTO pb_projects (id, name, link, description, notes, status, date_completed, rating, recommend)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -150,7 +150,7 @@ func (str *ProjectSqliteStore) Create(input *core.ProjectInput) (*core.Project, 
 
 	result, err := str.db.Exec(
 		query,
-		projectId, input.Name, input.Link,
+		projectID, input.Name, input.Link,
 		input.Description, input.Notes, input.Status,
 		input.DateCompleted, input.Rating, input.Recommend,
 	)
@@ -166,12 +166,12 @@ func (str *ProjectSqliteStore) Create(input *core.ProjectInput) (*core.Project, 
 		return nil, fmt.Errorf("project str - no rows affected, project not created")
 	}
 
-	return str.GetById(projectId)
+	return str.GetByID(projectID)
 }
 
 // Insert and return new project with single 'returning' statement, simplified with sqlx
 func (str *ProjectSqliteStore) CreateX(input *core.ProjectInput) (*core.Project, error) {
-	projectId := rand.Text()[0:8]
+	projectID := rand.Text()[0:8]
 	query := `
 		INSERT INTO pb_projects (id, name, link, description, notes, status, date_completed, rating, recommend)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -181,7 +181,7 @@ func (str *ProjectSqliteStore) CreateX(input *core.ProjectInput) (*core.Project,
 	var project core.Project
 	if err := str.dbx.Get(
 		&project, query,
-		projectId, input.Name, input.Link,
+		projectID, input.Name, input.Link,
 		input.Description, input.Notes, input.Status,
 		input.DateCompleted, input.Rating, input.Recommend,
 	); err != nil {
@@ -192,7 +192,7 @@ func (str *ProjectSqliteStore) CreateX(input *core.ProjectInput) (*core.Project,
 }
 
 // Update and return new project with separate execute and query statements
-func (str *ProjectSqliteStore) Update(id core.ProjectId, project *core.ProjectInput) (*core.Project, error) {
+func (str *ProjectSqliteStore) Update(id core.ProjectID, project *core.ProjectInput) (*core.Project, error) {
 	query := `
 		UPDATE pb_projects 
 		SET name = $1, link = $2, description = $3, notes = $4, status = $5, date_completed = $6, rating = $7, recommend = $8
@@ -217,11 +217,11 @@ func (str *ProjectSqliteStore) Update(id core.ProjectId, project *core.ProjectIn
 		return nil, pErr.ErrNotFound
 	}
 
-	return str.GetById(id)
+	return str.GetByID(id)
 }
 
 // Update and return new project with single 'returning' statement, simplified with sqlx
-func (str *ProjectSqliteStore) UpdateX(id core.ProjectId, project *core.ProjectInput) (*core.Project, error) {
+func (str *ProjectSqliteStore) UpdateX(id core.ProjectID, project *core.ProjectInput) (*core.Project, error) {
 	query := `
 		UPDATE pb_projects 
 		SET name = $1, link = $2, description = $3, notes = $4, status = $5, date_completed = $6, rating = $7, recommend = $8
@@ -249,7 +249,7 @@ func (str *ProjectSqliteStore) UpdateX(id core.ProjectId, project *core.ProjectI
 }
 
 // Delete with execution, sql default returns number of rows affected
-func (str *ProjectSqliteStore) DeleteNR(id core.ProjectId) (*core.Project, error) {
+func (str *ProjectSqliteStore) DeleteNR(id core.ProjectID) (*core.Project, error) {
 	query := "DELETE FROM pb_projects WHERE id = $1"
 
 	result, err := str.db.Exec(query, id)
@@ -265,12 +265,12 @@ func (str *ProjectSqliteStore) DeleteNR(id core.ProjectId) (*core.Project, error
 		return nil, pErr.ErrNotFound
 	}
 
-	return &core.Project{Id: id}, nil // Return project with Id only
+	return &core.Project{ID: id}, nil // Return project with ID only
 }
 
 // Delete and return project with separate query and execute statements
-func (str *ProjectSqliteStore) Delete(id core.ProjectId) (*core.Project, error) {
-	project, err := str.GetById(id) // Get the project first to return it after deletion
+func (str *ProjectSqliteStore) Delete(id core.ProjectID) (*core.Project, error) {
+	project, err := str.GetByID(id) // Get the project first to return it after deletion
 	if err != nil {
 		return nil, err
 	}
@@ -284,7 +284,7 @@ func (str *ProjectSqliteStore) Delete(id core.ProjectId) (*core.Project, error) 
 }
 
 // Delete and return project with single 'returning' query, simplified with sqlx
-func (str *ProjectSqliteStore) DeleteX(id core.ProjectId) (*core.Project, error) {
+func (str *ProjectSqliteStore) DeleteX(id core.ProjectID) (*core.Project, error) {
 	query := `
 		DELETE FROM pb_projects 
 		WHERE id = $1
