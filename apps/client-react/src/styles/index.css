@@ -32,6 +32,7 @@ fieldset {
 
 /* Variables */
 :root {
+	/* Sizes */
 	--min-width-page: 375px;
 	--standard-radius: 0.3rem;
 
@@ -55,6 +56,8 @@ fieldset {
 	--color-gray-light: hsl(from var(--color-gray) h s l / 0.2);
 
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+	/* Theme */
 	color-scheme: light dark;
 	background: light-dark(white, var(--color-dark));
 
@@ -77,7 +80,11 @@ fieldset {
 	display: flex;
 	flex-direction: column;
 	min-width: var(--min-width-page);
-	min-height: 100dvh;
+	min-block-size: 100svh;
+}
+
+html {
+	scrollbar-gutter: stable;
 }
 
 a.action,
