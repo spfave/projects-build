@@ -21,7 +21,7 @@ The root directory is organized by programming language. With each language dire
 
 
 ### **Language Implementations**
-<!-- - [C# .NET](./csharp) -->
+- [C# .NET](./csharp)
 - [Go](./go)  
 - [TypeScript](./typescript)  
 
