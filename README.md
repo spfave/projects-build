@@ -25,7 +25,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 &nbsp;
 ## **Apps**
-<!-- - [API ASP.NET](./apps/api-dotnet/) -->
+- [API ASP.NET](./apps/api-dotnet/)
 - [API Node + Hono](./apps/api-hono)
 
 <!-- - [Client Angular](./apps/client-angular) -->
@@ -45,10 +45,10 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 &nbsp;
 ## **Packages**
+- [Core](./packages/core)
+- [Library](./packages/library)
 - [API Json Server](./packages/api-json-server)
 - [DB Schema Drizzle](./packages/db-drizzle)
-- [Library](./packages/library)
-- [Core](./packages/core)
 
 &nbsp;
 ## **Configs**
