@@ -28,10 +28,10 @@
 	"dependencies": {
 		"@libsql/client": "^0.17.2",
 		"@projectsbuild/core": "workspace:*",
-		"drizzle-orm": "^0.45.1"
+		"drizzle-orm": "^0.45.2"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.57.2",
+		"@dotenvx/dotenvx": "^1.59.1",
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
 		"drizzle-kit": "^0.31.10",

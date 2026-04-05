@@ -17,10 +17,10 @@
 		"@projectsbuild/api-hono": "workspace:*",
 		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"hono": "^4.12.9",
+		"hono": "^4.12.10",
 		"react": "^19.2.4",
 		"react-dom": "^19.2.4",
-		"react-router": "^7.13.2"
+		"react-router": "^7.14.0"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
