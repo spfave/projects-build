@@ -8,7 +8,7 @@ import ProjectNavList from "~/feature-projects/projects-nav-list";
 import { useQuery } from "~/hooks/use-async";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
-import styles from "./projects-route.module.css";
+import styles from "./projects-layout.module.css";
 
 // Note: needed for type inferred rpc client response from get projects endpoint
 export type ProjectListItem = Pick<Project, "id" | "name">;
@@ -17,7 +17,7 @@ export function useProjectsContext() {
 	return useOutletContext<ProjectsContext>();
 }
 
-export default function ProjectsRoute() {
+export default function ProjectsLayout() {
 	const projects = useQuery(client.getProjects);
 
 	return (

@@ -11,9 +11,9 @@ import * as client from "~/feature-projects/client-api-fetch";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useRerender } from "~/hooks/use-rerender";
-import { useProjectsContext } from "./projects-route";
+import { useProjectsContext } from "./projects-layout";
 
-import styles from "./project-create-route.module.css";
+import styles from "./project-create-page.module.css";
 
 type CreateProjectActionState = {
 	form?: ProjectFields;
@@ -21,7 +21,7 @@ type CreateProjectActionState = {
 	error?: string;
 };
 
-export default function ProjectCreateRoute() {
+export default function ProjectCreatePage() {
 	const { fetchProjects } = useProjectsContext();
 	const navigate = useNavigate();
 	// Ref: https://www.youtube.com/watch?v=R0B2HsSM78s
@@ -79,7 +79,7 @@ export default function ProjectCreateRoute() {
 		toggleConditionalFields();
 
 		return () => status.removeEventListener("change", toggleConditionalFields);
-	}, [state.form?.status]); // Note: need unnecessary dependency to rerun effect with changing key on select otherwise event listener is lost with remount
+	}, [state.form?.status]); // Note: need "unnecessary" dependency to rerun effect with changing key on select otherwise event listener is lost with remount
 
 	const rerender = useRerender();
 	function handleReset(_evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {

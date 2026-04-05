@@ -9,7 +9,7 @@ import (
 	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
 )
 
-func apiDemos() *pHttp.Router {
+func demosRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /auth-basic", authBasic)
 	router.HandleFunc("GET /obj/{id}", getObj)
@@ -24,7 +24,7 @@ func apiDemos() *pHttp.Router {
 }
 
 func authBasic(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\nAUTH BASIC") //LOG
+	fmt.Println("\nAUTH BASIC") // LOG
 	un, pw, ok := r.BasicAuth()
 	if !ok {
 		http.Error(w, "Missing credentials", http.StatusBadRequest)
@@ -33,12 +33,12 @@ func authBasic(w http.ResponseWriter, r *http.Request) {
 
 	// validate credentials, if err return http.StatusUnauthorized
 
-	fmt.Printf("credentials: username=%s, password=%s", un, pw) //LOG
+	fmt.Printf("credentials: username=%s, password=%s", un, pw) // LOG
 	pHttp.RespondJson(w, http.StatusOK, pHttp.Envelope{"username": un, "password": pw}, nil)
 }
 
 type obj struct {
-	Id      int     `json:"id"`
+	ID      int     `json:"id"`
 	Title   string  `json:"title"`
 	Content *string `json:"content"`
 	Link    *string `json:"link,omitzero"`
@@ -98,12 +98,12 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 }
 
 func postForm(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\nPOST FORM")                                   //LOG
-	fmt.Printf("RequestFullUrl: %+v\n", pHttp.RequestFullUrl(r)) //LOG
+	fmt.Println("\nPOST FORM")                                   // LOG
+	fmt.Printf("RequestFullUrl: %+v\n", pHttp.RequestFullUrl(r)) // LOG
 
-	fmt.Printf("r.URL.Query(): %+v\n", r.URL.Query()) //LOG
-	fmt.Printf("r.Form: %+v\n", r.Form)               //LOG
-	fmt.Printf("r.PostForm: %+v\n", r.PostForm)       //LOG
+	fmt.Printf("r.URL.Query(): %+v\n", r.URL.Query()) // LOG
+	fmt.Printf("r.Form: %+v\n", r.Form)               // LOG
+	fmt.Printf("r.PostForm: %+v\n", r.PostForm)       // LOG
 
 	query := r.URL.Query()
 	err := r.ParseForm()
@@ -113,77 +113,77 @@ func postForm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println()
-	fmt.Printf("query: %+v\n", query)           //LOG
-	fmt.Printf("r.Form: %+v\n", r.Form)         //LOG
-	fmt.Printf("r.PostForm: %+v\n", r.PostForm) //LOG
+	fmt.Printf("query: %+v\n", query)           // LOG
+	fmt.Printf("r.Form: %+v\n", r.Form)         // LOG
+	fmt.Printf("r.PostForm: %+v\n", r.PostForm) // LOG
 	fmt.Println()
-	fmt.Printf("query.Get(qpAry): %+v\n", query.Get("qpAry")) //LOG
-	fmt.Printf("query[qpAry]: %+v\n", query["qpAry"])         //LOG
-	fmt.Printf("query[qp1]: %+v\n", query["qp1"])             //LOG
+	fmt.Printf("query.Get(qpAry): %+v\n", query.Get("qpAry")) // LOG
+	fmt.Printf("query[qpAry]: %+v\n", query["qpAry"])         // LOG
+	fmt.Printf("query[qp1]: %+v\n", query["qp1"])             // LOG
 	fmt.Println()
-	fmt.Printf("r.Form.Get(qp1): %+v\n", r.Form.Get("qp1"))         //LOG
-	fmt.Printf("r.Form.Get(qpAry): %+v\n", r.Form.Get("qpAry"))     //LOG
-	fmt.Printf("r.Form[qpAry]: %+v\n", r.Form["qpAry"])             //LOG
-	fmt.Printf("r.Form.Get(title): %+v\n", r.Form.Get("title"))     //LOG
-	fmt.Printf("r.Form[content]: %+v\n", r.Form["content"])         //LOG
-	fmt.Printf("r.PostForm[content]: %+v\n", r.PostForm["content"]) //LOG
+	fmt.Printf("r.Form.Get(qp1): %+v\n", r.Form.Get("qp1"))         // LOG
+	fmt.Printf("r.Form.Get(qpAry): %+v\n", r.Form.Get("qpAry"))     // LOG
+	fmt.Printf("r.Form[qpAry]: %+v\n", r.Form["qpAry"])             // LOG
+	fmt.Printf("r.Form.Get(title): %+v\n", r.Form.Get("title"))     // LOG
+	fmt.Printf("r.Form[content]: %+v\n", r.Form["content"])         // LOG
+	fmt.Printf("r.PostForm[content]: %+v\n", r.PostForm["content"]) // LOG
 	fmt.Println()
-	fmt.Printf("r.FormValue(qp1): %+v\n", r.FormValue("qp1"))     //LOG
-	fmt.Printf("r.FormValue(qpAry): %+v\n", r.FormValue("qpAry")) //LOG
-	fmt.Printf("r.FormValue(title): %+v\n", r.FormValue("title")) //LOG
+	fmt.Printf("r.FormValue(qp1): %+v\n", r.FormValue("qp1"))     // LOG
+	fmt.Printf("r.FormValue(qpAry): %+v\n", r.FormValue("qpAry")) // LOG
+	fmt.Printf("r.FormValue(title): %+v\n", r.FormValue("title")) // LOG
 	fmt.Println()
-	fmt.Printf("r.PostFormValue(qp1): %+v\n", r.PostFormValue("qp1"))         //LOG
-	fmt.Printf("r.PostFormValue(content): %+v\n", r.PostFormValue("content")) //LOG
+	fmt.Printf("r.PostFormValue(qp1): %+v\n", r.PostFormValue("qp1"))         // LOG
+	fmt.Printf("r.PostFormValue(content): %+v\n", r.PostFormValue("content")) // LOG
 
 	w.Write([]byte("Done"))
 }
 
 func errorChecking(w http.ResponseWriter, r *http.Request) {
 	err1 := errors.New("error 1")
-	fmt.Println("\nERROR 1")                                                          //LOG
-	fmt.Printf("err1: %+v\n", err1)                                                   //LOG: calls .Error() method for string representation
-	fmt.Printf("err1.Error(): %+v\n", err1.Error())                                   //LOG
-	fmt.Printf("err1 == errors.New(\"error1\"): %+v\n", err1 == errors.New("error1")) //LOG: false
+	fmt.Println("\nERROR 1")                                                          // LOG
+	fmt.Printf("err1: %+v\n", err1)                                                   // LOG: calls .Error() method for string representation
+	fmt.Printf("err1.Error(): %+v\n", err1.Error())                                   // LOG
+	fmt.Printf("err1 == errors.New(\"error1\"): %+v\n", err1 == errors.New("error1")) // LOG: false
 
 	err2 := ErrSentinel
-	fmt.Println("\nERROR 2")                                                        //LOG
-	fmt.Printf("err2: %+v\n", err2)                                                 //LOG
-	fmt.Printf("err2 == ErrSentinel: %+v\n", err2 == ErrSentinel)                   //LOG: legacy, true
-	fmt.Printf("errors.Is(err2, ErrSentinel): %+v\n", errors.Is(err2, ErrSentinel)) //LOG: true
+	fmt.Println("\nERROR 2")                                                        // LOG
+	fmt.Printf("err2: %+v\n", err2)                                                 // LOG
+	fmt.Printf("err2 == ErrSentinel: %+v\n", err2 == ErrSentinel)                   // LOG: legacy, true
+	fmt.Printf("errors.Is(err2, ErrSentinel): %+v\n", errors.Is(err2, ErrSentinel)) // LOG: true
 
 	err3 := fmt.Errorf("error 3: %w", ErrSentinel)
-	fmt.Println("\nERROR 3")                                                        //LOG
-	fmt.Printf("err3: %+v\n", err3)                                                 //LOG
-	fmt.Printf("err3 == ErrSentinel: %+v\n", err3 == ErrSentinel)                   //LOG: false
-	fmt.Printf("errors.Is(err3, ErrSentinel): %+v\n", errors.Is(err3, ErrSentinel)) //LOG: true
-	fmt.Printf("errors.Unwrap(err3): %+v\n", errors.Unwrap(err3))                   //LOG
+	fmt.Println("\nERROR 3")                                                        // LOG
+	fmt.Printf("err3: %+v\n", err3)                                                 // LOG
+	fmt.Printf("err3 == ErrSentinel: %+v\n", err3 == ErrSentinel)                   // LOG: false
+	fmt.Printf("errors.Is(err3, ErrSentinel): %+v\n", errors.Is(err3, ErrSentinel)) // LOG: true
+	fmt.Printf("errors.Unwrap(err3): %+v\n", errors.Unwrap(err3))                   // LOG
 
 	err4 := &pErr.Error{
 		Message: "test error 4",
 		Cause:   ErrSentinel,
 	}
-	fmt.Println("\nERROR 4")                                                        //LOG
-	fmt.Printf("err4: %+v\n", err4)                                                 //LOG
-	fmt.Printf("err4 == &pErr.Error{}: %+v\n", err4 == &pErr.Error{})               //LOG: always false
-	fmt.Printf("errors.Is(err4, ErrSentinel): %+v\n", errors.Is(err4, ErrSentinel)) //LOG: true
-	var werr *pErr.Error
-	fmt.Printf("terr: %+v\n", werr) //LOG
-	// fmt.Printf("varName: %+v\n", err4 == err4.(*pErr.Error))                 //LOG
-	fmt.Printf("errors.As(err4, &pErr.Error{}): %+v\n", errors.As(err4, &werr)) //LOG: true
-	fmt.Printf("errors.Unwrap(err4): %+v\n", errors.Unwrap(err4))               //LOG
+	fmt.Println("\nERROR 4")                                                        // LOG
+	fmt.Printf("err4: %+v\n", err4)                                                 // LOG
+	fmt.Printf("err4 == &pErr.Error{}: %+v\n", err4 == &pErr.Error{})               // LOG: always false
+	fmt.Printf("errors.Is(err4, ErrSentinel): %+v\n", errors.Is(err4, ErrSentinel)) // LOG: true
+	var werr4 *pErr.Error
+	fmt.Printf("werr4: %+v\n", werr4) // LOG
+	// fmt.Printf("varName: %+v\n", err4 == err4.(*pErr.Error))                 // LOG
+	fmt.Printf("errors.As(err4, &werr4[pErr.Error]): %+v\n", errors.As(err4, &werr4)) // LOG: true
+	fmt.Printf("errors.Unwrap(err4): %+v\n", errors.Unwrap(err4))                     // LOG
 
 	err5 := &pErr.Error{
 		Message: "error 5",
 		Cause:   errors.Join(err1, err4, errors.ErrUnsupported),
 	}
 	fmt.Println("\nERROR 5")
-	fmt.Printf("err5: %+v\n", err5)                                                                     //LOG
-	fmt.Printf("errors.Is(err5, err1): %+v\n", errors.Is(err5, err1))                                   //LOG: true
-	fmt.Printf("errors.Is(err5, ErrSentinel): %+v\n", errors.Is(err5, ErrSentinel))                     //LOG: true
-	fmt.Printf("errors.Is(err5, errors.ErrUnsupported): %+v\n", errors.Is(err5, errors.ErrUnsupported)) //LOG: true
-	var werr2 *pErr.Error
-	fmt.Printf("errors.As(err5, &werr2): %+v\n", errors.As(err5, &werr2)) //LOG: true
-	fmt.Printf("errors.Unwrap(err5): %+v\n", errors.Unwrap(err5))         //LOG
+	fmt.Printf("err5: %+v\n", err5)                                                                     // LOG
+	fmt.Printf("errors.Is(err5, err1): %+v\n", errors.Is(err5, err1))                                   // LOG: true
+	fmt.Printf("errors.Is(err5, ErrSentinel): %+v\n", errors.Is(err5, ErrSentinel))                     // LOG: true
+	fmt.Printf("errors.Is(err5, errors.ErrUnsupported): %+v\n", errors.Is(err5, errors.ErrUnsupported)) // LOG: true
+	var werr5 *pErr.Error
+	fmt.Printf("errors.As(err5, &werr5[pErr.Error]): %+v\n", errors.As(err5, &werr5)) // LOG: true
+	fmt.Printf("errors.Unwrap(err5): %+v\n", errors.Unwrap(err5))                     // LOG
 
 	// err6 := fmt.Errorf("error 6: %w: %w", ErrSentinel, errors.ErrUnsupported) // doesn't double wrap
 	// err6 := fmt.Errorf("error 6: %w", errors.Join(ErrSentinel, errors.ErrUnsupported))
@@ -194,14 +194,19 @@ func errorChecking(w http.ResponseWriter, r *http.Request) {
 			Cause:   ErrSentinel,
 		},
 	}
-	fmt.Println("\nERROR 6")                                                                            //LOG
-	fmt.Printf("err6: %+v\n", err6)                                                                     //LOG
-	fmt.Printf("errors.Is(err6, errors.ErrUnsupported): %+v\n", errors.Is(err6, errors.ErrUnsupported)) //LOG
-	fmt.Printf("errors.Is(err6, ErrSentinel): %+v\n", errors.Is(err6, ErrSentinel))                     //LOG
-	var werr3 *TestError
-	fmt.Printf("errors.As(err6, &werr2): %+v\n", errors.As(err6, &werr3))        //LOG: true
-	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(err6))                //LOG
-	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(errors.Unwrap(err6))) //LOG
+	fmt.Println("\nERROR 6")                                                                            // LOG
+	fmt.Printf("err6: %+v\n", err6)                                                                     // LOG
+	fmt.Printf("errors.Is(err6, errors.ErrUnsupported): %+v\n", errors.Is(err6, errors.ErrUnsupported)) // LOG
+	fmt.Printf("errors.Is(err6, ErrSentinel): %+v\n", errors.Is(err6, ErrSentinel))                     // LOG
+	var werr6 *TestError
+	fmt.Printf("errors.As(err6, &werr6[pErr.Error]): %+v\n", errors.As(err6, &werr6))           // LOG: true
+	fmt.Printf("errors.Unwrap(err6): %+v\n", errors.Unwrap(err6))                               // LOG
+	fmt.Printf("errors.Unwrap(errors.Unwrap(err6)): %+v\n", errors.Unwrap(errors.Unwrap(err6))) // LOG
+	werr6a, ok6a := errors.AsType[*pErr.Error](err6)
+	werr6b, ok6b := errors.AsType[*TestError](err6)
+	fmt.Printf("errors.AsType[*pErr.Error](err6) ok6a: %+v, werr6a: %+v\n", ok6a, werr6a) // LOG
+	fmt.Printf("errors.AsType[*pErr.Error](err6) ok6b: %+v, werr6b: %+v\n", ok6b, werr6b) // LOG
+	fmt.Println()                                                                         // LOG
 
 	pHttp.RespondJson(w, http.StatusOK, "error checking done", nil)
 }

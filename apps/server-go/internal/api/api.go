@@ -39,7 +39,7 @@ func (apiServer *ApiServer) Run() error {
 func (apiServer *ApiServer) RegisterRouteHandlers() http.Handler {
 	router := pHttp.NewRouter()
 	router.HandleSubroute("/api/v1", projectsRouter())
-	router.HandleSubroute("/demos", apiDemos())
+	router.HandleSubroute("/demos", demosRouter())
 	router.HandleFunc("/", pHttp.HandlerNotFound)
 
 	return router

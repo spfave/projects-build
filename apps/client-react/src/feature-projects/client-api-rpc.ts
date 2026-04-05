@@ -1,6 +1,6 @@
 import { hc } from "hono/client";
 
-import type { ApiProject } from "@projectsbuild/api-hono/routes/projects-rpc.ts";
+import type { ProjectsRouter } from "@projectsbuild/api-hono/routes/projects-rpc.ts";
 import type { Project, ProjectInput } from "@projectsbuild/core/projects";
 import {
 	FetchError,
@@ -10,8 +10,8 @@ import {
 import { getErrorMessage, wait } from "@projectsbuild/library/utils";
 
 // Note: pre-typed client does not work as process.env is not defined when run through vite import
-// const client = hcApiProjectsTyped(import.meta.env.VITE_URL_API_HONO);
-const client = hc<ApiProject>(import.meta.env.VITE_URL_API_HONO);
+// const client = hcProjectsClientTyped(import.meta.env.VITE_URL_API_HONO);
+const client = hc<ProjectsRouter>(import.meta.env.VITE_URL_API_HONO);
 
 export async function getProjects() {
 	await wait(500);

@@ -1,11 +1,14 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@projectsbuild/config-typescript/nodejs.json",
+	"extends": "@projectsbuild/config-typescript/tsconfig.base.json",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"] // needed if running tsc check with a /library dependency using DOM/DOM.Iterable types
-		// "types": ["node"]
-		// "jsx": "react-jsx",
-		// "jsxImportSource": "hono/jsx"
+		"lib": ["ESNext", "DOM"], // note: need DOM type since "core"/"library" package dependency uses barrel exports that include DOM types
+		"types": ["node"],
+		"module": "nodenext",
+		"allowImportingTsExtensions": true,
+		"rootDir": "./src",
+
+		"noEmit": true
 	},
 	"files": ["../../env.d.ts"],
 	"include": ["src"]

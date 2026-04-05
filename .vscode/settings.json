@@ -4,6 +4,7 @@
 		"source.organizeImports.biome": "always",
 		"source.fixAll.biome": "always"
 	},
+	"editor.defaultFormatter": "biomejs.biome",
 
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.expand": false,
@@ -21,33 +22,11 @@
 		"go.mod": "go.sum, .air*"
 	},
 
-	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
+	// Language Settings
+	"js/ts.preferences.autoImportSpecifierExcludeRegexes": [
 		"^drizzle-orm/((?!sqlite).+)-core$",
 		"^drizzle-orm/((?!sqlite).+)-core/.*$"
 	],
-
-	// Language Settings
-	"[css]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[javascript]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[javascriptreact]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[json]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[jsonc]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[typescript]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
 
 	// Extensions
 	"cSpell.words": ["projectsbuild"]

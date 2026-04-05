@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process";
 import { open } from "node:fs/promises";
-import json from "../src/constants/data/http-statuses.json" with { type: "json" };
+
+import json from "../data/http-statuses.json" with { type: "json" };
 
 // Note: Http status constant definition format
 // /**

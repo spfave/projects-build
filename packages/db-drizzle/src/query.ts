@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "#db/db.ts";
 import * as schema from "#db/schema.ts";
-import * as repo from "./repositories/projects.ts";
+import * as store from "./stores/projects.ts";
 
 // Projects
 const [p1] = await db
@@ -16,26 +16,26 @@ const [p1] = await db
 	})
 	.returning()
 	.catch((err) => {
-		console.info(`\n.catch ERROR`); //LOG
-		console.info(`err.name: `, err.name); //LOG
-		console.info(`err.message: `, err.message); //LOG
-		console.info(`\nerr: `, err); //LOG
+		console.info(`\n.catch ERROR`); // LOG
+		console.info(`err.name: `, err.name); // LOG
+		console.info(`err.message: `, err.message); // LOG
+		console.info(`\nerr: `, err); // LOG
 		return [];
 	});
-console.info(`p1: `, p1, `\n`); //LOG
+console.info(`p1: `, p1, `\n`); // LOG
 
 try {
-	const [p2] = await repo.insertProject({
+	const [p2] = await store.insertProject({
 		name: "b2",
 		status: "complete",
 		dateCompleted: new Date().toISOString(),
 		rating: 4,
 		recommend: true,
 	});
-	console.info(`p2: `, p2, `\n`); //LOG
+	console.info(`p2: `, p2, `\n`); // LOG
 } catch (err) {
-	console.info(`\ntry-catch ERROR`); //LOG
-	console.info(`\nerr: `, err); //LOG
+	console.info(`\ntry-catch ERROR`); // LOG
+	console.info(`\nerr: `, err); // LOG
 }
 
 // Audit

@@ -15,10 +15,10 @@ import (
 // https://github.com/sikozonpc/GopherSocial/blob/main/internal/db/db.go
 // https://www.youtube.com/watch?v=eE8nqgryW_8
 
-type ProjectRepository interface {
+type ProjectStore interface {
 	GetAll() (*[]core.Project, error)
-	GetById(id core.ProjectId) (*core.Project, error)
+	GetByID(id core.ProjectID) (*core.Project, error)
 	Create(project *core.Project) (*core.Project, error)
-	Update(id core.ProjectId, project *core.Project) (*core.Project, error)
-	Delete(id core.ProjectId) (*core.Project, error)
+	Update(id core.ProjectID, project *core.Project) (*core.Project, error)
+	Delete(id core.ProjectID) (*core.Project, error)
 }

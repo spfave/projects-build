@@ -5,7 +5,7 @@
 	"type": "module",
 	"exports": {
 		"./db": "./src/db/db.ts",
-		"./repositories/*": "./src/repositories/*",
+		"./stores/*": "./src/stores/*",
 		"./schema": "./src/db/schema.ts",
 		"./schema-type": "./src/db/schema-type-helpers.ts"
 	},
@@ -26,15 +26,15 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@libsql/client": "^0.17.0",
+		"@libsql/client": "^0.17.2",
 		"@projectsbuild/core": "workspace:*",
-		"drizzle-orm": "^0.45.1"
+		"drizzle-orm": "^0.45.2"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.52.0",
+		"@dotenvx/dotenvx": "^1.59.1",
 		"@projectsbuild/config-typescript": "workspace:*",
 		"@types/node": "catalog:",
-		"drizzle-kit": "^0.31.9",
+		"drizzle-kit": "^0.31.10",
 		"typescript": "catalog:"
 	}
 }

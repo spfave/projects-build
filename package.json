@@ -16,12 +16,12 @@
 	},
 	"scripts": {
 		"start": "pnpm -r --parallel run start",
-		"format": "pnpm -r --stream run format",
-		"lint": "pnpm -r --stream run lint",
-		"typecheck": "pnpm -r --stream run typecheck",
+		"format": "pnpm -r --no-bail --stream run format",
+		"lint": "pnpm -r --no-bail --stream run lint",
+		"typecheck": "pnpm -r --no-bail --parallel run typecheck",
 		"clean:deps": "find ./ -name node_modules -type d -exec rm -rf {} +"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.2"
+		"@biomejs/biome": "^2.4.10"
 	}
 }

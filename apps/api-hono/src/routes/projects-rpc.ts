@@ -7,7 +7,7 @@ import {
 	validateProject,
 	validateProjectId,
 } from "@projectsbuild/core/projects";
-import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts";
+import * as db from "@projectsbuild/db-drizzle/stores/projects.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { jSend } from "@projectsbuild/library/utils";
 import { defaultRouter } from "#lib/init.ts";
@@ -27,8 +27,8 @@ const validateParamProjectId = validator("param", (params, ctx) => {
 
 const validateJsonProject = validator("json", async (_json, ctx) => {
 	const json = await ctx.req.json(); // _json function parameter value not coming through with fetch
-	// console.info(`_json: `, _json); //LOG
-	// console.info(`json: `, json); //LOG
+	// console.info(`_json: `, _json); // LOG
+	// console.info(`json: `, json); // LOG
 	const validation = validateProject(json);
 	if (!validation.success)
 		return ctx.json(
@@ -45,13 +45,13 @@ const validateJsonProject = validator("json", async (_json, ctx) => {
 });
 
 // API endpoints
-export type ApiProject = typeof apiProjects;
-export const apiProjects = defaultRouter()
+export type ProjectsRouter = typeof projectsRouter;
+export const projectsRouter = defaultRouter()
 	.basePath("/v1/projects")
 
 	// Note: Chain route handlers to capture types for RPC client
 	// Alternate option: import app and add routes directly
-	// export const apiProjects = app.basePath("/v1/projects")
+	// export const projectsRouter = app.basePath("/v1/projects")
 	// 	.get("/", (ctx) => {
 	//	 	const projects = selectProjects();
 	//	 	return ctx.json(projects, 200);
@@ -160,7 +160,7 @@ export const apiProjects = defaultRouter()
 	});
 
 // Compiled RPC client with types
-type ClientProjects = ReturnType<typeof hc<ApiProject>>;
-export function hcApiProjectsTyped(...args: Parameters<typeof hc>): ClientProjects {
-	return hc<ApiProject>(...args);
+type ProjectsClient = ReturnType<typeof hc<ProjectsRouter>>;
+export function hcProjectsClientTyped(...args: Parameters<typeof hc>): ProjectsClient {
+	return hc<ProjectsRouter>(...args);
 }

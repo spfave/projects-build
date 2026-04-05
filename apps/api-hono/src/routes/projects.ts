@@ -1,12 +1,12 @@
 import { validator } from "hono/validator";
 
 import { transformProject, validateProject } from "@projectsbuild/core/projects";
-import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
+import * as db from "@projectsbuild/db-drizzle/stores/projects.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { defaultRouter } from "#lib/init.ts";
 
-const api = defaultRouter().basePath("/v1/projects");
+const router = defaultRouter().basePath("/v1/projects");
 
 const validateParamProjectId = validator("param", (params, ctx) => {
 	const { id } = params;
@@ -36,13 +36,13 @@ const validateJsonProject = validator("json", (json, ctx) => {
 });
 
 // Note: Types are not captured with individual route handlers for RPC client
-api.get("/", async (ctx) => {
+router.get("/", async (ctx) => {
 	const projects = await db.selectProjectsQuery();
 	// const projects = await db.selectProjectsSelect();
 	return ctx.json(projects, HttpStatus.OK.code);
 });
 
-api.get("/:id", validateParamProjectId, async (ctx) => {
+router.get("/:id", validateParamProjectId, async (ctx) => {
 	const { id } = ctx.req.valid("param");
 
 	// const project = await db.selectProjectByIdQuery(id);
@@ -59,13 +59,13 @@ api.get("/:id", validateParamProjectId, async (ctx) => {
 // 	const [project] = await db.insertProject(payload);
 // 	return ctx.json(project, HttpStatus.CREATED.code);
 // });
-api.post("/", validateJsonProject, async (ctx) => {
+router.post("/", validateJsonProject, async (ctx) => {
 	const payload = ctx.req.valid("json");
 	const [project] = await db.insertProject(payload);
 	return ctx.json(project, HttpStatus.CREATED.code);
 });
 
-api.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
+router.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 	const { id } = ctx.req.valid("param");
 	const payload = ctx.req.valid("json");
 	const [project] = await db.updateProject(id, payload);
@@ -76,7 +76,7 @@ api.patch("/:id", validateParamProjectId, validateJsonProject, async (ctx) => {
 	return ctx.json(project, HttpStatus.OK.code);
 });
 
-api.delete("/:id", validateParamProjectId, async (ctx) => {
+router.delete("/:id", validateParamProjectId, async (ctx) => {
 	// const { id } = ctx.req.param();
 	// const result = await db.deleteProject(id);
 	// return result.rowsAffected > 0
@@ -99,5 +99,5 @@ api.delete("/:id", validateParamProjectId, async (ctx) => {
 	return ctx.json(project, HttpStatus.OK.code);
 });
 
-export default api;
+export default router;
 // export { api };

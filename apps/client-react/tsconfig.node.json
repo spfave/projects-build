@@ -1,15 +1,17 @@
 {
 	"compilerOptions": {
-		// Options
-		"composite": true,
-		"skipLibCheck": true,
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
-		"allowSyntheticDefaultImports": true,
-
-		// Linting
 		"strict": true,
-		"noUncheckedIndexedAccess": true
+		"noUncheckedIndexedAccess": true,
+		"skipLibCheck": true,
+
+		"target": "esnext",
+		"lib": ["ESNext"],
+		"types": ["node"],
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"rootDir": "./",
+
+		"composite": true
 	},
 	"include": ["vite.config.ts"]
 }

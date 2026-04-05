@@ -4,13 +4,13 @@ import { RouterProvider } from "react-router/dom";
 
 import GeneralErrorFallback from "~/components/error-fallback";
 import ErrorBoundary from "~/components/ui/error-boundary";
-import ProjectCreateRoute from "~/views/project-create-route";
-import ProjectEditRoute from "~/views/project-edit-route";
-import ProjectRoute, { ProjectErrorBoundary } from "~/views/project-route";
-import ProjectsRoute from "~/views/projects-route";
+import ProjectCreatePage from "~/views/project-create-page";
+import ProjectEditPage from "~/views/project-edit-page";
+import ProjectPage, { ProjectErrorBoundary } from "~/views/project-page";
+import ProjectsLayout from "~/views/projects-layout";
 import Root from "~/views/root";
 
-const About = React.lazy(() => import("~/views/about-route"));
+const AboutPage = React.lazy(() => import("~/views/about-page"));
 
 const router = createBrowserRouter(
 	[
@@ -24,7 +24,7 @@ const router = createBrowserRouter(
 					path: "projects",
 					element: (
 						<ErrorBoundary fallback={(error) => <GeneralErrorFallback error={error} />}>
-							<ProjectsRoute />
+							<ProjectsLayout />
 						</ErrorBoundary>
 					),
 					children: [
@@ -34,17 +34,17 @@ const router = createBrowserRouter(
 						},
 						{
 							path: "create",
-							element: <ProjectCreateRoute />,
+							element: <ProjectCreatePage />,
 							ErrorBoundary: () => <GeneralErrorFallback error={useRouteError()} />,
 						},
 						{
 							path: ":id",
-							element: <ProjectRoute />,
+							element: <ProjectPage />,
 							ErrorBoundary: ProjectErrorBoundary, // note: will catch render and in-transition thrown errors, but not async thrown errors outside a transition
 						},
 						{
 							path: ":id/edit",
-							element: <ProjectEditRoute />,
+							element: <ProjectEditPage />,
 							ErrorBoundary: ProjectErrorBoundary,
 						},
 					],
@@ -53,7 +53,7 @@ const router = createBrowserRouter(
 					path: "about",
 					element: (
 						<React.Suspense fallback={<p>Loading...</p>}>
-							<About />
+							<AboutPage />
 						</React.Suspense>
 					),
 				},

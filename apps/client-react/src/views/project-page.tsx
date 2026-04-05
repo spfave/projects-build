@@ -7,11 +7,11 @@ import GeneralErrorFallback from "~/components/error-fallback";
 import Show from "~/components/ui/show";
 import * as client from "~/feature-projects/client-api-fetch";
 import { useAsync } from "~/hooks/use-async";
-import { useProjectsContext } from "./projects-route";
+import { useProjectsContext } from "./projects-layout";
 
-import styles from "./project-route.module.css";
+import styles from "./project-page.module.css";
 
-export default function ProjectRoute() {
+export default function ProjectPage() {
 	const params = useParams();
 	const projectQ = useAsync<Project>();
 	React.useEffect(() => {

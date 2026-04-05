@@ -1,18 +1,18 @@
 import { createApp } from "#lib/init.ts";
-import { apiDemos } from "#routes/demos.ts";
-import { apiProjects } from "#routes/projects-rpc.ts";
+import { demosRouter } from "#routes/demos.ts";
+import { projectsRouter } from "#routes/projects-rpc.ts";
 
 const app = createApp();
 
-// export type App = typeof appRoutes;
-// const appRoutes = app.route("/", apiDemos).route("/", apiProjects);
+// export type App = typeof appRouter;
+// const appRouter = app.route("/", demosRouter).route("/", projectsRouter);
 
-const appRoutes = [apiDemos, apiProjects] as const;
-appRoutes.forEach((r) => {
+const appRouters = [demosRouter, projectsRouter] as const;
+appRouters.forEach((r) => {
 	app.route("/", r);
 });
 
-export type AppRoutes = (typeof appRoutes)[number];
+export type AppRouter = (typeof appRouters)[number];
 export default app;
 
 // ----------------------------------------------------------------------------------- //

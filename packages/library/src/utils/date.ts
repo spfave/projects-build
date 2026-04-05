@@ -36,7 +36,7 @@ export const DATE_FORMAT = {
 } as const satisfies Record<string, (date: Date) => string>;
 export type DateFormat = keyof typeof DATE_FORMAT;
 
-// ----------------------------------------------------------------------------------- //q
+// ----------------------------------------------------------------------------------- //
 // YYYY-MM-DD Date Utilities
 
 export function ymdParse(ymd: string) {

@@ -13,10 +13,10 @@ import (
 // ----------------------------------------------------------------------------------- //
 // TYPES
 type (
-	ProjectId     = string
+	ProjectID     = string
 	ProjectStatus string
 	Project       struct {
-		Id            ProjectId     `json:"id"`
+		ID            ProjectID     `json:"id"`
 		Name          string        `json:"name,omitzero"`
 		Link          *string       `json:"link,omitzero"`
 		Description   *string       `json:"description,omitzero"`
@@ -41,7 +41,7 @@ type (
 // ----------------------------------------------------------------------------------- //
 // CONSTANTS
 const (
-	ProjectIdLength                     = 8
+	ProjectIDLength                     = 8
 	ProjectStatusPlanning ProjectStatus = "planning"
 	ProjectStatusBuilding ProjectStatus = "building"
 	ProjectStatusComplete ProjectStatus = "complete"
@@ -61,8 +61,8 @@ type ValidationResult struct {
 	Errors  *pErr.ValidationError
 }
 
-func ValidateProjectId(input ProjectId) *ValidationResult {
-	if utf8.RuneCountInString(input) != ProjectIdLength {
+func ValidateProjectID(input ProjectID) *ValidationResult {
+	if utf8.RuneCountInString(input) != ProjectIDLength {
 		return &ValidationResult{Success: false}
 	}
 	return &ValidationResult{Success: true}
@@ -160,16 +160,13 @@ func TransformProject(p *ProjectInput) *ProjectInput {
 	}
 
 	if p.Link != nil {
-		trimmedLink := strings.TrimSpace(*p.Link)
-		project.Link = &trimmedLink
+		project.Link = new(strings.TrimSpace(*p.Link))
 	}
 	if p.Description != nil {
-		trimmedDescription := strings.TrimSpace(*p.Description)
-		project.Description = &trimmedDescription
+		project.Description = new(strings.TrimSpace(*p.Description))
 	}
 	if p.Notes != nil {
-		trimmedNotes := strings.TrimSpace(*p.Notes)
-		project.Notes = &trimmedNotes
+		project.Notes = new(strings.TrimSpace(*p.Notes))
 	}
 
 	if p.Status == ProjectStatusComplete {

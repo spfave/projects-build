@@ -12,7 +12,7 @@ export const notFound: NotFoundHandler = (ctx) => {
 };
 
 export const onError: ErrorHandler = (error, ctx) => {
-	console.info(`error: `, error); //LOG
+	console.info(`error: `, error); // LOG
 	const statusCode =
 		error instanceof HTTPException ? error.status : HttpStatus.INTERNAL_SERVER_ERROR.code;
 	const env = process.env.NODE_ENV;
