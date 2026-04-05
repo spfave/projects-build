@@ -84,8 +84,8 @@ router.use(
 	)
 );
 router.get("/timeout/:time?", async (ctx) => {
-	console.info(`params: `, ctx.req.param()); //LOG
-	console.info(`query param: `, ctx.req.query("time")); //LOG
+	console.info(`params: `, ctx.req.param()); // LOG
+	console.info(`query param: `, ctx.req.query("time")); // LOG
 
 	const delay = Number(ctx.req.param("time") ?? ctx.req.query("time")) || 1000 * 5;
 	await new Promise((resolve, _reject) => setTimeout(resolve, delay));
@@ -104,7 +104,7 @@ router.use(
 	})
 );
 router.get("/rate-limit", (ctx) => {
-	console.info(`Not limited currently`); //LOG
+	console.info(`Not limited currently`); // LOG
 	return ctx.json({ message: "Not rate limited, for now..." }, 200);
 });
 
@@ -112,8 +112,8 @@ router.get("/rate-limit", (ctx) => {
 router.get(
 	"/validate-path-query-params/prm1/:p1/prm2/:p2",
 	validator("param", (params, _ctx) => {
-		console.info("\nVALIDATOR PARAMS"); //LOG
-		console.info(`params: `, params); //LOG
+		console.info("\nVALIDATOR PARAMS"); // LOG
+		console.info(`params: `, params); // LOG
 
 		const { p1, p2 } = params;
 		const validP1 = p1 && isStringParsableInt(p1) ? Number(p1) : 0;
@@ -122,8 +122,8 @@ router.get(
 		return { p1: validP1, p2: validP2 };
 	}),
 	validator("query", (qParams, _ctx) => {
-		console.info("\nVALIDATOR QUERY PARAMS"); //LOG
-		console.info(`qParams: `, qParams); //LOG
+		console.info("\nVALIDATOR QUERY PARAMS"); // LOG
+		console.info(`qParams: `, qParams); // LOG
 
 		const { qp1, qp2, qp3, qpAry } = qParams;
 		const validQP1 =
@@ -132,19 +132,19 @@ router.get(
 		return { qp1: validQP1, qp2, qp3, qpAry };
 	}),
 	async (ctx) => {
-		console.info("\nROUTE PARAMS AND QUERIES"); //LOG
+		console.info("\nROUTE PARAMS AND QUERIES"); // LOG
 
 		const reqParams = ctx.req.param();
 		const reqQuery = ctx.req.query();
 		const reqQueries = ctx.req.queries();
-		console.info(`reqParams: `, reqParams); //LOG
-		console.info(`reqQuery: `, reqQuery); //LOG
-		console.info(`reqQueries: `, reqQueries); //LOG
+		console.info(`reqParams: `, reqParams); // LOG
+		console.info(`reqQuery: `, reqQuery); // LOG
+		console.info(`reqQueries: `, reqQueries); // LOG
 
 		const validParams = ctx.req.valid("param");
 		const validQuery = ctx.req.valid("query");
-		console.info(`validParams: `, validParams); //LOG
-		console.info(`validQuery: `, validQuery); //LOG
+		console.info(`validParams: `, validParams); // LOG
+		console.info(`validQuery: `, validQuery); // LOG
 
 		return ctx.json({ reqParams, reqQuery, reqQueries, validParams, validQuery }, 200);
 	}
@@ -153,8 +153,8 @@ router.get(
 router.post(
 	"/validate-form",
 	validator("form", (form, ctx) => {
-		console.info("\nVALIDATOR FORM"); //LOG
-		console.info(`form: `, form); //LOG
+		console.info("\nVALIDATOR FORM"); // LOG
+		console.info(`form: `, form); // LOG
 
 		const { todo, content, complete } = form;
 		if (!todo || Array.isArray(todo) || typeof todo !== "string" || todo.length < 2)
@@ -177,16 +177,16 @@ router.post(
 		return { todo, content, complete: complete === "true" };
 	}),
 	async (ctx) => {
-		console.info("\nROUTE FORM"); //LOG
+		console.info("\nROUTE FORM"); // LOG
 
 		const reqFormRaw = await ctx.req.formData();
 		console.info(`reqFormRaw: `, reqFormRaw); // LOG
 		const reqForm = Object.fromEntries(await ctx.req.formData());
-		console.info(`reqForm: `, reqForm); //LOG
+		console.info(`reqForm: `, reqForm); // LOG
 		const reqFormBody = await ctx.req.parseBody();
-		console.info(`reqFormBody: `, reqFormBody); //LOG
+		console.info(`reqFormBody: `, reqFormBody); // LOG
 		const validForm = ctx.req.valid("form");
-		console.info(`validForm: `, validForm); //LOG
+		console.info(`validForm: `, validForm); // LOG
 
 		return ctx.json({ reqForm, reqFormBody, validForm }, 200);
 	}
@@ -195,8 +195,8 @@ router.post(
 router.post(
 	"/validate-json",
 	validator("json", (json, ctx) => {
-		console.info("\nVALIDATOR JSON"); //LOG
-		console.info(`json: `, json); //LOG
+		console.info("\nVALIDATOR JSON"); // LOG
+		console.info(`json: `, json); // LOG
 
 		const { todo, content, complete } = json;
 		if (!todo || typeof todo !== "string" || todo.length < 2)
@@ -209,16 +209,17 @@ router.post(
 		return { todo: todo.toUpperCase(), content, complete };
 	}),
 	async (ctx) => {
-		console.info("\nROUTE JSON BODY"); //LOG
+		console.info("\nROUTE JSON BODY"); // LOG
 
 		const reqJson = await ctx.req.json();
-		console.info(`reqJson: `, reqJson); //LOG
+		console.info(`reqJson: `, reqJson); // LOG
 		const validJson = ctx.req.valid("json");
-		console.info(`validForm: `, validJson); //LOG
+		console.info(`validForm: `, validJson); // LOG
 
 		return ctx.json({ reqJson, validJson }, 200);
 	}
 );
 
 export default router;
+
 export { router as demosRouter };

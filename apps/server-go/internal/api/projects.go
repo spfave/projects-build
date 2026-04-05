@@ -103,7 +103,7 @@ func getProjectByID(w http.ResponseWriter, r *http.Request) {
 // 500 internal server error: exception (unknown error), db error
 func createProject(w http.ResponseWriter, r *http.Request) {
 	payload, err := pHttp.JsonDecode[core.ProjectInput](r)
-	fmt.Printf("payload: %+v\n", payload) //LOG
+	fmt.Printf("payload: %+v\n", payload) // LOG
 	if err != nil {
 		pHttp.RespondJson(w, http.StatusBadRequest, pHttp.JSendFail(
 			"failed to parse json body ", pHttp.Envelope{"errors": err.Error()}), nil)
@@ -111,7 +111,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	validation := core.ValidateProject(&payload)
-	fmt.Printf("validation: %+v\n", validation) //LOG
+	fmt.Printf("validation: %+v\n", validation) // LOG
 	if !validation.Success {
 		pHttp.RespondJson(w, http.StatusUnprocessableEntity, pHttp.JSendFail(
 			"invalid project", pHttp.Envelope{"errors": validation.Errors}), nil)

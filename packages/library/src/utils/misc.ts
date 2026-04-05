@@ -60,11 +60,11 @@ export function valueIfTruthy<TInput, TOutput>(input: TInput, output?: TOutput) 
 
 // // --------------- TESTING --------------------
 // function func1(p: number) {
-// 	console.warn(p); //LOG
+// 	console.warn(p); // LOG
 // 	return p * 2;
 // }
 // function func2() {
-// 	console.warn(123); //LOG
+// 	console.warn(123); // LOG
 // 	return "fsf";
 // }
 // type f2p = Parameters<typeof func2>;

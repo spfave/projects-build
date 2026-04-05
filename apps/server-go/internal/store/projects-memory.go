@@ -46,7 +46,7 @@ func (str *ProjectMemoryStore) GetAll() (*[]core.Project, error) {
 
 // note: working with package "global" projectStore map variable
 // func GetAll() (*[]core.Project, error) {
-// 	fmt.Printf("projectMap: %+v\n", projectMap) //LOG
+// 	fmt.Printf("projectMap: %+v\n", projectMap) // LOG
 // 	projects := make([]core.Project, 0, len(projectMap))
 // 	for _, project := range projectMap {
 // 		projects = append(projects, project)
