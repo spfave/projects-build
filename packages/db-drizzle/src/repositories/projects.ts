@@ -15,6 +15,8 @@ export async function selectProjectsQuery() {
 	return await db.query.projects.findMany({ columns: { id: true, name: true } });
 }
 export async function selectProjectsSelect() {
+	// throw "Throw projects DB string"; // testing
+	// throw new Error("Throw projects DB Error"); // testing
 	return await db.select({ id: projects.id, name: projects.name }).from(projects);
 }
 

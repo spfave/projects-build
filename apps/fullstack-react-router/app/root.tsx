@@ -51,17 +51,21 @@ export function HydrateFallback() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+	console.warn(`\nERROR BOUNDARY: ROOT`); //LOG
+	console.info(`error: `, error); //LOG
 	let message = "Oops!";
 	let details = "An unexpected error occurred.";
 	let stack: string | undefined;
 
 	if (isRouteErrorResponse(error)) {
+		console.info(`IF: is route error res`); //LOG
 		message = error.status === 404 ? "404" : "Error";
 		details =
 			error.status === 404
 				? "The requested page could not be found."
 				: error.statusText || details;
 	} else if (import.meta.env.DEV && error && error instanceof Error) {
+		console.info(`ELSE IF: not route error res`); //LOG
 		details = error.message;
 		stack = error.stack;
 	}
