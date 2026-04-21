@@ -66,6 +66,7 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 &nbsp;
 ## **Notes/References**
 - [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
+- [Hono + React Monorepo Example](https://github.com/w3cj/monorepo-example-tasks-app/tree/main)
 - [Syntax CJ Monorepo Example](https://www.youtube.com/watch?v=KIgPJT806D0&list=WL&index=2&t=12s)
 - [TS Paths in a Monorepo](https://github.com/vercel/turbo/discussions/620)
 - [Data Handling](https://nextjs.org/blog/security-nextjs-server-components-actions)
