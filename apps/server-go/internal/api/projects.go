@@ -27,15 +27,15 @@ func projectsRouter() *pHttp.Router {
 }
 
 var (
-	projectRepo  = store.ProjectMemStr
-	projectRepo2 = store.ProjectSqliteStr
+	projectMem = store.ProjectMemStr
+	projectDB  = store.ProjectSqliteStr
 )
 
 // Responses:
 // 200 ok
 // 500 internal server error: exception (unknown error, db error)
 func getAllProjects(w http.ResponseWriter, r *http.Request) {
-	projects, err := projectRepo2.GetAll()
+	projects, err := projectDB.GetAll()
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(
 			"error getting all projects",
@@ -50,7 +50,7 @@ func getAllProjects(w http.ResponseWriter, r *http.Request) {
 
 // note: variant returning error, handled by pHttp.RouteHandler attached .ServeHTTP method
 func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError {
-	projects, err := projectRepo.GetAll()
+	projects, err := projectMem.GetAll()
 
 	if err != nil {
 		return &pHttp.HttpError{
@@ -81,7 +81,7 @@ func getProjectByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	project, err := projectRepo2.GetByID(projectID)
+	project, err := projectDB.GetByID(projectID)
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNotFound):
@@ -119,7 +119,7 @@ func createProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	projectPayload := core.TransformProject(&payload)
-	project, err := projectRepo2.Create(projectPayload)
+	project, err := projectDB.Create(projectPayload)
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError("error creating project", nil, nil))
 		return
@@ -139,7 +139,7 @@ func createProjectError(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// projectPayload := core.TransformProject(&payload)
-	project, err := projectRepo2.Create(&payload)
+	project, err := projectDB.Create(&payload)
 	if err != nil {
 		pHttp.RespondJsonError(w, http.StatusInternalServerError, pHttp.JSendError(
 			"error creating project", pHttp.Envelope{"errors": err.Error(), "stack": string(debug.Stack())}, nil))
@@ -180,7 +180,7 @@ func updateProject(w http.ResponseWriter, r *http.Request) {
 	// 3. Parse data payload(s) into domain entity
 	projectPayload := core.TransformProject(&payload)
 	// 4. Execute service/repo method
-	project, err := projectRepo2.Update(projectID, projectPayload)
+	project, err := projectDB.Update(projectID, projectPayload)
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNotFound):
@@ -209,7 +209,7 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 	}
 	// Validate project id
 
-	project, err := projectRepo2.Delete(projectID)
+	project, err := projectDB.Delete(projectID)
 	if err != nil {
 		switch {
 		case errors.Is(err, pErr.ErrNotFound):
