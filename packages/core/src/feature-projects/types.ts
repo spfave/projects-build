@@ -6,6 +6,7 @@ import type {
 	OmitDistributive,
 	Pretty,
 } from "@projectsbuild/library/types";
+import type { PROJECT_STATUS } from "./constants.ts";
 
 export type ProjectId = string;
 type ProjectBase = {
@@ -26,13 +27,13 @@ type ProjectBase = {
 // export type ProjectStatus = ProjectTypeBase["status"];
 
 interface ProjectTypePlanning extends ProjectBase {
-	status: "planning";
+	status: typeof PROJECT_STATUS.planning;
 }
 interface ProjectTypeBuilding extends ProjectBase {
-	status: "building";
+	status: typeof PROJECT_STATUS.building;
 }
 interface ProjectTypeComplete extends ProjectBase {
-	status: "complete";
+	status: typeof PROJECT_STATUS.complete;
 	dateCompleted: string;
 	rating: number;
 	recommend: boolean;
