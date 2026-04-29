@@ -27,6 +27,9 @@
 		"^drizzle-orm/((?!sqlite).+)-core$",
 		"^drizzle-orm/((?!sqlite).+)-core/.*$"
 	],
+	"[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
 
 	// Extensions
 	"cSpell.words": ["projectsbuild"]
