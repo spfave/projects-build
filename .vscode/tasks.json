@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "root: typecheck",
+			"detail": "typecheck all js/ts apps and packages",
+			"type": "npm",
+			"script": "typecheck",
+			"problemMatcher": []
+		},
+		{
+			"label": "root: lint",
+			"detail": "lint all js/ts apps and packages",
+			"type": "shell",
+			"command": "pnpm -r --no-bail --stream run lint",
+			"problemMatcher": []
+		}
+	]
+}
