@@ -6,9 +6,9 @@ import { PROJECT_ID_LENGTH, PROJECT_STATUS, PROJECT_STATUSES } from "./constants
 import type { Project, ProjectErrors, ProjectFields, ProjectInput } from "./types.ts";
 
 export function validateProjectId(id: string | null | undefined) {
-	if (!id || typeof id !== "string" || id.length !== PROJECT_ID_LENGTH) {
+	if (!id || typeof id !== "string" || id.length !== PROJECT_ID_LENGTH)
 		return { success: false } as const;
-	}
+
 	return { success: true } as const;
 }
 
@@ -61,9 +61,8 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 
 	// status
 	if (status == null) errors.fields.status.push("Status must be provided");
-	else if (typeof status !== "string" || !PROJECT_STATUSES.includes(status)) {
+	else if (typeof status !== "string" || !PROJECT_STATUSES.includes(status))
 		errors.fields.status.push("Invalid status option");
-	}
 
 	// status dependent
 	if (status === PROJECT_STATUS.complete) {
@@ -95,8 +94,9 @@ export function validateProject(input: Record<string, FormDataEntryValue>) {
 		else if (
 			!["boolean", "string"].includes(typeof recommend) ||
 			(typeof recommend === "string" && !["true", "false"].includes(recommend))
-		)
+		) {
 			errors.fields.recommend.push("Invalid recommendation");
+		}
 	} else {
 		if (dateCompleted != null)
 			errors.fields.dateCompleted.push("Completion date is not assignable");
