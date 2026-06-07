@@ -41,8 +41,14 @@ export type PropertyKeyOf<T extends RecordGen> = {
 // ----------------------------------------------------------------------------------- //
 // #region - General Type Helpers
 
+export type AllKeysOf<T> = T extends unknown ? keyof T : never;
+
 declare const brand: unique symbol;
 export type Brand<T, TBrand> = T & { [brand]: TBrand };
+
+export type FlattenDiscriminatedUnion<T extends RecordGen> = {
+	[K in AllKeysOf<T>]: T extends unknown ? (K extends keyof T ? T[K] : undefined) : never;
+};
 
 export type Maybe<T> = T | null | undefined;
 

@@ -9,13 +9,13 @@ import type {
 import type { PROJECT_STATUS } from "./constants.ts";
 
 export type ProjectId = string;
-type ProjectBase = {
-	id: ProjectId;
-	name: string;
-	link?: string;
-	description?: string;
-	notes?: string;
-};
+// type ProjectBase = {
+// 	id: ProjectId;
+// 	name: string;
+// 	link?: string;
+// 	description?: string;
+// 	notes?: string;
+// };
 
 // type ProjectTypeBase =
 // 	| { status: "planning" }
@@ -25,6 +25,14 @@ type ProjectBase = {
 // export type Project = Pretty<ProjectBase & ProjectTypeBase>;
 // export type ProjectInput = Omit<ProjectBase, "id"> & ProjectTypeBase;
 // export type ProjectStatus = ProjectTypeBase["status"];
+
+interface ProjectBase {
+	id: ProjectId;
+	name: string;
+	link: string | undefined;
+	description: string | undefined;
+	notes: string | undefined;
+}
 
 interface ProjectTypePlanning extends ProjectBase {
 	status: typeof PROJECT_STATUS.planning;
