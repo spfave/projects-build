@@ -11,7 +11,7 @@
 - [API Json Server](./apps/api-json-server)
 - [API Node + Hono](./apps/api-hono)
 
-<!-- - [SPA Angular](./apps/spa-angular) -->
+- [SPA Angular](./apps/spa-angular)
 - [SPA React](./apps/spa-react)
 <!-- - [SPA Qwik](./apps/spa-qwik) -->
 <!-- - [SPA Solid](./apps/spa-solid) -->
