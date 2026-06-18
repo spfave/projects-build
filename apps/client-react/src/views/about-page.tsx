@@ -1,6 +1,6 @@
 import { repoUrl } from "~/views/root";
 
-import styles from "./about-route.module.css";
+import styles from "./about-page.module.css";
 
 export default function AboutPage() {
 	return (
@@ -19,10 +19,9 @@ export default function AboutPage() {
 					This implementation is a client rendered{" "}
 					<ANewTab text="Vite" href="https://vitejs.dev/" /> &{" "}
 					<ANewTab text="React" href="https://react.dev/" /> app with a sole additional
-					dependency on{" "}
-					<ANewTab text="React Router" href="https://reactrouter.com/en/main" />. The
-					implementation purposefully use a bare minimum set of dependencies to focus app
-					development on using the primitives supplied with React and limit external
+					dependency on <ANewTab text="React Router" href="https://reactrouter.com" />.
+					The implementation purposefully use a bare minimum set of dependencies to focus
+					app development on using the primitives supplied with React and limit external
 					dependency decision making. This is for the purpose of experimenting with the
 					primitives as building blocks and understanding where it makes sense to favor
 					abstraction to an external dependency.
