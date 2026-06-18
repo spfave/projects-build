@@ -5,6 +5,7 @@ build
 # Cache Directories
 .npm
 .eslintcache
+.pnpm-store
 *.tsbuildinfo
 
 # Dependency Directories

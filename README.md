@@ -25,22 +25,23 @@ This monorepo contains client rendered JS apps, api endpoint server apps, server
 
 &nbsp;
 ## **Apps**
-- [Client React](./apps/client-react)
-<!-- - [Client Solid](./apps/client-solid) -->
-<!-- - [Client Svelte](./apps/client-svelte) -->
-<!-- - [Client Qwik](./apps/client-qwik) -->
-
+<!-- - [API ASP.NET](./apps/api-dotnet/) -->
 - [API Node + Hono](./apps/api-hono)
 
-<!-- - [Server ASP.NET](./apps/server-dotnet) -->
-- [Server Go](./apps/server-go)
+<!-- - [Client Angular](./apps/client-angular) -->
+- [Client React](./apps/client-react)
+<!-- - [Client Qwik](./apps/client-qwik) -->
+<!-- - [Client Solid](./apps/client-solid) -->
+<!-- - [Client Svelte](./apps/client-svelte) -->
 
 <!-- - [Fullstack Astro](./apps/fullstack-astro) -->
 <!-- - [Fullstack Next](./apps/fullstack-next) -->
-<!-- - [Fullstack Remix](./apps/fullstack-remix) -->
+<!-- - [Fullstack React Router](./apps/fullstack-react-router) -->
 <!-- - [Fullstack SolidStart](./apps/fullstack-solidstart) -->
 <!-- - [Fullstack SvelteKit](./apps/fullstack-sveltekit) -->
 <!-- - [Fullstack Leptos](./apps/fullstack-leptos) -->
+
+- [Server Go](./apps/server-go)
 
 &nbsp;
 ## **Packages**
