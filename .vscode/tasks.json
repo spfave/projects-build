@@ -29,6 +29,7 @@
 			"detail": "remove generated dotnet build artifacts",
 			"type": "shell",
 			"command": "find . -type d \\( -name bin -o -name obj \\) -exec rm -rf {} +",
+			"problemMatcher": [],
 		},
 	]
 }

@@ -20,7 +20,10 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"biomejs.biome",
 				"humao.rest-client",
+				"ms-dotnettools.csdevkit",
+				"ms-dotnettools.csharp",
 				"qwtel.sqlite-viewer",
 				"streetsidesoftware.code-spell-checker",
 				"tamasfe.even-better-toml"
