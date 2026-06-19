@@ -30,6 +30,18 @@
 			"problemMatcher": []
 		},
 
+		// dotnet tasks
+		{
+			"label": "C#: cleanup C#/.NET artifacts",
+			"detail": "remove generated .NET build artifacts",
+			"type": "shell",
+			"command": "find . -type d \\( -name bin -o -name obj \\) -exec rm -rf {} +",
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/csharp"
+			}
+		},
+
 		// Go
 		{
 			"label": "Go: cleanup build artifacts",
