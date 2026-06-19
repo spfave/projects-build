@@ -31,6 +31,9 @@
 	// "biome.configurationPath": "./typescript/biome.jsonc",
 
 	// Language Settings
+	"[csharp]": {
+		"editor.defaultFormatter": "ms-dotnettools.csharp",
+	},
 	"js/ts.preferences.autoImportSpecifierExcludeRegexes": [
 		"^drizzle-orm/((?!sqlite).+)-core$",
 		"^drizzle-orm/((?!sqlite).+)-core/.*$"
@@ -44,5 +47,7 @@
 	},
 
 	// Extensions
-	"cSpell.words": ["projectsbuild"]
+	"cSpell.words": [
+		"projectsbuild"
+	],
 }
