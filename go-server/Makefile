@@ -7,8 +7,8 @@
 # INIT
 
 ## Include .env file and make variables available in Makefile and apps
-include ../../.env.local
-export $(shell sed 's/=.*//' ../../.env.local)
+include ../.env.local
+export $(shell sed 's/=.*//' ../.env.local)
 
 
 # ---------------------------------------------------------------------------------------
