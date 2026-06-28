@@ -4,7 +4,6 @@
 		"source.organizeImports.biome": "always",
 		"source.fixAll.biome": "always"
 	},
-	"editor.defaultFormatter": "biomejs.biome",
 
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.expand": false,
@@ -27,7 +26,7 @@
 		"^drizzle-orm/((?!sqlite).+)-core$",
 		"^drizzle-orm/((?!sqlite).+)-core/.*$"
 	],
-	"[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css]": {
+	"[javascript][javascriptreact][typescript][typescriptreact][json][css]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
 

@@ -1,11 +1,11 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
-const viteEnv = loadEnv("", "../../", "VITE");
+const viteEnv = loadEnv("", "../../../", "VITE");
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	envDir: "../../",
+	envDir: "../../../",
 	plugins: [react()],
 	resolve: {
 		tsconfigPaths: true,

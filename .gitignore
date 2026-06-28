@@ -1,32 +1,9 @@
-# Build Directories
-dist
-build
-
-# Cache Directories
-.npm
-.eslintcache
-.pnpm-store
-*.tsbuildinfo
-
-# Dependency Directories
-node_modules/
-
 # Databases
 *.db
 
 # Environment Variable Files
 .env
 .env*
-
-# Logs / Diagnostic Reports (https://nodejs.org/api/report.html)
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Misc
 .DS_Store
