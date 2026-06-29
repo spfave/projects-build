@@ -17,10 +17,10 @@
 		"@projectsbuild/api-hono": "workspace:*",
 		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"hono": "^4.12.25",
+		"hono": "^4.12.27",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
-		"react-router": "^8.0.0"
+		"react-router": "^8.0.1"
 	},
 	"devDependencies": {
 		"@projectsbuild/config-typescript": "workspace:*",
@@ -28,7 +28,7 @@
 		"@types/node": "catalog:",
 		"@types/react": "^19.2.17",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react": "^6.0.2",
+		"@vitejs/plugin-react": "^6.0.3",
 		"typescript": "catalog:",
 		"vite": "catalog:"
 	}
