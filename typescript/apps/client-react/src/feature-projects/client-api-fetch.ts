@@ -12,7 +12,7 @@ import { getErrorMessage, wait } from "@projectsbuild/library/utils";
 // const URL_API_GO = `/api/v1`; // Use relative path for vite dev server proxy
 
 const urlApi = import.meta.env.VITE_URL_API;
-console.info(`urlApi: `, urlApi) // DEBUG LOG
+console.info(`urlApi: `, urlApi); // DEBUG LOG
 
 export async function getProjects() {
 	await wait(500);

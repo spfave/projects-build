@@ -21,6 +21,13 @@
 		"go.mod": "go.sum, .air*"
 	},
 
+	// Biome configuration: otherwise must install biome and define biome config at repo root
+	// https://github.com/biomejs/biome-vscode/issues/25 
+	// https://github.com/biomejs/biome/discussions/6699
+	"biome.requireConfiguration": true,
+	"biome.configurationPath": "./typescript/biome.jsonc",
+	"biome.lsp.bin": "./typescript/node_modules/@biomejs/biome/bin/biome",
+
 	// Language Settings
 	"js/ts.preferences.autoImportSpecifierExcludeRegexes": [
 		"^drizzle-orm/((?!sqlite).+)-core$",

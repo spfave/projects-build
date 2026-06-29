@@ -23,9 +23,9 @@
 	/* grid */
 	display: grid;
 	grid-template-columns: repeat(
-		auto-fill,
-		minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
-	);
+			auto-fill,
+			minmax(max(var(--grid-col-min-width), var(--grid-item-max-width)), 1fr)
+		);
 	row-gap: 0.5rem;
 	column-gap: var(--grid-col-gap);
 }
