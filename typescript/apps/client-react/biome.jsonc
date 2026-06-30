@@ -1,6 +1,6 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.5.1/schema.json",
-	"extends": "//",
+	"extends": ["../../biome.jsonc"],
 	"root": false,
 	"files": { "includes": ["src/**"] },
 	"linter": {

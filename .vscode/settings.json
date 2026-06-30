@@ -21,12 +21,13 @@
 		"go.mod": "go.sum, .air*"
 	},
 
-	// Biome configuration: otherwise must install biome and define biome config at repo root
-	// https://github.com/biomejs/biome-vscode/issues/25 
+	// Note: Biome configuration, for non-root biome install provide path to binary. Other config setting work inconsistenly with extension and auto-formatting on save (main.tsx in particular)
+	// https://biomejs.dev/reference/vscode/#biomelspbin
+	// https://github.com/biomejs/biome-vscode/issues/25
 	// https://github.com/biomejs/biome/discussions/6699
-	"biome.requireConfiguration": true,
-	"biome.configurationPath": "./typescript/biome.jsonc",
 	"biome.lsp.bin": "./typescript/node_modules/@biomejs/biome/bin/biome",
+	// "biome.requireConfiguration": true,
+	// "biome.configurationPath": "./typescript/biome.jsonc",
 
 	// Language Settings
 	"js/ts.preferences.autoImportSpecifierExcludeRegexes": [
@@ -35,6 +36,10 @@
 	],
 	"[javascript][javascriptreact][typescript][typescriptreact][json][css]": {
 		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true
 	},
 
 	// Extensions
