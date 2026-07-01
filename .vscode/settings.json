@@ -8,11 +8,11 @@
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.expand": false,
 	"explorer.fileNesting.patterns": {
-		".config*": "biome.*, drizzle.config.*, tsconfig.*, vite.*",
-		".env*": "*.env, .env.*, .envrc, env.d.ts",
+		".env*": "*.env, .env.*, .envrc",
 		".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
 
 		"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, pnpm-workspace.yaml",
+		"package.json*": "biome.*, drizzle.config.*, tsconfig.*, vite.*",
 		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
 		"*.ts": "${capture}.js",
 		"*.jsx": "${capture}.js, ${capture}.css, ${capture}.module.css",
