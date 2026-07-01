@@ -5,7 +5,7 @@
 //	format details: https://aka.ms/devcontainer.json
 {
 	"$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
-	"name": "pb-js-local",
+	"name": "pb-TypeScript",
 
 	// Image, Dockerfile, or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
@@ -19,19 +19,19 @@
 		"ghcr.io/devcontainers/features/node:2": {
 			"version": "latest",
 			"pnpmVersion": "latest"
-		},
+		}
 	},
 
 	// Workspace configuration
 	"workspaceMount": "type=bind,source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},consistency=cached",
 	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
 	"containerEnv": {
-		"PNPM_HOME": "/home/vscode/.local/share/pnpm",
+		"PNPM_HOME": "/home/vscode/.local/share/pnpm"
 	},
 
 	// Use 'mounts' to mount a local folder or file into the container. More info: https://containers.dev/guide/dockerfile#bind-mounts
 	"mounts": [
-		"type=volume,source=pnpm-store,target=/${containerEnv:PNPM_HOME}/store",
+		"type=volume,source=pnpm-store,target=/${containerEnv:PNPM_HOME}/store"
 		// "type=volume, source=pb-persistence, target=${containerWorkspaceFolder}/persistence",
 	],
 
@@ -39,7 +39,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": ".devcontainer/post-create.sh",
+	"postCreateCommand": ".devcontainer/typescript/post-create.sh",
 
 	// Configure tool-specific properties.
 	"customizations": {
@@ -50,10 +50,10 @@
 				"qwtel.sqlite-viewer",
 				"streetsidesoftware.code-spell-checker",
 				"tamasfe.even-better-toml",
-				"YoavBls.pretty-ts-errors",
-			],
-		},
-	},
+				"YoavBls.pretty-ts-errors"
+			]
+		}
+	}
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
