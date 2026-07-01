@@ -1,19 +1,19 @@
 {
 	"name": "@projectsbuild/library",
 	"version": "0.0.0",
-	"description": "",
 	"private": true,
+	"description": "",
 	"type": "module",
+	"imports": {
+		"#constants": "./src/constants/index.ts",
+		"#types": "./src/types/index.ts"
+	},
 	"exports": {
 		"./constants": "./src/constants/index.ts",
 		"./errors": "./src/errors/index.ts",
 		"./types": "./src/types/index.ts",
 		"./utils": "./src/utils/index.ts",
 		"./validation": "./src/validation/index.ts"
-	},
-	"imports": {
-		"#constants": "./src/constants/index.ts",
-		"#types": "./src/types/index.ts"
 	},
 	"scripts": {
 		"script:fetch-http": "node ./scripts/fetch-http-statuses.ts",

@@ -3,14 +3,14 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
+	"imports": {
+		"#db/*": "./src/db/*"
+	},
 	"exports": {
 		"./db": "./src/db/db.ts",
 		"./stores/*": "./src/stores/*",
 		"./schema": "./src/db/schema.ts",
 		"./schema-type": "./src/db/schema-type-helpers.ts"
-	},
-	"imports": {
-		"#db/*": "./src/db/*"
 	},
 	"scripts": {
 		"start": "pnpm run db:studio",

@@ -1,5 +1,6 @@
 {
 	"editor.codeActionsOnSave": {
+		// "source.action.useSortedPackageJson.biome": "explicit",
 		"source.action.useSortedProperties.biome": "always",
 		"source.organizeImports.biome": "always",
 		"source.fixAll.biome": "always"

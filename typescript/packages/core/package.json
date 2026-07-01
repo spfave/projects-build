@@ -4,11 +4,11 @@
 	"description": "",
 	"private": true,
 	"type": "module",
+	"imports": {},
 	"exports": {
 		"./assets/*.svg": "./assets/*.svg",
 		"./projects": "./src/feature-projects/index.ts"
 	},
-	"imports": {},
 	"scripts": {
 		"format": "biome format .",
 		"lint": "biome lint .",
