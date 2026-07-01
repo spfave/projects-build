@@ -2,14 +2,14 @@
 	"$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
 	"extends": ["../../biome.jsonc"],
 	"root": false,
-	"files": { "includes": [] },
+	"files": { "includes": ["!!**/migrations"] },
 	"linter": {
 		"domains": {
-			"react": "recommended"
+			"drizzle": "all"
 		}
 		// "rules": {
-		// 	"correctness": {
-		// 		"useUniqueElementIds": "info"
+		// 	"nursery": {
+		// 		"noDrizzleUpdateWithoutWhere": "error"
 		// 	}
 		// }
 	}

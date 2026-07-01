@@ -38,14 +38,14 @@
 		// "resolveJsonModule": true, 					// default true
 		// "esModuleInterop": true, 						// default true v6+
 		"verbatimModuleSyntax": true,
-		"isolatedModules": true 								// default true with verbatimModuleSyntax = true
+		"isolatedModules": true, 								// default true with verbatimModuleSyntax = true
 		// "forceConsistentCasingInFileNames": true,	// default true
 		// "noUncheckedSideEffectImports": true 			// default true v6+
 
 		// Output
 		// "noEmit": true,
 		// "emitDeclarationOnly": true,
-		// "outDir": "./dist",
+		"outDir": "./dist",
 		// "sourceMap": true,
 		// "declaration": true,
 		// "declarationDir": "./types",

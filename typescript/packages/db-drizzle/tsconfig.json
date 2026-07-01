@@ -12,5 +12,5 @@
 	},
 	"files": ["../../env.d.ts", "drizzle.config.ts"],
 	"include": ["src"],
-	"exclude": ["seed"]
+	"exclude": ["**/migrations", "**/seed", "query.ts"]
 }

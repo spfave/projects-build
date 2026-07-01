@@ -8,9 +8,9 @@
 		"run:local": "vite",
 		"build": "pnpm run typecheck && vite build",
 		"preview": "vite preview",
-		"check": "biome check ./src",
-		"format": "biome format ./src",
-		"lint": "biome lint ./src",
+		"check": "biome check .",
+		"format": "biome format .",
+		"lint": "biome lint .",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {

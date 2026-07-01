@@ -2,14 +2,7 @@
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"root": true,
 	"files": {
-		"includes": [
-			"**",
-			"!!**/assets",
-			"!!**/data",
-			"!!**/dist",
-			"!**/public",
-			"!!**/migrations"
-		]
+		"includes": ["**", "!!**/dist", "!!**/*.md"]
 	},
 	"vcs": {},
 	"assist": {
