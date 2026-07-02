@@ -28,6 +28,18 @@
 			"type": "shell",
 			"command": "find ./typescript -name node_modules -type d -exec rm -rf {} +",
 			"problemMatcher": []
+		},
+
+		// Go
+		{
+			"label": "Go: cleanup build artifacts",
+			"detail": "",
+			"type": "shell",
+			"command": "find . \\( -name bin -o -name tmp \\) -type d -exec rm -rf {} +",
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/go"
+			}
 		}
 	]
 }
