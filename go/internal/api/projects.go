@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"github.com/spfave/projects-build/apps/server-go/internal/core"
-	"github.com/spfave/projects-build/apps/server-go/internal/store"
-	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
-	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
+	"github.com/spfave/projects-build/go/internal/core"
+	"github.com/spfave/projects-build/go/internal/store"
+	pErr "github.com/spfave/projects-build/go/pkg/errors"
+	pHttp "github.com/spfave/projects-build/go/pkg/http"
 )
 
 func projectsRouter() *pHttp.Router {

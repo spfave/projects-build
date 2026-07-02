@@ -9,7 +9,7 @@ import (
 	"math"
 	"net/http"
 
-	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
+	pErr "github.com/spfave/projects-build/go/pkg/errors"
 )
 
 // ----------------------------------------------------------------------------------- //

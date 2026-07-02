@@ -9,8 +9,8 @@ import (
 	"os"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/spfave/projects-build/apps/server-go/internal/core"
-	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
+	"github.com/spfave/projects-build/go/internal/core"
+	pErr "github.com/spfave/projects-build/go/pkg/errors"
 	_ "modernc.org/sqlite"
 )
 

@@ -1,4 +1,4 @@
-module github.com/spfave/projects-build/apps/server-go
+module github.com/spfave/projects-build/go
 
 go 1.26.1
 

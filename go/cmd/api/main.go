@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/spfave/projects-build/apps/server-go/internal/api"
+	"github.com/spfave/projects-build/go/internal/api"
 )
 
 func main() {

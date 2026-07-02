@@ -5,6 +5,7 @@ tmp_dir = "tmp"
 testdata_dir = "testdata"
 
 [build]
+  # cmd = "go build -o ./tmp/api-go ./cmd/api/main.go"         # Just plain old shell command. You could use `make` as well
   cmd = "make build-api-debug"         # Just plain old shell command. You could use `make` as well
   pre_cmd = []                         # Array of commands to run before each build
   post_cmd = []                        # Array of commands to run after ^C

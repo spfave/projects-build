@@ -7,7 +7,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	pErr "github.com/spfave/projects-build/apps/server-go/pkg/errors"
+	pErr "github.com/spfave/projects-build/go/pkg/errors"
 )
 
 // ----------------------------------------------------------------------------------- //

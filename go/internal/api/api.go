@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/rs/cors"
-	pHttp "github.com/spfave/projects-build/apps/server-go/pkg/http"
+	pHttp "github.com/spfave/projects-build/go/pkg/http"
 )
 
 type ApiServer struct {
