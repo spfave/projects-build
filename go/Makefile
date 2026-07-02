@@ -16,24 +16,24 @@ export $(shell sed 's/=.*//' ../.env.local)
 
 ##
 .PHONY: start
-start: run-local-api
+start: run-local-api-go
 
 ## Run the api application using air for live reloading.
-.PHONY: run-local-api
-run-local-api:
+.PHONY: run-local-api-go
+run-local-api-go:
 	air -c .air.toml
 
 ## Build the api application
-.PHONY: build-api
-build-api:
-	rm -f ./bin/api
-	go build -o ./bin/api ./cmd/api
+.PHONY: build-api-go
+build-api-go:
+	rm -f ./bin/api-go
+	go build -o ./bin/api-go ./cmd/api-go
 
 ## Build the api application for debugging
-.PHONY: build-api-debug
-build-api-debug:
-	rm -f ./bin/api-debug
-	CGO_ENABLED=0 go build -gcflags=all="-N -l" -o ./bin/api-debug ./cmd/api
+.PHONY: build-api-go-debug
+build-api-go-debug:
+	rm -f ./bin/api-go-debug
+	CGO_ENABLED=0 go build -gcflags=all="-N -l" -o ./bin/api-go-debug ./cmd/api-go
 
 ## Run the web application
 .PHONY: run-local-web
