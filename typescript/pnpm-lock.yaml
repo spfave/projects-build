@@ -9,9 +9,6 @@ catalogs:
     '@types/node':
       specifier: ^26.1.0
       version: 26.1.0
-    typescript:
-      specifier: ^6.0.3
-      version: 6.0.3
     vite:
       specifier: ^8.1.2
       version: 8.1.2
@@ -23,6 +20,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.5.2
         version: 2.5.2
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
 
   apps/api-hono:
     dependencies:
@@ -51,9 +51,6 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.1.0
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
 
   apps/api-json-server:
     dependencies:
@@ -103,9 +100,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^6.0.3
         version: 6.0.3(vite@8.1.2(@types/node@26.1.0)(esbuild@0.28.1)(tsx@4.22.4))
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
       vite:
         specifier: 'catalog:'
         version: 8.1.2(@types/node@26.1.0)(esbuild@0.28.1)(tsx@4.22.4)
@@ -126,9 +120,6 @@ importers:
       '@total-typescript/ts-reset':
         specifier: ^0.6.1
         version: 0.6.1
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
 
   packages/db-drizzle:
     dependencies:
@@ -154,9 +145,6 @@ importers:
       drizzle-kit:
         specifier: ^0.31.10
         version: 0.31.10
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
 
   packages/library:
     devDependencies:
@@ -166,9 +154,6 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.1.0
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
 
 packages:
 

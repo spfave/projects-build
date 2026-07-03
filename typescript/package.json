@@ -22,6 +22,7 @@
 		"clean:deps": "find ./ -name node_modules -type d -exec rm -rf {} +"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.2"
+		"@biomejs/biome": "^2.5.2",
+		"typescript": "^6.0.3"
 	}
 }
