@@ -1,4 +1,4 @@
-# **Client-React**
+# **SPA-React**
 A client side [React](https://react.dev/) web application
 
 ## **References**

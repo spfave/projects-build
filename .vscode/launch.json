@@ -42,11 +42,11 @@
 
 		// spa-react
 		{
-			"name": "TS: spa-react Edge Launch",
+			"name": "TS: spa-react Launch Edge",
 			"type": "msedge",
 			"request": "launch",
 			"url": "http://localhost:3001",
-			"webRoot": "${workspaceFolder}/typescript/apps/client-react", // required for breakpoints to work
+			"webRoot": "${workspaceFolder}/typescript/apps/spa-react", // required for breakpoints to work
 			"runtimeArgs": [
 				// "--headless",
 				"--remote-debugging-port=9231", // ?optional
@@ -60,7 +60,7 @@
 		// 	"type": "msedge",
 		// 	"request": "attach",
 		// 	"url": "http://localhost:3001",
-		// 	"webRoot": "${workspaceFolder}/typescript/apps/client-react",
+		// 	"webRoot": "${workspaceFolder}/typescript/apps/spa-react",
 		// 	"address": "localhost:3001",
 		// 	"port": 9231
 		// },
@@ -78,14 +78,14 @@
 			"type": "editor-browser",
 			"request": "launch",
 			"url": "http://localhost:3001",
-			"webRoot": "${workspaceFolder}/typescript/apps/client-react"
+			"webRoot": "${workspaceFolder}/typescript/apps/spa-react"
 		},
 		{
 			"name": "TS: spa-react Attach Integrated Browser",
 			"type": "editor-browser",
 			"request": "attach",
 			"url": "http://localhost:3001",
-			"webRoot": "${workspaceFolder}/typescript/apps/client-react"
+			"webRoot": "${workspaceFolder}/typescript/apps/spa-react"
 		},
 		// #endregion
 
