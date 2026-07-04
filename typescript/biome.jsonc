@@ -1,0 +1,86 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"root": true,
+	"files": {
+		"includes": ["**", "!!**/dist", "!!**/*.md"]
+	},
+	"vcs": {},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							[
+								":URL:",
+								":BUN:",
+								":NODE:",
+								":PACKAGE_WITH_PROTOCOL:",
+								":PACKAGE:",
+								"!@projectsbuild/**"
+							],
+							":BLANK_LINE:",
+							[
+								"@projectsbuild/**",
+								"!@projectsbuild/core/assets/**",
+								":ALIAS:",
+								":PATH:",
+								"!**/*.css"
+							],
+							":BLANK_LINE:",
+							["@projectsbuild/core/assets/**", "**/*.css"]
+						]
+					}
+				},
+				"useSortedPackageJson": {
+					"level": "off",
+					"options": {}
+				},
+				"useSortedProperties": "on"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 90,
+		"lineEnding": "lf"
+	},
+	"linter": {
+		"enabled": true,
+		"domains": {
+			"project": "recommended",
+			"types": "recommended"
+		},
+		"rules": {
+			"preset": "recommended",
+			"style": {
+				"noUnusedTemplateLiteral": "off"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"enabled": true,
+			"arrowParentheses": "always",
+			"attributePosition": "auto",
+			"bracketSameLine": false,
+			"bracketSpacing": true,
+			"jsxQuoteStyle": "double",
+			"quoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"semicolons": "always",
+			"trailingCommas": "es5"
+		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": true,
+			"allowTrailingCommas": true
+		}
+	}
+}

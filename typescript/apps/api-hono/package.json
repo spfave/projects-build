@@ -1,0 +1,35 @@
+{
+	"name": "@projectsbuild/api-hono",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"imports": {
+		"#lib/*": "./src/lib/*",
+		"#routes/*": "./src/routes/*"
+	},
+	"exports": {
+		"./app": "./src/app.ts",
+		"./client": "./src/client.ts",
+		"./routes/*": "./src/routes/*"
+	},
+	"scripts": {
+		"start": "pnpm run run:local",
+		"run:local": "node --inspect=9252 --watch --env-file=../../../.env.local src/index.ts",
+		"check": "biome check .",
+		"format": "biome format .",
+		"lint": "biome lint .",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@hono/node-server": "^2.0.8",
+		"@projectsbuild/core": "workspace:*",
+		"@projectsbuild/db-drizzle": "workspace:*",
+		"@projectsbuild/library": "workspace:*",
+		"hono": "^4.12.27",
+		"hono-rate-limiter": "^0.5.3"
+	},
+	"devDependencies": {
+		"@projectsbuild/config-typescript": "workspace:*",
+		"@types/node": "catalog:"
+	}
+}
