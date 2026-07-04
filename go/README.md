@@ -1,6 +1,5 @@
 # **Go Server**
-The Go directory is  
-<!-- https://go.dev/doc/modules/layout -->
+
 
 &nbsp;
 ## **Directory structure**
@@ -8,10 +7,18 @@ The Go directory is
 - The `internal` directory
 - The `pkg` directory
 
-### **Apps**
-- json API
-- A json API application using [Go](https://go.dev/) and its standard library
-<!-- - Multi-page web application with HTMX for client side interactions -->
+### **Commands**
+- [API Go Std Lib](./cmd/api-go)
+<!-- -[MPA Go + HTMX](./cmd/web/) -->
+
+### **Internal**
+- [API](./internal/api)
+- [Core](./internal/core)
+- [Store](./internal/store)
+
+### **Packages**
+- [Errors](./pkg/errors)
+- [HTTP](./pkg/http)
 
 
 &nbsp;
