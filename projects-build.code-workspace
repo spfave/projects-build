@@ -1,7 +1,0 @@
-{
-	"folders": [
-		// { "name": "Root", "path": "." },
-		{ "name": "Go", "path": "go" },
-		{ "name": "TypeScript", "path": "typescript" }
-	]
-}

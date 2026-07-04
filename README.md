@@ -24,3 +24,19 @@ The root directory is organized by programming language. With each language dire
 <!-- - [C# .NET](./csharp) -->
 - [Go](./go)  
 - [TypeScript](./typescript)  
+
+
+
+<!-- 
+NOTES:
+
+// Define multi-root workspace to isolate settings, tasks, debug launch profiles by language
+./projects-build.code-workspace
+{
+	"folders": [
+		// { "name": "Root", "path": "." }, // to see root files
+		{ "name": "TypeScript", "path": "typescript" }
+		{ "name": "Go", "path": "go" },
+	]
+}
+ -->
