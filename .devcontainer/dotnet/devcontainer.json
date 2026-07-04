@@ -25,6 +25,7 @@
 				"ms-dotnettools.csdevkit",
 				"ms-dotnettools.csharp",
 				"qwtel.sqlite-viewer",
+				"redhat.vscode-xml",
 				"streetsidesoftware.code-spell-checker",
 				"tamasfe.even-better-toml"
 			]
