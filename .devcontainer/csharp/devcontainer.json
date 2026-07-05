@@ -1,6 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
-	"name": "pb-dotnet",
+	"name": "pb-C#",
+	
 	// "image": "mcr.microsoft.com/devcontainers/dotnet:11.0-preview",
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 	"features": {
