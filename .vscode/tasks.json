@@ -1,3 +1,4 @@
+// Ref: https://code.visualstudio.com/docs/debugtest/tasks
 {
 	"version": "2.0.0",
 	"tasks": [
@@ -21,6 +22,13 @@
 			"options": {
 				"cwd": "${workspaceFolder}/typescript"
 			}
+		},
+		{
+			"label": "TS: cleanup build artifacts",
+			"detail": "remove dist folders from all TypeScript apps & packages",
+			"type": "shell",
+			"command": "find ./typescript \\( -name dist -o -name .angular \\) -type d -exec rm -rf {} +",
+			"problemMatcher": []
 		},
 		{
 			"label": "TS: cleanup node_modules",
