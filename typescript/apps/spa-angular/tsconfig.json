@@ -1,31 +1,30 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+// Refs:
+// Typescript configuration: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html.
+// Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options.
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "preserve"
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "@projectsbuild/config-typescript/tsconfig.base.json",
+	"compileOnSave": false,
+	"compilerOptions": {
+		// "noImplicitOverride": true,
+		// "noImplicitReturns": true,
+		// "noPropertyAccessFromIndexSignature": true,
+
+		"target": "esnext",
+		"lib": ["ESNext", "DOM"],
+		// "experimentalDecorators": true,
+		"module": "preserve",
+		"rootDir": "./src",
+
+		"importHelpers": true,
+		"noEmit": true
+	},
+	"angularCompilerOptions": {
+		"enableI18nLegacyMessageIdFormat": false,
+		"strictInjectionParameters": true,
+		"strictInputAccessModifiers": true,
+		"strictTemplates": true
+	},
+	"files": [],
+	"references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.spec.json" }]
 }

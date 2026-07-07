@@ -1,5 +1,5 @@
 {
-	"name": "spa-angular",
+	"name": "@projectsbuild/spa-angular",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -11,7 +11,7 @@
 		"test": "ng test",
 		"lint": "biome lint .",
 		"format": "biome format .",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc -p tsconfig.app.json --noEmit"
 	},
 	"packageManager": "pnpm@11.9.0",
 	"dependencies": {
@@ -28,6 +28,7 @@
 		"@angular/build": "^22.0.5",
 		"@angular/cli": "^22.0.5",
 		"@angular/compiler-cli": "^22.0.0",
+		"@projectsbuild/config-typescript": "workspace:*",
 		"jsdom": "^28.0.0",
 		"prettier": "^3.8.1",
 		"vitest": "^4.0.8"

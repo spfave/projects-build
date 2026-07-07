@@ -93,6 +93,9 @@ importers:
       "@angular/compiler-cli":
         specifier: ^22.0.0
         version: 22.0.5(@angular/compiler@22.0.5)(typescript@6.0.3)
+      '@projectsbuild/config-typescript':
+        specifier: workspace:*
+        version: link:../../configs/typescript
       jsdom:
         specifier: ^28.0.0
         version: 28.1.0
