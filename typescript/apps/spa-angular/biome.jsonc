@@ -1,0 +1,15 @@
+{
+	"$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+	"extends": ["../../biome.jsonc"],
+	"root": false,
+	"files": { "includes": [] },
+	// Refs:
+	// https://biomejs.dev/reference/configuration/#html
+	// https://github.com/biomejs/biome/issues/9513
+	// https://github.com/ksom/biome-plugin-angular
+	"html": {
+		"experimentalFullSupportEnabled": true,
+		"formatter": { "enabled": true, "indentScriptAndStyle": true },
+		"parser": { "interpolation": true }
+	}
+}
