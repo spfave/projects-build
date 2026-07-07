@@ -57,7 +57,8 @@
 							"buildTarget": "spa-angular:build:production"
 						},
 						"development": {
-							"buildTarget": "spa-angular:build:development"
+							"buildTarget": "spa-angular:build:development",
+							"port": 3002
 						}
 					},
 					"defaultConfiguration": "development"
