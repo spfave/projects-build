@@ -20,36 +20,36 @@ if (app.Environment.IsDevelopment())
 	app.MapScalarApiReference("/openapi/scalar/");
 }
 
-app.MapGet("/projects", () => { return TypedResults.Ok(new { message = "get projects" }); })
-	.WithName("Get Projects")
-	.WithDisplayName("Get Projects list")
-	.WithSummary("Get Projects list")
-	.WithDescription("Returns JSON list of Projects. Includes Project Id and Name only")
+var projectsGroup = app.MapGroup("/api/v1")
 	.WithTags("Projects");
 
-app.MapGet("/projects/{id}",
+projectsGroup.MapGet("/projects", () => { return TypedResults.Ok(new { Message = "get projects" }); })
+	.WithName("Get Projects")
+	.WithSummary("Get Projects")
+	.WithDescription("Returns JSON list of Projects. Includes Project Id and Name only");
+
+projectsGroup.MapGet("/projects/{id}",
 	[EndpointName("Get Project")]
 [EndpointSummary("Get Project by Id")]
 [EndpointDescription("Returns JSON representation of entire Project if found by Project Id")]
-[Tags("Projects")]
 (string id) => TypedResults.Ok(new
 {
-	message = $"get project {id}"
+	Message = $"get project {id}"
 }));
 
-app.MapPost("/projects", () =>
+projectsGroup.MapPost("/projects", () =>
 {
 	return TypedResults.Created("/projects/<ProjectId>", new
 	{
-		message = "create project"
+		Message = "create project"
 	});
 });
 
-app.MapPut("/projects/{id}", (string id) => TypedResults.Ok(new { message = $"updated project {id}" }));
+projectsGroup.MapPut("/projects/{id}", (string id) => TypedResults.Ok(new { Message = $"updated project {id}" }));
 
-app.MapDelete("/projects/{id}", (string id) => TypedResults.Ok(new
+projectsGroup.MapDelete("/projects/{id}", (string id) => TypedResults.Ok(new
 {
-	message = $"delete project {id}"
+	Message = $"delete project {id}"
 }));
 
 app.Run();
