@@ -20,26 +20,27 @@ if (app.Environment.IsDevelopment())
 	app.MapScalarApiReference("/openapi/scalar/");
 }
 
-app.MapGet("/", () => "Hello World!");
-
-app.MapGet("/projects", () => "get projects")
+app.MapGet("/projects", () => { return new { message = "get projects" }; })
 	.WithName("Get Projects")
 	.WithDisplayName("Get Projects list")
 	.WithSummary("Get Projects list")
 	.WithDescription("Returns JSON list of Projects. Includes Project Id and Name only")
 	.WithTags("Projects");
+
 app.MapGet("/projects/{id}",
-[EndpointName("Get Project")]
+	[EndpointName("Get Project")]
 [EndpointSummary("Get Project by Id")]
 [EndpointDescription("Returns JSON representation of entire Project if found by Project Id")]
 [Tags("Projects")]
-(string id) => $"get project {id}"
-);
-app.MapPost("/projects", () => "create project");
-app.MapPut("/projects/{id}", (string id) => $"updated project {id}");
+(string id) => new
+{
+	message = $"get project {id}"
+});
 
+app.MapPost("/projects", () => { return new { message = "create project" }; });
 
+app.MapPut("/projects/{id}", (string id) => new { message = $"updated project {id}" });
 
-app.MapDelete("/projects/{id}", (string id) => $"delete project {id}");
+app.MapDelete("/projects/{id}", (string id) => new { message = $"delete project {id}" });
 
 app.Run();
