@@ -54,3 +54,6 @@ dotnet_naming_symbols.private_fields.required_modifiers =
 
 dotnet_naming_style.camel_case_underscore.capitalization = camel_case
 dotnet_naming_style.camel_case_underscore.required_prefix = _
+
+# Code analysis
+dotnet_diagnostic.IDE0008.severity = suggestion
