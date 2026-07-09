@@ -9,7 +9,11 @@
 	// https://github.com/ksom/biome-plugin-angular
 	"html": {
 		"experimentalFullSupportEnabled": true,
-		"formatter": { "enabled": true, "indentScriptAndStyle": true },
+		"formatter": {
+			"enabled": true,
+			"indentScriptAndStyle": true,
+			"indentStyle": "tab"
+		},
 		"parser": { "interpolation": true }
 	}
 }
