@@ -9,7 +9,7 @@
 		<!-- Code Analysis -->
 		<!-- Refs:
 		https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#code-analysis-properties
-		https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview?tabs=net-10
+		https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview
 		-->
 		<AnalysisLevel>latest-Recommended</AnalysisLevel>
 	</PropertyGroup>

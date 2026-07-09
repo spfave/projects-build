@@ -32,7 +32,8 @@
 
 	// Language Settings
 	"[csharp]": {
-		"editor.defaultFormatter": "ms-dotnettools.csharp",
+		// "editor.defaultFormatter": "ms-dotnettools.csharp",
+		"editor.defaultFormatter": "csharpier.csharpier-vscode",
 	},
 	"js/ts.preferences.autoImportSpecifierExcludeRegexes": [
 		"^drizzle-orm/((?!sqlite).+)-core$",

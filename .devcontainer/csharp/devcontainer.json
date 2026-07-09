@@ -22,6 +22,8 @@
 		"vscode": {
 			"extensions": [
 				"biomejs.biome",
+				"csharpier.csharpier-vscode",
+				"EditorConfig.EditorConfig",
 				"humao.rest-client",
 				"ms-dotnettools.csdevkit",
 				"ms-dotnettools.csharp",
