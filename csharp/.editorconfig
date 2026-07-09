@@ -1,59 +1,33 @@
-# Ref: https://EditorConfig.org
+# Refs:
+# editorconfig: https://EditorConfig.org
+# csharpier: https://csharpier.com/docs/Configuration
+# .Net/C# code style rules: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
 # top-most EditorConfig file
 root = true
 
-# General formatting settings
+### General formatting ###
 [*]
+charset = utf-8
 indent_style = tab
 indent_size = 2
-end_of_line = lf
-charset = utf-8
+tab_width = 2
+max_line_length = 100
 trim_trailing_whitespace = true
 insert_final_newline = true
+end_of_line = lf
 
-# C# formatting settings
-[*.cs]
-# Indentation & spacing
-csharp_indent_block_contents = true
-csharp_indent_braces = false
-csharp_indent_case_contents = true
-csharp_indent_switch_labels = true
+### C# code analysis configuration ###
+[*.{cs}]
+# Quality rules (CA####)
 
-# Newline preferences
-csharp_new_line_before_open_brace = all
-csharp_new_line_between_method_declaration_and_body = true
-csharp_new_line_between_query_expression_clauses = true
+# Style rules (IDE####)
+# - Language and unneccessary code
+dotnet_diagnostic.IDE0008.severity = suggestion
 
-# Wrapping
-csharp_preserve_single_line_blocks = false
-csharp_preserve_single_line_statements = false
-
-# Using directives
+# - formatting
+dotnet_diagnostic.IDE0055.severity = none
+# using directives
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = true
 
-# Expression preferences
-csharp_prefer_braces = true:suggestion
-csharp_style_expression_bodied_methods = false:suggestion
-csharp_style_expression_bodied_properties = true:suggestion
-
-# Var usage
-csharp_style_var_for_built_in_types = false:suggestion
-csharp_style_var_when_type_is_apparent = true:suggestion
-csharp_style_var_elsewhere = false:suggestion
-
-# Naming conventions
-dotnet_naming_rule.private_fields_should_be_camel_case.severity = suggestion
-dotnet_naming_rule.private_fields_should_be_camel_case.symbols = private_fields
-dotnet_naming_rule.private_fields_should_be_camel_case.style = camel_case_underscore
-
-dotnet_naming_symbols.private_fields.applicable_kinds = field
-dotnet_naming_symbols.private_fields.applicable_accessibilities = private
-dotnet_naming_symbols.private_fields.required_modifiers =
-
-dotnet_naming_style.camel_case_underscore.capitalization = camel_case
-dotnet_naming_style.camel_case_underscore.required_prefix = _
-
-# Code analysis
-dotnet_diagnostic.IDE0008.severity = suggestion
