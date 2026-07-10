@@ -9,16 +9,18 @@ root = true
 ### General formatting ###
 [*]
 charset = utf-8
-indent_style = tab
-indent_size = 2
-tab_width = 2
-max_line_length = 100
-trim_trailing_whitespace = true
 insert_final_newline = true
 end_of_line = lf
 
 ### C# code analysis configuration ###
 [*.{cs}]
+# General formatting
+indent_style = tab
+indent_size = 2
+tab_width = 2
+max_line_length = 100
+trim_trailing_whitespace = true
+
 # Quality rules (CA####)
 
 # Style rules (IDE####)
@@ -27,7 +29,7 @@ dotnet_diagnostic.IDE0008.severity = suggestion
 
 # - formatting
 dotnet_diagnostic.IDE0055.severity = none
-# using directives
+# - using directives
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = true
 
