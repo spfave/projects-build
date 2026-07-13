@@ -1,7 +1,9 @@
 using ProjectsBuild.API.Routes;
 using Scalar.AspNetCore;
 
+// Add and configure services
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpLogging();
 builder.Services.AddOpenApi(
 	"projects-build",
 	(options) =>
@@ -19,9 +21,11 @@ builder.Services.AddOpenApi(
 	}
 );
 
+// Build and configure application
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
+	app.UseHttpLogging();
 	app.MapOpenApi();
 	app.MapScalarApiReference(
 		"/openapi/scalar/",
@@ -38,4 +42,6 @@ if (app.Environment.IsDevelopment())
 
 app.MapProjectRoutes();
 
+// Run application
+app.Logger.LogInformation("Run application");
 app.Run();

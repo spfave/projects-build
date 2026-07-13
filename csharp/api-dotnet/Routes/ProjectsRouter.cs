@@ -11,7 +11,7 @@ internal static class ProjectsRouter
 				"/projects",
 				() =>
 				{
-					return TypedResults.Ok(new { Message = "get projects!!" });
+					return TypedResults.Ok(new { Message = "get projects" });
 				}
 			)
 			.WithName("Get Projects")
