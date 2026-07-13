@@ -1,12 +1,12 @@
 namespace ProjectsBuild.API.Routes;
 
-internal static class ProjectsRouter
+internal static class ProjectRouter
 {
 	internal static void MapProjectRoutes(this IEndpointRouteBuilder router)
 	{
-		var projectsRouter = router.MapGroup("/api/v1").WithTags("Projects");
+		var projectRouter = router.MapGroup("/api/v1").WithTags("Projects");
 
-		projectsRouter
+		projectRouter
 			.MapGet(
 				"/projects",
 				() =>
@@ -18,7 +18,7 @@ internal static class ProjectsRouter
 			.WithSummary("Get Projects")
 			.WithDescription("Returns JSON list of Projects. Includes Project Id and Name only");
 
-		projectsRouter.MapGet(
+		projectRouter.MapGet(
 			"/projects/{id}",
 			[EndpointName("Get Project")]
 			[EndpointSummary("Get Project by Id")]
@@ -26,7 +26,7 @@ internal static class ProjectsRouter
 			(string id) => TypedResults.Ok(new { Message = $"get project {id}" })
 		);
 
-		projectsRouter.MapPost(
+		projectRouter.MapPost(
 			"/projects",
 			() =>
 			{
@@ -34,12 +34,12 @@ internal static class ProjectsRouter
 			}
 		);
 
-		projectsRouter.MapPut(
+		projectRouter.MapPut(
 			"/projects/{id}",
 			(string id) => TypedResults.Ok(new { Message = $"updated project {id}" })
 		);
 
-		projectsRouter.MapDelete(
+		projectRouter.MapDelete(
 			"/projects/{id}",
 			(string id) => TypedResults.Ok(new { Message = $"delete project {id}" })
 		);
