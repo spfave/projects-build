@@ -89,6 +89,22 @@
 		},
 		// #endregion
 
+		// #region C#
+		// api-dotnet
+		{
+			"name": "C#: api-dotnet Launch",
+			"type": "dotnet",
+			"request": "launch",
+			"projectPath": "${workspaceFolder}/csharp/api-dotnet/api-dotnet.csproj"
+		},
+		{
+			"name": "C#: api-dotnet Attach",
+			"type": "coreclr",
+			"request": "attach",
+			"processName": "api-dotnet",
+		},
+		// #endregion
+
 		// #region Go
 		// api-go
 		{
