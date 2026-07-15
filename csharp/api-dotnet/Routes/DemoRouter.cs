@@ -6,9 +6,13 @@ internal static class DemoRouter
 	{
 		var demoRouter = router.MapGroup("/api/demos").WithTags("Demos");
 
-		demoRouter.MapGet("/exception", Exception);
+		demoRouter.MapGet("/exception", Exception).WithSummary("Throw Exception");
 
-		// demoRouter.MapGet("/get-params", );
+		demoRouter.MapGet("/get-params/{ap}/next/{np}", GetParams).WithSummary("Get URL Params");
+		demoRouter
+			// Note: If param constraints aren't satisfied URL match is not made -> return 404 not found
+			.MapGet("/get-params/{ap:alpha}/nextc/{np:int}", GetParams)
+			.WithSummary("Get URL Params with constraints");
 		// demoRouter.MapGet("/get-query-params", );
 		// demoRouter.MapPost("/post-form", );
 		// demoRouter.MapPost("/post-json", );
@@ -24,5 +28,17 @@ internal static class DemoRouter
 	{
 		Console.WriteLine("Exception "); // LOG
 		throw new InvalidOperationException("Demo Exception route");
+	}
+
+	internal static async Task<object> GetParams(HttpRequest req, string ap, int np)
+	{
+		return TypedResults.Ok(
+			new
+			{
+				ap,
+				np,
+				routeValue = req.RouteValues,
+			}
+		);
 	}
 }
