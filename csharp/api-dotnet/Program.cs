@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Http.Extensions;
 using ProjectsBuild.API.Routes;
 using Scalar.AspNetCore;
 
 // Add and configure services
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks();
 builder.Services.AddHttpLogging();
 builder.Services.AddOpenApi(
 	"projects-build",
@@ -40,6 +43,11 @@ if (app.Environment.IsDevelopment())
 	);
 }
 
+app.MapHealthChecks("/health-check");
+app.MapFallback(
+	(HttpContext context) =>
+		TypedResults.NotFound(new { message = $"not found - {context.Request.GetDisplayUrl()}" })
+);
 app.MapDemoRoutes();
 app.MapProjectRoutes();
 
