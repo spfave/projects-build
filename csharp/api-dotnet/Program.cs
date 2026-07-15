@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
 	);
 }
 
-app.MapDemoRoutes()
+app.MapDemoRoutes();
 app.MapProjectRoutes();
 
 // Run application
