@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.HttpLogging;
 using ProjectsBuild.API.Routes;
 using Scalar.AspNetCore;
 
@@ -6,7 +7,17 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
-builder.Services.AddHttpLogging();
+builder.Services.AddHttpLogging(
+	(logging) =>
+	{
+		logging.LoggingFields =
+			HttpLoggingFields.RequestProperties
+			| HttpLoggingFields.RequestQuery
+			| HttpLoggingFields.ResponseStatusCode
+			| HttpLoggingFields.Duration;
+		logging.CombineLogs = true;
+	}
+);
 builder.Services.AddOpenApi(
 	"projects-build",
 	(options) =>
