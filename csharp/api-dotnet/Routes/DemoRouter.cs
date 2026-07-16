@@ -23,6 +23,7 @@ internal static class DemoRouter
 		// demoRouter.MapPost("/post-json", );
 		// demoRouter.MapPost("/validation-filter", );
 
+		demoRouter.MapGet("/context-user", (Delegate)ContextUser).WithSummary("Get context user");
 		// Ref: https://www.roundthecode.com/dotnet-code-examples/basic-authentication-aspnet-core-example
 		// demoRouter.MapGet("/auth-basic", );
 		// demoRouter.MapGet("/auth-bearer", );
@@ -65,5 +66,11 @@ internal static class DemoRouter
 				queryString = req.QueryString.Value,
 			}
 		);
+	}
+
+	internal static async Task<object> ContextUser(HttpContext context)
+	{
+		var user = context.User;
+		return TypedResults.Ok(new { user });
 	}
 }

@@ -21,3 +21,8 @@ GET {{urlDemos}}/get-path-query-params
 &qpn=123
 &qpAry=qpAry1
 &qpAry=qpAry2
+
+
+### --------------------------------------------------------------------------------- ###
+# GET context user
+GET {{urlDemos}}/context-user
