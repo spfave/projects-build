@@ -1,0 +1,23 @@
+# Ref: https://github.com/Huachao/vscode-restclient
+
+@urlBase = http://localhost:5004
+@urlDemos = {{urlBase}}/api/demos
+@contentType = application/json
+
+### --------------------------------------------------------------------------------- ###
+# GET Exception
+{{urlDemos}}/exception
+
+
+### --------------------------------------------------------------------------------- ###
+# GET Not Found
+GET {{urlDemos}}/not-found
+
+
+### --------------------------------------------------------------------------------- ###
+# GET path and query params
+GET {{urlDemos}}/get-path-query-params
+?qpa=abc
+&qpn=123
+&qpAry=qpAry1
+&qpAry=qpAry2
