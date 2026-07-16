@@ -8,12 +8,17 @@ internal static class DemoRouter
 
 		demoRouter.MapGet("/exception", Exception).WithSummary("Throw Exception");
 
-		demoRouter.MapGet("/get-params/{ap}/next/{np}", GetParams).WithSummary("Get URL Params");
+		demoRouter
+			.MapGet("/get-path-params/{ppa}/next/{ppn}", GetPathParams)
+			.WithSummary("Get URL path params");
 		demoRouter
 			// Note: If param constraints aren't satisfied URL match is not made -> return 404 not found
-			.MapGet("/get-params/{ap:alpha}/nextc/{np:int}", GetParams)
-			.WithSummary("Get URL Params with constraints");
-		// demoRouter.MapGet("/get-query-params", );
+			.MapGet("/get-path-params/{ppa:alpha}/nextc/{ppn:int}", GetPathParams)
+			.WithSummary("Get URL path params with constraints");
+		demoRouter
+			.MapGet("/get-path-query-params/{ppa?}", GetPathQueryParams) // optional param
+			// .MapGet("/get-path-query-params/{ppa=xyz}", GetPathQueryParams) // optional param with default
+			.WithSummary("Get URL path and query params");
 		// demoRouter.MapPost("/post-form", );
 		// demoRouter.MapPost("/post-json", );
 		// demoRouter.MapPost("/validation-filter", );
@@ -30,14 +35,34 @@ internal static class DemoRouter
 		throw new InvalidOperationException("Demo Exception route");
 	}
 
-	internal static async Task<object> GetParams(HttpRequest req, string ap, int np)
+	internal static async Task<object> GetPathParams(HttpRequest req, string ppa, int ppn)
 	{
 		return TypedResults.Ok(
 			new
 			{
-				ap,
-				np,
+				ppa,
+				ppn,
 				routeValue = req.RouteValues,
+			}
+		);
+	}
+
+	internal static async Task<object> GetPathQueryParams(
+		HttpRequest req,
+		string? ppa,
+		string? qpa,
+		int? qpn
+	)
+	{
+		return TypedResults.Ok(
+			new
+			{
+				ppa,
+				qpa,
+				qpn,
+				pathParams = req.RouteValues,
+				queryParams = req.Query,
+				queryString = req.QueryString.Value,
 			}
 		);
 	}
