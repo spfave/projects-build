@@ -32,13 +32,13 @@ internal static class DemoRouter
 		// demoRouter.MapGet("/rate-limit", );
 	}
 
-	internal static async Task Exception()
+	private static async Task Exception()
 	{
 		Console.WriteLine("Exception "); // LOG
 		throw new InvalidOperationException("Demo Exception route");
 	}
 
-	internal static async Task<object> GetPathParams(HttpRequest req, string ppa, int ppn)
+	private static async Task<object> GetPathParams(HttpRequest req, string ppa, int ppn)
 	{
 		return TypedResults.Ok(
 			new
@@ -50,7 +50,7 @@ internal static class DemoRouter
 		);
 	}
 
-	internal static async Task<object> GetPathQueryParams(
+	private static async Task<object> GetPathQueryParams(
 		HttpRequest req,
 		string? ppa,
 		string? qpa,
@@ -103,7 +103,7 @@ internal static class DemoRouter
 		);
 	}
 
-	internal static async Task<object> ContextUser(HttpContext context)
+	private static async Task<object> ContextUser(HttpContext context)
 	{
 		var user = context.User;
 		return TypedResults.Ok(new { user });
