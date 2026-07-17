@@ -24,5 +24,32 @@ GET {{urlDemos}}/get-path-query-params
 
 
 ### --------------------------------------------------------------------------------- ###
+# POST Form data
+POST {{urlDemos}}/post-form
+Content-Type: application/x-www-form-urlencoded
+# Content-Type: multipart/form-data
+
+title=Blog Title
+&content=Blog form content...
+&completed=false
+&priority=2
+&otherField=not expected
+
+
+### --------------------------------------------------------------------------------- ###
+# POST JSON body
+POST {{urlDemos}}/post-json
+Content-Type: {{contentType}}
+
+{
+	"otherField": "not expected",
+	"title": "Blog Title",
+	"content": "Blog json content",
+	"priority": 5,
+	"completed": true
+}
+
+
+### --------------------------------------------------------------------------------- ###
 # GET context user
 GET {{urlDemos}}/context-user

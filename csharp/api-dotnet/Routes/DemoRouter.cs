@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace ProjectsBuild.API.Routes;
 
 internal static class DemoRouter
@@ -19,8 +21,8 @@ internal static class DemoRouter
 			.MapGet("/get-path-query-params/{ppa?}", GetPathQueryParams) // optional param
 			// .MapGet("/get-path-query-params/{ppa=xyz}", GetPathQueryParams) // optional param with default
 			.WithSummary("Get URL path and query params");
-		// demoRouter.MapPost("/post-form", );
-		// demoRouter.MapPost("/post-json", );
+		demoRouter.MapPost("/post-form", PostForm).DisableAntiforgery().WithSummary("Post form data");
+		demoRouter.MapPost("/post-json", PostJsonBody).WithSummary("Post JSON data");
 		// demoRouter.MapPost("/validation-filter", );
 
 		demoRouter.MapGet("/context-user", (Delegate)ContextUser).WithSummary("Get context user");
@@ -65,6 +67,39 @@ internal static class DemoRouter
 				queryParams = req.Query,
 				queryString = req.QueryString.Value,
 			}
+		);
+	}
+
+	private record Todo(string Title, string Content, bool Completed, int Priority = 1);
+
+	private static async Task<object> PostForm(
+		HttpRequest req,
+		[FromForm] Todo todo,
+		CancellationToken ct
+	)
+	{
+		var form = req.Form;
+		var formAsync = await req.ReadFormAsync(ct);
+		return TypedResults.Created(
+			"/todo-formdata",
+			new
+			{
+				todo,
+				form,
+				formAsync,
+			}
+		);
+	}
+
+	// Note: Can only read from body once
+	private static async Task<object> PostJsonBody(Todo todo)
+	// private static async Task<object> PostJsonBody(HttpRequest req)
+	{
+		// var bodyAsync = await req.ReadFromJsonAsync<Todo>();
+		return TypedResults.Created(
+			"/todo-json",
+			new { todo }
+		// new { bodyAsync }
 		);
 	}
 
