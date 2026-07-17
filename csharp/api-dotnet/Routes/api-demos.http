@@ -48,6 +48,19 @@ Content-Type: {{contentType}}
 	"priority": 5,
 	"completed": true
 }
+### --------------------------------------------------------------------------------- ###
+# POST JSON body with validation
+POST {{urlDemos}}/post-validation
+Content-Type: {{contentType}}
+
+{
+	"otherField": "not expected",
+	# "title": "Blog Title",
+	"title": "Blog Title with a lot of extra info",
+	"content": "b",
+	"priority": 7,
+	"completed": true
+}
 
 
 ### --------------------------------------------------------------------------------- ###

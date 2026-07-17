@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProjectsBuild.API.Routes;
@@ -23,7 +24,9 @@ internal static class DemoRouter
 			.WithSummary("Get URL path and query params");
 		demoRouter.MapPost("/post-form", PostForm).DisableAntiforgery().WithSummary("Post form data");
 		demoRouter.MapPost("/post-json", PostJsonBody).WithSummary("Post JSON data");
-		// demoRouter.MapPost("/validation-filter", );
+		demoRouter
+			.MapPost("/post-validation", PostValidation)
+			.WithSummary("Post JSON data with validation");
 
 		demoRouter.MapGet("/context-user", (Delegate)ContextUser).WithSummary("Get context user");
 		// Ref: https://www.roundthecode.com/dotnet-code-examples/basic-authentication-aspnet-core-example
@@ -72,6 +75,14 @@ internal static class DemoRouter
 
 	private record Todo(string Title, string Content, bool Completed, int Priority = 1);
 
+	// Note: Target class/record MUST be public for validation to trigger
+	public record ValidTodo(
+		[Required, Length(2, 20)] string Title,
+		[MinLength(2)] string Content,
+		bool Completed,
+		[Range(1, 5)] int Priority = 1
+	);
+
 	private static async Task<object> PostForm(
 		HttpRequest req,
 		[FromForm] Todo todo,
@@ -101,6 +112,11 @@ internal static class DemoRouter
 			new { todo }
 		// new { bodyAsync }
 		);
+	}
+
+	private static async Task<object> PostValidation(ValidTodo todo)
+	{
+		return TypedResults.Created("/todo-valid", new { todo });
 	}
 
 	private static async Task<object> ContextUser(HttpContext context)
