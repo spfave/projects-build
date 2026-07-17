@@ -18,6 +18,8 @@ builder.Services.AddHttpLogging(
 		logging.CombineLogs = true;
 	}
 );
+
+builder.Services.AddValidation();
 builder.Services.AddOpenApi(
 	"projects-build",
 	(options) =>
