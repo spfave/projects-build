@@ -4,18 +4,28 @@
 @urlDemos = {{urlBase}}/api/demos
 @contentType = application/json
 
-### --------------------------------------------------------------------------------- ###
-# GET Exception
-{{urlDemos}}/exception
+# ------------------------------------------------------------------------------------- #
+### GET throw exception
+GET {{urlDemos}}/throw-exception
 
+### GET bad request inline
+GET {{urlDemos}}/bad-request-inline
+### GET bad request
+GET {{urlDemos}}/bad-request
+### GET status
+GET {{urlDemos}}/status-inline/404
 
-### --------------------------------------------------------------------------------- ###
-# GET Not Found
+### POST result problem
+POST {{urlDemos}}/problem
+### POST result validation problem
+POST {{urlDemos}}/validation-problem
+
+### GET not found
 GET {{urlDemos}}/not-found
 
 
-### --------------------------------------------------------------------------------- ###
-# GET path and query params
+# ------------------------------------------------------------------------------------- #
+### GET path and query params
 GET {{urlDemos}}/get-path-query-params
 ?qpa=abc
 &qpn=123
@@ -23,8 +33,7 @@ GET {{urlDemos}}/get-path-query-params
 &qpAry=qpAry2
 
 
-### --------------------------------------------------------------------------------- ###
-# POST Form data
+### POST form data
 POST {{urlDemos}}/post-form
 Content-Type: application/x-www-form-urlencoded
 # Content-Type: multipart/form-data
@@ -34,10 +43,7 @@ title=Blog Title
 &completed=false
 &priority=2
 &otherField=not expected
-
-
-### --------------------------------------------------------------------------------- ###
-# POST JSON body
+### POST JSON body
 POST {{urlDemos}}/post-json
 Content-Type: {{contentType}}
 
@@ -48,8 +54,7 @@ Content-Type: {{contentType}}
 	"priority": 5,
 	"completed": true
 }
-### --------------------------------------------------------------------------------- ###
-# POST JSON body with validation
+### POST JSON body with validation
 POST {{urlDemos}}/post-validation
 Content-Type: {{contentType}}
 
@@ -63,6 +68,6 @@ Content-Type: {{contentType}}
 }
 
 
-### --------------------------------------------------------------------------------- ###
-# GET context user
+# ------------------------------------------------------------------------------------- #
+### GET context user
 GET {{urlDemos}}/context-user
