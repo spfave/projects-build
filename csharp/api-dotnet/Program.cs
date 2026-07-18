@@ -42,6 +42,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseHttpLogging();
+	app.UseStatusCodePages();
 	app.MapOpenApi();
 	app.MapScalarApiReference(
 		"/openapi/scalar/",

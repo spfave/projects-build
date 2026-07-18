@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProjectsBuild.API.Routes;
@@ -9,8 +10,40 @@ internal static class DemoRouter
 	{
 		var demoRouter = router.MapGroup("/api/demos").WithTags("Demos");
 
-		demoRouter.MapGet("/exception", Exception).WithSummary("Throw Exception");
+		// Exception handling & problem detail demos
+		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling-api
+		// - https://www.youtube.com/watch?v=-TGZypSinpw&list=WL
+		// - https://www.youtube.com/watch?v=eN4GX5WW87s&list=WL
+		// - https://www.youtube.com/watch?v=rXdsm9R5TR0&list=WL
+		demoRouter.MapGet("/throw-exception", ThrowException).WithSummary("Throw Exception");
+		// Note: Regarding capture inferred response status codes in openapi documentation
+		// - With inline handler returning a single TypedResults.<...> response code is inferred
+		// - With named method handler returning a single TypedResults.<...> response code is inferred as 200 regardless. Must declare return type on named handler to infer response code. Using .Produces(StatusCodes.<...>) will add status code to openapi json doc in addition to 200 but it will not be in the scale openapi ui doc.
+		// - With inline handler or name method returning multiple TypedResults.<...> response codes, must declare all return types to infer response codes
+		demoRouter.MapGet("/bad-request-inline", () => TypedResults.BadRequest());
+		demoRouter.MapGet("/bad-request", BadRequest); //.Produces(StatusCodes.Status400BadRequest);
+		demoRouter.MapGet(
+			"/status-inline/{code:int}",
+			async Task<Results<Ok, BadRequest, UnauthorizedHttpResult, NotFound, InternalServerError>> (
+				[FromRoute] int code
+			) =>
+			{
+				return code switch
+				{
+					200 => TypedResults.Ok(),
+					400 => TypedResults.BadRequest(),
+					401 => TypedResults.Unauthorized(),
+					404 => TypedResults.NotFound(),
+					_ => TypedResults.InternalServerError(),
+				};
+			}
+		);
+		demoRouter.MapGet("/status/{code:int}", Status);
+		demoRouter.MapPost("/problem", Problem);
+		demoRouter.MapPost("/validation-problem", ValidationProblem);
 
+		// Parameter binding demos
+		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/parameter-binding
 		demoRouter
 			.MapGet("/get-path-params/{ppa}/next/{ppn}", GetPathParams)
 			.WithSummary("Get URL path params");
@@ -28,6 +61,9 @@ internal static class DemoRouter
 			.MapPost("/post-validation", PostValidation)
 			.WithSummary("Post JSON data with validation");
 
+		// Middleware & filter demos
+		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/
+		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters
 		demoRouter.MapGet("/context-user", (Delegate)ContextUser).WithSummary("Get context user");
 		// Ref: https://www.roundthecode.com/dotnet-code-examples/basic-authentication-aspnet-core-example
 		// demoRouter.MapGet("/auth-basic", );
@@ -35,10 +71,64 @@ internal static class DemoRouter
 		// demoRouter.MapGet("/rate-limit", );
 	}
 
-	private static async Task Exception()
+	private static async Task ThrowException()
 	{
 		Console.WriteLine("Exception "); // LOG
-		throw new InvalidOperationException("Demo Exception route");
+		throw new InvalidOperationException("Demo throw exception route");
+	}
+
+	private record MessageResponse(string Message);
+
+	private static async Task<
+		Results<
+			Ok<MessageResponse>,
+			BadRequest<MessageResponse>,
+			UnauthorizedHttpResult,
+			NotFound<MessageResponse>,
+			InternalServerError<MessageResponse>
+		>
+	> Status([FromRoute] int code)
+	{
+		return code switch
+		{
+			200 => TypedResults.Ok(new MessageResponse("Demo status OK route")),
+			400 => TypedResults.BadRequest(new MessageResponse("Demo status Bad Request route")),
+			401 => TypedResults.Unauthorized(),
+			404 => TypedResults.NotFound(new MessageResponse("Demo status Not Found route")),
+			_ => TypedResults.InternalServerError(
+				new MessageResponse("Demo status Internal Server Error route")
+			),
+		};
+	}
+
+	// private static async Task<object> BadRequest()
+	// private static async Task<BadRequest> BadRequest()
+	private static async Task<BadRequest<MessageResponse>> BadRequest()
+	{
+		// return TypedResults.BadRequest();
+		return TypedResults.BadRequest(new MessageResponse("Demo Bad Request route"));
+	}
+
+	private static async Task<ProblemHttpResult> Problem()
+	{
+		return TypedResults.Problem();
+	}
+
+	private static async Task<ValidationProblem> ValidationProblem()
+	{
+		// return TypedResults.ValidationProblem(errors: []);
+		return TypedResults.ValidationProblem(
+			errors: new Dictionary<string, string[]>
+			{
+				["title"] = new[] { "Title is required" },
+				["content"] = ["Content is required"],
+			}
+		// errors:
+		// [
+		// 	new KeyValuePair<string, string[]>("title", new[] { "Title is required" }),
+		// 	new KeyValuePair<string, string[]>("content", ["Content is required"]),
+		// ]
+		);
 	}
 
 	private static async Task<object> GetPathParams(HttpRequest req, string ppa, int ppn)
@@ -89,8 +179,8 @@ internal static class DemoRouter
 		CancellationToken ct
 	)
 	{
-		var form = req.Form;
 		var formAsync = await req.ReadFormAsync(ct);
+		var form = req.Form;
 		return TypedResults.Created(
 			"/todo-formdata",
 			new
