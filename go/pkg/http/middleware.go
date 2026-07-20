@@ -36,7 +36,8 @@ func PanicRecoveryMiddleware(next http.Handler) http.Handler {
 			if pv != nil {
 				w.Header().Set("Connection", "close")
 				slog.Error("Panic occurred", slog.String("panic", fmt.Sprint(pv)))
-				RespondJsonError(w, http.StatusInternalServerError, JSendError(http.StatusText(http.StatusInternalServerError), Envelope{"panic": pv}, nil))
+				RespondJsonError(w, http.StatusInternalServerError,
+					JSendError(http.StatusText(http.StatusInternalServerError), Envelope{"panic": pv}, nil))
 			}
 
 		}()

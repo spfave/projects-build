@@ -12,10 +12,10 @@ import (
 	pHttp "github.com/spfave/projects-build/go/pkg/http"
 )
 
-func projectsRouter() *pHttp.Router {
+func projectRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /projects", getAllProjects)
-	router.Handle("GET /projects-handler", pHttp.RouteHandler(handlerGetAllError))
+	router.Handle("GET /projects-error", pHttp.RouteHandler(getAllProjectsError))
 	router.HandleFunc("GET /projects/{id}", getProjectByID)
 	router.HandleFunc("POST /projects", createProject)
 	router.HandleFunc("POST /projects/error", createProjectError)
@@ -49,7 +49,7 @@ func getAllProjects(w http.ResponseWriter, r *http.Request) {
 }
 
 // note: variant returning error, handled by pHttp.RouteHandler attached .ServeHTTP method
-func handlerGetAllError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError {
+func getAllProjectsError(w http.ResponseWriter, r *http.Request) *pHttp.HttpError {
 	projects, err := projectMem.GetAll()
 
 	if err != nil {

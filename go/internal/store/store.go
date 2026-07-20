@@ -1,8 +1,6 @@
 package store
 
-import (
-	"github.com/spfave/projects-build/go/internal/core"
-)
+import "github.com/spfave/projects-build/go/internal/core"
 
 // Refs
 // https://go.dev/doc/database/
