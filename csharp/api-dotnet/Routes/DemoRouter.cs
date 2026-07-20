@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,7 +65,9 @@ internal static class DemoRouter
 		// Middleware & filter demos
 		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/
 		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters
-		demoRouter.MapGet("/context-user", (Delegate)ContextUser).WithSummary("Get context user");
+		demoRouter
+			.MapGet("/http-context", (Delegate)HttpContext)
+			.WithSummary("Get http context data");
 		// Ref: https://www.roundthecode.com/dotnet-code-examples/basic-authentication-aspnet-core-example
 		// demoRouter.MapGet("/auth-basic", );
 		// demoRouter.MapGet("/auth-bearer", );
@@ -77,7 +80,7 @@ internal static class DemoRouter
 		throw new InvalidOperationException("Demo throw exception route");
 	}
 
-	private record MessageResponse(string Message);
+	private sealed record MessageResponse(string Message);
 
 	private static async Task<
 		Results<
@@ -163,10 +166,10 @@ internal static class DemoRouter
 		);
 	}
 
-	private record Todo(string Title, string Content, bool Completed, int Priority = 1);
+	private sealed record Todo(string Title, string Content, bool Completed, int Priority = 1);
 
 	// Note: Target class/record MUST be public for validation to trigger
-	public record ValidTodo(
+	public sealed record ValidTodo(
 		[Required, Length(2, 20)] string Title,
 		[MinLength(2)] string Content,
 		bool Completed,
@@ -209,9 +212,18 @@ internal static class DemoRouter
 		return TypedResults.Created("/todo-valid", new { todo });
 	}
 
-	private static async Task<object> ContextUser(HttpContext context)
+	private static async Task<object> HttpContext(HttpContext context)
 	{
 		var user = context.User;
-		return TypedResults.Ok(new { user });
+		var requestId = context.TraceIdentifier;
+		var activity = context.Features.Get<IHttpActivityFeature>()?.Activity;
+		return TypedResults.Ok(
+			new
+			{
+				user,
+				requestId,
+				traceId = activity?.Id,
+			}
+		);
 	}
 }
