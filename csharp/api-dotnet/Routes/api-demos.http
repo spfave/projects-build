@@ -70,4 +70,8 @@ Content-Type: {{contentType}}
 
 # ------------------------------------------------------------------------------------- #
 ### GET context user
-GET {{urlDemos}}/context-user
+GET {{urlDemos}}/http-context
+
+# ### GET Auth basic
+# GET {{urlDemos}}/auth-basic
+# Authorization: Basic username:password
