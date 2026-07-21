@@ -1,6 +1,6 @@
 import { Link, Outlet, useOutletContext } from "react-router";
 
-import type { Project } from "@projectsbuild/core/projects";
+import type { Project } from "@projectsbuild/core/project";
 import GeneralErrorFallback from "~/components/error-fallback";
 import { SwitchAsync } from "~/components/ui/switch";
 import * as client from "~/feature-projects/client-api-fetch";

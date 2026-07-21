@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
-import { notFound, onError } from "./handlers.ts";
+import { errorHandler, notFoundHandler } from "./handlers.ts";
 
 export function defaultApp() {
 	return new Hono({ strict: false });
@@ -17,8 +17,8 @@ export function createApp() {
 		.use(cors())
 		.use(logger())
 
-		.notFound(notFound)
-		.onError(onError);
+		.notFound(notFoundHandler)
+		.onError(errorHandler);
 
 	return app;
 }

@@ -1,13 +1,13 @@
 import { hc } from "hono/client";
-import { HTTPException } from "hono/http-exception";
+// import { HTTPException } from "hono/http-exception";
 import { validator } from "hono/validator";
 
 import {
 	transformProject,
 	validateProject,
 	validateProjectId,
-} from "@projectsbuild/core/projects";
-import * as db from "@projectsbuild/db-drizzle/stores/projects.ts";
+} from "@projectsbuild/core/project";
+import * as db from "@projectsbuild/db-drizzle/stores/project.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { jSend } from "@projectsbuild/library/utils";
 import { defaultRouter } from "#lib/init.ts";
@@ -45,8 +45,8 @@ const validateJsonProject = validator("json", async (_json, ctx) => {
 });
 
 // API endpoints
-export type ProjectsRouter = typeof projectsRouter;
-export const projectsRouter = defaultRouter()
+export type ProjectRouter = typeof projectRouter;
+export const projectRouter = defaultRouter()
 	.basePath("/v1/projects")
 
 	// Note: Chain route handlers to capture types for RPC client
@@ -63,8 +63,8 @@ export const projectsRouter = defaultRouter()
 	.get("/", async (ctx) => {
 		// throw new Error("error - api get projects", { cause: "api error demo" });
 		// throw new HTTPException(HttpStatus.NOT_IMPLEMENTED.code, {
-		// 	message: "exception - api get projects",
-		// 	cause: "api exception demo",
+		// 	message: "http exception - api get projects",
+		// 	cause: "api http exception demo",
 		// });
 
 		const projects = await db.selectProjectsQuery();
@@ -160,7 +160,7 @@ export const projectsRouter = defaultRouter()
 	});
 
 // Compiled RPC client with types
-type ProjectsClient = ReturnType<typeof hc<ProjectsRouter>>;
-export function hcProjectsClientTyped(...args: Parameters<typeof hc>): ProjectsClient {
-	return hc<ProjectsRouter>(...args);
+type ProjectClient = ReturnType<typeof hc<ProjectRouter>>;
+export function hcProjectClientTyped(...args: Parameters<typeof hc>): ProjectClient {
+	return hc<ProjectRouter>(...args);
 }

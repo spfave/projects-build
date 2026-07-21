@@ -1,4 +1,4 @@
-import type { Project, ProjectId, ProjectInput } from "@projectsbuild/core/projects";
+import type { Project, ProjectId, ProjectInput } from "@projectsbuild/core/project";
 import {
 	FetchError,
 	FetchResponseError,
@@ -29,9 +29,7 @@ export async function getProjects() {
 	// Possible HTTP errors:
 	// 500 internal server error: exception (unknown error, db error)
 	if (res.status >= 400) {
-		const msg = getErrorMessage(js, {
-			fallbackMessage: "Failed to get projects",
-		});
+		const msg = getErrorMessage(js, { fallbackMessage: "Failed to get projects" });
 		throw new HttpResponseError(res, msg);
 	}
 	if (!res.ok)
@@ -125,9 +123,7 @@ export async function deleteProject(id: ProjectId) {
 	// 500 internal server error: exception (db error)
 	const js = await res.json();
 	if (res.status >= 400) {
-		const msg = getErrorMessage(js, {
-			fallbackMessage: `Failed to delete project`,
-		});
+		const msg = getErrorMessage(js, { fallbackMessage: `Failed to delete project` });
 		throw new HttpResponseError(res, msg);
 	}
 	// if (!res.ok)

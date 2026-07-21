@@ -7,7 +7,7 @@
 
 import { hc } from "hono/client";
 
-// import { type ProjectsRouter, hcProjectsClientTyped } from "#routes/projects-rpc.ts";
+// import { type ProjectRouter, hcProjectClientTyped } from "#routes/project-rpc.ts";
 import type { AppRouter } from "./app.ts";
 
 // ----------------------------------------------------------------------------------- //
@@ -30,8 +30,8 @@ export default function hcAppTyped(...args: Parameters<typeof hc>): Client {
 // ----------------------------------------------------------------------------------- //
 // App sub-route rpc client
 
-// const clientPR = hc<ProjectsRouter>("");
+// const clientPR = hc<ProjectRouter>("");
 // clientPR.api.v1.projects.
 
-// const clientPCT = hcProjectsClientTyped("");
+// const clientPCT = hcProjectClientTyped("");
 // clientPCT.api.v1.projects.

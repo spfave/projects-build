@@ -5,7 +5,7 @@ import {
 	PROJECT_ID_LENGTH,
 	PROJECT_STATUS,
 	PROJECT_STATUSES,
-} from "@projectsbuild/core/projects";
+} from "@projectsbuild/core/project";
 import { boolean, timestamps, uuidRandom } from "./schema-type-helpers.ts";
 
 const sqliteTable = sqliteTableCreator((name) => `pb_${name}`);

@@ -6,8 +6,8 @@ import type {
 	ProjectErrors,
 	ProjectFields,
 	ProjectStatus,
-} from "@projectsbuild/core/projects";
-import { transformProject, validateProject } from "@projectsbuild/core/projects";
+} from "@projectsbuild/core/project";
+import { transformProject, validateProject } from "@projectsbuild/core/project";
 import { HttpResponseError } from "@projectsbuild/library/errors";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import GeneralErrorFallback from "~/components/error-fallback";
