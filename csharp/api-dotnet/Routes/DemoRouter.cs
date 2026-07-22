@@ -76,7 +76,7 @@ internal static class DemoRouter
 
 	private static async Task ThrowException()
 	{
-		Console.WriteLine("Exception "); // LOG
+		Console.WriteLine("DEMO ROUTE: exception"); // LOG
 		throw new InvalidOperationException("Demo throw exception route");
 	}
 
