@@ -1,24 +1,25 @@
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.HttpLogging;
+using ProjectsBuild.API.Common;
 using ProjectsBuild.API.Routes;
 using Scalar.AspNetCore;
 
 // Add and configure services
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHealthChecks();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddHttpLogging(
-	(logging) =>
+	(options) =>
 	{
-		logging.LoggingFields =
+		options.LoggingFields =
 			HttpLoggingFields.RequestProperties
 			| HttpLoggingFields.RequestQuery
 			| HttpLoggingFields.ResponseStatusCode
 			| HttpLoggingFields.Duration;
-		logging.CombineLogs = true;
+		options.CombineLogs = true;
 	}
 );
-
+builder.Services.AddHealthChecks();
 builder.Services.AddValidation();
 builder.Services.AddOpenApi(
 	"projects-build",
@@ -39,6 +40,8 @@ builder.Services.AddOpenApi(
 
 // Build and configure application
 var app = builder.Build();
+
+app.UseExceptionHandler((builder) => { });
 if (app.Environment.IsDevelopment())
 {
 	app.UseHttpLogging();
