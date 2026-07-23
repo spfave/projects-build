@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Mvc;
 using ProjectsBuild.API.Common;
 using ProjectsBuild.API.Routes;
 using Scalar.AspNetCore;
@@ -79,7 +80,14 @@ if (app.Environment.IsDevelopment())
 app.MapHealthChecks("/health-check");
 app.MapFallback(
 	(HttpContext context) =>
-		TypedResults.NotFound(new { message = $"not found - {context.Request.GetDisplayUrl()}" })
+		TypedResults.Problem(
+			new ProblemDetails
+			{
+				Status = StatusCodes.Status404NotFound,
+				Title = "Not Found",
+				Detail = "The requested resource was not found.",
+			}
+		)
 );
 app.MapDemoRoutes();
 app.MapProjectRoutes();
