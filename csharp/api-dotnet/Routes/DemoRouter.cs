@@ -72,6 +72,16 @@ internal static class DemoRouter
 		// demoRouter.MapGet("/auth-basic", );
 		// demoRouter.MapGet("/auth-bearer", );
 		// demoRouter.MapGet("/rate-limit", );
+		demoRouter
+			.MapPut("/route-filter", HandlerWithFilters)
+			.AddEndpointFilter(
+				async (context, next) =>
+				{
+					Console.WriteLine($"DEMO ROUTE: demo endpoint filter inline"); // LOG
+					return await next(context);
+				}
+			)
+			.AddEndpointFilter<DemoFilter>();
 	}
 
 	private static async Task ThrowException()
@@ -225,5 +235,23 @@ internal static class DemoRouter
 				traceId = activity?.Id,
 			}
 		);
+	}
+
+	private static async Task<Ok<MessageResponse>> HandlerWithFilters()
+	{
+		Console.WriteLine($"DEMO ROUTE: handler with filters"); // LOG
+		return TypedResults.Ok(new MessageResponse("After filters"));
+	}
+
+	private sealed class DemoFilter : IEndpointFilter
+	{
+		public async ValueTask<object?> InvokeAsync(
+			EndpointFilterInvocationContext context,
+			EndpointFilterDelegate next
+		)
+		{
+			Console.WriteLine($"DEMO ROUTE: demo IEndpoint implementation"); // LOG
+			return await next(context);
+		}
 	}
 }

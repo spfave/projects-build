@@ -26,7 +26,7 @@ GET {{urlDemos}}/not-found
 
 # ------------------------------------------------------------------------------------- #
 ### GET path and query params
-GET {{urlDemos}}/get-path-query-params
+GET {{urlDemos}}/get-path-query-params/xyz
 ?qpa=abc
 &qpn=123
 &qpAry=qpAry1
@@ -75,3 +75,8 @@ GET {{urlDemos}}/http-context
 # ### GET Auth basic
 # GET {{urlDemos}}/auth-basic
 # Authorization: Basic username:password
+
+### PUT route filter
+PUT {{urlDemos}}/route-filter
+?qpa=abc
+&qpn=123
