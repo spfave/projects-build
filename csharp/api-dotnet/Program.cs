@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpLogging;
 using ProjectsBuild.API.Common;
 using ProjectsBuild.API.Routes;
@@ -8,6 +9,21 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails(
+	(options) =>
+	{
+		options.CustomizeProblemDetails = (context) =>
+		{
+			var http = context.HttpContext;
+			context.ProblemDetails.Instance = $"{http.Request.Method} {http.Request.GetDisplayUrl()}";
+			context.ProblemDetails.Extensions.TryAdd("requestId", http.TraceIdentifier);
+			context.ProblemDetails.Extensions.TryAdd(
+				"traceId",
+				http.Features.Get<IHttpActivityFeature>()?.Activity?.Id
+			);
+		};
+	}
+);
 builder.Services.AddHttpLogging(
 	(options) =>
 	{
@@ -41,7 +57,7 @@ builder.Services.AddOpenApi(
 // Build and configure application
 var app = builder.Build();
 
-app.UseExceptionHandler((builder) => { });
+app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
 	app.UseHttpLogging();
