@@ -26,11 +26,12 @@ trim_trailing_whitespace = true
 dotnet_diagnostic.CA1848.severity = suggestion
 
 # Style rules (IDE####)
-# - Language and unneccessary code
+# - language and unneccessary code
 dotnet_diagnostic.IDE0008.severity = suggestion
-
+dotnet_diagnostic.IDE0011.severity = suggestion
 # - formatting
 dotnet_diagnostic.IDE0055.severity = none
+
 # - using directives
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = true
