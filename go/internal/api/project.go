@@ -12,6 +12,15 @@ import (
 	pHttp "github.com/spfave/projects-build/go/pkg/http"
 )
 
+// Note: function vs receiver function approach
+
+//	func registerProjectRouter(router *pHttp.Router) {
+//			router.HandleSubroute("/api/v1", projectRouter())
+//		}
+func (router *apiRouter) registerProjectRouter() {
+	router.HandleSubroute("/api/v1", projectRouter())
+}
+
 func projectRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /projects", getAllProjects)

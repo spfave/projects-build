@@ -1,7 +1,7 @@
 # Ref: https://github.com/Huachao/vscode-restclient
 
 @urlBase = http://localhost:5003
-@urlDemos = {{urlBase}}/demos
+@urlDemos = {{urlBase}}/api/demos
 @contentType = application/json
 
 # ------------------------------------------------------------------------------------- #

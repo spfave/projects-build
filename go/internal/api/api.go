@@ -36,10 +36,14 @@ func (apiServer *ApiServer) Run() error {
 	return server.ListenAndServe()
 }
 
+type apiRouter struct{ *pHttp.Router }
+
 func (apiServer *ApiServer) RegisterRouteHandlers() http.Handler {
-	router := pHttp.NewRouter()
-	router.HandleSubroute("/api/v1", projectRouter())
-	router.HandleSubroute("/demos", demoRouter())
+	// router := pHttp.NewRouter()
+	// registerProjectRouter(router)
+	router := apiRouter{pHttp.NewRouter()}
+	router.registerProjectRouter()
+	router.HandleSubroute("/api/demos", demoRouter())
 	router.HandleFunc("/", pHttp.NotFoundHandler)
 
 	return router
