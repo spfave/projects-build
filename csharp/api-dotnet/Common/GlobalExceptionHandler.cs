@@ -9,6 +9,7 @@ namespace ProjectsBuild.API.Common;
 // - https://www.youtube.com/watch?v=eN4GX5WW87s&list=WL
 // - https://www.youtube.com/watch?v=rXdsm9R5TR0&list=WL
 internal sealed class GlobalExceptionHandler(
+	IHostEnvironment environment,
 	IProblemDetailsService problemDetailsService,
 	ILogger<GlobalExceptionHandler> logger
 ) : IExceptionHandler
@@ -34,18 +35,22 @@ internal sealed class GlobalExceptionHandler(
 		);
 
 		// Problem details approach to writing response
+		var problem = new ProblemDetails
+		{
+			Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+			Status = StatusCodes.Status500InternalServerError,
+			Title = exception.GetType().Name,
+			Detail = exception.Message,
+		};
+		if (environment.IsDevelopment())
+			problem.Extensions.TryAdd("exception", exception);
+
 		return await problemDetailsService.TryWriteAsync(
 			new ProblemDetailsContext
 			{
 				HttpContext = httpContext,
 				Exception = exception,
-				ProblemDetails = new ProblemDetails
-				{
-					Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-					Status = StatusCodes.Status500InternalServerError,
-					Title = exception.GetType().Name,
-					Detail = exception.Message,
-				},
+				ProblemDetails = problem,
 			}
 		);
 
