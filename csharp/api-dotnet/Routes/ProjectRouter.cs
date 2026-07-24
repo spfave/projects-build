@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ProjectsBuild.API.Routes;
@@ -43,43 +44,64 @@ internal static class ProjectRouter
 			);
 	}
 
+	private static readonly List<Project> _projects =
+	[
+		new() { Id = RandomString(), Name = "Proj 1" },
+		new() { Id = RandomString(), Name = "Proj 2" },
+	];
+
+	private static string RandomString(int length = 8)
+	{
+		string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		return new Random().GetString(chars, length);
+	}
+
 	private static async Task<Ok<IReadOnlyList<Project>>> GetProjects()
 	{
-		IReadOnlyList<Project> projects =
-		[
-			new() { Id = 1, Name = "Proj 1" },
-			new() { Id = 2, Name = "Proj 2" },
-		];
+		IReadOnlyList<Project> projects = _projects.AsReadOnly();
 		return TypedResults.Ok(projects);
 	}
 
-	private static async Task<Ok<Project>> GetProjectById(int id)
+	private static async Task<Results<Ok<Project>, NotFound<string>>> GetProjectById(string id)
 	{
-		Project project = new() { Id = 1, Name = "Project By Id" };
-		return TypedResults.Ok(project);
+		var project = _projects.FirstOrDefault(p => p.Id == id);
+		return project is not null
+			? TypedResults.Ok(project)
+			: TypedResults.NotFound("Project not found");
 	}
 
-	private static async Task<Created<Project>> CreateProject(Project payload)
+	private static async Task<Created<Project>> CreateProject(ProjectRequest payload)
 	{
-		Project project = new() { Id = 1, Name = "Project Created" };
+		var project = new Project { Id = RandomString(), Name = payload.Name };
+		_projects.Add(project);
 		return TypedResults.Created($"/projects/{project.Id}", project);
 	}
 
-	private static async Task<Ok<Project>> UpdateProject(int id, Project payload)
+	private static async Task<Results<Ok<Project>, NotFound<string>>> UpdateProject(
+		string id,
+		ProjectRequest payload
+	)
 	{
-		Project project = new() { Id = 1, Name = "Project Updated" };
+		var project = _projects.FirstOrDefault(p => p.Id == id);
+		if (project is null)
+			return TypedResults.NotFound("Project not found");
+
+		project.Name = payload.Name;
+
 		return TypedResults.Ok(project);
 	}
 
-	private static async Task<Ok<Project>> DeleteProject(int id)
+	private static async Task<Results<NoContent, NotFound<string>>> DeleteProject(string id)
 	{
-		Project project = new() { Id = 1, Name = "Project Deleted" };
-		return TypedResults.Ok(project);
+		var count = _projects.RemoveAll(p => p.Id == id);
+		return count > 0 ? TypedResults.NoContent() : TypedResults.NotFound("Project not found");
 	}
 }
 
 public sealed class Project
 {
-	public int Id { get; init; }
+	public string Id { get; init; }
 	public required string Name { get; set; }
 }
+
+public sealed record ProjectRequest([Required] string Name);
