@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace ProjectsBuild.API.Routes;
 
 internal static class ProjectRouter
@@ -7,42 +9,25 @@ internal static class ProjectRouter
 		var projectRouter = router.MapGroup("/api/v1/projects").WithTags("Projects");
 
 		projectRouter
-			.MapGet(
-				"/",
-				async () =>
-				{
-					return TypedResults.Ok(new { Message = "get projects" });
-				}
-			)
+			.MapGet("/", GetProjects)
 			.WithName("Get Projects")
 			.WithSummary("Get Projects")
 			.WithDescription("Returns JSON list of Projects. Includes Project Id and Name only");
 
-		projectRouter.MapGet(
-			"/{id}",
-			[EndpointName("Get Project")]
-			[EndpointSummary("Get Project by Id")]
-			[EndpointDescription("Returns JSON representation of Project if found by Project Id")]
-			async (string id) => TypedResults.Ok(new { Message = $"get project {id}" })
-		);
+		projectRouter
+			.MapGet("/{id}", GetProjectById)
+			.WithName("Get Project by Id")
+			.WithSummary("Get Project by Id")
+			.WithDescription("Returns JSON representation of Project if found by Project Id");
 
 		projectRouter
-			.MapPost(
-				"/",
-				async () =>
-				{
-					return TypedResults.Created("/<ProjectId>", new { Message = "create project" });
-				}
-			)
+			.MapPost("/", CreateProject)
 			.WithName("Create Project")
 			.WithSummary("Create Project")
 			.WithDescription("Creates a new Project. Returns JSON representation of created Project");
 
 		projectRouter
-			.MapPut(
-				"/{id}",
-				async (string id) => TypedResults.Ok(new { Message = $"updated project {id}" })
-			)
+			.MapPut("/{id}", UpdateProject)
 			.WithName("Update Project")
 			.WithSummary("Update Project")
 			.WithDescription(
@@ -50,14 +35,51 @@ internal static class ProjectRouter
 			);
 
 		projectRouter
-			.MapDelete(
-				"/{id}",
-				async (string id) => TypedResults.Ok(new { Message = $"delete project {id}" })
-			)
+			.MapDelete("/{id}", DeleteProject)
 			.WithName("Delete Project")
 			.WithSummary("Delete Project")
 			.WithDescription(
 				"Deletes Project if found by Id. Returns JSON representation of deleted Project otherwise not-found"
 			);
 	}
+
+	private static async Task<Ok<IReadOnlyList<Project>>> GetProjects()
+	{
+		IReadOnlyList<Project> projects =
+		[
+			new() { Id = 1, Name = "Proj 1" },
+			new() { Id = 2, Name = "Proj 2" },
+		];
+		return TypedResults.Ok(projects);
+	}
+
+	private static async Task<Ok<Project>> GetProjectById(int id)
+	{
+		Project project = new() { Id = 1, Name = "Project By Id" };
+		return TypedResults.Ok(project);
+	}
+
+	private static async Task<Created<Project>> CreateProject(Project payload)
+	{
+		Project project = new() { Id = 1, Name = "Project Created" };
+		return TypedResults.Created($"/projects/{project.Id}", project);
+	}
+
+	private static async Task<Ok<Project>> UpdateProject(int id, Project payload)
+	{
+		Project project = new() { Id = 1, Name = "Project Updated" };
+		return TypedResults.Ok(project);
+	}
+
+	private static async Task<Ok<Project>> DeleteProject(int id)
+	{
+		Project project = new() { Id = 1, Name = "Project Deleted" };
+		return TypedResults.Ok(project);
+	}
+}
+
+public sealed class Project
+{
+	public int Id { get; init; }
+	public required string Name { get; set; }
 }
