@@ -15,6 +15,16 @@ builder.Services.AddProblemDetails(
 	{
 		options.CustomizeProblemDetails = (context) =>
 		{
+			// Note: Sets ValidationProblemDetails.Errors dictionary keys to camelcase. ".Errors" does not adhere to JsonSerializerOptions
+			if (context.ProblemDetails is HttpValidationProblemDetails vpd)
+			{
+				var camelCaseErrors = vpd.Errors.ToDictionary(
+					kvp => char.ToLowerInvariant(kvp.Key[0]) + kvp.Key[1..],
+					kvp => kvp.Value
+				);
+				vpd.Errors = camelCaseErrors;
+			}
+
 			var http = context.HttpContext;
 			context.ProblemDetails.Instance = $"{http.Request.Method} {http.Request.GetDisplayUrl()}";
 			context.ProblemDetails.Extensions.TryAdd("requestId", http.TraceIdentifier);
@@ -80,12 +90,11 @@ if (app.Environment.IsDevelopment())
 app.MapHealthChecks("/health-check");
 app.MapFallback(
 	(HttpContext context) =>
-		TypedResults.Problem(
+		TypedResults.NotFound(
 			new ProblemDetails
 			{
-				Status = StatusCodes.Status404NotFound,
-				Title = "Not Found",
 				Detail = "The requested resource was not found.",
+				Instance = $"{context.Request.Method} {context.Request.GetDisplayUrl()}",
 			}
 		)
 );
