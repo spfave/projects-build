@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProjectsBuild.API.Routes;
 
@@ -97,22 +98,29 @@ internal static class ProjectRouter
 		return TypedResults.Ok(project);
 	}
 
-	private static async Task<Results<NoContent, ProblemHttpResult>> DeleteProject(string id)
+	// private static async Task<Results<NoContent, NotFound>> DeleteProject(string id)
+	// private static async Task<Results<NoContent, NotFound<string>>> DeleteProject(string id)
+	// private static async Task<Results<NoContent, ProblemHttpResult>> DeleteProject(string id)
+	private static async Task<Results<NoContent, NotFound<ProblemDetails>>> DeleteProject(string id)
 	{
 		var count = _projects.RemoveAll(p => p.Id == id);
-		// return count > 0 ? TypedResults.NoContent() : TypedResults.NotFound("Project not found");
+		// return count > 0 ? TypedResults.NoContent() : TypedResults.NotFound(); // OpenAPI 404 res inferred, ProblemDetails content but not customized
+		// return count > 0 ? TypedResults.NoContent() : TypedResults.NotFound("Project not found"); // OpenAPI 404 res inferred, customized content but not ProblemDetails shape
+		// return count > 0
+		// 	? TypedResults.NoContent()
+		// 	: TypedResults.Problem(
+		// 		statusCode: StatusCodes.Status404NotFound,
+		// 		detail: "Project not found"
+		// 	); // OpenAPI 404 res not inferred, ProblemDetails content and customizable
 		return count > 0
 			? TypedResults.NoContent()
-			: TypedResults.Problem(
-				statusCode: StatusCodes.Status404NotFound,
-				detail: "Project not found"
-			);
+			: TypedResults.NotFound(new ProblemDetails { Detail = $"Project with Id = {id} not found" }); // OpenAPI 404 res inferred, ProblemDetails content and customizable
 	}
 }
 
 public sealed class Project
 {
-	public string Id { get; init; }
+	public required string Id { get; init; }
 	public required string Name { get; set; }
 }
 
