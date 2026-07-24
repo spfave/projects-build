@@ -133,7 +133,8 @@ internal static class DemoRouter
 		return TypedResults.ValidationProblem(
 			errors: new Dictionary<string, string[]>
 			{
-				["title"] = new[] { "Title is required" },
+				// ["title"] = new[] { "Title is required" },
+				["title"] = ["Title is required"],
 				["content"] = ["Content is required"],
 			}
 		// errors:
