@@ -62,12 +62,15 @@ internal static class ProjectRouter
 		return TypedResults.Ok(projects);
 	}
 
-	private static async Task<Results<Ok<Project>, NotFound<string>>> GetProjectById(string id)
+	private static async Task<Results<Ok<Project>, ProblemHttpResult>> GetProjectById(string id)
 	{
 		var project = _projects.FirstOrDefault(p => p.Id == id);
 		return project is not null
 			? TypedResults.Ok(project)
-			: TypedResults.NotFound("Project not found");
+			: TypedResults.Problem(
+				statusCode: StatusCodes.Status404NotFound,
+				detail: "Project not found"
+			);
 	}
 
 	private static async Task<Created<Project>> CreateProject(ProjectRequest payload)
@@ -77,24 +80,33 @@ internal static class ProjectRouter
 		return TypedResults.Created($"/projects/{project.Id}", project);
 	}
 
-	private static async Task<Results<Ok<Project>, NotFound<string>>> UpdateProject(
+	private static async Task<Results<Ok<Project>, ProblemHttpResult>> UpdateProject(
 		string id,
 		ProjectRequest payload
 	)
 	{
 		var project = _projects.FirstOrDefault(p => p.Id == id);
 		if (project is null)
-			return TypedResults.NotFound("Project not found");
+			return TypedResults.Problem(
+				statusCode: StatusCodes.Status404NotFound,
+				detail: "Project not found"
+			);
 
 		project.Name = payload.Name;
 
 		return TypedResults.Ok(project);
 	}
 
-	private static async Task<Results<NoContent, NotFound<string>>> DeleteProject(string id)
+	private static async Task<Results<NoContent, ProblemHttpResult>> DeleteProject(string id)
 	{
 		var count = _projects.RemoveAll(p => p.Id == id);
-		return count > 0 ? TypedResults.NoContent() : TypedResults.NotFound("Project not found");
+		// return count > 0 ? TypedResults.NoContent() : TypedResults.NotFound("Project not found");
+		return count > 0
+			? TypedResults.NoContent()
+			: TypedResults.Problem(
+				statusCode: StatusCodes.Status404NotFound,
+				detail: "Project not found"
+			);
 	}
 }
 
