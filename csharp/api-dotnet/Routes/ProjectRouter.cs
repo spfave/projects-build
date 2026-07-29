@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +42,16 @@ internal static class ProjectRouter
 			.WithDescription(
 				"Deletes Project if found by Id. Returns JSON representation of deleted Project otherwise not-found"
 			);
+
+		projectRouter.MapPost(
+			"/proj-req",
+			(ProjectRequest proj) =>
+			{
+				Console.WriteLine($"proj: {proj}"); // LOG DEBUG
+				Console.WriteLine($"proj.Status: {proj.Status}"); // LOG DEBUG
+				return TypedResults.Created("/proj-req", proj);
+			}
+		);
 	}
 
 	private static readonly List<Project> _projects =
@@ -123,5 +132,3 @@ public sealed class Project
 	public required string Id { get; init; }
 	public required string Name { get; set; }
 }
-
-public sealed record ProjectRequest([Required] string Name);
