@@ -19,6 +19,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 	);
 });
 
+builder.Services.AddExceptionHandler<JsonExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails(options =>
 {
