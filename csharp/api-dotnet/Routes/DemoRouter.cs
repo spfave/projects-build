@@ -11,7 +11,7 @@ internal static class DemoRouter
 	{
 		var demoRouter = router.MapGroup("/api/demos").WithTags("Demos");
 
-		// Exception handling & problem detail demos
+		// Refs: Exception handling & problem detail demos
 		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling-api
 		// - https://www.youtube.com/watch?v=-TGZypSinpw&list=WL
 		// - https://www.youtube.com/watch?v=eN4GX5WW87s&list=WL
@@ -19,8 +19,8 @@ internal static class DemoRouter
 		demoRouter.MapGet("/throw-exception", ThrowException).WithSummary("Throw Exception");
 		// Note: Regarding capture inferred response status codes in openapi documentation
 		// - With inline handler returning a single TypedResults.<...> response code is inferred
-		// - With named method handler returning a single TypedResults.<...> response code is inferred as 200 regardless. Must declare return type on named handler to infer response code. Using .Produces(StatusCodes.<...>) will add status code to openapi json doc in addition to 200 but it will not be in the scale openapi ui doc.
-		// - With inline handler or name method returning multiple TypedResults.<...> response codes, must declare all return types to infer response codes
+		// - With named method handler returning a single TypedResults.<...> response code is inferred as 200 regardless. Must declare return type on named handler to infer response code. Using .Produces(StatusCodes.<...>) will add status code to openapi json doc in addition to 200 but it will not be in the scalar openapi ui doc.
+		// - With inline handler or name method returning multiple TypedResults.<...> response codes, must declare all return types to infer response codes in openapi docs
 		demoRouter.MapGet("/bad-request-inline", () => TypedResults.BadRequest());
 		demoRouter.MapGet("/bad-request", BadRequest); //.Produces(StatusCodes.Status400BadRequest);
 		demoRouter.MapGet(
@@ -92,6 +92,14 @@ internal static class DemoRouter
 
 	private sealed record MessageResponse(string Message);
 
+	// private static async Task<object> BadRequest()
+	// private static async Task<BadRequest> BadRequest()
+	private static async Task<BadRequest<MessageResponse>> BadRequest()
+	{
+		// return TypedResults.BadRequest();
+		return TypedResults.BadRequest(new MessageResponse("Demo Bad Request route"));
+	}
+
 	private static async Task<
 		Results<
 			Ok<MessageResponse>,
@@ -112,14 +120,6 @@ internal static class DemoRouter
 				new MessageResponse("Demo status Internal Server Error route")
 			),
 		};
-	}
-
-	// private static async Task<object> BadRequest()
-	// private static async Task<BadRequest> BadRequest()
-	private static async Task<BadRequest<MessageResponse>> BadRequest()
-	{
-		// return TypedResults.BadRequest();
-		return TypedResults.BadRequest(new MessageResponse("Demo Bad Request route"));
 	}
 
 	private static async Task<ProblemHttpResult> Problem()
@@ -179,7 +179,7 @@ internal static class DemoRouter
 
 	private sealed record Todo(string Title, string Content, bool Completed, int Priority = 1);
 
-	// Note: Target class/record MUST be public for validation to trigger
+	// Note: Target class/record MUST be public for validation attributes to trigger
 	public sealed record ValidTodo(
 		[Required, Length(2, 20)] string Title,
 		[MinLength(2)] string Content,
@@ -207,7 +207,7 @@ internal static class DemoRouter
 	}
 
 	// Note: Can only read from body once
-	private static async Task<object> PostJsonBody(Todo todo)
+	private static async Task<object> PostJsonBody([FromBody] Todo todo)
 	// private static async Task<object> PostJsonBody(HttpRequest req)
 	{
 		// var bodyAsync = await req.ReadFromJsonAsync<Todo>();

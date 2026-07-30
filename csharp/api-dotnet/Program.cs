@@ -24,6 +24,7 @@ builder.Services.AddProblemDetails(options =>
 {
 	options.CustomizeProblemDetails = (context) =>
 	{
+		Console.WriteLine($"CUSTOMIZE PROBLEM DETAILS"); // LOG
 		// Note: Sets ValidationProblemDetails.Errors dictionary keys to camelcase. ".Errors" does not adhere to JsonSerializerOptions
 		if (context.ProblemDetails is HttpValidationProblemDetails vpd)
 		{
