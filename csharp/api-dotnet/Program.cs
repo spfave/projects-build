@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
+	options.SerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
 	// Note: Global applied definition for enum int to JSON string serialization/deserialization. Flows through to OpenAPI docs
 	options.SerializerOptions.Converters.Add(
 		new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.CamelCase, allowIntegerValues: false)
@@ -26,16 +27,6 @@ builder.Services.AddProblemDetails(options =>
 	options.CustomizeProblemDetails = (context) =>
 	{
 		Console.WriteLine($"CUSTOMIZE PROBLEM DETAILS"); // LOG
-		// Note: Sets ValidationProblemDetails.Errors dictionary keys to camelcase. ".Errors" does not adhere to JsonSerializerOptions
-		if (context.ProblemDetails is HttpValidationProblemDetails vpd)
-		{
-			var camelCaseErrors = vpd.Errors.ToDictionary(
-				kvp => char.ToLowerInvariant(kvp.Key[0]) + kvp.Key[1..],
-				kvp => kvp.Value
-			);
-			vpd.Errors = camelCaseErrors;
-		}
-
 		var http = context.HttpContext;
 		context.ProblemDetails.Instance = $"{http.Request.Method} {http.Request.GetDisplayUrl()}";
 		context.ProblemDetails.Extensions.TryAdd("requestId", http.TraceIdentifier);
