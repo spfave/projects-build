@@ -37,13 +37,13 @@ internal sealed class GlobalExceptionHandler(
 		// Problem details approach to writing response
 		var problem = new ProblemDetails
 		{
-			Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
 			Status = StatusCodes.Status500InternalServerError,
 			Title = exception.GetType().Name,
 			Detail = exception.Message,
+			// Extensions = { ["requestId"] = requestId, ["traceId"] = activityId },
 		};
 		if (environment.IsDevelopment())
-			problem.Extensions.TryAdd("exception", exception);
+			problem.Extensions.TryAdd("exception", exception.ToString());
 
 		return await problemDetailsService.TryWriteAsync(
 			new ProblemDetailsContext
@@ -59,7 +59,6 @@ internal sealed class GlobalExceptionHandler(
 		// await httpContext.Response.WriteAsJsonAsync(
 		// 	new ProblemDetails
 		// 	{
-		// 		Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
 		// 		Status = StatusCodes.Status500InternalServerError,
 		// 		Title = exception.GetType().Name,
 		// 		Detail = exception.Message,
