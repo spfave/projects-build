@@ -15,22 +15,22 @@
 	},
 	"packageManager": "pnpm@11.9.0",
 	"dependencies": {
-		"@angular/common": "^22.0.5",
-		"@angular/compiler": "^22.0.5",
-		"@angular/core": "^22.0.5",
-		"@angular/forms": "^22.0.5",
-		"@angular/platform-browser": "^22.0.5",
-		"@angular/router": "^22.0.5",
+		"@angular/common": "^22.1.0",
+		"@angular/compiler": "^22.1.0",
+		"@angular/core": "^22.1.0",
+		"@angular/forms": "^22.1.0",
+		"@angular/platform-browser": "^22.1.0",
+		"@angular/router": "^22.1.0",
 		"rxjs": "~7.8.2",
 		"tslib": "^2.8.1"
 	},
 	"devDependencies": {
-		"@angular/build": "^22.0.5",
-		"@angular/cli": "^22.0.5",
-		"@angular/compiler-cli": "^22.0.5",
+		"@angular/build": "^22.1.0",
+		"@angular/cli": "^22.1.0",
+		"@angular/compiler-cli": "^22.1.0",
 		"@projectsbuild/config-typescript": "workspace:*",
-		"jsdom": "^29.1.1",
-		"prettier": "^3.9.4",
+		"jsdom": "^30.0.1",
+		"prettier": "^3.9.6",
 		"vitest": "^4.1.10"
 	}
 }
