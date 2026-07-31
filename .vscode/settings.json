@@ -13,7 +13,7 @@
 		".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
 
 		"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, pnpm-workspace.yaml",
-		"package.json*": "biome.*, drizzle.config.*, tsconfig.*, vite.*",
+		"package.json*": ".prettier*, biome.*, drizzle.config.*, tsconfig.*, vite.*",
 		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
 		"*.ts": "${capture}.js",
 		"*.jsx": "${capture}.js, ${capture}.css, ${capture}.module.css",
@@ -31,11 +31,14 @@
 	// "biome.configurationPath": "./typescript/biome.jsonc",
 
 	// Language Settings
+	"[css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
 	"js/ts.preferences.autoImportSpecifierExcludeRegexes": [
 		"^drizzle-orm/((?!sqlite).+)-core$",
 		"^drizzle-orm/((?!sqlite).+)-core/.*$"
 	],
-	"[javascript][javascriptreact][typescript][typescriptreact][json][css]": {
+	"[javascript][javascriptreact][typescript][typescriptreact][json]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"[jsonc]": {
@@ -44,5 +47,6 @@
 	},
 
 	// Extensions
-	"cSpell.words": ["projectsbuild"]
+	"cSpell.words": ["projectsbuild"],
+	"prettier.requireConfig": true
 }
