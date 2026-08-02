@@ -1,22 +1,24 @@
 import { Component } from "@angular/core";
 
+import { ATab } from "~/directives/anchor-new-tab";
+
 const repoUrl = "https://github.com/spfave/projects-build";
 
 @Component({
 	selector: "pb-about-page",
-	imports: [],
+	imports: [ATab],
 	template: `
 		<section class="about">
 			<h2>About</h2>
 			<div>
 				<p>
-					This app is one version of the <a [href]="repoUrl">Projects.build</a> app built
+					This app is one version of the <a pbATab [href]="repoUrl">Projects.build</a> app built
 					in pursuit of building experience in web application engineering and
 					experimenting with different web technologies.
 				</p>
 				<p>
 					This implementation is a client rendered
-					<a href="https://angular.dev/">Angular</a> app. The implementation purposefully
+					<a pbATab href="https://angular.dev/">Angular</a> app. The implementation purposefully
 					use a bare minimum set of dependencies to focus app development on using the
 					primitives supplied with Angular and limit external dependency decision making.
 					This is for the purpose of experimenting with the primitives as building blocks
@@ -32,7 +34,7 @@ const repoUrl = "https://github.com/spfave/projects-build";
 				</p>
 				<p>
 					Additional implementations of the app can be found on
-					<a [href]="repoUrl">Github</a>.
+					<a pbATab [href]="repoUrl">Github</a>.
 				</p>
 			</div>
 		</section>
