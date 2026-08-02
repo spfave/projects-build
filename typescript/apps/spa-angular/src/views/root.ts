@@ -4,7 +4,14 @@ import { RouterOutlet } from "@angular/router";
 @Component({
 	selector: "pb-root",
 	imports: [RouterOutlet],
-	templateUrl: "./root.html",
-	styleUrl: "./root.css",
+	template: `
+		<p>root works!</p>
+		<router-outlet />
+	`,
+	styles: `
+		p {
+			color: purple;
+		}
+	`,
 })
 export class Root {}

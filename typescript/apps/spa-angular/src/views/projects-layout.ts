@@ -3,7 +3,11 @@ import { Component } from "@angular/core";
 @Component({
 	selector: "pb-projects-layout",
 	imports: [],
-	templateUrl: "./projects-layout.html",
-	styles: ``,
+	template: `<p>projects-layout works!</p>`,
+	styles: `
+		p {
+			color: Red;
+		}
+	`,
 })
 export class ProjectsLayout {}
