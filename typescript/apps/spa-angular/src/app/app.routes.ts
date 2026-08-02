@@ -11,7 +11,7 @@ export const routes: Routes = [
 		children: [
 			{ path: "", redirectTo: "projects", pathMatch: "full" },
 			{ path: "projects", component: ProjectsLayout, children: [] },
-			{ path: "about", component: AboutPage },
+			{ path: "about", title: "About | Projects.build", component: AboutPage },
 		],
 	},
 ];
