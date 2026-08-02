@@ -12,18 +12,18 @@ const repoUrl = "https://github.com/spfave/projects-build";
 			<h2>About</h2>
 			<div>
 				<p>
-					This app is one version of the <a pbATab [href]="repoUrl">Projects.build</a> app built
-					in pursuit of building experience in web application engineering and
+					This app is one version of the <a pbATab [href]="repoUrl">Projects.build</a> app
+					built in pursuit of building experience in web application engineering and
 					experimenting with different web technologies.
 				</p>
 				<p>
 					This implementation is a client rendered
-					<a pbATab href="https://angular.dev/">Angular</a> app. The implementation purposefully
-					use a bare minimum set of dependencies to focus app development on using the
-					primitives supplied with Angular and limit external dependency decision making.
-					This is for the purpose of experimenting with the primitives as building blocks
-					and understanding where it makes sense to favor abstraction to an external
-					dependency.
+					<a pbATab href="https://angular.dev/">Angular</a> app. The implementation
+					purposefully use a bare minimum set of dependencies to focus app development on
+					using the primitives supplied with Angular and limit external dependency
+					decision making. This is for the purpose of experimenting with the primitives as
+					building blocks and understanding where it makes sense to favor abstraction to
+					an external dependency.
 				</p>
 				<p>
 					The app code base additionally over-engineers overall code organization,

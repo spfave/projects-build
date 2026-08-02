@@ -1,14 +1,10 @@
-import { Directive, ElementRef, inject } from "@angular/core";
+import { Directive } from "@angular/core";
 
 @Directive({
 	selector: "a[pbATab]",
-	host: {},
+	host: {
+		"[attr.target]": '"_blank"',
+		"[attr.rel]": '"noreferrer"',
+	},
 })
-export class ATab {
-	private el: ElementRef<HTMLAnchorElement> = inject(ElementRef<HTMLAnchorElement>);
-
-	constructor() {
-		this.el.nativeElement.target = "_blank";
-		this.el.nativeElement.rel = "noreferrer";
-	}
-}
+export class ATab {}
