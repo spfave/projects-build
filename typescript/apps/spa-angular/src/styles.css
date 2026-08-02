@@ -11,3 +11,14 @@ a {
 	color: inherit;
 	text-decoration: none;
 }
+
+/* Variables */
+:root {
+	--gray-900: oklch(19.37% 0.006 300.98);
+	--gray-400: oklch(70.9% 0.015 304.04);
+	--gray-700: oklch(36.98% 0.014 302.71);
+
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}

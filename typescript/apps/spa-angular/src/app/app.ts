@@ -4,7 +4,12 @@ import { RouterOutlet } from "@angular/router";
 @Component({
 	selector: "pb-app",
 	imports: [RouterOutlet],
-	templateUrl: "./app.html",
-	styleUrl: "./app.css",
+	template: `
+		<main class="main">
+			<h1>SPA Angular</h1>
+		</main>
+		<router-outlet />
+	`,
+	styles: ``,
 })
 export class App {}
