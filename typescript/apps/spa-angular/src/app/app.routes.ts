@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import type { Routes } from "@angular/router";
 
-import { AboutPage } from "~/views/about-page";
 import { ProjectsLayout } from "~/views/projects-layout";
 import { Root } from "~/views/root";
 
@@ -20,7 +19,11 @@ export const routes: Routes = [
 		children: [
 			{ path: "", redirectTo: "projects", pathMatch: "full" },
 			{ path: "projects", component: ProjectsLayout, children: [] },
-			{ path: "about", title: "About | Projects.build", component: AboutPage },
+			{
+				path: "about",
+				title: "About | Projects.build",
+				loadComponent: () => import("~/views/about-page").then((m) => m.AboutPage),
+			},
 			{ path: "**", component: NotFoundPage },
 		],
 	},
