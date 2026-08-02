@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 
 @Component({
-	selector: "app-projects-layout",
+	selector: "pb-projects-layout",
 	imports: [],
 	templateUrl: "./projects-layout.html",
 	styles: ``,
