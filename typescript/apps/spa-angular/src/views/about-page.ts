@@ -1,8 +1,7 @@
 import { Component } from "@angular/core";
 
 import { ATab } from "~/directives/anchor-new-tab";
-
-const repoUrl = "https://github.com/spfave/projects-build";
+import { repoUrl } from "~/views/root";
 
 @Component({
 	selector: "pb-about-page",

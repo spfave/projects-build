@@ -14,11 +14,34 @@ a {
 
 /* Variables */
 :root {
-	--gray-900: oklch(19.37% 0.006 300.98);
-	--gray-400: oklch(70.9% 0.015 304.04);
-	--gray-700: oklch(36.98% 0.014 302.71);
+	/* Sizes */
+	--min-width-page: 375px;
+	--standard-radius: 0.3rem;
+
+	/* Colors */
+	--brand-blue: oklch(78.445% 0.0898 236.44);
+	--brand-success: oklch(71.492% 0.16516 150.68);
+	--brand-warn: oklch(82.168% 0.16809 92.481);
+	--brand-danger: oklch(66.47% 0.19295 34.867);
+
+	--color-primary: hsl(from var(--brand-blue) h s l);
+	--color-primary-light: hsl(from var(--brand-blue) h s l / 0.7);
+	--color-primary-xlight: hsl(from var(--brand-blue) h s l / 0.3);
+	--color-success: hsl(from var(--brand-success) h s l / 0.7);
+	--color-success-light: hsl(from var(--brand-success) h s l / 0.4);
+	--color-warn: hsl(from var(--brand-warn) h s l / 0.5);
+	--color-danger: hsl(from var(--brand-danger) h s l);
+	--color-danger-light: hsl(from var(--brand-danger) h s l / 0.7);
+	--color-danger-xlight: hsl(from var(--brand-danger) h s l / 0.4);
+	--color-dark: hsl(0, 0%, 14%);
+	--color-gray: hsl(0 0% 60%);
+	--color-gray-light: hsl(from var(--color-gray) h s l / 0.2);
 
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	/* Theme */
+	color-scheme: light dark;
+	background: light-dark(white, var(--color-dark));
 }
