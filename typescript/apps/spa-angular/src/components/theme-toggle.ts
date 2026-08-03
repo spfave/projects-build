@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, effect, signal } from "@angular/core";
 
 import systemThemeIcon from "@projectsbuild/core/assets/heroicons-computer-desktop.svg";
 import darkThemeIcon from "@projectsbuild/core/assets/heroicons-moon.svg";
@@ -52,9 +52,18 @@ export class ThemeToggle {
 	protected readonly lightThemeIcon = lightThemeIcon;
 	protected readonly darkThemeIcon = darkThemeIcon;
 
-	protected theme = signal<Theme>("system");
-
-	private constructor() {}
+	protected readonly theme = signal<Theme>(
+		// (localStorage.getItem(keyTheme) as Theme) || "system"
+		(() => {
+			const storageTheme = localStorage.getItem(keyTheme) as Theme;
+			return THEMES.includes(storageTheme) ? storageTheme : "system";
+		})()
+	);
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: define effect
+	private readonly themeStorageEffect = effect(() => {
+		document.documentElement.setAttribute("data-theme", this.theme());
+		localStorage.setItem(keyTheme, this.theme());
+	});
 
 	protected nextTheme() {
 		const currentIndex = THEMES.indexOf(this.theme());
