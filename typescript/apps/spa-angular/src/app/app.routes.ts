@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import type { Routes } from "@angular/router";
 
+import { ProjectCreatePage } from "~/views/project-create-page";
+import { ProjectEditPage } from "~/views/project-edit-page";
+import { ProjectPage } from "~/views/project-page";
 import { ProjectsLayout } from "~/views/projects-layout";
 import { Root } from "~/views/root";
 
@@ -12,13 +15,30 @@ import { Root } from "~/views/root";
 })
 class NotFoundPage {}
 
+@Component({
+	selector: "pb-project-index-page",
+	template: `
+		<p>Create or select a project to get started</p>
+	`,
+})
+class ProjectIndexPage {}
+
 export const routes: Routes = [
 	{
 		path: "",
 		component: Root,
 		children: [
 			{ path: "", redirectTo: "projects", pathMatch: "full" },
-			{ path: "projects", component: ProjectsLayout, children: [] },
+			{
+				path: "projects",
+				component: ProjectsLayout,
+				children: [
+					{ path: "", component: ProjectIndexPage },
+					{ path: "create", component: ProjectCreatePage },
+					{ path: ":id", component: ProjectPage },
+					{ path: ":id/edit", component: ProjectEditPage },
+				],
+			},
 			{
 				path: "about",
 				title: "About | Projects.build",

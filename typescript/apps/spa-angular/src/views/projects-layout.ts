@@ -1,13 +1,10 @@
 import { Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
 	selector: "pb-projects-layout",
-	imports: [],
-	template: `<p>projects-layout works!</p>`,
-	styles: `
-		p {
-			color: Red;
-		}
-	`,
+	imports: [RouterOutlet],
+	template: `<router-outlet />`,
+	styles: ``,
 })
 export class ProjectsLayout {}
