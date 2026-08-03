@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterLink, RouterOutlet } from "@angular/router";
 
+import { ThemeToggle } from "~/components/theme-toggle";
 import { ATab } from "~/directives/anchor-new-tab";
 
 import githubIcon from "@projectsbuild/core/assets/github.svg";
@@ -11,7 +12,7 @@ export const repoUrl = "https://github.com/spfave/projects-build";
 
 @Component({
 	selector: "pb-root",
-	imports: [RouterLink, RouterOutlet, ATab],
+	imports: [RouterLink, RouterOutlet, ATab, ThemeToggle],
 	template: `
 		<header>
 			<div>
@@ -24,7 +25,7 @@ export const repoUrl = "https://github.com/spfave/projects-build";
 				</a>
 			</div>
 			<div>
-				<!-- Theme toggle -->
+				<pb-theme-toggle />
 				<a routerLink="about" title="about">
 					<img height="24" [src]="infoIcon" alt="about icon" />
 				</a>
@@ -52,7 +53,7 @@ export const repoUrl = "https://github.com/spfave/projects-build";
 			height: 4rem;
 			padding: 0 1rem;
 
-			& div:first-child {
+			div:first-child {
 				display: flex;
 				gap: 1rem;
 				align-items: center;
@@ -71,7 +72,7 @@ export const repoUrl = "https://github.com/spfave/projects-build";
 				}
 			}
 
-			& div:nth-child(2) {
+			div:nth-child(2) {
 				display: flex;
 				gap: 1rem;
 
