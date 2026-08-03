@@ -39,7 +39,10 @@ export const repoUrl = "https://github.com/spfave/projects-build";
 	`,
 	styles: `
 		:host {
-			display: block;
+			display: flex;
+			flex-direction: column;
+			min-width: var(--min-width-page);
+			min-block-size: 100svh;
 		}
 
 		header {
@@ -55,15 +58,13 @@ export const repoUrl = "https://github.com/spfave/projects-build";
 				align-items: center;
 
 				h1 {
-					margin: 0;
-
-					& span:first-child {
+					span:first-child {
 						font-size: 2rem;
 						font-weight: 900;
 						text-transform: uppercase;
 					}
 
-					& span:last-child {
+					span:last-child {
 						font-size: 1.25rem;
 						font-weight: 700;
 					}

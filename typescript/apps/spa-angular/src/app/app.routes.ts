@@ -9,17 +9,13 @@ import { Root } from "~/views/root";
 
 @Component({
 	selector: "pb-not-found-page",
-	template: `
-		<div>Page Not Found</div>
-	`,
+	template: ` <div>Page Not Found</div> `,
 })
 class NotFoundPage {}
 
 @Component({
 	selector: "pb-project-index-page",
-	template: `
-		<p>Create or select a project to get started</p>
-	`,
+	template: ` <p>Create or select a project to get started</p> `,
 })
 class ProjectIndexPage {}
 

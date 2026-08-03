@@ -15,7 +15,7 @@ a {
 /* Variables */
 :root {
 	/* Sizes */
-	--min-width-page: 375px;
+	--min-width-page: 500px;
 	--standard-radius: 0.3rem;
 
 	/* Colors */
@@ -45,3 +45,8 @@ a {
 	color-scheme: light dark;
 	background: light-dark(white, var(--color-dark));
 }
+
+/* Styles */
+/* html {
+	scrollbar-gutter: stable;
+} */
