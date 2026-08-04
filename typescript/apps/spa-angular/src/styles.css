@@ -63,3 +63,46 @@ a {
 /* html {
 	scrollbar-gutter: stable;
 } */
+
+a.action,
+button.action {
+	padding: 0.25rem 0.5rem;
+	cursor: pointer;
+	border-radius: var(--standard-radius);
+
+	&.primary {
+		background-color: var(--color-primary-light);
+		border: 1px solid var(--color-primary);
+		&:not(:disabled, [aria-disabled="true"]):hover {
+			background-color: var(--color-primary-xlight);
+		}
+	}
+
+	&.success {
+		background-color: var(--color-success);
+		border: 1px solid var(--color-success);
+		&:not(:disabled, [aria-disabled="true"]):hover {
+			background-color: var(--color-success-light);
+		}
+	}
+
+	&.danger {
+		background-color: var(--color-danger-light);
+		border: 1px solid var(--color-danger-light);
+		&:not(:disabled, [aria-disabled="true"]):hover {
+			background-color: var(--color-danger-xlight);
+		}
+	}
+
+	&.outline {
+		background-color: transparent;
+	}
+
+	&:disabled,
+	&[aria-disabled="true"] {
+		color: var(--color-gray);
+		cursor: auto;
+		background-color: var(--color-gray-light);
+		border: 1px solid var(--color-gray);
+	}
+}
