@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using ProjectsBuild.API.Project;
 
 namespace ProjectsBuild.API.Routes;
 
@@ -54,10 +55,22 @@ internal static class ProjectRouter
 		);
 	}
 
-	private static readonly List<Project> _projects =
+	private static readonly List<Project.Project> _projects =
 	[
-		new() { Id = RandomString(), Name = "Proj 1" },
-		new() { Id = RandomString(), Name = "Proj 2" },
+		new()
+		{
+			Id = RandomString(),
+			Name = "Proj 1",
+			Link = "https://example.com/proj1",
+			Description = "Project 1 description",
+			Status = ProjectStatus.Planning,
+		},
+		new()
+		{
+			Id = RandomString(),
+			Name = "Proj 2",
+			Status = ProjectStatus.Building,
+		},
 	];
 
 	private static string RandomString(int length = 8)
@@ -66,13 +79,15 @@ internal static class ProjectRouter
 		return new Random().GetString(chars, length);
 	}
 
-	private static async Task<Ok<IReadOnlyList<Project>>> GetProjects()
+	private static async Task<Ok<IReadOnlyList<Project.Project>>> GetProjects()
 	{
-		IReadOnlyList<Project> projects = _projects.AsReadOnly();
+		IReadOnlyList<Project.Project> projects = _projects.AsReadOnly();
 		return TypedResults.Ok(projects);
 	}
 
-	private static async Task<Results<Ok<Project>, ProblemHttpResult>> GetProjectById(string id)
+	private static async Task<Results<Ok<Project.Project>, ProblemHttpResult>> GetProjectById(
+		string id
+	)
 	{
 		var project = _projects.FirstOrDefault(p => p.Id == id);
 		return project is not null
@@ -83,14 +98,19 @@ internal static class ProjectRouter
 			);
 	}
 
-	private static async Task<Created<Project>> CreateProject(ProjectRequest payload)
+	private static async Task<Created<Project.Project>> CreateProject(ProjectRequest payload)
 	{
-		var project = new Project { Id = RandomString(), Name = payload.Name };
+		var project = new Project.Project
+		{
+			Id = RandomString(),
+			Name = payload.Name,
+			Status = payload.Status,
+		};
 		_projects.Add(project);
 		return TypedResults.Created($"/projects/{project.Id}", project);
 	}
 
-	private static async Task<Results<Ok<Project>, ProblemHttpResult>> UpdateProject(
+	private static async Task<Results<Ok<Project.Project>, ProblemHttpResult>> UpdateProject(
 		string id,
 		ProjectRequest payload
 	)
@@ -125,10 +145,4 @@ internal static class ProjectRouter
 			? TypedResults.NoContent()
 			: TypedResults.NotFound(new ProblemDetails { Detail = $"Project with Id = {id} not found" }); // OpenAPI 404 res inferred, ProblemDetails content and customizable
 	}
-}
-
-public sealed class Project
-{
-	public required string Id { get; init; }
-	public required string Name { get; set; }
 }
