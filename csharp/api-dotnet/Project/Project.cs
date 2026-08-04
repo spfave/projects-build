@@ -1,5 +1,20 @@
 namespace ProjectsBuild.API.Project;
 
+public static class ProjectConstants
+{
+	public const int IdLength = 8;
+	public const int NameMinLength = 2;
+	public const int NameMaxLength = 125;
+	public static readonly IReadOnlyList<string> Statuses = ["planning", "building", "complete"];
+
+	public static readonly Dictionary<string, string> ProjectStatusDict = Statuses.ToDictionary(
+		ps => ps.ToUpperInvariant(),
+		ps => ps
+	);
+}
+
+public sealed record ProjectId(string Id);
+
 // Note: Type applied definition for enum int to JSON string serialization/deserialization. Cannot specify namingPolicy with attribute (e.g. camel case)
 // [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ProjectStatus
@@ -8,6 +23,20 @@ public enum ProjectStatus
 	Planning,
 	Building,
 	Complete,
+}
+
+public sealed class Project
+{
+	// public required ProjectId Id { get; init; }
+	public required string Id { get; init; }
+	public required string Name { get; set; }
+	public string? Link { get; set; }
+	public string? Description { get; set; }
+	public string? Notes { get; set; }
+	public required ProjectStatus Status { get; set; }
+	public DateOnly? DateCompleted { get; set; }
+	public int? Rating { get; set; }
+	public bool? Recommend { get; set; }
 }
 
 // ----------------------------------------------------------------------------------- //
