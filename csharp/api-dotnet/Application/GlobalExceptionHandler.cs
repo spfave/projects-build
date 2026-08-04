@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProjectsBuild.API.Common;
+namespace ProjectsBuild.API.Application;
 
 // Refs:
 // - https://www.youtube.com/watch?v=eN4GX5WW87s&list=WL

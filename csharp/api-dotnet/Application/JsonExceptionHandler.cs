@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace ProjectsBuild.API.Common;
+namespace ProjectsBuild.API.Application;
 
 internal sealed class JsonExceptionHandler(IProblemDetailsService problemDetailsService)
 	: IExceptionHandler
