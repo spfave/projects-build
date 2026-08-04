@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
-using ProjectsBuild.API.Common;
+using ProjectsBuild.API.Application;
 using ProjectsBuild.API.Routes;
 using Scalar.AspNetCore;
 
