@@ -1,11 +1,16 @@
-import { Component } from "@angular/core";
+import { AsyncPipe, JsonPipe } from "@angular/common";
+import { HttpClient, httpResource } from "@angular/common/http";
+import { Component, inject, type OnInit, resource } from "@angular/core";
 import { RouterLink, RouterOutlet } from "@angular/router";
+import { map, type Observable, of, tap } from "rxjs";
+
+import type { Project } from "@projectsbuild/core/project";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 
 @Component({
 	selector: "pb-projects-layout",
-	imports: [RouterLink, RouterOutlet],
+	imports: [AsyncPipe, JsonPipe, RouterLink, RouterOutlet],
 	template: `
 		<aside>
 			<div>
@@ -18,6 +23,22 @@ import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 			<section>
 				<h2>Projects</h2>
 				<!-- Projects nav list -->
+				<div>
+					<!-- Observable -->
+					{{ projOb$ | async | json }}
+				</div>
+				<div>
+					<!-- Subscription -->
+					{{ projSub | json }}
+				</div>
+				<div>
+					<!-- Resource signal -->
+					{{ projRs.value() | json }}
+				</div>
+				<div>
+					<!-- Http Resource signal -->
+					{{ projHRs.value() | json }}
+				</div>
 			</section>
 		</aside>
 		<div class="project-outlet">
@@ -73,6 +94,38 @@ import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 		}
 	`,
 })
-export class ProjectsLayout {
+export class ProjectsLayout implements OnInit {
 	protected readonly plusIcon = plusIcon;
+
+	protected projOb$: Observable<ProjectListItem[] | null> = of(null);
+	protected projSub?: ProjectListItem[] | null = null;
+	protected readonly projRs = resource({
+		loader: () =>
+			fetch("http://localhost:5001/projects").then(
+				(res) => res.json() as Promise<Project[]>
+			),
+	});
+	protected readonly projHRs = httpResource<Project[]>(
+		() => "http://localhost:5001/projects"
+	);
+
+	private readonly http = inject(HttpClient);
+
+	public ngOnInit() {
+		console.info(`ProjectsLayout OnInit`); // LOG
+		this.projOb$ = this.http.get<Project[]>("http://localhost:5001/projects").pipe(
+			tap((projs) => console.info(`tap: projs: `, projs)),
+			map((projs) =>
+				projs.map((proj) => ({
+					id: proj.id,
+					name: proj.name,
+				}))
+			)
+		);
+		const _projSub = this.projOb$.subscribe({
+			next: (projs) => (this.projSub = projs),
+		});
+	}
 }
+
+export type ProjectListItem = Pick<Project, "id" | "name">;
