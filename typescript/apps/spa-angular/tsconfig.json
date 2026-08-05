@@ -14,6 +14,7 @@
 		"lib": ["ESNext", "DOM"],
 		// "experimentalDecorators": true,
 		"module": "preserve",
+		"allowImportingTsExtensions": true,
 		"rootDir": "./src",
 
 		"importHelpers": true,
