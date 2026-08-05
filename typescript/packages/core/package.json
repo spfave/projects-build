@@ -7,7 +7,7 @@
 	"imports": {},
 	"exports": {
 		"./assets/*.svg": "./assets/*.svg",
-		"./projects": "./src/feature-projects/index.ts"
+		"./project": "./src/project/index.ts"
 	},
 	"scripts": {
 		"format": "biome format .",

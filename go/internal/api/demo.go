@@ -9,13 +9,13 @@ import (
 	pHttp "github.com/spfave/projects-build/go/pkg/http"
 )
 
-func demosRouter() *pHttp.Router {
+func demoRouter() *pHttp.Router {
 	router := pHttp.NewRouter()
 	router.HandleFunc("GET /auth-basic", authBasic)
 	router.HandleFunc("GET /obj/{id}", getObj)
 	router.HandleFunc("POST /obj", postObj)
 	router.HandleFunc("POST /post-form", postForm)
-	router.HandleFunc("GET /error", pHttp.HandlerError)
+	router.HandleFunc("GET /error", pHttp.ErrorHandler)
 	router.HandleFunc("GET /error-checking", errorChecking)
 	router.Handle("/panic", pHttp.PanicRecoveryMiddleware(http.HandlerFunc(panicRecovery)))
 	router.HandleNotFound()
@@ -24,7 +24,7 @@ func demosRouter() *pHttp.Router {
 }
 
 func authBasic(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\nAUTH BASIC") // LOG
+	fmt.Println("\nDEMO ROUTE: auth basic") // LOG
 	un, pw, ok := r.BasicAuth()
 	if !ok {
 		http.Error(w, "Missing credentials", http.StatusBadRequest)
@@ -50,9 +50,9 @@ type obj struct {
 }
 
 func getObj(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nDEMO ROUTE: get obj") // LOG
 	id := r.PathValue("id")
 	p2 := r.PathValue("p2")
-	fmt.Println()
 	fmt.Printf("id: %+v\n", id)
 	fmt.Printf("p2: %+v\n", p2)
 
@@ -60,6 +60,7 @@ func getObj(w http.ResponseWriter, r *http.Request) {
 }
 
 func postObj(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nDEMO ROUTE: post obj") // LOG
 	// only first reads from r.Body successfully
 	// b0, _ := pHttp.JsonUnmarshal[any](r)
 	// b1, _ := pHttp.JsonUnmarshal[obj](r)
@@ -79,7 +80,6 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println()
 	// fmt.Printf("b0: %+v\n", b0)
 	// fmt.Printf("b1: %+v\n", b1)
 	// fmt.Printf("b2: %+v\n", b2)
@@ -98,7 +98,7 @@ func postObj(w http.ResponseWriter, r *http.Request) {
 }
 
 func postForm(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\nPOST FORM")                                   // LOG
+	fmt.Println("\nDEMO ROUTE: post form")                       // LOG
 	fmt.Printf("RequestFullUrl: %+v\n", pHttp.RequestFullUrl(r)) // LOG
 
 	fmt.Printf("r.URL.Query(): %+v\n", r.URL.Query()) // LOG
@@ -139,6 +139,7 @@ func postForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func errorChecking(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nDEMO ROUTE: error checking") // LOG
 	err1 := errors.New("error 1")
 	fmt.Println("\nERROR 1")                                                          // LOG
 	fmt.Printf("err1: %+v\n", err1)                                                   // LOG: calls .Error() method for string representation
@@ -227,6 +228,6 @@ func (err *TestError) Unwrap() error {
 }
 
 func panicRecovery(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\nPANIC") // LOG
+	fmt.Println("\nDEMO ROUTE: Panic Recovery") // LOG
 	panic("AHH! Panic!")
 }

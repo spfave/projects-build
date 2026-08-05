@@ -4,14 +4,14 @@ import { HTTPException } from "hono/http-exception";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { jSend } from "@projectsbuild/library/utils";
 
-export const notFound: NotFoundHandler = (ctx) => {
+export const notFoundHandler: NotFoundHandler = (ctx) => {
 	return ctx.json(
 		jSend({ status: "fail", message: `not found - ${ctx.req.url}` }),
 		HttpStatus.NOT_FOUND.code
 	);
 };
 
-export const onError: ErrorHandler = (error, ctx) => {
+export const errorHandler: ErrorHandler = (error, ctx) => {
 	console.info(`error: `, error); // LOG
 	const statusCode =
 		error instanceof HTTPException ? error.status : HttpStatus.INTERNAL_SERVER_ERROR.code;

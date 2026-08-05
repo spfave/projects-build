@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, useNavigate, useParams, useRouteError } from "react-router";
 
-import type { Project } from "@projectsbuild/core/projects";
+import type { Project } from "@projectsbuild/core/project";
 import { ymdPretty } from "@projectsbuild/library/utils";
 import GeneralErrorFallback from "~/components/error-fallback";
 import Show from "~/components/ui/show";

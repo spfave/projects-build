@@ -2,26 +2,26 @@
 @route = http://localhost:5002/api/demos
 @contentType = application/json
 
-### --------------------------------------------------------------------------------- ###
-# Not Found
+# ------------------------------------------------------------------------------------- #
+### Not Found
 GET {{route}}/notFound
 Content-Type: {{contentType}}
 
-### --------------------------------------------------------------------------------- ###
-# Thrown Error
+# ------------------------------------------------------------------------------------- #
+### Thrown Error
 GET {{route}}/error
 Content-Type: {{contentType}}
 
 
-### --------------------------------------------------------------------------------- ###
-# AUTH basic
+# ------------------------------------------------------------------------------------- #
+### AUTH basic
 
 GET {{route}}/auth-basic
 Authorization: Basic username:password
 Content-Type: {{contentType}}
 
-### --------------------------------------------------------------------------------- ###
-# AUTH bearer
+# ------------------------------------------------------------------------------------- #
+### AUTH bearer
 
 GET {{route}}/auth-bearer
 Authorization: Bearer token
@@ -30,34 +30,34 @@ Authorization: Bearer token
 # Authorization: Bearer {{$dotenv AUTH_TOKEN}}
 Content-Type: {{contentType}}
 
-### --------------------------------------------------------------------------------- ###
-# Restrict IP
+# ------------------------------------------------------------------------------------- #
+### Restrict IP
 
 GET {{route}}/restrict-ip
 Content-Type: {{contentType}}
 
-### --------------------------------------------------------------------------------- ###
-# Request ID
+# ------------------------------------------------------------------------------------- #
+### Request ID
 
 GET {{route}}/request-id
 Content-Type: {{contentType}}
 
-### --------------------------------------------------------------------------------- ###
-# Timeout
+# ------------------------------------------------------------------------------------- #
+### Timeout
 
 # GET {{route}}/timeout/500
 GET {{route}}/timeout?time=500
 Content-Type: {{contentType}}
 
-### --------------------------------------------------------------------------------- ###
-# Rate Limit
+# ------------------------------------------------------------------------------------- #
+### Rate Limit
 
 GET {{route}}/rate-limit
 Content-Type: {{contentType}}
 
 
-### --------------------------------------------------------------------------------- ###
-# Validate Path Params and Query Params
+# ------------------------------------------------------------------------------------- #
+### Validate Path Params and Query Params
 GET {{route}}/validate-path-query-params/prm1/1/prm2/3g
 ?qp1=11
 &qp2=22	
@@ -65,8 +65,8 @@ GET {{route}}/validate-path-query-params/prm1/1/prm2/3g
 &qpAry=qpAry2
 Content-Type: {{contentType}}
 
-### --------------------------------------------------------------------------------- ###
-# Validate Form Data
+# ------------------------------------------------------------------------------------- #
+### Validate Form Data
 POST {{route}}/validate-form
 Content-Type: application/x-www-form-urlencoded
 
@@ -76,8 +76,8 @@ todo=test
 &numStr="42"
 &numNum=42
 
-### --------------------------------------------------------------------------------- ###
-# Validate JSON Body
+# ------------------------------------------------------------------------------------- #
+### Validate JSON Body
 POST {{route}}/validate-json
 Content-Type: {{contentType}}
 

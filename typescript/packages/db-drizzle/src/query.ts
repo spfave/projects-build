@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "#db/db.ts";
 import * as schema from "#db/schema.ts";
-import * as store from "./stores/projects.ts";
+import * as store from "./stores/project.ts";
 
 // Projects
 const [p1] = await db

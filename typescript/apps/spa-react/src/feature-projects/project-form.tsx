@@ -7,8 +7,8 @@ import type {
 	ProjectFields,
 	ProjectInput,
 	ProjectStatus,
-} from "@projectsbuild/core/projects";
-import { transformProject, validateProject } from "@projectsbuild/core/projects";
+} from "@projectsbuild/core/project";
+import { transformProject, validateProject } from "@projectsbuild/core/project";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import ErrorList from "~/components/error-list";
 import { useFocusInvalid } from "~/hooks/use-focus-invalid";

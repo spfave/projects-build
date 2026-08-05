@@ -222,4 +222,4 @@ router.post(
 
 export default router;
 
-export { router as demosRouter };
+export { router as demoRouter };

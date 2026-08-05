@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router";
 
-import type { ProjectErrors, ProjectFields } from "@projectsbuild/core/projects";
-import { transformProject, validateProject } from "@projectsbuild/core/projects";
+import type { ProjectErrors, ProjectFields } from "@projectsbuild/core/project";
+import { transformProject, validateProject } from "@projectsbuild/core/project";
 import { HttpResponseError } from "@projectsbuild/library/errors";
 import { formErrorsAttributes, ymdToday } from "@projectsbuild/library/utils";
 import ErrorList from "~/components/error-list";

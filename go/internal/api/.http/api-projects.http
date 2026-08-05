@@ -4,14 +4,14 @@
 @urlProjects = {{urlBase}}/api/v1/projects
 @contentType = application/json
 
-### --------------------------------------------------------------------------------- ###
-# GET all projects
+# ------------------------------------------------------------------------------------- #
+### GET all projects
 GET {{urlProjects}}
 ContentType: {{contentType}}
 
 
-### --------------------------------------------------------------------------------- ###
-# GET project by id
+# ------------------------------------------------------------------------------------- #
+### GET project by id
 @projectId = UTTX2OU2
 
 # GET {{urlProjects}}/{{projectId}}
@@ -19,8 +19,8 @@ GET {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
 
 
-### --------------------------------------------------------------------------------- ###
-# CREATE project
+# ------------------------------------------------------------------------------------- #
+### CREATE project
 # @name project
 POST {{urlProjects}}
 Content-Type: {{contentType}}
@@ -37,8 +37,8 @@ Content-Type: {{contentType}}
 }
 
 
-### --------------------------------------------------------------------------------- ###
-# CREATE project w/ error
+# ------------------------------------------------------------------------------------- #
+### CREATE project w/ error
 POST {{urlProjects}}/error
 Content-Type: {{contentType}}
 
@@ -50,8 +50,8 @@ Content-Type: {{contentType}}
 }
 
 
-### --------------------------------------------------------------------------------- ###
-# PUT project by id
+# ------------------------------------------------------------------------------------- #
+### PUT project by id
 # PUT {{urlProjects}}/{{id}}
 PUT {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}
@@ -69,8 +69,8 @@ Content-Type: {{contentType}}
 }
 
 
-### --------------------------------------------------------------------------------- ###
-# DELETE project by Id
+# ------------------------------------------------------------------------------------- #
+### DELETE project by Id
 # DELETE {{urlProjects}}/{{projectId}}
 DELETE {{urlProjects}}/{{project.response.body.$.id}}
 Content-Type: {{contentType}}

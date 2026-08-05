@@ -17,7 +17,7 @@ func NewRouter() *Router {
 }
 
 func (router *Router) HandleNotFound() {
-	router.HandleFunc("/", HandlerNotFound)
+	router.HandleFunc("/", NotFoundHandler)
 }
 
 func (router *Router) HandleSubroute(pattern string, handler http.Handler) {
@@ -50,13 +50,13 @@ func MakeHandler(rh RouteHandler) http.HandlerFunc {
 	}
 }
 
-func HandlerNotFound(w http.ResponseWriter, r *http.Request) {
+func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	JsonEncode(w, http.StatusNotFound, EnvelopeMessage{
 		Message: "Not Found - " + RequestFullUrl(r),
 	})
 }
 
-func HandlerError(w http.ResponseWriter, r *http.Request) {
+func ErrorHandler(w http.ResponseWriter, r *http.Request) {
 	// http.Error(w, "error handled", http.StatusInternalServerError)
 	JsonEncode(w, http.StatusInternalServerError, EnvelopeMessage{
 		Message: "An Error Occurred",

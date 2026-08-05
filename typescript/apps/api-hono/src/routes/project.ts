@@ -1,8 +1,8 @@
 import { validator } from "hono/validator";
 
-import { transformProject, validateProject } from "@projectsbuild/core/projects";
+import { transformProject, validateProject } from "@projectsbuild/core/project";
 import { UUID_DEFAULT_LENGTH } from "@projectsbuild/db-drizzle/schema-type";
-import * as db from "@projectsbuild/db-drizzle/stores/projects.ts";
+import * as db from "@projectsbuild/db-drizzle/stores/project.ts";
 import { HttpStatus } from "@projectsbuild/library/constants";
 import { defaultRouter } from "#lib/init.ts";
 
