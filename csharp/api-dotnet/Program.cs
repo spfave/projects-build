@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
 	options.SerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+	options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 	// Note: Global applied definition for enum int to JSON string serialization/deserialization. Flows through to OpenAPI docs
 	options.SerializerOptions.Converters.Add(
 		new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.CamelCase, allowIntegerValues: false)

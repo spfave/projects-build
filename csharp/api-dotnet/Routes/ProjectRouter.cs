@@ -143,6 +143,6 @@ internal static class ProjectRouter
 		// 	); // OpenAPI 404 res not inferred, ProblemDetails content and customizable
 		return count > 0
 			? TypedResults.NoContent()
-			: TypedResults.NotFound(new ProblemDetails { Detail = $"Project with Id = {id} not found" }); // OpenAPI 404 res inferred, ProblemDetails content and customizable
+			: TypedResults.NotFound(new ProblemDetails { Detail = $"Project with Id: {id} not found" }); // OpenAPI 404 res inferred, ProblemDetails content and customizable
 	}
 }
