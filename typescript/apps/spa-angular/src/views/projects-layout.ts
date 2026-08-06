@@ -1,10 +1,12 @@
 import { AsyncPipe, JsonPipe } from "@angular/common";
 import { HttpClient, httpResource } from "@angular/common/http";
 import { Component, inject, type OnInit, resource } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
 import { RouterLink, RouterOutlet } from "@angular/router";
-import { map, type Observable, of, tap } from "rxjs";
+import { catchError, type Observable, of, tap } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
+import { environment as ENV } from "~/environments/environment";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 
@@ -25,19 +27,33 @@ import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 				<!-- Projects nav list -->
 				<div>
 					<!-- Observable -->
-					{{ projOb$ | async | json }}
+					<p>obs: {{ projOb$ | async | json }}</p>
 				</div>
 				<div>
 					<!-- Subscription -->
-					{{ projSub | json }}
+					<p>sub: {{ projSub | json }}</p>
 				</div>
 				<div>
 					<!-- Resource signal -->
-					{{ projRs.value() | json }}
+					@if (projRs.hasValue()) {
+						<p>rs v: {{ projRs.value() | json }}</p>
+					} @else if (projRs.isLoading()) {
+						<p>rs l: Loading Projects...</p>
+					} @else if (projRs.error()) {
+						<p>rs e: Failed to load projects</p>
+						<p>rs e: {{ projRs.error() }}</p>
+					}
 				</div>
 				<div>
 					<!-- Http Resource signal -->
-					{{ projHRs.value() | json }}
+					@if (projHRs.hasValue()) {
+						<p>hrs v: {{ projHRs.value() | json }}</p>
+					} @else if (projHRs.isLoading()) {
+						<p>hrs l: Loading Projects...</p>
+					} @else if (projHRs.error()) {
+						<p>hrs e: Failed to load projects</p>
+						<p>hrs e: {{ projHRs.error()?.message }}</p>
+					}
 				</div>
 			</section>
 		</aside>
@@ -96,34 +112,36 @@ import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 })
 export class ProjectsLayout implements OnInit {
 	protected readonly plusIcon = plusIcon;
-
-	protected projOb$: Observable<ProjectListItem[] | null> = of(null);
-	protected projSub?: ProjectListItem[] | null = null;
-	protected readonly projRs = resource({
-		loader: () =>
-			fetch("http://localhost:5001/projects").then(
-				(res) => res.json() as Promise<Project[]>
-			),
-	});
-	protected readonly projHRs = httpResource<Project[]>(
-		() => "http://localhost:5001/projects"
-	);
+	private readonly urlApi = `${ENV.PUBLIC_URL_API}/api/v1/projects`;
 
 	private readonly http = inject(HttpClient);
 
+	protected projOb$: Observable<ProjectListItem[] | null> = of(null);
+	protected projSub?: ProjectListItem[] | null = null;
+	protected projObS = toSignal(this.projOb$);
+
+	protected readonly projRs = resource({
+		loader: () => fetch(this.urlApi).then((res) => res.json() as Promise<Project[]>),
+	});
+	protected readonly projHRs = httpResource<Project[]>(() => this.urlApi);
+
 	public ngOnInit() {
 		console.info(`ProjectsLayout OnInit`); // LOG
-		this.projOb$ = this.http.get<Project[]>("http://localhost:5001/projects").pipe(
+		this.projOb$ = this.http.get<Project[]>(this.urlApi).pipe(
 			tap((projs) => console.info(`tap: projs: `, projs)),
-			map((projs) =>
-				projs.map((proj) => ({
-					id: proj.id,
-					name: proj.name,
-				}))
-			)
+			catchError((err, caught) => {
+				console.info(`rxjs: catchError`); // LOG
+				console.info(`err: `, err); // DEBUG LOG
+				console.info(`caught: `, caught); // DEBUG LOG
+				return of();
+			})
 		);
 		const _projSub = this.projOb$.subscribe({
 			next: (projs) => (this.projSub = projs),
+			error: (err) => {
+				console.info(`subscribe: error`); // LOG
+				console.info(`err: `, err); // DEBUG LOG
+			},
 		});
 	}
 }
