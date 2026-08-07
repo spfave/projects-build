@@ -3,6 +3,7 @@ import type { Routes } from "@angular/router";
 
 import { ProjectCreatePage } from "~/views/project-create-page";
 import { ProjectEditPage } from "~/views/project-edit-page";
+import { ProjectLoadingPage } from "~/views/project-loading-page";
 import { ProjectPage } from "~/views/project-page";
 import { ProjectsLayout } from "~/views/projects-layout";
 import { Root } from "~/views/root";
@@ -32,6 +33,7 @@ export const routes: Routes = [
 					{ path: "", component: ProjectIndexPage },
 					{ path: "create", component: ProjectCreatePage },
 					{ path: ":id", component: ProjectPage },
+					{ path: ":projIdParam/loading-demo", component: ProjectLoadingPage },
 					{ path: ":id/edit", component: ProjectEditPage },
 				],
 			},
