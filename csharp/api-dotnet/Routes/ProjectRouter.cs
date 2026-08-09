@@ -75,8 +75,7 @@ internal static class ProjectRouter
 
 	private static string RandomString(int length = 8)
 	{
-		string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		return new Random().GetString(chars, length);
+		return Guid.NewGuid().ToString("N")[..length]; // Note: "N" format specifier returns 32 digits without hyphens. e.g. "d85b1407351d469493920c7f6a0e3b8d"
 	}
 
 	private static async Task<Ok<IReadOnlyList<Project.Project>>> GetProjects()

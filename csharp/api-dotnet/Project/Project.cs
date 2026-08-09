@@ -1,3 +1,5 @@
+// global using ProjectId = string; // Note: Works but overrides to much
+
 namespace ProjectsBuild.API.Project;
 
 public static class ProjectConstants
@@ -7,7 +9,7 @@ public static class ProjectConstants
 	public const int NameMaxLength = 125;
 	public static readonly IReadOnlyList<string> Statuses = ["planning", "building", "complete"];
 
-	public static readonly Dictionary<string, string> ProjectStatusDict = Statuses.ToDictionary(
+	private static readonly Dictionary<string, string> ProjectStatusDict = Statuses.ToDictionary(
 		ps => ps.ToUpperInvariant(),
 		ps => ps
 	);
