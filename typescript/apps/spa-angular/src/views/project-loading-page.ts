@@ -22,7 +22,7 @@ import { environment as ENV } from "~/environments/environment";
 				} @else if (projRs.error()) {
 					<p>Failed to load project</p>
 					<!-- Api error result content -->
-					<p>err: {{ projRs.error()?.cause | json }}</p>
+					<p>err.cause: {{ projRs.error()?.cause | json }}</p>
 					<!-- Full error signal -->
 					<p>err: {{ projRs.error() }}</p>
 				}
@@ -36,7 +36,7 @@ import { environment as ENV } from "~/environments/environment";
 				} @else if (projHRs.error()) {
 					<p>Failed to load project</p>
 					<!-- Api error result content -->
-					<p>err: {{ $any(projHRs.error()).error | json }}</p>
+					<p>err.error: {{ $any(projHRs.error()).error | json }}</p>
 					<!-- Full error signal -->
 					<p>err: {{ projHRs.error() | json }}</p>
 				}
@@ -122,6 +122,7 @@ export class ProjectLoadingPage implements OnInit {
 		console.info(`projIdSs: `, this.projIdSs); // DEBUG LOG
 		console.info(`projId$: `, this.projId$); // DEBUG LOG
 		console.info(`projIdSg: `, this.projIdSg()); // DEBUG LOG
+		// throw new Error("Kaboom💥 - Project Loading Page");
 	}
 
 	public ngOnInit() {
