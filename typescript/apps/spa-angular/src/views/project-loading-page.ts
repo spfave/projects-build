@@ -3,7 +3,7 @@ import { HttpClient, type HttpErrorResponse, httpResource } from "@angular/commo
 import { Component, inject, input, type OnInit, resource } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { ActivatedRoute } from "@angular/router";
-import { catchError, map, of, switchMap, tap } from "rxjs";
+import { catchError, map, switchMap, tap, throwError } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
 import { environment as ENV } from "~/environments/environment";
@@ -21,6 +21,9 @@ import { environment as ENV } from "~/environments/environment";
 					<p>tmp: Loading Projects...</p>
 				} @else if (projRs.error()) {
 					<p>Failed to load project</p>
+					<!-- Api error result content -->
+					<p>err: {{ projRs.error()?.cause | json }}</p>
+					<!-- Full error signal -->
 					<p>err: {{ projRs.error() }}</p>
 				}
 			</div>
@@ -32,16 +35,19 @@ import { environment as ENV } from "~/environments/environment";
 					<p>tmp: Loading Projects...</p>
 				} @else if (projHRs.error()) {
 					<p>Failed to load project</p>
+					<!-- Api error result content -->
 					<p>err: {{ $any(projHRs.error()).error | json }}</p>
+					<!-- Full error signal -->
+					<p>err: {{ projHRs.error() | json }}</p>
 				}
 			</div>
 			<div>
 				<h2>Project Observable</h2>
-				<p>{{ projOb$ | async | json }}</p>
+				<p>val: {{ projOb$ | async | json }}</p>
 			</div>
 			<div>
 				<h2>Project toSignal(Observable)</h2>
-				<p>val:{{ projObS() | json }}</p>
+				<p>val: {{ projObS() | json }}</p>
 			</div>
 			<div>
 				<h2>Project Observable.Subscription()</h2>
@@ -76,16 +82,16 @@ export class ProjectLoadingPage implements OnInit {
 		loader: async ({ params }) => {
 			const res = await fetch(`${this.urlApi}/${params.projId}?d=rs`);
 			const js = await res.json();
-			// Note: need to throw manual to get .error result
+			// Note: need to throw manual to get .error() result, otherwise api error result content is surfaced through .value()
 			if (res.status >= 400)
-				throw new Error(`Failed to get projects. Status = ${res.status}`);
+				throw new Error(`Failed to get projects. Status = ${res.status}`, { cause: js });
 
 			return js as Project;
 		},
 	});
 	// protected readonly projHRs = httpResource<Project>(() => `${this.urlApi}?d=hrs`);
 	protected readonly projHRs = httpResource<Project>(() => ({
-		url: `${this.urlApi}/${this.projIdParam()}`,
+		url: `${this.urlApi}/${this.projIdParam()}`, // note: api error (status 4xx/5xx) provided through .error() result
 		params: { d: "hrs" },
 	}));
 	protected projSub?: Project | null = null;
@@ -93,13 +99,18 @@ export class ProjectLoadingPage implements OnInit {
 		.get<Project>(`${this.urlApi}/${this.projIdSs}?d=ob$`)
 		.pipe(tap((proj) => console.info(`tap: projOb$: `, proj)));
 	protected projOb$ = this.projId$.pipe(
-		switchMap((projId) => this.http.get<Project>(`${this.urlApi}/${projId}?d=ob$`)),
+		switchMap((projId) =>
+			this.http.get<Project>(`${this.urlApi}/${projId}?d=ob$`, { observe: "response" })
+		),
+		tap((res) => console.info(`tap: Res projOb$: `, res)),
+		map((res) => res.body),
 		tap((proj) => console.info(`tap: projOb$: `, proj)),
-		catchError((err, caught) => {
-			console.info(`observable: catchError`); // LOG
+		catchError((err: HttpErrorResponse, caught) => {
+			console.warn(`observable: catchError`); // LOG
 			console.info(`err: `, err); // DEBUG LOG
 			console.info(`caught: `, caught); // DEBUG LOG
-			return of(err.error);
+			throw err;
+			// return throwError(() => err);
 		})
 	);
 	protected projObS = toSignal(this.projOb$);
@@ -118,7 +129,7 @@ export class ProjectLoadingPage implements OnInit {
 		const _projSub = this.projOb$.subscribe({
 			next: (proj) => (this.projSub = proj),
 			error: (err: HttpErrorResponse) => {
-				console.info(`subscribe: error`); // LOG
+				console.warn(`subscribe: error`); // LOG
 				console.info(`err: `, err); // DEBUG LOG
 			},
 			complete: () => console.info("Proj subscription complete"),
