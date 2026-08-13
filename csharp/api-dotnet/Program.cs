@@ -71,6 +71,17 @@ var app = builder.Build();
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
+	app.Use(
+		async (context, next) =>
+		{
+			context.Response.OnStarting(() =>
+			{
+				context.Response.Headers.Append("Application-Name", "API-dotnet");
+				return Task.CompletedTask;
+			});
+			await next(context);
+		}
+	);
 	app.UseHttpLogging();
 	app.UseStatusCodePages();
 	app.MapOpenApi();
