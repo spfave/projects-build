@@ -16,6 +16,11 @@ export function createApp() {
 	const app = defaultApp()
 		.use(cors())
 		.use(logger())
+		.use(async (ctx, next) => {
+			if (process.env.NODE_ENV === "development")
+				ctx.res.headers.set("Application-Name", "API-Hono");
+			await next();
+		})
 
 		.notFound(notFoundHandler)
 		.onError(errorHandler);
