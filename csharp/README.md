@@ -7,6 +7,9 @@
 
 ### **Projects**
 - [API ASP.NET](./api-dotnet/)
+<!-- - [Core](./Core) -->
+<!-- - [Infrastructure](./Infrastructure) -->
+<!-- - [Library](./Library) -->
 
 
 &nbsp;
@@ -20,6 +23,7 @@
 
 [Milan Jovanovic: .NET Vertical Slice Architecture](https://milanjovanovic.tech/blog/vertical-slice-architecture-dotnet)  
 [Code with Mukesh: .NET Web API Zero to Hero](https://codewithmukesh.com/courses/dotnet-webapi-zero-to-hero/lessons/)  
+[Code with Mukesh: Clean Architecture](https://codewithmukesh.com/blog/clean-architecture-dotnet/#what-is-clean-architecture)  
 [Code with Mukesh: ASP.NET + EF Core Web API](https://codewithmukesh.com/blog/aspnet-core-webapi-crud-with-entity-framework-core-full-course/)  
 
 [GitHub: .NET Web API Zero to Hero](https://github.com/codewithmukesh/dotnet-webapi-zero-to-hero-course)  
