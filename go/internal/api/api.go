@@ -30,7 +30,7 @@ func (apiServer *ApiServer) Run() error {
 		// Handler: apiServer.RegisterRouteHandlers(), // no cors config
 		// Handler: pHttp.CorsMiddleware(apiServer.RegisterRouteHandlers()), // diy cors middleware
 		// Handler: cors.Default().Handler(apiServer.RegisterRouteHandlers()), // cors config default: GET & POST only
-		Handler: c.Handler(apiServer.RegisterRouteHandlers()), // cors config custom
+		Handler: c.Handler(pHttp.ApplicationNameMiddleware(apiServer.RegisterRouteHandlers())), // cors config custom
 	}
 
 	return server.ListenAndServe()

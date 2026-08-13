@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 )
 
 // ----------------------------------------------------------------------------------- //
@@ -39,8 +40,18 @@ func PanicRecoveryMiddleware(next http.Handler) http.Handler {
 				RespondJsonError(w, http.StatusInternalServerError,
 					JSendError(http.StatusText(http.StatusInternalServerError), Envelope{"panic": pv}, nil))
 			}
-
 		}()
+
+		next.ServeHTTP(w, r)
+	})
+}
+
+func ApplicationNameMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		env := os.Getenv("APP_ENV")
+		if env == "development" {
+			w.Header().Set("Application-Name", "API-Go")
+		}
 
 		next.ServeHTTP(w, r)
 	})
