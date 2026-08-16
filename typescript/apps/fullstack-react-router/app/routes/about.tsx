@@ -1,4 +1,4 @@
-import { REPO_URL } from "@projectsbuild/core/projects";
+import { REPO_URL } from "@projectsbuild/core/project";
 import type { Route } from "./+types/about";
 
 export const meta: Route.MetaFunction = (args) => [{ title: "About | Projects.build" }];

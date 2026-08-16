@@ -1,6 +1,6 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
-	"extends": "//",
+	"$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+	"extends": ["../../biome.jsonc"],
 	"root": false,
 	"files": { "includes": ["!!**/.react-router", "./app/**"] },
 	"linter": {

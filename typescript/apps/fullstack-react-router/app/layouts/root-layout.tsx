@@ -1,6 +1,6 @@
 import { href, Link, Outlet } from "react-router";
 
-import { REPO_URL } from "@projectsbuild/core/projects";
+import { REPO_URL } from "@projectsbuild/core/project";
 
 import githubIcon from "@projectsbuild/core/assets/github.svg";
 import infoIcon from "@projectsbuild/core/assets/heroicons-information-circle.svg";

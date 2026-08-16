@@ -1,17 +1,20 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "@projectsbuild/config-typescript/client.json",
+	"extends": "@projectsbuild/config-typescript/tsconfig.base.json",
 	"compilerOptions": {
-		"baseUrl": ".",
 		"paths": {
 			"~/*": ["./app/*"]
 		},
+		"target": "esnext",
+		"lib": ["ESNext", "DOM"],
+		"types": ["node", "vite/client"],
 		"jsx": "react-jsx",
-		// "target": "ES2022",
-		// "module": "ES2022",
-		// "moduleResolution": "bundler",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
 		"rootDirs": [".", "./.react-router/types"],
-		"types": ["node", "vite/client"]
+
+		"noEmit": true
 	},
 	"files": ["../../env.d.ts"],
 	"include": ["**/*", "**/.server/**/*", "**/.client/**/*", ".react-router/types/**/*"]

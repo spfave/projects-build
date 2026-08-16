@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "pnpm run run:local",
-		"run:local": "dotenvx run -f ../../.env.local -- react-router dev",
+		"run:local": "dotenvx run -f ../../../.env.local -- react-router dev",
 		"build": "react-router build",
 		"serve:build": "react-router-serve ./build/server/index.js",
 		"check": "biome check ./app",
@@ -33,8 +33,6 @@
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"tailwindcss": "^4.2.1",
-		"typescript": "catalog:",
-		"vite": "catalog:",
-		"vite-tsconfig-paths": "^6.1.1"
+		"vite": "catalog:"
 	}
 }

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Await, data, href, Link, NavLink, Outlet } from "react-router";
 
-import type { Project } from "@projectsbuild/core/projects";
-import * as db from "@projectsbuild/db-drizzle/repositories/projects.ts"; // SSR only
+import type { Project } from "@projectsbuild/core/project";
+import * as db from "@projectsbuild/db-drizzle/stores/project.ts"; // SSR only
 import type { Route } from "./+types/projects-layout";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
