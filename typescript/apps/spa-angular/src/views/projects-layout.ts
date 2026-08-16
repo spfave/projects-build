@@ -1,9 +1,13 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
 import { RouterLink, RouterOutlet } from "@angular/router";
 
 import type { Project } from "@projectsbuild/core/project";
+import { ProjectApiClient } from "~/feature-project/project-api-client";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
+
+export type ProjectListItem = Pick<Project, "id" | "name">;
 
 @Component({
 	selector: "pb-projects-layout",
@@ -77,6 +81,10 @@ import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 })
 export class ProjectsLayout {
 	protected readonly plusIcon = plusIcon;
-}
 
-export type ProjectListItem = Pick<Project, "id" | "name">;
+	readonly #projectClient = inject(ProjectApiClient);
+
+	protected readonly psO = this.#projectClient.getProjects();
+	protected readonly psR = this.#projectClient.getProjectsRx();
+	protected readonly psH = this.#projectClient.getProjectsHx();
+}

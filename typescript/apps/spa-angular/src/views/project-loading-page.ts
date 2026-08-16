@@ -114,12 +114,14 @@ export class ProjectLoadingPage implements OnInit {
 	private readonly route = inject(ActivatedRoute);
 	private readonly http = inject(HttpClient);
 
+	// Url params
 	private readonly projIdSs = this.route.snapshot.paramMap.get("projIdParam");
 	private readonly projId$ = this.route.paramMap.pipe(
 		map((params) => params.get("projIdParam"))
 	);
 	private readonly projIdSg = toSignal(this.projId$);
 
+	// Signal Resources
 	protected readonly projRs = resource({
 		params: () => ({ projId: this.projIdSg() }),
 		loader: async ({ params }) => {
@@ -140,6 +142,7 @@ export class ProjectLoadingPage implements OnInit {
 		params: { d: "hrs" },
 	}));
 
+	// Observables / Subscriptions
 	protected _projOb$ = this.http
 		.get<Project>(`${this.urlApi}/${this.projIdSs}?d=_ob$`)
 		.pipe(
@@ -169,6 +172,7 @@ export class ProjectLoadingPage implements OnInit {
 	protected projObTrackState = asyncInitialState;
 	readonly projObAsync$ = this._projOb$.pipe(asyncState());
 
+	// Transforms
 	protected projObS = toSignal(this.projOb$);
 
 	constructor() {

@@ -1,4 +1,4 @@
-import { HttpClient, type HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, type HttpErrorResponse, httpResource } from "@angular/common/http";
 import { inject, resource, Service, type Signal } from "@angular/core";
 import { catchError } from "rxjs";
 
@@ -12,7 +12,7 @@ export class ProjectApiClient {
 	readonly #urlApi = urlProjectApi;
 	readonly #http = inject(HttpClient);
 
-	public getProjects$() {
+	public getProjects() {
 		return this.#http.get<Project[]>(this.#urlApi).pipe(
 			catchError((err: HttpErrorResponse, _caught) => {
 				throw err;
@@ -20,13 +20,17 @@ export class ProjectApiClient {
 		);
 	}
 
-	public getProjects() {
+	public getProjectsRx() {
 		return resource({
 			loader: ({ abortSignal }) => getProjects({ signal: abortSignal }),
 		});
 	}
 
-	public getProjectById$(projectId: string) {
+	public getProjectsHx() {
+		return httpResource<Project[]>(() => ({ url: this.#urlApi }));
+	}
+
+	public getProjectById(projectId: string) {
 		return this.#http.get<Project>(`${this.#urlApi}/${projectId}`).pipe(
 			catchError((err: HttpErrorResponse) => {
 				console.info(`err: `, err); // DEBUG LOG
@@ -36,7 +40,7 @@ export class ProjectApiClient {
 	}
 
 	// public getProjectById(projectId: string) {} // TEST
-	public getProjectById(projectId: Signal<string>) {
+	public getProjectByIdRx(projectId: Signal<string>) {
 		return resource({
 			params: () => ({ projectId: projectId() }),
 			loader: ({ params, abortSignal }) =>
