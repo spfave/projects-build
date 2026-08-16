@@ -53,6 +53,10 @@ internal static class ProjectRouter
 				return TypedResults.Created("/proj-req", proj);
 			}
 		);
+		projectRouter.MapPost(
+			"/proj-req-v",
+			(ProjectRequestV proj) => TypedResults.Created("/proj-req-v", proj)
+		);
 	}
 
 	private static readonly List<Project.Project> _projects =
