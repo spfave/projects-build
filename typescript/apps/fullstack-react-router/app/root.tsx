@@ -19,7 +19,7 @@ export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: stylesheet },
 ];
 
-export const meta: Route.MetaFunction = (args) => [
+export const meta: Route.MetaFunction = (_args) => [
 	{ title: "Projects.build | Fullstack React Router" },
 	{ name: "description", content: "Welcome to Projects.build" },
 ];

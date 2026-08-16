@@ -8,7 +8,7 @@ import type { Route } from "./+types/projects-layout";
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 
 // Server Loader: SSR
-export async function loader(args: Route.LoaderArgs) {
+export async function loader(_args: Route.LoaderArgs) {
 	// await new Promise((res, rej) => setTimeout(res, 1000));
 	// const res = await fetch("http://localhost:5001/projects");
 	// const projects = (await res.json()) as Array<Project>;
@@ -41,7 +41,7 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 // Client Loader: SPA mode
-// export async function clientLoader(args: Route.ClientLoaderArgs) {
+// export async function clientLoader(_args: Route.ClientLoaderArgs) {
 // 	await new Promise((res, rej) => setTimeout(res, 1000));
 // 	const res = await fetch(`${import.meta.env.VITE_URL_API_JSON_SERVER}/projects`);
 // 	// const res = await fetch(`${import.meta.env.VITE_URL_API_HONO}/api/v1/projects`);
