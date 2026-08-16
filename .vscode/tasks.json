@@ -1,0 +1,45 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		// TypeScript
+		{
+			"label": "TS: lint",
+			"detail": "lint all TypeScript apps & packages",
+			"type": "shell",
+			"command": "pnpm -r --no-bail --stream run lint",
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/typescript"
+			}
+		},
+		{
+			"label": "TS: typecheck",
+			"detail": "typecheck all TypeScript apps & packages",
+			"type": "npm",
+			"script": "typecheck",
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/typescript"
+			}
+		},
+		{
+			"label": "TS: cleanup node_modules",
+			"detail": "remove node_modules from all TypeScript apps & packages",
+			"type": "shell",
+			"command": "find ./typescript -name node_modules -type d -exec rm -rf {} +",
+			"problemMatcher": []
+		},
+
+		// Go
+		{
+			"label": "Go: cleanup build artifacts",
+			"detail": "",
+			"type": "shell",
+			"command": "find . \\( -name bin -o -name tmp \\) -type d -exec rm -rf {} +",
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/go"
+			}
+		}
+	]
+}

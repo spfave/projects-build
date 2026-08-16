@@ -1,0 +1,29 @@
+{
+	"name": "@projectsbuild/library",
+	"version": "0.0.0",
+	"private": true,
+	"description": "",
+	"type": "module",
+	"imports": {
+		"#constants": "./src/constants/index.ts",
+		"#types": "./src/types/index.ts"
+	},
+	"exports": {
+		"./constants": "./src/constants/index.ts",
+		"./errors": "./src/errors/index.ts",
+		"./types": "./src/types/index.ts",
+		"./utils": "./src/utils/index.ts",
+		"./validation": "./src/validation/index.ts"
+	},
+	"scripts": {
+		"script:fetch-http": "node ./scripts/fetch-http-statuses.ts",
+		"script:gen-http": "node ./scripts/gen-http-statuses.ts",
+		"format": "biome format .",
+		"lint": "biome lint .",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@projectsbuild/config-typescript": "workspace:*",
+		"@types/node": "catalog:"
+	}
+}

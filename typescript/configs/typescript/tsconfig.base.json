@@ -1,0 +1,54 @@
+// Refs:
+// https://www.typescriptlang.org/tsconfig
+// https://www.typescriptlang.org/docs/handbook/modules/theory.html
+// https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html
+// https://www.typescriptlang.org/docs/handbook/modules/reference.html
+// https://www.totaltypescript.com/tsconfig-cheat-sheet
+
+// biome-ignore format: maintain comment alignment
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		// Source Quality, Type Safety, & Linting
+		"erasableSyntaxOnly": true,
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
+		"skipLibCheck": true,
+		// "exactOptionalPropertyTypes": true,					// quite strict
+		// "noPropertyAccessFromIndexSignature": true,	// quite strict
+		// "allowUnusedLabels": false, 									// linting rules, covered with linter
+		// "allowUnreachableCode": false,
+		// "noFallthroughCasesInSwitch": true,
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
+
+		// Environment & Module System
+		"target": "esnext",
+		// "lib": [],
+		// "types": [], 												// default [] v6+
+		// "module": "esnext",
+		"moduleDetection": "force",
+		// "moduleResolution": "bundler",
+
+		// Resolution, & Interop Constraints
+		// "rootDir": "./src",
+		// "resolvePackageJsonExports": true, 	// default true with moduleResolution = bundler, nodenext
+		// "resolvePackageJsonImports": true, 	// default true with moduleResolution = bundler, nodenext
+		// "resolveJsonModule": true, 					// default true
+		// "esModuleInterop": true, 						// default true v6+
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true, 								// default true with verbatimModuleSyntax = true
+		// "forceConsistentCasingInFileNames": true,	// default true
+		// "noUncheckedSideEffectImports": true 			// default true v6+
+
+		// Output
+		// "noEmit": true,
+		// "emitDeclarationOnly": true,
+		"outDir": "./dist",
+		// "sourceMap": true,
+		// "declaration": true,
+		// "declarationDir": "./types",
+		// "declarationMap": true
+	}
+}

@@ -1,0 +1,12 @@
+packages:
+  - apps/*
+  - packages/*
+  - configs/*
+
+minimumReleaseAge: 1440 # 1 day in minutes
+allowBuilds:
+  esbuild: true
+
+catalog:
+  '@types/node': ^26.1.1
+  vite: ^8.1.5

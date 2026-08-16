@@ -1,73 +1,42 @@
 # **Projects.build**
+Projects.build is a web application to manage and track project builds. This repository, which includes multiple analogous app implementations, serves as a sandbox for self-learning and experimentation in web application development.
 
+
+&nbsp;
 ## **Goal**
-Primary: Build experience, methodologies and opinions around web application engineering.  
-Secondary: Experiment with different web technologies, web development frameworks, and languages.  
+Primary: Build experience, develop methodologies, and form opinions on engineering web applications.  
+Secondary: Explore various languages, web technologies, and web development frameworks.  
+
+### **Approach**
+Develop a web application utilizing a variety web technologies. By addressing the same problem with diverse tools and techniques, identify boundaries of application concerns suitable for abstraction into shared logic, preferred architectural design patterns for structuring code, and strategies for maintaining a largely independent codebase.
+
+Each app implementation relies on a minimal set of dependencies to focus development on using the core features provided by the languages, libraries, and frameworks, while minimizing decisions related to external dependencies. This approach emphasizes experimenting with these core elements as primitives to develop judgment on when abstracting functionality to an external dependency is pragmatic.
+
+The codebase is deliberately over-engineered with regard to overall code organization, utility functions & types, and code logic abstractions. This purposeful complexity targets practicing development within a monorepo, using advanced language features, and making decisions concerning logic co-location and architectural design.
 
 
 &nbsp;
-## **Approach**
-Develop a web application to manage and rate project builds with multiple web technologies. Through solving the same problem with different approaches discover where boundaries of application concerns exist for abstraction to shareable logic, preferred architecture patterns for code organization, and management of a largely self dependent code base. 
-
-Each app implementation purposefully use a bare minimum set of dependencies to focus the app engineering on using the primitives supplied with the libraries, frameworks, and languages plus limit external dependency decision making. This is for the purpose of experimenting with these primitives as building blocks and understanding where it makes sense to favor abstraction to an external dependency. 
-
-This repo additionally over-engineers overall code organization, function & type utilities, and code logic abstractions. This is for the purpose of experimenting with development in a monorepo and logic co-location patterns, advanced JavaScript/TypeScript capabilities and patterns, and code architecture patterns. 
+## **Repo Structure**
+The root directory is organized by programming language. With each language directory containing JSON APIs, SPAs, MPAs, and/or fullstack apps. A fullstack implementation of the Project.build application is available through any combination of a server API and client SPA or standalone via a server MPA or fullstack SSR app. Every fullstack implementation delivers equivalent functionality, to create and manage a list of project builds. 
 
 
-&nbsp;
-## **Repo Contents**
-This monorepo contains client rendered JS apps, api endpoint server apps, server rendered apps, and fullstack JS framework apps. Each app is a component (i.e. client SPA or api endpoints) for composition into a fullstack web application or a fullstack web application itself. Each fullstack application implementation provides the same functionality, to create and manage a list of project builds. 
-
-- The `apps` directory contains the client, api, server, and fullstack app implementations (e.g. React, Remix, etc.).
-- The `packages` directory mostly contains logic that is shared across apps. It is primarily split between the `library` and `core` packages. The `library` package contains general code that is not application specific, and the `core` package contains shareable code that is application context specific. 
-- The `configs` directory contains shared base configurations for tools or dependencies (e.g. eslint, typescript, etc).
+### **Language Implementations**
+<!-- - [C# .NET](./csharp) -->
+- [Go](./go)  
+- [TypeScript](./typescript)  
 
 
-&nbsp;
-## **Apps**
-- [Client React](./apps/client-react)
-<!-- - [Client Solid](./apps/client-solid) -->
-<!-- - [Client Svelte](./apps/client-svelte) -->
-<!-- - [Client Qwik](./apps/client-qwik) -->
 
-- [API Node + Hono](./apps/api-hono)
+<!-- 
+NOTES:
 
-<!-- - [Server ASP.NET](./apps/server-dotnet) -->
-- [Server Go](./apps/server-go)
-
-<!-- - [Fullstack Astro](./apps/fullstack-astro) -->
-<!-- - [Fullstack Next](./apps/fullstack-next) -->
-- [Fullstack React Router/Remix](./apps/fullstack-react-router)
-<!-- - [Fullstack SolidStart](./apps/fullstack-solidstart) -->
-<!-- - [Fullstack SvelteKit](./apps/fullstack-sveltekit) -->
-<!-- - [Fullstack Leptos](./apps/fullstack-leptos) -->
-
-&nbsp;
-## **Packages**
-- [API Json Server](./packages/api-json-server)
-- [DB Schema Drizzle](./packages/db-drizzle)
-- [Library](./packages/library)
-- [Core](./packages/core)
-
-&nbsp;
-## **Configs**
-<!-- biome.json must be in root folder, does not work as workspace config: https://github.com/biomejs/biome-vscode/issues/25 --> 
-<!-- - [Biome](./configs/biome) -->  
-<!-- - [ESlint](./configs/eslint) -->
-- [Typescript](./configs/typescript)
-
-
-&nbsp;
-## **Resources**
-- [Heroicons](https://heroicons.com/)
-- [Reshot Free Icons & Illustrations](https://www.reshot.com/)
-
-
-&nbsp;
-## **Notes/References**
-- [Monorepos with Pnpm](https://levelup.video/tutorials/monorepos-with-pnpm)
-- [Hono + React Monorepo Example](https://github.com/w3cj/monorepo-example-tasks-app/tree/main)
-- [Syntax CJ Monorepo Example](https://www.youtube.com/watch?v=KIgPJT806D0&list=WL&index=2&t=12s)
-- [TS Paths in a Monorepo](https://github.com/vercel/turbo/discussions/620)
-- [Data Handling](https://nextjs.org/blog/security-nextjs-server-components-actions)
-
+// Define multi-root workspace to isolate settings, tasks, debug launch profiles by language
+./projects-build.code-workspace
+{
+	"folders": [
+		// { "name": "Root", "path": "." }, // to see root files
+		{ "name": "TypeScript", "path": "typescript" }
+		{ "name": "Go", "path": "go" },
+	]
+}
+ -->
