@@ -17,22 +17,22 @@
 		"@projectsbuild/core": "workspace:*",
 		"@projectsbuild/db-drizzle": "workspace:*",
 		"@projectsbuild/library": "workspace:*",
-		"@react-router/node": "^7.13.1",
-		"@react-router/serve": "^7.13.1",
-		"isbot": "^5.1.35",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4",
-		"react-router": "^7.13.1"
+		"@react-router/node": "^8.3.0",
+		"@react-router/serve": "^8.3.0",
+		"isbot": "^5.2.1",
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
+		"react-router": "^8.3.0"
 	},
 	"devDependencies": {
-		"@dotenvx/dotenvx": "^1.52.0",
+		"@dotenvx/dotenvx": "^2.21.0",
 		"@projectsbuild/config-typescript": "workspace:*",
-		"@react-router/dev": "^7.13.1",
-		"@tailwindcss/vite": "^4.2.1",
+		"@react-router/dev": "^8.3.0",
+		"@tailwindcss/vite": "^4.3.3",
 		"@types/node": "catalog:",
-		"@types/react": "^19.2.14",
-		"@types/react-dom": "^19.2.3",
-		"tailwindcss": "^4.2.1",
+		"@types/react": "^19.2.18",
+		"@types/react-dom": "^19.2.4",
+		"tailwindcss": "^4.3.3",
 		"vite": "catalog:"
 	}
 }
