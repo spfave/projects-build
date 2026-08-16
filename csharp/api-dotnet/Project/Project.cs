@@ -13,9 +13,18 @@ public static class ProjectConstants
 		ps => ps.ToUpperInvariant(),
 		ps => ps
 	);
+
+	private static void Explore()
+	{
+		ProjectStatusDict.TryGetValue("PLANNING", out var psD_);
+		var b = Statuses.Contains("");
+		var psD = ProjectStatusDict["PLANNING"]; // no intellisense
+		// var psC = ProjectStatusC.Building;
+		var psE = ProjectStatus.Building.ToString();
+	}
 }
 
-public sealed record ProjectId(string Id);
+public readonly record struct ProjectId(string Id);
 
 // Note: Type applied definition for enum int to JSON string serialization/deserialization. Cannot specify namingPolicy with attribute (e.g. camel case)
 // [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -40,6 +49,14 @@ public sealed class Project
 	public int? Rating { get; set; }
 	public bool? Recommend { get; set; }
 }
+// private Project() { }
+// public static Project Create() { }
+
+// public static class ProjectValidate
+// {
+// 	public static void ValidateId() { }
+// 	public static void ValidateProject() { }
+// }
 
 // ----------------------------------------------------------------------------------- //
 // Note: Exploration
