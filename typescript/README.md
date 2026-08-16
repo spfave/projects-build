@@ -19,7 +19,7 @@
 
 <!-- - [Fullstack Astro](./apps/fullstack-astro) -->
 <!-- - [Fullstack Next](./apps/fullstack-next) -->
-<!-- - [Fullstack React Router](./apps/fullstack-react-router) -->
+- [Fullstack React Router](./apps/fullstack-react-router)
 <!-- - [Fullstack SolidStart](./apps/fullstack-solidstart) -->
 <!-- - [Fullstack SvelteKit](./apps/fullstack-sveltekit) -->
 
