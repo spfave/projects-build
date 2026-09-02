@@ -6,10 +6,11 @@ testdata_dir = "testdata"
 
 [build]
   # cmd = "go build -o ./tmp/api-go ./cmd/api-go/main.go"    # Just plain old shell command. You could use `make` as well
-  cmd = "make build-api-go-debug"      # Just plain old shell command. You could use `make` as well
+  # cmd = "make build-api-go"
+  cmd = "make build-api-go-debug"
   pre_cmd = []                         # Array of commands to run before each build
   post_cmd = []                        # Array of commands to run after ^C
-  # bin = "./tmp/api-go"                 # Binary file yields from `cmd`
+  # bin = "./bin/api-go"                 # Binary file yields from `cmd`
   bin = "./bin/api-go-debug"           # Binary file yields from `cmd`
   full_bin = "dlv exec ./bin/api-go-debug --listen=127.0.0.1:9253 --headless=true --api-version=2 --accept-multiclient --continue --log -- "    # Customize binary, can setup environment variables when run your app
   args_bin = []                        # Add additional arguments when running binary (bin/full_bin). Will run './tmp/main hello world'
