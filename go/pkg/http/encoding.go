@@ -1,7 +1,7 @@
 package http_pkg
 
 import (
-	"encoding/json"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -72,7 +72,7 @@ func JsonDecode[T any](r *http.Request) (T, error) {
 	}
 
 	var data T
-	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+	if err := json.UnmarshalRead(r.Body, &data); err != nil {
 		return *new(T), fmt.Errorf("json decode - failed to decode request json body: %w", err)
 		// return *new(T), err
 	}
@@ -89,13 +89,10 @@ func JsonDecodeStrict[T any](w http.ResponseWriter, r *http.Request) (T, error) 
 	if r.ContentLength > maxBytes {
 		return *new(T), fmt.Errorf("json decode - request body too large: %w", pErr.ErrDataSize)
 	}
-
 	r.Body = http.MaxBytesReader(w, r.Body, maxBytes)
-	decoder := json.NewDecoder(r.Body)
-	decoder.DisallowUnknownFields()
 
 	var data T
-	if err := decoder.Decode(&data); err != nil {
+	if err := json.UnmarshalRead(r.Body, &data, json.RejectUnknownMembers(true)); err != nil {
 		return *new(T), fmt.Errorf("json decode - failed to decode request json body: %w", errors.Join(pErr.ErrTransform, err))
 	}
 
@@ -105,7 +102,7 @@ func JsonDecodeStrict[T any](w http.ResponseWriter, r *http.Request) (T, error) 
 func JsonEncode[T any](w http.ResponseWriter, status int, data T) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	if err := json.NewEncoder(w).Encode(data); err != nil {
+	if err := json.MarshalWrite(w, data); err != nil {
 		return fmt.Errorf("json encode - failed to encode data to json and write response: %w", err)
 	}
 
