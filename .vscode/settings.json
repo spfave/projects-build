@@ -11,6 +11,7 @@
 	"explorer.fileNesting.patterns": {
 		".env*": "*.env, .env.*, .envrc",
 		".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
+		"mise.toml": "mise.*.toml",
 
 		"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, pnpm-workspace.yaml",
 		"package.json*": "biome.*, drizzle.config.*, tsconfig.*, vite.*",
