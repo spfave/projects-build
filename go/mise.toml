@@ -1,3 +1,70 @@
 [tools]
 go = "1.27"
 air = "latest"
+
+
+[env]
+APP_ENV = { default = "development" }
+DB_FILE_NAME = { required = true }
+# _.file = ["../.env.local"]
+
+
+# TASKS: Development
+[tasks.start]
+description = "Run for local development"
+depends = ["run-local-api-go"]
+
+[tasks.run-local-api-go]
+description = "Run the API application using air for live reloading"
+run = "air -c .air.toml"
+
+[tasks.build-api-go]
+description = "Build the API application"
+run = ["rm -f ./bin/api-go", "go build -o ./bin/api-go ./cmd/api-go"]
+
+[tasks.build-api-go-debug]
+description = "Build the API application for debugging"
+run = [
+	"rm -f ./bin/api-go-debug",
+	"CGO_ENABLED=0 go build -gcflags=all='-N -l' -o ./bin/api-go-debug ./cmd/api-go",
+]
+
+[tasks.run-local-web]
+description = "Run the web application"
+run = "go run ./cmd/web"
+
+# TASKS: Checks
+[tasks.audit]
+description = "Run Go audit checks"
+run = ["go mod tidy -diff", "go mod verify", "go vet ./...", "mise run lint"]
+
+[tasks.format]
+description = "Format Go code"
+run = "gofmt -w -s ."
+
+[tasks.lint]
+description = "Lint Go code"
+run = "go tool staticcheck ./..."
+
+# TASKS: Maintenance
+[tasks.clean]
+description = "Clean up build artifacts"
+run = "rm -rf bin"
+
+[tasks.tidy]
+description = "Tidy Go module files"
+run = "go mod tidy -v -x"
+
+[tasks.new-deps]
+description = "Check for available dependency updates"
+run = '''
+go list -u -f '{{if (and (not (or .Main .Indirect)) .Update)}}{{.Path}}: {{.Version}} -> {{.Update.Version}}{{end}}' -m all
+'''
+
+[tasks.update-deps]
+description = "Update all Go dependencies"
+run = "go get -u ./..."
+
+[tasks.update-tools]
+description = "Update Go tools"
+run = "go get tool"
