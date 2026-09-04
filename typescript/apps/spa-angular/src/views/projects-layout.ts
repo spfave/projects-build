@@ -1,5 +1,5 @@
+import { AsyncPipe } from "@angular/common";
 import { Component, inject } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
 import { RouterLink, RouterOutlet } from "@angular/router";
 
 import type { Project } from "@projectsbuild/core/project";
@@ -11,7 +11,7 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 
 @Component({
 	selector: "pb-projects-layout",
-	imports: [RouterLink, RouterOutlet],
+	imports: [AsyncPipe, RouterLink, RouterOutlet],
 	template: `
 		<aside>
 			<div>
@@ -24,6 +24,38 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 			<section>
 				<h2>Projects</h2>
 				<!-- Projects nav list -->
+				<!-- Projects Signal -->
+				<!-- @switch (psR.status()) {
+					@case ("resolved") {
+						<p>resolved</p>
+					}
+					@case ("loading") {
+						<p>Loading Projects...</p>
+					}
+					@case ("error") {
+						<p>Error</p>
+					}
+					@default {
+						<p>default</p>
+					}
+				} -->
+
+				<!-- Projects Observable -->
+				@let ps = psO | async;
+				@switch (ps?.status) {
+					@case ("resolved") {
+						<p>resolved</p>
+					}
+					@case ("loading") {
+						<p>Loading Projects...</p>
+					}
+					@case ("error") {
+						<p>Error</p>
+					}
+					@default {
+						<p>default</p>
+					}
+				}
 			</section>
 		</aside>
 		<div class="project-outlet">

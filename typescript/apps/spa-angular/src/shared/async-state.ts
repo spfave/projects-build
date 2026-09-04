@@ -23,7 +23,7 @@ export const asyncInitialState: AsyncState = {
 // #endregion
 
 // ----------------------------------------------------------------------------------- //
-// #region - Async Ovservable Utilities
+// #region - Async Observable Utilities
 // Distinct tracking for observable and associated async metadata
 export type AsyncOperation<TValue = unknown> = {
 	value$: Observable<TValue | null>;

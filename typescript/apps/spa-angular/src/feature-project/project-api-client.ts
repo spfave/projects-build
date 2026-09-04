@@ -1,9 +1,11 @@
 import { HttpClient, type HttpErrorResponse, httpResource } from "@angular/common/http";
 import { inject, resource, Service, type Signal } from "@angular/core";
-import { catchError } from "rxjs";
+import { catchError, delay } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
+import { wait } from "@projectsbuild/library/utils";
 import { environment as ENV } from "~/environments/environment";
+import { asyncState } from "~/shared/async-state";
 
 const urlProjectApi = `${ENV.PUBLIC_URL_API}/api/v1/projects`;
 
@@ -14,15 +16,20 @@ export class ProjectApiClient {
 
 	public getProjects() {
 		return this.#http.get<Project[]>(this.#urlApi).pipe(
-			catchError((err: HttpErrorResponse, _caught) => {
-				throw err;
-			})
+			delay(500),
+			// catchError((err: HttpErrorResponse, _caught) => {
+			// 	throw err;
+			// })
+			asyncState()
 		);
 	}
 
 	public getProjectsRx() {
 		return resource({
-			loader: ({ abortSignal }) => getProjects({ signal: abortSignal }),
+			loader: async ({ abortSignal }) => {
+				await wait(500);
+				return getProjects({ signal: abortSignal });
+			},
 		});
 	}
 
