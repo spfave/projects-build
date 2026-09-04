@@ -65,6 +65,12 @@ a {
 	scrollbar-gutter: stable;
 } */
 
+/* Note: Target all angular components */
+/* Angular component tags remain in the DOM and are "display: inline" by default as unknown tags */
+/* :where(:not(:defined)) {
+	display: block;
+} */
+
 a.action,
 button.action {
 	padding: 0.25rem 0.5rem;

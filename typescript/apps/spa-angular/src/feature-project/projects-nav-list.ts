@@ -1,10 +1,10 @@
 import { Component, input } from "@angular/core";
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 import type { ProjectListItem } from "~/views/projects-layout";
 
 @Component({
-	imports: [RouterLink],
+	imports: [RouterLink, RouterLinkActive],
 	selector: "pb-projects-nav-list",
 	template: `
 		@if (!projects() || projects()?.length === 0) {
@@ -12,7 +12,7 @@ import type { ProjectListItem } from "~/views/projects-layout";
 		} @else {
 			<nav class="projects-nav-list">
 				@for (project of projects(); track project.id) {
-					<a class="" [routerLink]="project.id">
+					<a routerLinkActive="active-link" [routerLink]="project.id">
 						<span>{{ project.name }}</span>
 					</a>
 				}

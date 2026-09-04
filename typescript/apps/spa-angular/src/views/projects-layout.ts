@@ -94,14 +94,9 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 					margin-block-start: 1rem;
 				}
 
-				h2 {
-					padding: 0 1rem;
-				}
-
+				h2,
 				div {
-					span {
-						padding: 0 1rem;
-					}
+					padding: 0 1rem;
 				}
 			}
 		}
