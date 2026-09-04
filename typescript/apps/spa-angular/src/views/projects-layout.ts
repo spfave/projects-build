@@ -4,6 +4,7 @@ import { RouterLink, RouterOutlet } from "@angular/router";
 
 import type { Project } from "@projectsbuild/core/project";
 import { ProjectApiClient } from "~/feature-project/project-api-client";
+import { ProjectsNavList } from "~/feature-project/projects-nav-list";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 
@@ -11,7 +12,7 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 
 @Component({
 	selector: "pb-projects-layout",
-	imports: [AsyncPipe, RouterLink, RouterOutlet],
+	imports: [AsyncPipe, RouterLink, RouterOutlet, ProjectsNavList],
 	template: `
 		<aside>
 			<div>
@@ -23,11 +24,10 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 			<hr />
 			<section>
 				<h2>Projects</h2>
-				<!-- Projects nav list -->
 				<!-- Projects Signal -->
 				<!-- @switch (psR.status()) {
 					@case ("resolved") {
-						<p>resolved</p>
+						<pb-projects-nav-list [projects]="psR.value()" />
 					}
 					@case ("loading") {
 						<p>Loading Projects...</p>
@@ -35,26 +35,26 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 					@case ("error") {
 						<p>Error</p>
 					}
-					@default {
-						<p>default</p>
-					}
+					@default {}
 				} -->
 
 				<!-- Projects Observable -->
-				@let ps = psO | async;
+				@let ps = ps$ | async;
 				@switch (ps?.status) {
 					@case ("resolved") {
-						<p>resolved</p>
+						<pb-projects-nav-list [projects]="ps.value" />
 					}
 					@case ("loading") {
-						<p>Loading Projects...</p>
+						<div>
+							<span>Loading Projects...</span>
+						</div>
 					}
 					@case ("error") {
-						<p>Error</p>
+						<div>
+							<p>Error</p>
+						</div>
 					}
-					@default {
-						<p>default</p>
-					}
+					@default {}
 				}
 			</section>
 		</aside>
@@ -116,7 +116,7 @@ export class ProjectsLayout {
 
 	readonly #projectClient = inject(ProjectApiClient);
 
-	protected readonly psO = this.#projectClient.getProjects();
-	protected readonly psR = this.#projectClient.getProjectsRx();
-	protected readonly psH = this.#projectClient.getProjectsHx();
+	// protected readonly psR = this.#projectClient.getProjectsRx();
+	// protected readonly psH = this.#projectClient.getProjectsHx();
+	protected readonly ps$ = this.#projectClient.getProjects();
 }
