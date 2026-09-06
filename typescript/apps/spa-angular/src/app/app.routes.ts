@@ -33,8 +33,13 @@ export const routes: Routes = [
 					{ path: "", component: ProjectIndexPage },
 					{ path: "create", component: ProjectCreatePage },
 					{ path: ":id", component: ProjectPage },
-					{ path: ":projIdParam/loading-demo", component: ProjectLoadingPage },
 					{ path: ":id/edit", component: ProjectEditPage },
+				],
+			},
+			{
+				path: "demos",
+				children: [
+					{ path: "project-loading/:projIdParam", component: ProjectLoadingPage },
 				],
 			},
 			{
