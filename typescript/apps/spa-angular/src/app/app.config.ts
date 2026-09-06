@@ -1,4 +1,4 @@
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import {
 	type ApplicationConfig,
 	ErrorHandler,
@@ -7,6 +7,8 @@ import {
 import { provideRouter, withComponentInputBinding } from "@angular/router";
 
 import { routes } from "./app.routes";
+import { httpClientErrorInterceptor } from "./interceptors/http-client-error-interceptor";
+import { logInterceptor } from "./interceptors/log-interceptor";
 
 class RootErrorHandler implements ErrorHandler {
 	handleError(error: unknown): void {
@@ -19,6 +21,11 @@ export const appConfig: ApplicationConfig = {
 		provideBrowserGlobalErrorListeners(),
 		{ provide: ErrorHandler, useClass: RootErrorHandler },
 		provideRouter(routes, withComponentInputBinding()),
-		provideHttpClient(),
+		provideHttpClient(
+			withInterceptors([
+				// logInterceptor,
+				httpClientErrorInterceptor,
+			])
+		),
 	],
 };

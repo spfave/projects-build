@@ -29,6 +29,7 @@ export const routes: Routes = [
 			{
 				path: "projects",
 				component: ProjectsLayout,
+				// providers: [provideHttpClient(withInterceptors([]), withRequestsMadeViaParent())], // provide subroute specific interceptors and include parent interceptors
 				children: [
 					{ path: "", component: ProjectIndexPage },
 					{ path: "create", component: ProjectCreatePage },
