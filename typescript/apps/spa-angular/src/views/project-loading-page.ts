@@ -7,7 +7,7 @@ import { catchError, delay, map, of, switchMap, tap } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
 import { environment as ENV } from "~/environments/environment";
-import { asyncInitialState, asyncState, trackAsync } from "~/shared/async-state";
+import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/async-state";
 
 @Component({
 	selector: "pb-project-page",
@@ -23,10 +23,14 @@ import { asyncInitialState, asyncState, trackAsync } from "~/shared/async-state"
 					<p>tmp: Loading Projects...</p>
 				} @else if (projRs.error()) {
 					<p>Failed to load project</p>
-					<!-- Api error result content -->
-					<p>err.cause: {{ projRs.error()?.cause | json }}</p>
-					<!-- Full error signal -->
+					<!-- Resource error signal: 
+						.error(): thrown Error from resource() loader. Serialized to string <e.name>:<e.message> in template
+						.error().message/.name/.stack: properties of thrown Error
+						.error().cause: property of thrown Error. Set to api error response content
+					-->
 					<p>err: {{ projRs.error() }}</p>
+					<p>err.message: {{ projRs.error()?.message }}</p>
+					<p>err.cause: {{ projRs.error()?.cause | json }}</p>
 				}
 			</div>
 			<div>
@@ -37,9 +41,13 @@ import { asyncInitialState, asyncState, trackAsync } from "~/shared/async-state"
 					<p>tmp: Loading Projects...</p>
 				} @else if (projHRs.error()) {
 					<p>Failed to load project</p>
-					<!-- Api error result content -->
+					<!-- Http resource error signal 
+					 	.error(): Angular HttpClient thrown HttpErrorResponse Error (httpResource wraps HttpClient). Serialized as object
+						.error().error: property of HttpErrorResponse. Set to api error response content
+					-->
+					<p>err.name: {{ projHRs.error()?.name }}</p>
+					<p>err.message: {{ projHRs.error()?.message }}</p>
 					<p>err.error: {{ $any(projHRs.error()).error | json }}</p>
-					<!-- Full error signal -->
 					<p>err: {{ projHRs.error() | json }}</p>
 				}
 			</div>
@@ -55,38 +63,40 @@ import { asyncInitialState, asyncState, trackAsync } from "~/shared/async-state"
 			</div>
 			<div>
 				<h2>Project Observable |> Async</h2>
-				@if (projObAsync$ | async; as projObAsync) {
-					@switch (projObAsync.status) {
-						@case ("resolved") {
-							<p>val: {{ projObAsync.value | json }}</p>
-						}
-						@case ("loading") {
-							<p>tmp: Loading Projects...</p>
-						}
-						@case ("error") {
-							<p>Failed to load project</p>
-							<p>err.error: {{ $any(projObAsync.error).error | json}}</p>
-							<p>err: {{ projObAsync.error | json}}</p>
-						}
+				@let projObAsync = projObAsync$ | async;
+				@switch (projObAsync?.status) {
+					@case ("resolved") {
+						<p>val: {{ projObAsync.value | json }}</p>
+					}
+					@case ("loading") {
+						<p>tmp: Loading Projects...</p>
+					}
+					@case ("error") {
+						<p>Failed to load project</p>
+						<!-- HttpClient error
+							.error(): Angular HttpClient thrown HttpErrorResponse Error
+							.error().error: property of HttpErrorResponse. Set to api error response content
+						-->
+						<p>err.error: {{ $any(projObAsync.error).error | json }}</p>
+						<p>err: {{ projObAsync.error | json }}</p>
 					}
 				}
 			</div>
 			<div>
 				<h2>track(Project Observable)</h2>
-				<!-- @if (projObTrackState| async; as trkProjOb) { -->
-				@if (projObTrackState; as trkProjOb) {
-					@switch (trkProjOb.status) {
-						@case ("resolved") {
-							<p>val: {{ trkProjOb.value | json }}</p>
-						}
-						@case ("loading") {
-							<p>tmp: Loading Projects...</p>
-						}
-						@case ("error") {
-							<p>Failed to load project</p>
-							<p>err.error: {{ $any(trkProjOb.error).error | json}}</p>
-							<p>err: {{ trkProjOb.error | json}}</p>
-						}
+				<!-- @let trkProjOb = projObTrackState | async; -->
+				@let trkProjOb = projObTrackState;
+				@switch (trkProjOb.status) {
+					@case ("resolved") {
+						<p>val: {{ trkProjOb.value | json }}</p>
+					}
+					@case ("loading") {
+						<p>tmp: Loading Projects...</p>
+					}
+					@case ("error") {
+						<p>Failed to load project</p>
+						<p>err.error: {{ $any(trkProjOb.error).error | json }}</p>
+						<p>err: {{ trkProjOb.error | json }}</p>
 					}
 				}
 			</div>
@@ -99,10 +109,20 @@ import { asyncInitialState, asyncState, trackAsync } from "~/shared/async-state"
 		</section>
 	`,
 	styles: `
+		:host {
+			display: block;
+			container: project-load / inline-size;
+		}
+
 		section {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
 			gap: 2rem 1rem;
+		}
+		@container project-load (width < 800px) {
+			section {
+				grid-template-columns: 1fr;
+			}
 		}
 	`,
 })
@@ -125,11 +145,14 @@ export class ProjectLoadingPage implements OnInit {
 	protected readonly projRs = resource({
 		params: () => ({ projId: this.projIdSg() }),
 		loader: async ({ params }) => {
-			const res = await fetch(`${this.urlApi}/${params.projId}?d=rs`);
+			const res = await fetch(`${this.urlApi}/${params.projId}?d=rs`).catch((error) => {
+				throw new Error("Fetch failed for getProjectById", { cause: error });
+			});
+
 			const js = await res.json();
 			// Note: need to throw manual to get .error() result, otherwise api error result content is surfaced through .value()
 			if (res.status >= 400)
-				throw new Error(`Failed to get projects. Status = ${res.status}`, { cause: js });
+				throw new Error(`Failed to get project. Status = ${res.status}`, { cause: js });
 
 			return js as Project;
 		},
@@ -147,7 +170,7 @@ export class ProjectLoadingPage implements OnInit {
 		.get<Project>(`${this.urlApi}/${this.projIdSs}?d=_ob$`)
 		.pipe(
 			delay(1000),
-			tap((proj) => console.info(`tap: projOb$: `, proj))
+			tap((proj) => console.info(`tap: _projOb$: `, proj))
 		);
 	protected projOb$ = this.projId$.pipe(
 		delay(1000),
@@ -167,10 +190,10 @@ export class ProjectLoadingPage implements OnInit {
 	);
 	protected projSub?: Project | null = null;
 
-	private readonly projObTrackAsync = trackAsync(this._projOb$);
+	private readonly projObTrackAsync = trackAsyncState(this._projOb$);
 	// protected projObTrackState = of(asyncInitialState);
 	protected projObTrackState = asyncInitialState;
-	readonly projObAsync$ = this._projOb$.pipe(asyncState());
+	readonly projObAsync$ = this._projOb$.pipe(mapAsyncState());
 
 	// Transforms
 	protected projObS = toSignal(this.projOb$);
@@ -188,7 +211,10 @@ export class ProjectLoadingPage implements OnInit {
 	public ngOnInit() {
 		console.warn(`Project Loading Page - OnInit`); // LOG
 		const _projSub = this.projOb$.subscribe({
-			next: (proj) => (this.projSub = proj),
+			next: (proj) => {
+				console.warn(`subscribe: next`); // LOG
+				this.projSub = proj;
+			},
 			error: (err: HttpErrorResponse) => {
 				console.warn(`subscribe: error`); // LOG
 				console.info(`err: `, err); // DEBUG LOG

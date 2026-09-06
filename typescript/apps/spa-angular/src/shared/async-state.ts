@@ -30,7 +30,7 @@ export type AsyncOperation<TValue = unknown> = {
 	state$: Observable<AsyncState<TValue>>;
 };
 
-export function trackAsync<T>(source$: Observable<T>): AsyncOperation<T> {
+export function trackAsyncState<T>(source$: Observable<T>): AsyncOperation<T> {
 	const _state = new BehaviorSubject<AsyncState<T>>(asyncInitialState as AsyncState<T>);
 
 	const _value$ = defer(() => {
@@ -56,11 +56,11 @@ export function trackAsync<T>(source$: Observable<T>): AsyncOperation<T> {
 // export type AsyncState$<TValue = unknown> = MapObservable<AsyncState<TValue>>;
 
 // Unified tracking for observable async state with metadata
-export function asyncStateThrow<T>(): OperatorFunction<T, AsyncState<T>> {
+export function mapAsyncStateThrow<T>(): OperatorFunction<T, AsyncState<T>> {
 	return (source$: Observable<T>): Observable<AsyncState<T>> => {
 		return source$.pipe(
 			map((value) => ({ status: "resolved", value, error: null }) as const),
-			catchError((error: unknown) => {
+			catchError((error) => {
 				throw error;
 			}),
 			startWith(asyncInitialState as AsyncState<T>)
@@ -68,19 +68,19 @@ export function asyncStateThrow<T>(): OperatorFunction<T, AsyncState<T>> {
 	};
 }
 
-export function asyncWrapError<T>(): OperatorFunction<AsyncState<T>, AsyncState<T>> {
+export function mapAsyncWrapError<T>(): OperatorFunction<AsyncState<T>, AsyncState<T>> {
 	return (source$: Observable<AsyncState<T>>): Observable<AsyncState<T>> => {
 		return source$.pipe(
-			catchError((error: unknown) =>
-				of({ status: "error", value: null, error } as AsyncState<T>)
-			)
+			catchError((error) => {
+				return of({ status: "error", value: null, error } as AsyncState<T>);
+			})
 		);
 	};
 }
 
-export function asyncState<T>(): OperatorFunction<T, AsyncState<T>> {
+export function mapAsyncState<T>(): OperatorFunction<T, AsyncState<T>> {
 	return (source$: Observable<T>): Observable<AsyncState<T>> => {
-		return source$.pipe(asyncStateThrow(), asyncWrapError());
+		return source$.pipe(mapAsyncStateThrow(), mapAsyncWrapError());
 	};
 }
 
