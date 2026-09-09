@@ -6,6 +6,7 @@ import { ActivatedRoute } from "@angular/router";
 import { catchError, delay, map, of, switchMap, tap } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
+import { getErrorMessage } from "@projectsbuild/library/utils";
 import { environment as ENV } from "~/environments/environment";
 import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/async-state";
 
@@ -73,12 +74,22 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 					}
 					@case ("error") {
 						<p>Failed to load project</p>
-						<!-- HttpClient error
-							.error(): Angular HttpClient thrown HttpErrorResponse Error
-							.error().error: property of HttpErrorResponse. Set to api error response content
-						-->
-						<p>err.error: {{ $any(projObAsync.error).error | json }}</p>
-						<p>err: {{ projObAsync.error | json }}</p>
+						@if ("headers" in $any(projObAsync.error)) {
+							<!-- HttpClient error
+								.error(): Angular HttpClient thrown HttpErrorResponse Error
+								.error().error: property of HttpErrorResponse. Set to api error response content
+							-->
+							<p>err.error: {{ $any(projObAsync.error).error | json }}</p>
+							<p>err: {{ projObAsync.error | json }}</p>
+						} @else {
+							<!-- transformed error 
+								.error: thrown transformed Error from .catchError() operator. Serialized to string <e.name>:<e.message> in template
+								.error.cause: property of thrown transformed Error. Set to HttpErrorResponse
+								.error.cause.error: property of thrown transformed Error. Set to api error response content
+							-->
+							<p>err: {{ projObAsync.error }}</p>
+							<p>err.cause: {{ $any(projObAsync.error).cause.error | json }}</p>
+						}
 					}
 				}
 			</div>
@@ -95,8 +106,13 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 					}
 					@case ("error") {
 						<p>Failed to load project</p>
-						<p>err.error: {{ $any(trkProjOb.error).error | json }}</p>
-						<p>err: {{ trkProjOb.error | json }}</p>
+						@if ("headers" in $any(trkProjOb.error)) {
+							<p>err.error: {{ $any(trkProjOb.error).error | json }}</p>
+							<p>err: {{ trkProjOb.error | json }}</p>
+						} @else {
+							<p>err: {{ trkProjOb.error }}</p>
+							<p>err.cause: {{ $any(trkProjOb.error).cause.error | json }}</p>
+						}
 					}
 				}
 			</div>
@@ -152,7 +168,8 @@ export class ProjectLoadingPage implements OnInit {
 			const js = await res.json();
 			// Note: need to throw manual to get .error() result, otherwise api error result content is surfaced through .value()
 			if (res.status >= 400)
-				throw new Error(`Failed to get project. Status = ${res.status}`, { cause: js });
+				// throw new Error(`Failed to get project. Status = ${res.status}`, { cause: js });
+				throw new Error(getErrorMessage(js), { cause: js });
 
 			return js as Project;
 		},
@@ -170,7 +187,11 @@ export class ProjectLoadingPage implements OnInit {
 		.get<Project>(`${this.urlApi}/${this.projIdSs}?d=_ob$`)
 		.pipe(
 			delay(1000),
-			tap((proj) => console.info(`tap: _projOb$: `, proj))
+			tap((proj) => console.info(`tap: _projOb$: `, proj)),
+			catchError((err) => {
+				// throw err;
+				throw transformHttpClientError(err);
+			})
 		);
 	protected projOb$ = this.projId$.pipe(
 		delay(1000),
@@ -185,6 +206,7 @@ export class ProjectLoadingPage implements OnInit {
 			console.info(`err: `, err); // DEBUG LOG
 			console.info(`caught: `, caught); // DEBUG LOG
 			throw err;
+			// throw transformHttpClientError(err);
 			// return throwError(() => err);
 		})
 	);
@@ -239,6 +261,18 @@ export class ProjectLoadingPage implements OnInit {
 		const _pTr$ = this.projObTrackAsync;
 		const _pAy$ = this.projObAsync$;
 	}
+}
+
+function transformHttpClientError(error: HttpErrorResponse) {
+	if (error.status === 0) return new Error("Network error", { cause: error });
+	// return {
+	//   status: 0,
+	//   message: "Network error — check your connection and try again.",
+	//   raw: error.error,
+	// };
+
+	const msg = getErrorMessage(error.error);
+	return new Error(msg, { cause: error });
 }
 
 /* DEMO
