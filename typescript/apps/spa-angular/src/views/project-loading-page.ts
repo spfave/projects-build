@@ -1,6 +1,6 @@
 import { AsyncPipe, JsonPipe } from "@angular/common";
-import { HttpClient, type HttpErrorResponse, httpResource } from "@angular/common/http";
-import { Component, inject, input, type OnInit, resource } from "@angular/core";
+import { HttpClient, HttpErrorResponse, httpResource } from "@angular/common/http";
+import { Component, computed, inject, input, type OnInit, resource } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { ActivatedRoute } from "@angular/router";
 import { catchError, delay, map, of, switchMap, tap } from "rxjs";
@@ -23,7 +23,7 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 				} @else if (projRs.isLoading()) {
 					<p>tmp: Loading Projects...</p>
 				} @else if (projRs.error()) {
-					<p>Failed to load project</p>
+					<p><i>Failed to load project</i></p>
 					<!-- Resource error signal: 
 						.error(): thrown Error from resource() loader. Serialized to string <e.name>:<e.message> in template
 						.error().message/.name/.stack: properties of thrown Error
@@ -41,15 +41,20 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 				} @else if (projHRs.isLoading()) {
 					<p>tmp: Loading Projects...</p>
 				} @else if (projHRs.error()) {
-					<p>Failed to load project</p>
+					<p><i>Failed to load project</i></p>
 					<!-- Http resource error signal 
 					 	.error(): Angular HttpClient thrown HttpErrorResponse Error (httpResource wraps HttpClient). Serialized as object
 						.error().error: property of HttpErrorResponse. Set to api error response content
 					-->
+					<p><b>httpResource: HttpErrorResponse</b></p>
 					<p>err.name: {{ projHRs.error()?.name }}</p>
 					<p>err.message: {{ projHRs.error()?.message }}</p>
 					<p>err.error: {{ $any(projHRs.error()).error | json }}</p>
 					<p>err: {{ projHRs.error() | json }}</p>
+					<br>
+					<p><b>httpResource: Transformed HttpErrorResponse</b></p>
+					<p>err: {{ projHRErr() }}</p>
+					<p>err.cause: {{ $any(projHRErr()?.cause).error | json }}</p>
 				}
 			</div>
 
@@ -73,7 +78,7 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 						<p>tmp: Loading Projects...</p>
 					}
 					@case ("error") {
-						<p>Failed to load project</p>
+						<p><i>Failed to load project</i></p>
 						@if ("headers" in $any(projObAsync.error)) {
 							<!-- HttpClient error
 								.error(): Angular HttpClient thrown HttpErrorResponse Error
@@ -105,7 +110,7 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 						<p>tmp: Loading Projects...</p>
 					}
 					@case ("error") {
-						<p>Failed to load project</p>
+						<p><i>Failed to load project</i></p>
 						@if ("headers" in $any(trkProjOb.error)) {
 							<p>err.error: {{ $any(trkProjOb.error).error | json }}</p>
 							<p>err: {{ trkProjOb.error | json }}</p>
@@ -181,6 +186,11 @@ export class ProjectLoadingPage implements OnInit {
 		url: `${this.urlApi}/${this.projIdParam()}`, // note: api error (status 4xx/5xx) provided through .error() result
 		params: { d: "hrs" },
 	}));
+	protected readonly projHRErr = computed(() => {
+		const err = this.projHRs.error();
+		if (err instanceof HttpErrorResponse) return transformHttpClientError(err);
+		return err;
+	});
 
 	// Observables / Subscriptions
 	protected _projOb$ = this.http

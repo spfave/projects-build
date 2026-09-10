@@ -1,8 +1,4 @@
-import {
-	type HttpErrorResponse,
-	HttpEventType,
-	type HttpInterceptorFn,
-} from "@angular/common/http";
+import { HttpEventType, type HttpInterceptorFn } from "@angular/common/http";
 import { catchError, retry, tap } from "rxjs";
 
 export const httpClientErrorInterceptor: HttpInterceptorFn = (req, next) => {
@@ -12,7 +8,9 @@ export const httpClientErrorInterceptor: HttpInterceptorFn = (req, next) => {
 			if (evt.type === HttpEventType.DownloadProgress) {
 			}
 		}),
-		catchError((error: HttpErrorResponse) => {
+		catchError((error) => {
+			// console.info(`Http Client Error Interceptor Catch`); // LOG
+			// if (error instanceof HttpErrorResponse) throw transformHttpClientError(error);
 			throw error;
 		})
 	);
