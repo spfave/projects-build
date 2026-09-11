@@ -20,20 +20,25 @@ type HttpResponseErrorContext = {
 	statusText: string;
 	url: string;
 };
+type ResponseMetadataKeys = "status" | "statusText" | "url";
+type ResponseMetadata = { [K in ResponseMetadataKeys]: Response[K] | null | undefined };
 export class HttpResponseError extends Error {
 	override readonly name = HttpResponseError.name;
 	readonly context: HttpResponseErrorContext;
 
-	constructor(response: Response, message?: string, options?: ErrorOptions) {
-		const defaultMsg = `${response.status} (${response.statusText}) request ${response.url}`;
+	constructor(response: ResponseMetadata, message?: string, options?: ErrorOptions) {
+		const status = response.status ?? NaN;
+		const statusText = response.statusText ?? "Unknown Status";
+		const url = response.url ?? "Unknown URL";
+		const defaultMsg = `${Number.isNaN(status) ? "" : `${status} `}(${statusText}) request ${url}`;
 		const errMsg = message ? `${message} - ${defaultMsg}` : defaultMsg;
 
 		super(errMsg, options);
 		this.context = {
 			message,
-			status: response.status,
-			statusText: response.statusText,
-			url: response.url,
+			status: status,
+			statusText: statusText,
+			url: url,
 		};
 	}
 }
