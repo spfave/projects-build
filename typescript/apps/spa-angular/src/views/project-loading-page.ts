@@ -8,7 +8,11 @@ import { catchError, delay, map, of, switchMap, tap } from "rxjs";
 import type { Project } from "@projectsbuild/core/project";
 import { getErrorMessage } from "@projectsbuild/library/utils";
 import { environment as ENV } from "~/environments/environment";
-import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/async-state";
+import {
+	asyncInitialState,
+	runAsyncObservable,
+	trackAsyncState,
+} from "~/shared/async-state";
 
 @Component({
 	selector: "pb-project-page",
@@ -51,7 +55,7 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 					<p>err.message: {{ projHRs.error()?.message }}</p>
 					<p>err.error: {{ $any(projHRs.error()).error | json }}</p>
 					<p>err: {{ projHRs.error() | json }}</p>
-					<br>
+					<br />
 					<p><b>httpResource: Transformed HttpErrorResponse</b></p>
 					<p>err: {{ projHRErr() }}</p>
 					<p>err.cause: {{ $any(projHRErr()?.cause).error | json }}</p>
@@ -99,24 +103,24 @@ import { asyncInitialState, mapAsyncState, trackAsyncState } from "~/shared/asyn
 				}
 			</div>
 			<div>
-				<h2>track(Project Observable)</h2>
-				<!-- @let trkProjOb = projObTrackState | async; -->
-				@let trkProjOb = projObTrackState;
-				@switch (trkProjOb.status) {
+				<h2>runAsync(Project Observable)</h2>
+				<!-- @let projOprState = projRunState | async; -->
+				@let projOprState = projRunState;
+				@switch (projOprState.status) {
 					@case ("resolved") {
-						<p>val: {{ trkProjOb.value | json }}</p>
+						<p>val: {{ projOprState.value | json }}</p>
 					}
 					@case ("loading") {
 						<p>tmp: Loading Projects...</p>
 					}
 					@case ("error") {
 						<p><i>Failed to load project</i></p>
-						@if ("headers" in $any(trkProjOb.error)) {
-							<p>err.error: {{ $any(trkProjOb.error).error | json }}</p>
-							<p>err: {{ trkProjOb.error | json }}</p>
+						@if ("headers" in $any(projOprState.error)) {
+							<p>err.error: {{ $any(projOprState.error).error | json }}</p>
+							<p>err: {{ projOprState.error | json }}</p>
 						} @else {
-							<p>err: {{ trkProjOb.error }}</p>
-							<p>err.cause: {{ $any(trkProjOb.error).cause.error | json }}</p>
+							<p>err: {{ projOprState.error }}</p>
+							<p>err.cause: {{ $any(projOprState.error).cause.error | json }}</p>
 						}
 					}
 				}
@@ -222,10 +226,10 @@ export class ProjectLoadingPage implements OnInit {
 	);
 	protected projSub?: Project | null = null;
 
-	private readonly projObTrackAsync = trackAsyncState(this._projOb$);
-	// protected projObTrackState = of(asyncInitialState);
-	protected projObTrackState = asyncInitialState;
-	readonly projObAsync$ = this._projOb$.pipe(mapAsyncState());
+	readonly projObAsync$ = this._projOb$.pipe(trackAsyncState());
+	private readonly projRunAsync = runAsyncObservable(this._projOb$);
+	// protected projRunState = of(asyncInitialState);
+	protected projRunState = asyncInitialState;
 
 	// Transforms
 	protected projObS = toSignal(this.projOb$);
@@ -254,22 +258,22 @@ export class ProjectLoadingPage implements OnInit {
 			complete: () => console.info("Proj subscription complete"),
 		});
 
-		this.projObTrackAsync.value$.subscribe();
-		// this.projObTrackState = this.projObTrackAsync.state$;
-		this.projObTrackAsync.state$.subscribe((state) => (this.projObTrackState = state));
+		this.projRunAsync.value$.subscribe();
+		// this.projRunState = this.projRunAsync.state$;
+		this.projRunAsync.state$.subscribe((state) => (this.projRunState = state));
 	}
 
 	private _typeExploring() {
 		const _idP = this.projIdParam();
 
 		const _pRs = this.projRs;
-		const _pHrs = this.projHRs;
+		const _pHRs = this.projHRs;
 		const _pSub = this.projSub;
 		const _pOb$ = this.projOb$;
 		const _pSig = this.projObS;
 
-		const _pTr$ = this.projObTrackAsync;
 		const _pAy$ = this.projObAsync$;
+		const _pRAp = this.projRunAsync;
 	}
 }
 
