@@ -61,7 +61,7 @@ export const projectRouter = defaultRouter()
 	// 200 ok
 	// 500 internal server error: exception (unknown error, db error)
 	.get("/", async (ctx) => {
-		// throw new Error("error - api get projects", { cause: "api error demo" });
+		// throw new Error("api - get projects", { cause: "api cause content" });
 		// throw new HTTPException(HttpStatus.NOT_IMPLEMENTED.code, {
 		// 	message: "http exception - api get projects",
 		// 	cause: "api http exception demo",

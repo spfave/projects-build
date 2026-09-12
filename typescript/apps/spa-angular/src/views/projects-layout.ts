@@ -30,10 +30,17 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 						<pb-projects-nav-list [projects]="psR.value()" />
 					}
 					@case ("loading") {
-						<p>Loading Projects...</p>
+						<div>
+							<span>Loading Projects...</span>
+						</div>
 					}
 					@case ("error") {
-						<p>Error</p>
+						<div>
+							<p>An Error Occurred</p>
+							<p>
+								<samp>{{ psR.error() }}</samp>
+							</p>
+						</div>
 					}
 					@default {}
 				} -->
@@ -51,7 +58,10 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 					}
 					@case ("error") {
 						<div>
-							<p>Error</p>
+							<p>An Error Occurred</p>
+							<p>
+								<samp>{{ ps.error }}</samp>
+							</p>
 						</div>
 					}
 					@default {}
