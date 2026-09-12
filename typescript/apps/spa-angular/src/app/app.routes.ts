@@ -33,8 +33,8 @@ export const routes: Routes = [
 				children: [
 					{ path: "", component: ProjectIndexPage },
 					{ path: "create", component: ProjectCreatePage },
-					{ path: ":id", component: ProjectPage },
-					{ path: ":id/edit", component: ProjectEditPage },
+					{ path: ":projectId", component: ProjectPage },
+					{ path: ":projectId/edit", component: ProjectEditPage },
 				],
 			},
 			{

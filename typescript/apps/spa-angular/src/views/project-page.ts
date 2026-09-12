@@ -1,17 +1,23 @@
-import { Component, inject } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
+import { Component, inject, input } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { map } from "rxjs";
 
 @Component({
 	selector: "pb-project-page",
-	imports: [],
-	template: ` <p>project-page works!</p> `,
+	imports: [AsyncPipe],
+	template: `
+		<p>Viewing project</p>
+		<p>Id: {{ projectId() }} signal</p>
+		<p>Id: {{ projectId$ | async }} observable</p>
+	`,
 	styles: ``,
 })
 export class ProjectPage {
-	private route = inject(ActivatedRoute);
+	protected readonly projectId = input.required<string>(); // URL param
 
-	constructor() {
-		const id = this.route.snapshot.paramMap.get("id");
-		console.info(`id: `, id); // DEBUG LOG
-	}
+	#route = inject(ActivatedRoute);
+	protected readonly projectId$ = this.#route.paramMap.pipe(
+		map((params) => params.get("projectId"))
+	);
 }
