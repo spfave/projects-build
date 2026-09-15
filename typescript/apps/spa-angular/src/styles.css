@@ -13,6 +13,25 @@ a {
 	text-decoration: none;
 }
 
+button,
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+	font: inherit;
+	word-spacing: inherit;
+	letter-spacing: inherit;
+}
+
+textarea {
+	min-height: 1.75rem;
+	resize: vertical;
+}
+
+fieldset {
+	padding: 0;
+	border: none;
+}
+
 /* Variables */
 :root {
 	/* Sizes */
