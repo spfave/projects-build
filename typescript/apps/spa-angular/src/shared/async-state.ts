@@ -1,46 +1,89 @@
-import { httpResource } from "@angular/common/http";
-import { computed, type Signal } from "@angular/core";
+import {
+	type HttpResourceOptions,
+	type HttpResourceRef,
+	type HttpResourceRequest,
+	httpResource,
+} from "@angular/common/http";
+import { computed, type ResourceParamsContext, type Signal } from "@angular/core";
 import type { Observable, OperatorFunction } from "rxjs";
 import { BehaviorSubject, catchError, defer, map, of, startWith, tap } from "rxjs";
 
 // ----------------------------------------------------------------------------------- //
 // #region - Resource Signal Wrappers
 
-type ParametersHttpResourceFn<T> = Parameters<typeof httpResource<T>>;
-type HttpResourceRequests<T> = ParametersHttpResourceFn<T>[0];
-type HttpResourceOptions<T> = ParametersHttpResourceFn<T>[1];
-interface HttpResourceRefWithComputedError<T> extends ReturnType<typeof httpResource<T>> {
+type HttpResourceRequestFn = (
+	ctx: ResourceParamsContext
+) => HttpResourceRequest | undefined;
+interface HttpResourceRefWithComputedError<T> extends HttpResourceRef<T> {
 	cError: Signal<Error | undefined>;
 }
 
+export function httpResourceReqMapError<T>(
+	request: HttpResourceRequestFn,
+	mapError: (error: Error) => Error,
+	options: HttpResourceOptions<T, unknown> & { defaultValue: NoInfer<T> }
+): HttpResourceRefWithComputedError<T>;
+export function httpResourceReqMapError<T>(
+	request: HttpResourceRequestFn,
+	mapError: (error: Error) => Error,
+	options?: HttpResourceOptions<T, unknown>
+): HttpResourceRefWithComputedError<T | undefined>;
 /**
+ * @deprecated Prefer `httpResourceMapError`, which supports full `httpResource` API.
+ *
  * Wraps Angular httpResource() to support a custom error transform function.
  * @param request same as `httpResource()` request parameter
  * @param mapError custom error transform function
  * @param options same as `httpResource()` options parameter
  * @returns `HttpResourceRef` with additional computed signal `cError` providing transformed error
  */
-export function httpResourceMapError<T>(
-	request: HttpResourceRequests<T>,
+export function httpResourceReqMapError<T>(
+	request: HttpResourceRequestFn,
 	mapError: (error: Error) => Error,
-	options?: HttpResourceOptions<T>
-): HttpResourceRefWithComputedError<T> {
+	options?: HttpResourceOptions<T, unknown>
+): HttpResourceRefWithComputedError<T | undefined> {
 	const hr = httpResource<T>(request, options);
 	const cError = computed(() => {
 		const err = hr.error();
 		return err ? mapError(err) : undefined;
 	});
-	return { ...hr, cError };
+	return Object.assign(hr, { cError });
 }
 
-// Note: For demo only. httpResourceMapError like httpResource only works within an injection context at runtime
-// const _demo = httpResourceMapError(
+// DEMO: httpResourceReqMapError like httpResource only works within an injection context at runtime
+// const _demo = httpResourceReqMapError<string[]>(
 // 	() => ({ url: `` }),
 // 	(e) => {
 // 		if (e instanceof HttpErrorResponse) return new Error("msg", { cause: e });
 // 		return e;
 // 	},
 // 	{ defaultValue: [] }
+// );
+
+/**
+ * Wraps provided `httpResource` result to support a custom error transform function.
+ * @param httpResourceRef result of `httpResource()` call
+ * @param mapError custom error transform function
+ * @returns `HttpResourceRef` with additional computed signal `cError` providing transformed error
+ */
+export function httpResourceMapError<T>(
+	httpResourceRef: HttpResourceRef<T>,
+	mapError: (error: Error) => Error
+): HttpResourceRefWithComputedError<T> {
+	const cError = computed(() => {
+		const err = httpResourceRef.error();
+		return err ? mapError(err) : undefined;
+	});
+	return Object.assign(httpResourceRef, { cError });
+}
+
+// DEMO
+// const _demo2 = httpResourceMapError(
+// 	httpResource<string[]>(() => ({ url: `` }), { defaultValue: [] }),
+// 	(e) => {
+// 		if (e instanceof HttpErrorResponse) return new Error("msg", { cause: e });
+// 		return e;
+// 	}
 // );
 
 // #endregion

@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, httpResource } from "@angular/common/http";
 import { inject, resource, Service, type Signal } from "@angular/core";
-import { catchError, delay } from "rxjs";
+import { delay } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
 import {
@@ -37,8 +37,8 @@ export class ProjectApiClient {
 	}
 
 	public getProjectsHx() {
-		return httpResourceMapError<Project[]>(
-			() => ({ url: this.#urlApi }),
+		return httpResourceMapError(
+			httpResource<Project[]>(() => this.#urlApi),
 			(e) => this.#mapError(e, this.getProjectsHx.name)
 		);
 	}
@@ -46,14 +46,11 @@ export class ProjectApiClient {
 	// GET Project By Id
 	public getProjectById(projectId: string) {
 		return this.#http.get<Project>(`${this.#urlApi}/${projectId}`).pipe(
-			catchError((err: HttpErrorResponse) => {
-				console.info(`err: `, err); // DEBUG LOG
-				throw err;
-			})
+			delay(500),
+			trackAsyncStateMapError((e) => this.#mapError(e, this.getProjectById.name))
 		);
 	}
 
-	// public getProjectById(projectId: string) {} // TEST
 	public getProjectByIdRx(projectId: Signal<string>) {
 		return resource({
 			params: () => ({ projectId: projectId() }),
@@ -62,7 +59,12 @@ export class ProjectApiClient {
 		});
 	}
 
-	// public getProjectByIdHx() {}
+	public getProjectByIdHx(projectId: Signal<string>) {
+		return httpResourceMapError(
+			httpResource<Project>(() => `${this.#urlApi}/${projectId()}`),
+			(e) => this.#mapError(e, this.getProjectByIdHx.name)
+		);
+	}
 
 	// public createProject() {}
 	// public updateProject() {}
