@@ -3,97 +3,69 @@ import { Component, inject, input } from "@angular/core";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { EMPTY, map, switchMap } from "rxjs";
 
+import type { Project } from "@projectsbuild/core/project";
 import { ATab } from "~/directives/anchor-new-tab";
 import { ProjectApiClient } from "~/feature-project/project-api-client";
 
 @Component({
-	selector: "pb-project-page",
-	imports: [AsyncPipe, DatePipe, RouterLink, ATab],
+	selector: "pb-project-info",
+	imports: [DatePipe, RouterLink, ATab],
 	template: `
-		<section>
-			@if (project.isLoading()) {
-				<div>Loading Project...</div>
-			} @else if (project.error()) {
-			} @else if (project.hasValue()) {
-				<!-- Note: httpResourceMapError utility does not narrow type with .hasValue() check -->
-				@let vProject = project.value()!;
-				<h2>{{ vProject.name }}</h2>
-				<dl>
-					<div>
-						<dt>Status</dt>
-						<dd>{{ vProject.status }}</dd>
-					</div>
-					<div>
-						<dt>Link</dt>
-						<dd>
-							@if (vProject.link) {
-								<a [routerLink]="vProject.link" pbATab>{{ vProject.link }}</a>
-							} @else {
-								--
-							}
-						</dd>
-					</div>
-					<div>
-						<dt>Description</dt>
-						<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.description || "--" }}</dd>
-					</div>
-					<div>
-						<dt>Notes</dt>
-						<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.notes || "--" }}</dd>
-					</div>
-					@if (vProject.status === "complete") {
-						<div>
-							<dt>Date Completed</dt>
-							<dd>
-								<time dateTime="{project.dateCompleted}">
-									{{ vProject.dateCompleted | date : 'EE, MMM d, yyyy' }}
-								</time>
-							</dd>
-						</div>
-						<div>
-							<dt>Build Rating</dt>
-							<dd>{{ vProject.rating }}</dd>
-						</div>
-						<div>
-							<dt>Recommend Build</dt>
-							<dd>{{ vProject.recommend ? "Yes" : "No" }}</dd>
-						</div>
+		@let vProject = project();
+		<h2>{{ vProject.name }}</h2>
+		<dl>
+			<div>
+				<dt>Status</dt>
+				<dd>{{ vProject.status }}</dd>
+			</div>
+			<div>
+				<dt>Link</dt>
+				<dd>
+					@if (vProject.link) {
+						<a [routerLink]="vProject.link" pbATab>{{ vProject.link }}</a>
+					} @else {
+						--
 					}
-				</dl>
-				<div class="projectActions">
-					<a routerLink="edit" class="action primary" aria-disabled="{isPending}">
-						Edit
-					</a>
-					<form action="{deleteProjectAction}">
-						<button
-							class="action danger"
-							type="submit"
-							name="intent"
-							value="delete"
-						>
-							Delete
-						</button>
-					</form>
+				</dd>
+			</div>
+			<div>
+				<dt>Description</dt>
+				<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.description || "--" }}</dd>
+			</div>
+			<div>
+				<dt>Notes</dt>
+				<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.notes || "--" }}</dd>
+			</div>
+			@if (vProject.status === "complete") {
+				<div>
+					<dt>Date Completed</dt>
+					<dd>
+						<time [dateTime]="vProject.dateCompleted">
+							{{ vProject.dateCompleted | date: "EE, MMM d, yyyy" }}
+						</time>
+					</dd>
+				</div>
+				<div>
+					<dt>Build Rating</dt>
+					<dd>{{ vProject.rating }}</dd>
+				</div>
+				<div>
+					<dt>Recommend Build</dt>
+					<dd>{{ vProject.recommend ? "Yes" : "No" }}</dd>
 				</div>
 			}
-
-			<!-- @let sProject = project$ | async;
-			@switch (sProject?.status) {
-				@case ("loading") {}
-				@case ("error") {}
-				@case ("resolved") {
-					@let vProject = sProject.value;
-					<h2>{{ vProject.name }}</h2>
-				}
-			} -->
-		</section>
+		</dl>
+		<div class="projectActions">
+			<a class="action primary" routerLink="edit" aria-disabled="{isPending}">Edit</a>
+			<form action="{deleteProjectAction}">
+				<button class="action danger" type="submit" name="intent" value="delete">
+					Delete
+				</button>
+			</form>
+		</div>
 	`,
 	styles: `
 		:host {
-			display: block;
-		}
-
-		section {
 			> * + * {
 				margin-block-start: 2rem;
 			}
@@ -126,6 +98,37 @@ import { ProjectApiClient } from "~/feature-project/project-api-client";
 			align-items: center;
 		}
 	`,
+})
+export class ProjectInfo {
+	public readonly project = input.required<Project>();
+}
+
+@Component({
+	selector: "pb-project-page",
+	imports: [AsyncPipe, ProjectInfo],
+	template: `
+		<section>
+			@if (project.isLoading()) {
+				<div>Loading Project...</div>
+			} @else if (project.error()) {
+			} @else if (project.hasValue()) {
+				<!-- Note: httpResourceMapError utility does not narrow type with .hasValue() check -->
+				<pb-project-info [project]="project.value()!" />
+			}
+
+			<!-- @let sProject = project$ | async;
+			@switch (sProject?.status) {
+				@case ("loading") {
+					<div>Loading Project...</div>
+				}
+				@case ("error") {}
+				@case ("resolved") {
+					<pb-project-info [project]="sProject.value" />
+				}
+			} -->
+		</section>
+	`,
+	styles: ``,
 })
 export class ProjectPage {
 	protected readonly projectId = input.required<string>(); // URL param
