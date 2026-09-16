@@ -4,6 +4,11 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import { EMPTY, map, switchMap } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
+import { HttpResponseError } from "@projectsbuild/library/errors";
+import {
+	DefaultErrorFallback,
+	DefaultHttpResponseErrorFallback,
+} from "~/components/error-fallback";
 import { ATab } from "~/directives/anchor-new-tab";
 import { ProjectApiClient } from "~/feature-project/project-api-client";
 
@@ -105,12 +110,23 @@ export class ProjectInfo {
 
 @Component({
 	selector: "pb-project-page",
-	imports: [AsyncPipe, ProjectInfo],
+	imports: [
+		AsyncPipe,
+		ProjectInfo,
+		DefaultErrorFallback,
+		DefaultHttpResponseErrorFallback,
+	],
 	template: `
 		<section>
 			@if (project.isLoading()) {
 				<div>Loading Project...</div>
 			} @else if (project.error()) {
+				@let error = project.cError();
+				@if (error instanceof HttpResponseError) {
+					<pb-default-http-error-fallback [error]="error" />
+				} @else {
+					<pb-default-error-fallback [error]="error" />
+				}
 			} @else if (project.hasValue()) {
 				<!-- Note: httpResourceMapError utility does not narrow type with .hasValue() check -->
 				<pb-project-info [project]="project.value()!" />
@@ -135,6 +151,7 @@ export class ProjectPage {
 
 	readonly #projectClient = inject(ProjectApiClient);
 	readonly #route = inject(ActivatedRoute);
+	protected readonly HttpResponseError = HttpResponseError;
 
 	protected readonly project = this.#projectClient.getProjectByIdHx(this.projectId);
 	protected readonly project$ = this.#route.paramMap.pipe(
