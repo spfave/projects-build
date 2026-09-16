@@ -14,8 +14,8 @@
 
 		"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, pnpm-workspace.yaml",
 		"package.json*": ".prettier*, biome.*, drizzle.config.*, tsconfig.*, vite.*",
-		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
-		"*.ts": "${capture}.js",
+		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.css",
+		"*.ts": "${capture}.js, ${capture}.css",
 		"*.jsx": "${capture}.js, ${capture}.css, ${capture}.module.css",
 		"*.tsx": "${capture}.ts, ${capture}.css, ${capture}.module.css",
 
