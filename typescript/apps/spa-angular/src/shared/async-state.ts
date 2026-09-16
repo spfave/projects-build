@@ -14,20 +14,21 @@ import { BehaviorSubject, catchError, defer, map, of, startWith, tap } from "rxj
 type HttpResourceRequestFn = (
 	ctx: ResourceParamsContext
 ) => HttpResourceRequest | undefined;
-interface HttpResourceRefWithComputedError<T> extends HttpResourceRef<T> {
-	cError: Signal<Error | undefined>;
+interface HttpResourceRefWithComputedError<T, E extends Error>
+	extends HttpResourceRef<T> {
+	cError: Signal<E | undefined>;
 }
 
-export function httpResourceReqMapError<T>(
+export function httpResourceReqMapError<T, E extends Error>(
 	request: HttpResourceRequestFn,
-	mapError: (error: Error) => Error,
+	mapError: (error: Error) => E,
 	options: HttpResourceOptions<T, unknown> & { defaultValue: NoInfer<T> }
-): HttpResourceRefWithComputedError<T>;
-export function httpResourceReqMapError<T>(
+): HttpResourceRefWithComputedError<T, E>;
+export function httpResourceReqMapError<T, E extends Error>(
 	request: HttpResourceRequestFn,
 	mapError: (error: Error) => Error,
 	options?: HttpResourceOptions<T, unknown>
-): HttpResourceRefWithComputedError<T | undefined>;
+): HttpResourceRefWithComputedError<T | undefined, E>;
 /**
  * @deprecated Prefer `httpResourceMapError`, which supports full `httpResource` API.
  *
@@ -37,11 +38,11 @@ export function httpResourceReqMapError<T>(
  * @param options same as `httpResource()` options parameter
  * @returns `HttpResourceRef` with additional computed signal `cError` providing transformed error
  */
-export function httpResourceReqMapError<T>(
+export function httpResourceReqMapError<T, E extends Error>(
 	request: HttpResourceRequestFn,
-	mapError: (error: Error) => Error,
+	mapError: (error: Error) => E,
 	options?: HttpResourceOptions<T, unknown>
-): HttpResourceRefWithComputedError<T | undefined> {
+): HttpResourceRefWithComputedError<T | undefined, E> {
 	const hr = httpResource<T>(request, options);
 	const cError = computed(() => {
 		const err = hr.error();
@@ -66,10 +67,10 @@ export function httpResourceReqMapError<T>(
  * @param mapError custom error transform function
  * @returns `HttpResourceRef` with additional computed signal `cError` providing transformed error
  */
-export function httpResourceMapError<T>(
+export function httpResourceMapError<T, E extends Error>(
 	httpResourceRef: HttpResourceRef<T>,
-	mapError: (error: Error) => Error
-): HttpResourceRefWithComputedError<T> {
+	mapError: (error: Error) => E
+): HttpResourceRefWithComputedError<T, E> {
 	const cError = computed(() => {
 		const err = httpResourceRef.error();
 		return err ? mapError(err) : undefined;

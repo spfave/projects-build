@@ -74,7 +74,7 @@ export class ProjectApiClient {
 		error: Error,
 		functionName: string,
 		fallbackMessage = "Failed to complete request"
-	): Error {
+	) {
 		if (error instanceof HttpErrorResponse) {
 			if (error.status === 0)
 				return new FetchError(`Fetch failed for ${functionName}`, { cause: error });
