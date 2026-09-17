@@ -4,7 +4,11 @@ import {
 	ErrorHandler,
 	provideBrowserGlobalErrorListeners,
 } from "@angular/core";
-import { provideRouter, withComponentInputBinding } from "@angular/router";
+import {
+	provideRouter,
+	withComponentInputBinding,
+	withViewTransitions,
+} from "@angular/router";
 
 import { routes } from "./app.routes";
 import { httpClientErrorInterceptor } from "./core/interceptors/http-client-error-interceptor";
@@ -20,7 +24,7 @@ export const appConfig: ApplicationConfig = {
 	providers: [
 		provideBrowserGlobalErrorListeners(),
 		{ provide: ErrorHandler, useClass: RootErrorHandler },
-		provideRouter(routes, withComponentInputBinding()),
+		provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
 		provideHttpClient(
 			withInterceptors([
 				// logInterceptor,
