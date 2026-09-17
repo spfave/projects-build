@@ -7,8 +7,8 @@ import {
 import { provideRouter, withComponentInputBinding } from "@angular/router";
 
 import { routes } from "./app.routes";
-import { httpClientErrorInterceptor } from "./interceptors/http-client-error-interceptor";
-import { logInterceptor } from "./interceptors/log-interceptor";
+import { httpClientErrorInterceptor } from "./core/interceptors/http-client-error-interceptor";
+import { logInterceptor } from "./core/interceptors/log-interceptor";
 
 class RootErrorHandler implements ErrorHandler {
 	handleError(error: unknown): void {

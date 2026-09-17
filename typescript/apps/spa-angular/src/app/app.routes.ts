@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
 import type { Routes } from "@angular/router";
 
-import { ProjectCreatePage } from "~/views/project-create-page";
-import { ProjectEditPage } from "~/views/project-edit-page";
-import { ProjectLoadingPage } from "~/views/project-loading-page";
-import { ProjectPage } from "~/views/project-page";
-import { ProjectsLayout } from "~/views/projects-layout";
-import { Root } from "~/views/root";
+import { ProjectCreatePage } from "~/app/features/project/views/project-create-page";
+import { ProjectEditPage } from "~/app/features/project/views/project-edit-page";
+import { ProjectLoadingPage } from "~/app/features/project/views/project-loading-page";
+import { ProjectPage } from "~/app/features/project/views/project-page";
+import { ProjectsLayout } from "~/app/features/project/views/projects-layout";
+import { Root } from "~/app/features/root/root";
 
 @Component({
 	selector: "pb-not-found-page",
@@ -46,7 +46,7 @@ export const routes: Routes = [
 			{
 				path: "about",
 				title: "About | Projects.build",
-				loadComponent: () => import("~/views/about-page").then((m) => m.AboutPage),
+				loadComponent: () => import("~/app/features/about-page").then((m) => m.AboutPage),
 			},
 			{ path: "**", component: NotFoundPage },
 		],

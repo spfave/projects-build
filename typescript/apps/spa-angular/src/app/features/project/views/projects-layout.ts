@@ -3,9 +3,9 @@ import { Component, inject } from "@angular/core";
 import { RouterLink, RouterOutlet } from "@angular/router";
 
 import type { Project } from "@projectsbuild/core/project";
-import { GeneralErrorFallback } from "~/components/error-fallback";
-import { ProjectApiClient } from "~/feature-project/project-api-client";
-import { ProjectsNavList } from "~/feature-project/projects-nav-list";
+import { ProjectApiClient } from "~/app/features/project/project-api-client";
+import { ProjectsNavList } from "~/app/features/project/projects-nav-list";
+import { GeneralErrorFallback } from "~/app/shared/components/error-fallback";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 

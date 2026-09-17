@@ -1,7 +1,7 @@
 import { Component, input } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
-import type { ProjectListItem } from "~/views/projects-layout";
+import type { ProjectListItem } from "~/app/features/project/views/projects-layout";
 
 @Component({
 	imports: [RouterLink, RouterLinkActive],

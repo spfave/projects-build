@@ -5,9 +5,9 @@ import { EMPTY, map, switchMap } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
 import { HttpResponseError } from "@projectsbuild/library/errors";
-import { GeneralErrorFallback } from "~/components/error-fallback";
-import { ATab } from "~/directives/anchor-new-tab";
-import { ProjectApiClient } from "~/feature-project/project-api-client";
+import { ProjectApiClient } from "~/app/features/project/project-api-client";
+import { GeneralErrorFallback } from "~/app/shared/components/error-fallback";
+import { ATab } from "~/app/shared/directives/anchor-new-tab";
 
 @Component({
 	selector: "pb-project-info",

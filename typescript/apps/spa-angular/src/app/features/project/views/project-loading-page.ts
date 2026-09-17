@@ -7,12 +7,12 @@ import { catchError, delay, map, of, switchMap, tap } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
 import { getErrorMessage } from "@projectsbuild/library/utils";
-import { environment as ENV } from "~/environments/environment";
 import {
 	asyncInitialState,
 	runAsyncObservable,
 	trackAsyncState,
-} from "~/shared/async-state";
+} from "~/app/shared/async-state";
+import { environment as ENV } from "~/environments/environment";
 
 @Component({
 	selector: "pb-project-page",

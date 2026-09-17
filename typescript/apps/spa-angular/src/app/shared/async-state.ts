@@ -19,6 +19,7 @@ interface HttpResourceRefWithComputedError<T, E extends Error>
 	cError: Signal<E | undefined>;
 }
 
+// Note: Requires TS function overloads to match httpResource api overloads
 export function httpResourceReqMapError<T, E extends Error>(
 	request: HttpResourceRequestFn,
 	mapError: (error: Error) => E,
@@ -104,6 +105,8 @@ export const asyncInitialState: AsyncState = {
 
 // ----------------------------------------------------------------------------------- //
 // #region - Async Observable to Signal Transforms
+
+// Ref: https://chatgpt.com/share/6a7a34f7-02d8-83ea-852a-f73d6effcb3d
 // export function toAsyncState<T>(queryFn: () => Observable<T>) {}
 // export function toQuerySignal<T>(queryFn: () => Observable<T>) {}
 // export function toMutationSignal(){}
@@ -125,7 +128,6 @@ export function trackAsyncStateThrowError<T>(): OperatorFunction<T, AsyncState<T
 		return source$.pipe(
 			map((value) => ({ status: "resolved", value, error: null }) as const),
 			catchError((error) => {
-				console.info(`trackAsyncStateThrowError: `, error); // LOG
 				throw error;
 			}),
 			startWith(asyncInitialState as AsyncState<T>)
@@ -143,7 +145,6 @@ export function trackAsyncState<T>(): OperatorFunction<T, AsyncState<T>> {
 		return source$.pipe(
 			trackAsyncStateThrowError(),
 			catchError((error) => {
-				console.info(`trackAsyncStateMapError: `, error); // LOG
 				return of({ status: "error", value: null, error } as AsyncState<T>);
 			})
 		);
@@ -181,7 +182,7 @@ export type AsyncStateValuePair<TValue = unknown> = {
 };
 
 /**
- * @deprecated Prefer custom observable pipe operators. Kept for reference
+ * @deprecated Prefer observable `trackAsyncState...` pipe operators. Kept for reference
  *
  * Runs an observable tracking and managing its async state. Provides a value observable
  * and an async state observable.

@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 
-import { ATab } from "~/directives/anchor-new-tab";
-import { repoUrl } from "~/views/root";
+import { repoUrl } from "~/app/features/root/root";
+import { ATab } from "~/app/shared/directives/anchor-new-tab";
 
 @Component({
 	selector: "pb-about-page",

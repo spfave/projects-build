@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { RouterLink, RouterOutlet } from "@angular/router";
 
-import { ThemeToggle } from "~/components/theme-toggle";
-import { ATab } from "~/directives/anchor-new-tab";
+import { ATab } from "~/app/shared/directives/anchor-new-tab";
+import { ThemeToggle } from "./theme-toggle";
 
 import githubIcon from "@projectsbuild/core/assets/github.svg";
 import infoIcon from "@projectsbuild/core/assets/heroicons-information-circle.svg";
