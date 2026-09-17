@@ -1,14 +1,11 @@
-import { AsyncPipe, DatePipe } from "@angular/common";
-import { Component, inject, input } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { Component, effect, inject, input } from "@angular/core";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { EMPTY, map, switchMap } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
 import { HttpResponseError } from "@projectsbuild/library/errors";
-import {
-	DefaultErrorFallback,
-	DefaultHttpResponseErrorFallback,
-} from "~/components/error-fallback";
+import { GeneralErrorFallback } from "~/components/error-fallback";
 import { ATab } from "~/directives/anchor-new-tab";
 import { ProjectApiClient } from "~/feature-project/project-api-client";
 
@@ -109,29 +106,77 @@ export class ProjectInfo {
 }
 
 @Component({
+	selector: "pb-project-error-fallback",
+	imports: [GeneralErrorFallback],
+	template: `
+		<pb-general-error-fallback
+			[error]="error()"
+			[httpResponseErrorHandlers]="{
+				'404': () => notFound,
+				'422': () => invalidProject,
+			}"
+			[defaultHttpResponseErrorHandler]="() => defaultHttpError"
+			[unexpectedErrorHandler]="unexpectedError"
+		/>
+
+		<!-- custom error TemplateRefs -->
+		<ng-template #notFound let-params="params">
+			<div class="error">
+				<p>Project with id "{{ params["projectId"] }}" could not be found.</p>
+			</div>
+		</ng-template>
+
+		<ng-template #invalidProject let-error="error" let-params="params">
+			<div class="error">
+				<p>Invalid project id: "{{ params["projectId"] }}"</p>
+				<p>{{ error.context.message }}</p>
+			</div>
+		</ng-template>
+
+		<ng-template #defaultHttpError>
+			<p>Project request failed.</p>
+		</ng-template>
+
+		<ng-template #unexpectedError>
+			<p>Oh no! An unexpected error occurred.</p>
+		</ng-template>
+	`,
+	styles: `
+		.error {
+			padding: 1rem;
+			font-weight: bold;
+			color: white;
+			text-align: center;
+			background: var(--color-danger);
+			border-radius: 0.5rem;
+		}
+	`,
+})
+export class ProjectErrorFallback {
+	public readonly error = input.required();
+	constructor() {
+		effect(() => {
+			console.info(`PEF error(): `, this.error()); // LOG DEBUG
+		});
+	}
+}
+
+@Component({
 	selector: "pb-project-page",
-	imports: [
-		AsyncPipe,
-		ProjectInfo,
-		DefaultErrorFallback,
-		DefaultHttpResponseErrorFallback,
-	],
+	imports: [ProjectInfo, ProjectErrorFallback],
 	template: `
 		<section>
+			<!-- Project Signal -->
 			@if (project.isLoading()) {
 				<div>Loading Project...</div>
 			} @else if (project.error()) {
-				@let error = project.cError();
-				@if (error instanceof HttpResponseError) {
-					<pb-default-http-error-fallback [error]="error" />
-				} @else {
-					<pb-default-error-fallback [error]="error" />
-				}
+				<pb-project-error-fallback [error]="project.cError()" />
 			} @else if (project.hasValue()) {
 				<!-- Note: httpResourceMapError utility does not narrow type with .hasValue() check -->
 				<pb-project-info [project]="project.value()!" />
 			}
 
+			<!-- Project Observable -->
 			<!-- @let sProject = project$ | async;
 			@switch (sProject?.status) {
 				@case ("loading") {

@@ -79,6 +79,7 @@ export const projectRouter = defaultRouter()
 	// 404 not found
 	// 500 internal server error: exception (unknown error, db error)
 	.get("/:id", validateParamProjectId, async (ctx) => {
+		// throw new Error("api - get project by Id failed", { cause: "api cause" });
 		const { id } = ctx.req.valid("param");
 
 		// const project = await db.selectProjectByIdQuery(id);

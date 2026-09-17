@@ -3,6 +3,7 @@ import { Component, inject } from "@angular/core";
 import { RouterLink, RouterOutlet } from "@angular/router";
 
 import type { Project } from "@projectsbuild/core/project";
+import { GeneralErrorFallback } from "~/components/error-fallback";
 import { ProjectApiClient } from "~/feature-project/project-api-client";
 import { ProjectsNavList } from "~/feature-project/projects-nav-list";
 
@@ -12,7 +13,7 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 
 @Component({
 	selector: "pb-projects-layout",
-	imports: [AsyncPipe, RouterLink, RouterOutlet, ProjectsNavList],
+	imports: [AsyncPipe, RouterLink, RouterOutlet, ProjectsNavList, GeneralErrorFallback],
 	template: `
 		<aside>
 			<div>
@@ -57,11 +58,8 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 						</div>
 					}
 					@case ("error") {
-						<div>
-							<p>An Error Occurred</p>
-							<p>
-								<samp>{{ ps.error }}</samp>
-							</p>
+						<div [style.padding-block]="'1rem'">
+							<pb-general-error-fallback [error]="ps.error" />
 						</div>
 					}
 					@default {}
