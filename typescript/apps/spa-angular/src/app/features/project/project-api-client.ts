@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse, httpResource } from "@angular/common/http";
 import { inject, resource, Service, type Signal } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
 import { delay } from "rxjs";
 
 import type { Project } from "@projectsbuild/core/project";
@@ -10,6 +11,8 @@ import {
 } from "@projectsbuild/library/errors";
 import { getErrorMessage, wait } from "@projectsbuild/library/utils";
 import {
+	createAsyncStateForFactory,
+	createAsyncStateFromObservable,
 	mapHttpResourceError,
 	trackAsyncStateWithMappedError,
 } from "~/app/shared/async-state";
@@ -71,7 +74,32 @@ export class ProjectApiClient {
 
 	// public createProject() {}
 	// public updateProject() {}
-	// public deleteProject() {}
+
+	// DELETE Project
+	public deleteProjectObs(projectId: string) {
+		return this.#http.delete<Project>(`${this.#urlApi}/${projectId}`).pipe(
+			delay(500),
+			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.deleteProjectObs.name))
+		);
+	}
+
+	public deleteProjectSig(projectId: string) {
+		return toSignal(this.deleteProjectObs(projectId));
+	}
+
+	public readonly deleteProjectOpr = createAsyncStateFromObservable<Project>();
+	public deleteProjectOprE(projectId: string) {
+		return this.deleteProjectOpr.execute(
+			this.#http.delete<Project>(`${this.#urlApi}/${projectId}`),
+			(e) => this.#mapError(e, this.deleteProjectOprE.name)
+		);
+	}
+
+	public deleteProjectFactory = createAsyncStateForFactory(
+		(projectId: string) =>
+			this.#http.delete<Project>(`${this.#urlApi}/${projectId}`).pipe(delay(500)),
+		(e) => this.#mapError(e, "deleteProjectOp2")
+	);
 
 	#mapError(
 		error: Error,

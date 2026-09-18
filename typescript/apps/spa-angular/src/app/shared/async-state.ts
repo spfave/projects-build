@@ -112,7 +112,9 @@ export const asyncInitialState: AsyncState = {
 // export function toQuerySignal<T>(source$: Observable<T>) {}
 // export function toMutationSignal<T>(){}
 
-// Prefer factory version
+/**
+ * @deprecated Prefer `createAsyncStateForFactory`
+ */
 export function createAsyncStateFromObservable<T>() {
 	const state = signal<AsyncState<T>>({ status: "idle", value: null, error: null });
 
