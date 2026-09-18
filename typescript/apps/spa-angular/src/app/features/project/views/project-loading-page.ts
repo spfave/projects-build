@@ -9,7 +9,7 @@ import type { Project } from "@projectsbuild/core/project";
 import { getErrorMessage } from "@projectsbuild/library/utils";
 import {
 	asyncInitialState,
-	runAsyncObservable,
+	createAsyncStatePairFromObservable,
 	trackAsyncState,
 } from "~/app/shared/async-state";
 import { environment as ENV } from "~/environments/environment";
@@ -21,7 +21,7 @@ import { environment as ENV } from "~/environments/environment";
 		<section>
 			<!-- Signal Resources -->
 			<div>
-				<h2>Project Resource signal</h2>
+				<h2>Project Resource Signal</h2>
 				@if (projRs.hasValue()) {
 					<p>val: {{ projRs.value() | json }}</p>
 				} @else if (projRs.isLoading()) {
@@ -39,7 +39,7 @@ import { environment as ENV } from "~/environments/environment";
 				}
 			</div>
 			<div>
-				<h2>Project HttpResource signal</h2>
+				<h2>Project HttpResource Signal</h2>
 				@if (projHRs.hasValue()) {
 					<p>val: {{ projHRs.value() | json }}</p>
 				} @else if (projHRs.isLoading()) {
@@ -72,7 +72,7 @@ import { environment as ENV } from "~/environments/environment";
 				<p>val: {{ projSub | json }}</p>
 			</div>
 			<div>
-				<h2>Project Observable |> Async</h2>
+				<h2>Project Observable |> trackAsync</h2>
 				@let projObAsync = projObAsync$ | async;
 				@switch (projObAsync?.status) {
 					@case ("resolved") {
@@ -103,24 +103,24 @@ import { environment as ENV } from "~/environments/environment";
 				}
 			</div>
 			<div>
-				<h2>runAsync(Project Observable)</h2>
-				<!-- @let projOprState = projRunState | async; -->
-				@let projOprState = projRunState;
-				@switch (projOprState.status) {
+				<h2>AsyncStatePair(Project Observable)</h2>
+				<!-- @let vProjPairState = projPairState | async; -->
+				@let vProjPairState = projPairState;
+				@switch (vProjPairState.status) {
 					@case ("resolved") {
-						<p>val: {{ projOprState.value | json }}</p>
+						<p>val: {{ vProjPairState.value | json }}</p>
 					}
 					@case ("loading") {
 						<p>tmp: Loading Projects...</p>
 					}
 					@case ("error") {
 						<p><i>Failed to load project</i></p>
-						@if ("headers" in $any(projOprState.error)) {
-							<p>err.error: {{ $any(projOprState.error).error | json }}</p>
-							<p>err: {{ projOprState.error | json }}</p>
+						@if ("headers" in $any(vProjPairState.error)) {
+							<p>err.error: {{ $any(vProjPairState.error).error | json }}</p>
+							<p>err: {{ vProjPairState.error | json }}</p>
 						} @else {
-							<p>err: {{ projOprState.error }}</p>
-							<p>err.cause: {{ $any(projOprState.error).cause.error | json }}</p>
+							<p>err: {{ vProjPairState.error }}</p>
+							<p>err.cause: {{ $any(vProjPairState.error).cause.error | json }}</p>
 						}
 					}
 				}
@@ -128,8 +128,8 @@ import { environment as ENV } from "~/environments/environment";
 
 			<!-- Transforms -->
 			<div>
-				<h2>Project toSignal(Observable)</h2>
-				<p>val: {{ projObS() | json }}</p>
+				<h2>toSignal(Project Observable)</h2>
+				<p>val: {{ projObSig() | json }}</p>
 			</div>
 		</section>
 	`,
@@ -227,12 +227,12 @@ export class ProjectLoadingPage implements OnInit {
 	protected projSub?: Project | null = null;
 
 	readonly projObAsync$ = this._projOb$.pipe(trackAsyncState());
-	private readonly projRunAsync = runAsyncObservable(this._projOb$);
-	// protected projRunState = of(asyncInitialState);
-	protected projRunState = asyncInitialState;
+	private readonly projAsyncPair = createAsyncStatePairFromObservable(this._projOb$);
+	// protected projPairState = of(asyncInitialState);
+	protected projPairState = asyncInitialState;
 
 	// Transforms
-	protected projObS = toSignal(this.projOb$);
+	protected projObSig = toSignal(this.projOb$);
 
 	constructor() {
 		console.warn(`Project Loading Page - Constructor`); // LOG
@@ -258,9 +258,9 @@ export class ProjectLoadingPage implements OnInit {
 			complete: () => console.info("Proj subscription complete"),
 		});
 
-		this.projRunAsync.value$.subscribe();
-		// this.projRunState = this.projRunAsync.state$;
-		this.projRunAsync.state$.subscribe((state) => (this.projRunState = state));
+		this.projAsyncPair.value$.subscribe();
+		// this.projPairState = this.projAsyncPair.state$;
+		this.projAsyncPair.state$.subscribe((state) => (this.projPairState = state));
 	}
 
 	private _typeExploring() {
@@ -270,10 +270,10 @@ export class ProjectLoadingPage implements OnInit {
 		const _pHRs = this.projHRs;
 		const _pSub = this.projSub;
 		const _pOb$ = this.projOb$;
-		const _pSig = this.projObS;
+		const _pSig = this.projObSig;
 
 		const _pAy$ = this.projObAsync$;
-		const _pRAp = this.projRunAsync;
+		const _pAPr = this.projAsyncPair;
 	}
 }
 

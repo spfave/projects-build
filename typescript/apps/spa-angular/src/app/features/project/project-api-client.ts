@@ -9,7 +9,10 @@ import {
 	HttpResponseError,
 } from "@projectsbuild/library/errors";
 import { getErrorMessage, wait } from "@projectsbuild/library/utils";
-import { httpResourceMapError, trackAsyncStateMapError } from "~/app/shared/async-state";
+import {
+	mapHttpResourceError,
+	trackAsyncStateWithMappedError,
+} from "~/app/shared/async-state";
 import { environment as ENV } from "~/environments/environment";
 
 const urlProjectApi = `${ENV.PUBLIC_URL_API}/api/v1/projects`;
@@ -19,11 +22,11 @@ export class ProjectApiClient {
 	readonly #urlApi = urlProjectApi;
 	readonly #http = inject(HttpClient);
 
-	// GET projects
+	// GET Projects
 	public getProjects() {
 		return this.#http.get<Project[]>(this.#urlApi).pipe(
 			delay(500), // include for demo delay
-			trackAsyncStateMapError((e) => this.#mapError(e, this.getProjects.name))
+			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjects.name))
 		);
 	}
 
@@ -37,7 +40,7 @@ export class ProjectApiClient {
 	}
 
 	public getProjectsHx() {
-		return httpResourceMapError(
+		return mapHttpResourceError(
 			httpResource<Project[]>(() => this.#urlApi),
 			(e) => this.#mapError(e, this.getProjectsHx.name)
 		);
@@ -47,7 +50,7 @@ export class ProjectApiClient {
 	public getProjectById(projectId: string) {
 		return this.#http.get<Project>(`${this.#urlApi}/${projectId}`).pipe(
 			delay(500),
-			trackAsyncStateMapError((e) => this.#mapError(e, this.getProjectById.name))
+			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjectById.name))
 		);
 	}
 
@@ -60,7 +63,7 @@ export class ProjectApiClient {
 	}
 
 	public getProjectByIdHx(projectId: Signal<string>) {
-		return httpResourceMapError(
+		return mapHttpResourceError(
 			httpResource<Project>(() => `${this.#urlApi}/${projectId()}`),
 			(e) => this.#mapError(e, this.getProjectByIdHx.name)
 		);
