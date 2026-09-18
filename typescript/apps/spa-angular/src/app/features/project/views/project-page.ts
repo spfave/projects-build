@@ -114,10 +114,6 @@ export class ProjectInfo {
 		console.warn(`Handler: delete project`); // LOG_WARN
 
 		// const _dObs = this.#projectClient.deleteProjectObs(this.project().id).subscribe();
-		// const _dSig = this.#projectClient.deleteProjectSig(this.project().id); // Note: toSignal() approach errors. toSignal can only be used in an injection context
-
-		// const _dOpr = this.#projectClient.deleteProjectOprE(this.project().id).subscribe();
-		// const _dOprSt = this.#projectClient.deleteProjectOpr.state;
 
 		const _dFct = this.delFct.execute(this.project().id).subscribe();
 		const _dFctSt = this.delFct.state;
