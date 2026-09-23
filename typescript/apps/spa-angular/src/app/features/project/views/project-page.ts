@@ -213,7 +213,7 @@ export class ProjectPage {
 	readonly #route = inject(ActivatedRoute);
 	protected readonly HttpResponseError = HttpResponseError;
 
-	protected readonly project = this.#projectClient.getProjectByIdHx(this.projectId);
+	protected readonly project = this.#projectClient.getProjectByIdHr(this.projectId);
 	protected readonly project$ = this.#route.paramMap.pipe(
 		map((params) => params.get("projectId")),
 		switchMap((id) => (id ? this.#projectClient.getProjectById(id) : EMPTY))

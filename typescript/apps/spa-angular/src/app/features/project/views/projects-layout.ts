@@ -119,7 +119,7 @@ export class ProjectsLayout {
 
 	readonly #projectClient = inject(ProjectApiClient);
 
-	// protected readonly psR = this.#projectClient.getProjectsRx();
-	// protected readonly psH = this.#projectClient.getProjectsHx();
+	// protected readonly psR = this.#projectClient.getProjectsRs();
+	// protected readonly psH = this.#projectClient.getProjectsHr();
 	protected readonly ps$ = this.#projectClient.getProjects();
 }

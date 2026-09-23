@@ -25,13 +25,13 @@ export class ProjectApiClient {
 
 	// GET Projects
 	public getProjects() {
-		return this.#http.get<Project[]>(this.#urlApi).pipe(
+		return this.#http.get<Project[]>(this.#urlApi, { params: { type: "obs" } }).pipe(
 			delay(500), // include for demo delay
 			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjects.name))
 		);
 	}
 
-	public getProjectsRx() {
+	public getProjectsRs() {
 		return resource({
 			loader: async ({ abortSignal }) => {
 				await wait(500);
@@ -40,22 +40,24 @@ export class ProjectApiClient {
 		});
 	}
 
-	public getProjectsHx() {
+	public getProjectsHr() {
 		return mapHttpResourceError(
-			httpResource<Project[]>(() => this.#urlApi),
-			(e) => this.#mapError(e, this.getProjectsHx.name)
+			httpResource<Project[]>(() => ({ url: this.#urlApi, params: { type: "hr" } })),
+			(e) => this.#mapError(e, this.getProjectsHr.name)
 		);
 	}
 
 	// GET Project By Id
 	public getProjectById(projectId: string) {
-		return this.#http.get<Project>(`${this.#urlApi}/${projectId}`).pipe(
-			delay(500),
-			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjectById.name))
-		);
+		return this.#http
+			.get<Project>(`${this.#urlApi}/${projectId}`, { params: { type: "obs" } })
+			.pipe(
+				delay(500),
+				trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjectById.name))
+			);
 	}
 
-	public getProjectByIdRx(projectId: Signal<string>) {
+	public getProjectByIdRs(projectId: Signal<string>) {
 		return resource({
 			params: () => ({ projectId: projectId() }),
 			loader: ({ params, abortSignal }) =>
@@ -63,10 +65,13 @@ export class ProjectApiClient {
 		});
 	}
 
-	public getProjectByIdHx(projectId: Signal<string>) {
+	public getProjectByIdHr(projectId: Signal<string>) {
 		return mapHttpResourceError(
-			httpResource<Project>(() => `${this.#urlApi}/${projectId()}`),
-			(e) => this.#mapError(e, this.getProjectByIdHx.name)
+			httpResource<Project>(() => ({
+				url: `${this.#urlApi}/${projectId()}`,
+				params: { type: "hr" },
+			})),
+			(e) => this.#mapError(e, this.getProjectByIdHr.name)
 		);
 	}
 
@@ -109,7 +114,8 @@ export class ProjectApiClient {
 }
 
 async function getProjects(init?: RequestInit) {
-	const res = await fetch(urlProjectApi, init).catch((err) => {
+	const params = new URLSearchParams({ type: "rs" });
+	const res = await fetch(`${urlProjectApi}?${params}`, init).catch((err) => {
 		throw new FetchError("Fetch failed for getProjects", { cause: err });
 	});
 
@@ -122,9 +128,12 @@ async function getProjects(init?: RequestInit) {
 }
 
 async function getProjectById(projectId: string, init?: RequestInit) {
-	const res = await fetch(`${urlProjectApi}/${projectId}`, init).catch((err) => {
-		throw new Error("Fetch failed for getProjectById", { cause: err });
-	});
+	const params = new URLSearchParams({ type: "rs" });
+	const res = await fetch(`${urlProjectApi}/${projectId}?${params}`, init).catch(
+		(err) => {
+			throw new Error("Fetch failed for getProjectById", { cause: err });
+		}
+	);
 
 	const js = await res.json();
 	if (res.status >= 400) throw new Error(`Failed to get project. Status = ${res.status}`);
