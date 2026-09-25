@@ -24,13 +24,6 @@ export class ProjectApiClient {
 	readonly #http = inject(HttpClient);
 
 	// GET Projects
-	public getProjects() {
-		return this.#http.get<Project[]>(this.#urlApi, { params: { type: "obs" } }).pipe(
-			delay(500), // include for demo delay
-			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjects.name))
-		);
-	}
-
 	public getProjectsRs() {
 		return resource({
 			loader: async ({ abortSignal }) => {
@@ -47,16 +40,14 @@ export class ProjectApiClient {
 		);
 	}
 
-	// GET Project By Id
-	public getProjectById(projectId: string) {
-		return this.#http
-			.get<Project>(`${this.#urlApi}/${projectId}`, { params: { type: "obs" } })
-			.pipe(
-				delay(500),
-				trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjectById.name))
-			);
+	public getProjects() {
+		return this.#http.get<Project[]>(this.#urlApi, { params: { type: "obs" } }).pipe(
+			delay(500), // include for demo delay
+			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjects.name))
+		);
 	}
 
+	// GET Project By Id
 	public getProjectByIdRs(projectId: Signal<string>) {
 		return resource({
 			params: () => ({ projectId: projectId() }),
@@ -75,23 +66,36 @@ export class ProjectApiClient {
 		);
 	}
 
+	public getProjectById(projectId: string) {
+		return this.#http
+			.get<Project>(`${this.#urlApi}/${projectId}`, { params: { type: "obs" } })
+			.pipe(
+				delay(500),
+				trackAsyncStateWithMappedError((e) => this.#mapError(e, this.getProjectById.name))
+			);
+	}
+
 	// public createProject() {}
 	// public updateProject() {}
 
 	// DELETE Project
-	public deleteProjectObs(projectId: string) {
+	public deleteProject(projectId: string) {
 		return this.#http.delete<Project>(`${this.#urlApi}/${projectId}`).pipe(
 			delay(500),
-			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.deleteProjectObs.name))
+			trackAsyncStateWithMappedError((e) => this.#mapError(e, this.deleteProject.name))
 		);
 	}
 
-	public deleteProjectFactory = createAsyncStateForFactory(
-		(projectId: string) =>
-			this.#http.delete<Project>(`${this.#urlApi}/${projectId}`).pipe(delay(500)),
-		(e) => this.#mapError(e, "deleteProjectFactoryExecute")
-	);
+	// Note: invoke function -> async state lives in the service
+	// Note: function version -> async state lives at call site
+	public deleteProjectOperation = () =>
+		createAsyncStateForFactory(
+			(projectId: string) =>
+				this.#http.delete<Project>(`${this.#urlApi}/${projectId}`).pipe(delay(500)),
+			(e) => this.#mapError(e, this.deleteProjectOperation.name)
+		);
 
+	// Error transform
 	#mapError(
 		error: Error,
 		functionName: string,
@@ -139,3 +143,31 @@ async function getProjectById(projectId: string, init?: RequestInit) {
 	if (res.status >= 400) throw new Error(`Failed to get project. Status = ${res.status}`);
 	return js as Project;
 }
+
+// Notes:
+// {
+// 	// Ref: read signal reload trigger
+// 	readonly #projectsReload = signal(0);
+// 	public reloadProjectsHr()
+// 		this.#projectsReload.update((v) => ++v);
+// 	public getProjectsHr2()
+// 		return mapHttpResourceError(
+// 			httpResource<Project[]>(() => {
+// 				this.#projectsReload();
+// 				return { url: this.#urlApi, params: { type: "hr" } };
+// 			}),
+// 			(e) => this.#mapError(e, this.getProjectsHr2.name)
+// 		);
+//
+// 	// Ref: undefined conditional pattern -> "lazy" signal resource
+// 	#projectIdLazy = signal<string | undefined>(undefined);
+// 	public getProjectByIdHrLazy()
+// 		return httpResource<Project>(() => {
+// 			const projectId = this.#projectIdLazy();
+// 			return projectId
+// 				? { url: `${this.#urlApi}/${projectId}`, params: { type: "hr-lazy" } }
+// 				: undefined;
+// 		});
+// 	public loadProjectByIdHrLazy(projectId: Signal<string>)
+// 		this.#projectIdLazy.set(projectId());
+// }

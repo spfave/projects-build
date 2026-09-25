@@ -3,9 +3,10 @@ import { Component, inject } from "@angular/core";
 import { RouterLink, RouterOutlet } from "@angular/router";
 
 import type { Project } from "@projectsbuild/core/project";
-import { ProjectApiClient } from "~/app/features/project/project-api-client";
-import { ProjectsNavList } from "~/app/features/project/projects-nav-list";
 import { GeneralErrorFallback } from "~/app/shared/components/error-fallback";
+import { ProjectApiClient } from "../project-api-client";
+import { ProjectStore } from "../project-store";
+import { ProjectsNavList } from "../projects-nav-list";
 
 import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
 
@@ -26,9 +27,9 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 			<section>
 				<h2>Projects</h2>
 				<!-- Projects Signal -->
-				<!-- @switch (psR.status()) {
+				<!-- @switch (psH.status()) {
 					@case ("resolved") {
-						<pb-projects-nav-list [projects]="psR.value()" />
+						<pb-projects-nav-list [projects]="psH.value()" />
 					}
 					@case ("loading") {
 						<div>
@@ -39,7 +40,7 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 						<div>
 							<p>An Error Occurred</p>
 							<p>
-								<samp>{{ psR.error() }}</samp>
+								<samp>{{ psH.error() }}</samp>
 							</p>
 						</div>
 					}
@@ -117,9 +118,13 @@ export type ProjectListItem = Pick<Project, "id" | "name">;
 export class ProjectsLayout {
 	protected readonly plusIcon = plusIcon;
 
-	readonly #projectClient = inject(ProjectApiClient);
+	// readonly #projectClient = inject(ProjectApiClient);
+	readonly #projectStore = inject(ProjectStore);
 
 	// protected readonly psR = this.#projectClient.getProjectsRs();
 	// protected readonly psH = this.#projectClient.getProjectsHr();
-	protected readonly ps$ = this.#projectClient.getProjects();
+	// protected readonly psH = this.#projectStore.projectsHr;
+
+	// protected readonly ps$ = this.#projectClient.getProjects();
+	protected readonly ps$ = this.#projectStore.loadProjects();
 }
