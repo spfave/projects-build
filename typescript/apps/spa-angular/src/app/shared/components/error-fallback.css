@@ -1,0 +1,17 @@
+div {
+	* + * {
+		margin-block-start: 8px;
+	}
+
+	p:first-child {
+		font-weight: 600;
+	}
+
+	samp {
+		display: block;
+		font-size: 14px;
+		font-style: italic;
+		color: var(--color-danger);
+		overflow-wrap: anywhere;
+	}
+}

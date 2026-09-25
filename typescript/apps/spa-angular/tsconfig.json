@@ -1,0 +1,31 @@
+// Refs:
+// Typescript configuration: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html.
+// Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options.
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "@projectsbuild/config-typescript/tsconfig.base.json",
+	"compileOnSave": false,
+	"compilerOptions": {
+		// "noImplicitOverride": true,
+		// "noImplicitReturns": true,
+		// "noPropertyAccessFromIndexSignature": true,
+
+		"target": "esnext",
+		"lib": ["ESNext", "DOM"],
+		// "experimentalDecorators": true,
+		"module": "preserve",
+		"allowImportingTsExtensions": true,
+		"rootDir": "./src",
+
+		"importHelpers": true,
+		"noEmit": true
+	},
+	"angularCompilerOptions": {
+		"enableI18nLegacyMessageIdFormat": false,
+		"strictInjectionParameters": true,
+		"strictInputAccessModifiers": true,
+		"strictTemplates": true
+	},
+	"files": [],
+	"references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.spec.json" }]
+}

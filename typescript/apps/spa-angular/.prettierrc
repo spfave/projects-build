@@ -1,0 +1,20 @@
+{
+	"$schema": "https://www.schemastore.org/prettierrc.json",
+	"useTabs": true,
+	"printWidth": 90,
+	"overrides": [
+		{
+			"files": "./src/**/*.ts",
+			"options": {
+				"parser": "typescript"
+			}
+		},
+		{
+			"files": "*.html",
+			"options": {
+				"printWidth": 100,
+				"parser": "angular"
+			}
+		}
+	]
+}
