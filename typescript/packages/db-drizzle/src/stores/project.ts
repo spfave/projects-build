@@ -68,6 +68,6 @@ export async function deleteProject(projectId: ProjectId) {
 	return await db.delete(projects).where(eq(projects.id, projectId));
 }
 export async function deleteProjectReturning(projectId: ProjectId) {
-	// throw new Error("error - db delete project returning");
+	// throw new Error("db - delete project returning");
 	return await db.delete(projects).where(eq(projects.id, projectId)).returning();
 }

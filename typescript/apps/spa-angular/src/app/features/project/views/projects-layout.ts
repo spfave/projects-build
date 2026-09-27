@@ -1,0 +1,130 @@
+import { AsyncPipe } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { RouterLink, RouterOutlet } from "@angular/router";
+
+import type { Project } from "@projectsbuild/core/project";
+import { GeneralErrorFallback } from "~/app/shared/components/error-fallback";
+import { ProjectApiClient } from "../project-api-client";
+import { ProjectStore } from "../project-store";
+import { ProjectsNavList } from "../projects-nav-list";
+
+import plusIcon from "@projectsbuild/core/assets/heroicons-plus.svg";
+
+export type ProjectListItem = Pick<Project, "id" | "name">;
+
+@Component({
+	selector: "pb-projects-layout",
+	imports: [AsyncPipe, RouterLink, RouterOutlet, ProjectsNavList, GeneralErrorFallback],
+	template: `
+		<aside>
+			<div>
+				<a class="action success" routerLink="create">
+					<span>New Project</span>
+					<img height="20" [src]="plusIcon" alt="plus icon" />
+				</a>
+			</div>
+			<hr />
+			<section>
+				<h2>Projects</h2>
+				<!-- Projects Signal -->
+				<!-- @switch (psH.status()) {
+					@case ("resolved") {
+						<pb-projects-nav-list [projects]="psH.value()" />
+					}
+					@case ("loading") {
+						<div>
+							<span>Loading Projects...</span>
+						</div>
+					}
+					@case ("error") {
+						<div>
+							<p>An Error Occurred</p>
+							<p>
+								<samp>{{ psH.error() }}</samp>
+							</p>
+						</div>
+					}
+					@default {}
+				} -->
+
+				<!-- Projects Observable -->
+				@let ps = ps$ | async;
+				@switch (ps?.status) {
+					@case ("resolved") {
+						<pb-projects-nav-list [projects]="ps.value" />
+					}
+					@case ("loading") {
+						<div>
+							<span>Loading Projects...</span>
+						</div>
+					}
+					@case ("error") {
+						<div [style.padding-block]="'1rem'">
+							<pb-general-error-fallback [error]="ps.error" />
+						</div>
+					}
+					@default {}
+				}
+			</section>
+		</aside>
+		<div class="project-outlet">
+			<router-outlet />
+		</div>
+	`,
+	styles: `
+		:host {
+			display: flex;
+			gap: 2rem;
+		}
+
+		aside {
+			display: flex;
+			flex: 0 0 auto;
+			flex-direction: column;
+			gap: 1rem;
+			width: 18rem;
+
+			> div:has(a) {
+				a {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					padding: 0.5rem 1rem;
+				}
+			}
+
+			hr {
+				border: none;
+				border-bottom: 1px solid var(--color-gray);
+			}
+
+			section {
+				> * + * {
+					margin-block-start: 1rem;
+				}
+
+				h2,
+				div {
+					padding: 0 1rem;
+				}
+			}
+		}
+
+		.project-outlet {
+			flex-grow: 1;
+		}
+	`,
+})
+export class ProjectsLayout {
+	protected readonly plusIcon = plusIcon;
+
+	// readonly #projectClient = inject(ProjectApiClient);
+	readonly #projectStore = inject(ProjectStore);
+
+	// protected readonly psR = this.#projectClient.getProjectsRs();
+	// protected readonly psH = this.#projectClient.getProjectsHr();
+	// protected readonly psH = this.#projectStore.projectsHr;
+
+	// protected readonly ps$ = this.#projectClient.getProjects();
+	protected readonly ps$ = this.#projectStore.loadProjects();
+}
