@@ -38,7 +38,7 @@
 			"problemMatcher": []
 		},
 
-		// dotnet tasks
+		// C#
 		{
 			"label": "C#: cleanup C#/.NET artifacts",
 			"detail": "remove generated .NET build artifacts",

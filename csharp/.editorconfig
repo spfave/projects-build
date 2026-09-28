@@ -26,7 +26,7 @@ trim_trailing_whitespace = true
 dotnet_diagnostic.CA1848.severity = suggestion
 
 # Style rules (IDE####)
-# - language and unneccessary code
+# - language and unnecessary code
 dotnet_diagnostic.IDE0008.severity = suggestion
 dotnet_diagnostic.IDE0011.severity = suggestion
 # - formatting
