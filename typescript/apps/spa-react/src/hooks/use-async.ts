@@ -83,7 +83,7 @@ export function useAsync<TData>(initialState?: AsyncState<TData>) {
 
 	const run = React.useCallback(
 		async (promise: Promise<TData>) => {
-			if (!promise || !promise.then)
+			if (!promise?.then)
 				throw new Error("The argument passed to useAsync().run must be a promise.");
 
 			safeDispatch({ type: "PENDING" });
@@ -117,6 +117,7 @@ export function useAsync<TData>(initialState?: AsyncState<TData>) {
 export function useQuery<TData>(queryFn: () => Promise<TData>) {
 	const query = useAsync<TData>();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: memoize queryFn on initialization
 	const cbQueryFn = React.useCallback(queryFn, []);
 	const refetch = React.useCallback(() => query.run(cbQueryFn()), [query.run, cbQueryFn]);
 

@@ -5,12 +5,19 @@
 	"files": { "includes": ["!!**/migrations"] },
 	"linter": {
 		"domains": {
-			"drizzle": "all"
+			"drizzle": "recommended"
+		},
+		"rules": {
+			"nursery": {
+				"noDrizzleUpdateWithoutWhere": {
+					"level": "warn",
+					"options": { "drizzleObjectName": ["db"] }
+				},
+				"noDrizzleDeleteWithoutWhere": {
+					"level": "error",
+					"options": { "drizzleObjectName": ["db"] }
+				}
+			}
 		}
-		// "rules": {
-		// 	"nursery": {
-		// 		"noDrizzleUpdateWithoutWhere": "error"
-		// 	}
-		// }
 	}
 }
