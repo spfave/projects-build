@@ -38,6 +38,10 @@ const keyTheme = "theme";
 		</button>
 	`,
 	styles: `
+		:host {
+			display: contents
+		}
+
 		button {
 			background: none;
 			border: none;

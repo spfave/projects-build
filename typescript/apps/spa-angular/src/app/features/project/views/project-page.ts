@@ -69,50 +69,52 @@ export class ProjectErrorFallback {
 	selector: "pb-project-info",
 	imports: [DatePipe, RouterLink, ATab, ProjectErrorFallback],
 	template: `
-		@let vProject = project();
-		<h2>{{ vProject.name }}</h2>
-		<dl>
-			<div>
-				<dt>Status</dt>
-				<dd>{{ vProject.status }}</dd>
-			</div>
-			<div>
-				<dt>Link</dt>
-				<dd>
-					@if (vProject.link) {
-						<a [routerLink]="vProject.link" pbATab>{{ vProject.link }}</a>
-					} @else {
-						--
-					}
-				</dd>
-			</div>
-			<div>
-				<dt>Description</dt>
-				<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.description || "--" }}</dd>
-			</div>
-			<div>
-				<dt>Notes</dt>
-				<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.notes || "--" }}</dd>
-			</div>
-			@if (vProject.status === "complete") {
+		<article>
+			@let vProject = project();
+			<h2>{{ vProject.name }}</h2>
+			<dl>
 				<div>
-					<dt>Date Completed</dt>
+					<dt>Status</dt>
+					<dd>{{ vProject.status }}</dd>
+				</div>
+				<div>
+					<dt>Link</dt>
 					<dd>
-						<time [dateTime]="vProject.dateCompleted">
-							{{ vProject.dateCompleted | date: "EE, MMM d, yyyy" }}
-						</time>
+						@if (vProject.link) {
+							<a [routerLink]="vProject.link" pbATab>{{ vProject.link }}</a>
+						} @else {
+							--
+						}
 					</dd>
 				</div>
 				<div>
-					<dt>Build Rating</dt>
-					<dd>{{ vProject.rating }}</dd>
+					<dt>Description</dt>
+					<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.description || "--" }}</dd>
 				</div>
 				<div>
-					<dt>Recommend Build</dt>
-					<dd>{{ vProject.recommend ? "Yes" : "No" }}</dd>
+					<dt>Notes</dt>
+					<dd [style]="{ whiteSpace: 'pre-wrap' }">{{ vProject.notes || "--" }}</dd>
 				</div>
-			}
-		</dl>
+				@if (vProject.status === "complete") {
+					<div>
+						<dt>Date Completed</dt>
+						<dd>
+							<time [dateTime]="vProject.dateCompleted">
+								{{ vProject.dateCompleted | date: "EE, MMM d, yyyy" }}
+							</time>
+						</dd>
+					</div>
+					<div>
+						<dt>Build Rating</dt>
+						<dd>{{ vProject.rating }}</dd>
+					</div>
+					<div>
+						<dt>Recommend Build</dt>
+						<dd>{{ vProject.recommend ? "Yes" : "No" }}</dd>
+					</div>
+				}
+			</dl>
+		</article>
 		<div class="projectActions">
 			<a class="action primary" routerLink="edit" aria-disabled="{isPending}">Edit</a>
 			<!-- <form>
@@ -137,7 +139,8 @@ export class ProjectErrorFallback {
 		}
 	`,
 	styles: `
-		:host {
+		:host,
+		article {
 			> * + * {
 				margin-block-start: 2rem;
 			}
@@ -148,7 +151,7 @@ export class ProjectErrorFallback {
 				margin-block-start: 1rem;
 			}
 
-			& div:first-of-type {
+			div:first-of-type {
 				dd {
 					text-transform: capitalize;
 				}
