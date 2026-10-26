@@ -1,12 +1,12 @@
 package store
 
 import (
-	"crypto/rand"
 	"database/sql"
 	"errors"
 	"fmt"
 	"log"
 	"os"
+	"uuid"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/spfave/projects-build/go/internal/core"
@@ -142,7 +142,7 @@ func (str *ProjectSqliteStore) GetByIDX(id core.ProjectID) (*core.Project, error
 
 // Insert and return new project with separate execute and query statements
 func (str *ProjectSqliteStore) Create(input *core.ProjectInput) (*core.Project, error) {
-	projectID := rand.Text()[0:8]
+	projectID := uuid.NewV4().String()[:8]
 	query := `
 		INSERT INTO pb_projects (id, name, link, description, notes, status, date_completed, rating, recommend)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -171,7 +171,7 @@ func (str *ProjectSqliteStore) Create(input *core.ProjectInput) (*core.Project, 
 
 // Insert and return new project with single 'returning' statement, simplified with sqlx
 func (str *ProjectSqliteStore) CreateX(input *core.ProjectInput) (*core.Project, error) {
-	projectID := rand.Text()[0:8]
+	projectID := uuid.NewV4().String()[:8]
 	query := `
 		INSERT INTO pb_projects (id, name, link, description, notes, status, date_completed, rating, recommend)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)

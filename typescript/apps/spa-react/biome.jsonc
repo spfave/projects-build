@@ -6,11 +6,14 @@
 	"linter": {
 		"domains": {
 			"react": "recommended"
+		},
+		"rules": {
+			// "correctness": {
+			// 	"useUniqueElementIds": "info"
+			// },
+			"nursery": {
+				"useReactCompiler": "info"
+			}
 		}
-		// "rules": {
-		// 	"correctness": {
-		// 		"useUniqueElementIds": "info"
-		// 	}
-		// }
 	}
 }

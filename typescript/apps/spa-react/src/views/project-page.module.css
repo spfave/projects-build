@@ -9,7 +9,7 @@
 		margin-block-start: 1rem;
 	}
 
-	& div:first-of-type {
+	div:first-of-type {
 		dd {
 			text-transform: capitalize;
 		}

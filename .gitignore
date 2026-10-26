@@ -5,5 +5,8 @@
 .env
 .env*
 
+# Configuration
+mise.local.toml
+
 # Misc
 .DS_Store

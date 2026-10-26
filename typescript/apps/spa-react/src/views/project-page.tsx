@@ -39,53 +39,55 @@ export default function ProjectPage() {
 	const project = projectQ.data as Project;
 	return (
 		<section key={project.id} className={styles.project}>
-			<h2>{project.name}</h2>
-			<dl className={styles.projectContent}>
-				<div>
-					<dt>Status</dt>
-					<dd>{project.status}</dd>
-				</div>
-				<div>
-					<dt>Link</dt>
-					<dd>
-						<Show when={project.link} fallback={"--"}>
-							<a href={project.link} target="_blank" rel="noreferrer">
-								{project.link}
-							</a>
-						</Show>
-					</dd>
-				</div>
-				<div>
-					<dt>Description</dt>
-					<dd style={{ whiteSpace: "pre-wrap" }}>{project.description || "--"}</dd>
-				</div>
-				<div>
-					<dt>Notes</dt>
-					<dd style={{ whiteSpace: "pre-wrap" }}>{project.notes || "--"}</dd>
-				</div>
-				<Show when={project.status === "complete" ? project : false}>
-					{(project) => (
-						<>
-							<div>
-								<dt>Date Completed</dt>
-								<dd>
-									<time dateTime={project.dateCompleted}>
-										{ymdPretty(project.dateCompleted)}
-									</time>
-								</dd>
-							</div>
-							<div>
-								<dt>Build Rating</dt>
-								<dd>{project.rating}</dd>
-							</div>
-							<div>
-								<dt>Recommend Build</dt>
-								<dd>{project.recommend ? "Yes" : "No"}</dd>
-							</div>
-						</>
-					)}
-				</Show>
-			</dl>
+			<article className={styles.project}>
+				<h2>{project.name}</h2>
+				<dl className={styles.projectContent}>
+					<div>
+						<dt>Status</dt>
+						<dd>{project.status}</dd>
+					</div>
+					<div>
+						<dt>Link</dt>
+						<dd>
+							<Show when={project.link} fallback={"--"}>
+								<a href={project.link} target="_blank" rel="noreferrer">
+									{project.link}
+								</a>
+							</Show>
+						</dd>
+					</div>
+					<div>
+						<dt>Description</dt>
+						<dd style={{ whiteSpace: "pre-wrap" }}>{project.description || "--"}</dd>
+					</div>
+					<div>
+						<dt>Notes</dt>
+						<dd style={{ whiteSpace: "pre-wrap" }}>{project.notes || "--"}</dd>
+					</div>
+					<Show when={project.status === "complete" ? project : false}>
+						{(project) => (
+							<>
+								<div>
+									<dt>Date Completed</dt>
+									<dd>
+										<time dateTime={project.dateCompleted}>
+											{ymdPretty(project.dateCompleted)}
+										</time>
+									</dd>
+								</div>
+								<div>
+									<dt>Build Rating</dt>
+									<dd>{project.rating}</dd>
+								</div>
+								<div>
+									<dt>Recommend Build</dt>
+									<dd>{project.recommend ? "Yes" : "No"}</dd>
+								</div>
+							</>
+						)}
+					</Show>
+				</dl>
+			</article>
 			<div className={styles.projectActions}>
 				<Link
 					className="action primary"

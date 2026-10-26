@@ -60,6 +60,7 @@ export default function ProjectCreatePage() {
 	const refForm = React.useRef<HTMLFormElement>(null);
 	const refStatus = React.useRef<HTMLSelectElement>(null);
 	// Note: Adds event listener that toggles disabling conditional fields so that they are only captured in the FormData when relevant (status = "complete"). Otherwise they are captured as empty string values and considered invalid by project validation function.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: see note on dependency list
 	React.useEffect(() => {
 		const form = refForm.current;
 		const status = refStatus.current;
