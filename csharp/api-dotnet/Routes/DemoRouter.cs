@@ -214,7 +214,7 @@ internal static class DemoRouter
 		return TypedResults.Created(
 			"/todo-json",
 			new { todo }
-		// new { bodyAsync }
+		// new { todo = bodyAsync }
 		);
 	}
 

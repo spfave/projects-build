@@ -26,7 +26,7 @@ internal sealed class GlobalExceptionHandler(
 		var activityId = httpContext.Features.Get<IHttpActivityFeature>()?.Activity?.Id;
 		logger.LogError(
 			exception,
-			"Unhandled exception occured. Message={Message} Instance={Instance} RequestId={RequestId} TraceId={ActivityId} TimeUtc={TimeUtc}",
+			"Unhandled exception occurred. Message={Message} Instance={Instance} RequestId={RequestId} TraceId={ActivityId} TimeUtc={TimeUtc}",
 			exception.Message,
 			instance,
 			requestId,

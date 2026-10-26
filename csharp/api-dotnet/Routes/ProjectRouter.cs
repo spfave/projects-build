@@ -41,7 +41,7 @@ internal static class ProjectRouter
 			.WithName("Delete Project")
 			.WithSummary("Delete Project")
 			.WithDescription(
-				"Deletes Project if found by Id. Returns JSON representation of deleted Project otherwise not-found"
+				"Deletes Project if found by Id. Returns no content if successful otherwise not-found"
 			);
 
 		projectRouter.MapPost(
@@ -59,6 +59,7 @@ internal static class ProjectRouter
 		);
 	}
 
+	// -----------------------------------------------------------------------------------
 	private static readonly List<Project.Project> _projects =
 	[
 		new()
@@ -81,6 +82,8 @@ internal static class ProjectRouter
 	{
 		return Guid.NewGuid().ToString("N")[..length]; // Note: "N" format specifier returns 32 digits without hyphens. e.g. "d85b1407351d469493920c7f6a0e3b8d"
 	}
+
+	// -----------------------------------------------------------------------------------
 
 	private static async Task<Ok<IReadOnlyList<Project.Project>>> GetProjects()
 	{

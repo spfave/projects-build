@@ -11,6 +11,10 @@
 <!-- - [Infrastructure](./Infrastructure) -->
 <!-- - [Library](./Library) -->
 
+### **Local Dev Access Links**
+http://localhost:5004/openapi/scalar/projects-build#description/introduction
+http://localhost:5004/openapi/projects-build.json
+
 
 &nbsp;
 ## **References**

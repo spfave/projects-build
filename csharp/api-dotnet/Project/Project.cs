@@ -16,11 +16,11 @@ public static class ProjectConstants
 
 	private static void Explore()
 	{
-		ProjectStatusDict.TryGetValue("PLANNING", out var psD_);
-		var b = Statuses.Contains("");
-		var psD = ProjectStatusDict["PLANNING"]; // no intellisense
-		// var psC = ProjectStatusC.Building;
+		var bc = Statuses.Contains("");
+		var bd = ProjectStatusDict.TryGetValue("PLANNING", out var psD_); // no intellisense on keys
+		var psD = ProjectStatusDict["PLANNING"]; // no intellisense on keys
 		var psE = ProjectStatus.Building.ToString();
+		// var psC = ProjectStatusT.Building;
 	}
 }
 
@@ -61,7 +61,7 @@ public sealed class Project
 // ----------------------------------------------------------------------------------- //
 // Note: Exploration
 
-// public static class ProjectStatusC
+// public static class ProjectStatusT
 // {
 // 	public const string Planning = "planning";
 // 	public const string Building = "building";
