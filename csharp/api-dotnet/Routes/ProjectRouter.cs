@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using ProjectsBuild.API.Core.Domain;
+using ProjectsBuild.Core.Domain;
 
 namespace ProjectsBuild.API.Routes;
 

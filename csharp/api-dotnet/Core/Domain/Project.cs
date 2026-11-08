@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace ProjectsBuild.API.Core.Domain;
+namespace ProjectsBuild.Core.Domain;
 
 public static class ProjectConstants
 {
