@@ -4,12 +4,25 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjectsBuild.API.Application;
 using ProjectsBuild.API.Routes;
+using ProjectsBuild.Core.Persistence;
+using ProjectsBuild.Infrastructure;
 using Scalar.AspNetCore;
 
 // Add and configure services
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString =
+	builder.Configuration.GetConnectionString("DB_FILE_NAME")
+	?? throw new InvalidOperationException("Connection string 'DB_FILE_NAME' is not configured.");
+builder.Services.AddDbContext<ProjectsBuildDbContext>(options =>
+	options.UseSqlite(connectionString)
+);
+builder.Services.AddScoped<IProjectBuildDbContext>(services =>
+	services.GetRequiredService<ProjectsBuildDbContext>()
+);
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -71,6 +84,12 @@ var app = builder.Build();
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
+	await using (var scope = app.Services.CreateAsyncScope())
+	{
+		var dbContext = scope.ServiceProvider.GetRequiredService<ProjectsBuildDbContext>();
+		await dbContext.Database.MigrateAsync();
+	}
+
 	app.Use(
 		async (context, next) =>
 		{
