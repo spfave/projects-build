@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using ProjectsBuild.API.Project;
+using ProjectsBuild.API.Core.Domain;
 
 namespace ProjectsBuild.API.Routes;
 

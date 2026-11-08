@@ -1,6 +1,8 @@
 // global using ProjectId = string; // Note: Works but overrides to much
 
-namespace ProjectsBuild.API.Project;
+using System.Text.Json.Serialization;
+
+namespace ProjectsBuild.API.Core.Domain;
 
 public static class ProjectConstants
 {
@@ -30,9 +32,11 @@ public readonly record struct ProjectId(string Id);
 // [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ProjectStatus
 {
-	// [JsonStringEnumMemberName("plan")] // Note: Define custom string value for serialization/deserialization. Works with global applied or type applied serialization/deserialization. Flows through to OpenAPI docs
+	// [JsonStringEnumMemberName("planning")] // Note: Define custom string value for serialization/deserialization. Works with global applied or type applied serialization/deserialization. Flows through to OpenAPI docs
 	Planning,
+
 	Building,
+
 	Complete,
 }
 
