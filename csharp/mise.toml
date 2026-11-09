@@ -1,0 +1,13 @@
+# TASKS: Migrations
+[tasks.databaseUpdate]
+description = "Update database"
+run = "dotnet ef database update --project api-dotnet/api-dotnet.csproj"
+
+[tasks.migrationScript]
+description = "Generate migration SQL script"
+run = "dotnet ef migrations script --project api-dotnet/api-dotnet.csproj --output api-dotnet/Infrastructure/Persistence/Deployment/Migrations.sql"
+# note:  --idempotent not supported for SQLite
+
+[tasks.migrationBundle]
+description = "Generate migration bundle"
+run = "dotnet ef migrations bundle --project api-dotnet/api-dotnet.csproj --output api-dotnet/Infrastructure/Persistence/Deployment/MigrationBundle"
