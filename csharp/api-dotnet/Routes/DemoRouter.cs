@@ -108,8 +108,14 @@ internal static class DemoRouter
 			NotFound<MessageResponse>,
 			InternalServerError<MessageResponse>
 		>
+	// > Status(HttpContext context) // note: need to cast method to (Delegate) type in .Map
+	// > Status(HttpRequest request)
 	> Status([FromRoute] int code)
 	{
+		// var code = int.Parse(context.Request.RouteValues["code"]?.ToString());
+		// var code = Convert.ToInt32(request.RouteValues["code"]?.ToString() ?? "0");
+		// Console.WriteLine($"STATUS CODE: {code}"); // LOG
+		// Console.WriteLine($"STATUS CODE TYPE: {code.GetType()}"); // LOG
 		return code switch
 		{
 			200 => TypedResults.Ok(new MessageResponse("Demo status OK route")),
