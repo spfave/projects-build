@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using ProjectsBuild.Core.Domain;
 
-namespace ProjectsBuild.API.Routes;
+namespace ProjectsBuild.Api.Routes;
 
 public sealed record ProjectRequest(
 	[Required, Length(ProjectConstants.NameMinLength, ProjectConstants.NameMaxLength)] string Name,

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProjectsBuild.Core.Domain;
 
-namespace ProjectsBuild.API.Routes;
+namespace ProjectsBuild.Api.Routes;
 
 internal static class ProjectRouter
 {

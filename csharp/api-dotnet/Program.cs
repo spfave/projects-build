@@ -1,82 +1,21 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProjectsBuild.API.Application;
-using ProjectsBuild.API.Routes;
-using ProjectsBuild.Core.Persistence;
+using ProjectsBuild.Api;
+using ProjectsBuild.Api.Routes;
 using ProjectsBuild.Infrastructure;
-using Scalar.AspNetCore;
 
 // Add and configure services
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString =
-	builder.Configuration.GetConnectionString("DB_FILE_NAME")
-	?? throw new InvalidOperationException("Connection string 'DB_FILE_NAME' is not configured.");
-builder.Services.AddDbContext<ProjectsBuildDbContext>(options =>
-	options.UseSqlite(connectionString)
-);
-builder.Services.AddScoped<IProjectBuildDbContext>(services =>
-	services.GetRequiredService<ProjectsBuildDbContext>()
-);
+builder.Services.AddInfraSqliteDatabase(builder.Configuration);
 
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-	options.SerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-	options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-	// Note: Global applied definition for enum int to JSON string serialization/deserialization. Flows through to OpenAPI docs
-	options.SerializerOptions.Converters.Add(
-		new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.CamelCase, allowIntegerValues: false)
-	);
-});
-
-builder.Services.AddExceptionHandler<JsonExceptionHandler>();
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails(options =>
-{
-	options.CustomizeProblemDetails = (context) =>
-	{
-		Console.WriteLine($"CUSTOMIZE PROBLEM DETAILS"); // LOG
-		var http = context.HttpContext;
-		context.ProblemDetails.Instance = $"{http.Request.Method} {http.Request.GetDisplayUrl()}";
-		context.ProblemDetails.Extensions.TryAdd("requestId", http.TraceIdentifier);
-		context.ProblemDetails.Extensions.TryAdd(
-			"traceId",
-			http.Features.Get<IHttpActivityFeature>()?.Activity?.Id
-		);
-	};
-});
-builder.Services.AddHttpLogging(options =>
-{
-	options.LoggingFields =
-		HttpLoggingFields.RequestProperties
-		| HttpLoggingFields.RequestQuery
-		| HttpLoggingFields.ResponseStatusCode
-		| HttpLoggingFields.Duration;
-	options.CombineLogs = true;
-});
+builder.Services.ConfigureApiJsonOptions();
+builder.Services.AddApiExceptionHandling();
+builder.Services.AddApiProblemDetailsHandling();
+builder.Services.AddApiHttpLogging();
 builder.Services.AddHealthChecks();
 builder.Services.AddValidation();
-builder.Services.AddOpenApi(
-	"projects-build",
-	(options) =>
-	{
-		options.AddDocumentTransformer(
-			(document, context, ct) =>
-			{
-				document.Info.Title = "Projects.build | API-dotnet";
-				document.Info.Summary = "API to manage project builds";
-				document.Info.Description =
-					"JSON API to manage and track project builds. Built with C# and ASP.NET";
-				return Task.CompletedTask;
-			}
-		);
-	}
-);
+builder.Services.AddApiDocumentation();
 
 // Build and configure application
 var app = builder.Build();
@@ -84,37 +23,13 @@ var app = builder.Build();
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
-	await using (var scope = app.Services.CreateAsyncScope())
-	{
-		var dbContext = scope.ServiceProvider.GetRequiredService<ProjectsBuildDbContext>();
-		await dbContext.Database.MigrateAsync();
-	}
+	await app.Services.MigrateInfraDatabase();
 
-	app.Use(
-		async (context, next) =>
-		{
-			context.Response.OnStarting(() =>
-			{
-				context.Response.Headers.Append("Application-Name", "API-dotnet");
-				return Task.CompletedTask;
-			});
-			await next(context);
-		}
-	);
+	app.UseApiMiddleware();
 	app.UseHttpLogging();
 	app.UseStatusCodePages();
 	app.MapOpenApi();
-	app.MapScalarApiReference(
-		"/openapi/scalar/",
-		(options) =>
-		{
-			options
-				.WithTheme(ScalarTheme.Purple)
-				.WithClassicLayout()
-				.ShowOperationId()
-				.WithDefaultHttpClient(ScalarTarget.JavaScript, ScalarClient.Fetch);
-		}
-	);
+	app.MapApiDocumentation();
 }
 
 app.MapHealthChecks("/health-check");
