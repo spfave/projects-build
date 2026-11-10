@@ -3,7 +3,9 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Mvc;
 using ProjectsBuild.API.Application;
+using ProjectsBuild.Api.Routes;
 using Scalar.AspNetCore;
 
 namespace ProjectsBuild.Api;
@@ -119,5 +121,24 @@ internal static class ApiApplicationBuilderExtensions
 					.WithDefaultHttpClient(ScalarTarget.JavaScript, ScalarClient.Fetch);
 			}
 		);
+	}
+
+	internal static void MapApiRoutes(this WebApplication app)
+	{
+		var apiRouter = app.MapGroup("/api");
+
+		app.MapFallback(
+			(HttpRequest request) =>
+				TypedResults.NotFound(
+					new ProblemDetails
+					{
+						Detail = "The requested resource was not found.",
+						Instance = $"{request.Method} {request.GetDisplayUrl()}",
+					}
+				)
+		);
+		apiRouter.MapHealthChecks("/health-check");
+		apiRouter.MapDemoRoutes();
+		apiRouter.MapProjectRoutes();
 	}
 }

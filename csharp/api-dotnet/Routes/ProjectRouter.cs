@@ -8,7 +8,7 @@ internal static class ProjectRouter
 {
 	internal static void MapProjectRoutes(this IEndpointRouteBuilder router)
 	{
-		var projectRouter = router.MapGroup("/api/v1/projects").WithTags("Projects");
+		var projectRouter = router.MapGroup("/v1/projects").WithTags("Projects");
 
 		projectRouter
 			.MapGet("/", GetProjects)

@@ -9,7 +9,7 @@ internal static class DemoRouter
 {
 	internal static void MapDemoRoutes(this IEndpointRouteBuilder router)
 	{
-		var demoRouter = router.MapGroup("/api/demos").WithTags("Demos");
+		var demoRouter = router.MapGroup("/demos").WithTags("Demos");
 
 		// Refs: Exception handling & problem detail demos
 		// - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling-api

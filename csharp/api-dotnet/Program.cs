@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using ProjectsBuild.Api;
-using ProjectsBuild.Api.Routes;
 using ProjectsBuild.Infrastructure;
 
 // Add and configure services
@@ -32,19 +29,7 @@ if (app.Environment.IsDevelopment())
 	app.MapApiDocumentation();
 }
 
-app.MapHealthChecks("/health-check");
-app.MapFallback(
-	(HttpContext context) =>
-		TypedResults.NotFound(
-			new ProblemDetails
-			{
-				Detail = "The requested resource was not found.",
-				Instance = $"{context.Request.Method} {context.Request.GetDisplayUrl()}",
-			}
-		)
-);
-app.MapDemoRoutes();
-app.MapProjectRoutes();
+app.MapApiRoutes();
 
 // Run application
 app.Logger.LogInformation("Run application");
