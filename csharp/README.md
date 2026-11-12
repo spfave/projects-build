@@ -16,6 +16,18 @@ http://localhost:5004/openapi/scalar/projects-build#description/introduction
 http://localhost:5004/openapi/projects-build.json
 
 
+### **Container Management**
+```sh
+# build image
+# docker build -f csharp/api-dotnet/Dockerfile [OPTIONS: --build-arg configuration=Debug] -t <image-name>:<image-tag> .
+docker build -f csharp/api-dotnet/Dockerfile --build-arg configuration=Debug -t api-dotnet:debug .
+
+# run container
+# docker run --rm --name <container-name> -p <access-port>:<container-port> [ENV VARs: -e ASPNETCORE_ENVIRONMENT=Development] <image-name>:<image-tag>
+docker run --name c-api-dotnet-nodb -p 5005:5004 -e ASPNETCORE_ENVIRONMENT=Development api-dotnet:debug
+```
+
+
 &nbsp;
 ## **References**
 [C#](https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/overview)  
