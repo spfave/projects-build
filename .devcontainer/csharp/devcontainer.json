@@ -13,7 +13,7 @@
 		},
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
 		"ghcr.io/devcontainers/features/dotnet:2": {
-			"version": "11.0-preview"
+			"version": "11.0"
 		}
 	},
 
@@ -33,6 +33,7 @@
 				"ms-dotnettools.csharp",
 				"qwtel.sqlite-viewer",
 				"redhat.vscode-xml",
+				"redhat.vscode-yaml",
 				"streetsidesoftware.code-spell-checker",
 				"tamasfe.even-better-toml"
 			]
